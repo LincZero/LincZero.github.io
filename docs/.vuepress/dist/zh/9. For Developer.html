@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>插件接入二次开发（文档编写中） | Any Block Docs</title>
+    <meta name="generator" content="VuePress 1.9.9">
+    
+    <meta name="description" content="Intro obsidian plugin —— AnyBlock">
+    <meta name="theme-color" content="#3eaf7c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/assets/css/0.styles.1a8e0fbc.css" as="style"><link rel="preload" href="/assets/js/app.2495d552.js" as="script"><link rel="preload" href="/assets/js/2.4113e566.js" as="script"><link rel="preload" href="/assets/js/27.627786ba.js" as="script"><link rel="prefetch" href="/assets/js/10.2cc82ff0.js"><link rel="prefetch" href="/assets/js/11.b1d004e1.js"><link rel="prefetch" href="/assets/js/12.079e3558.js"><link rel="prefetch" href="/assets/js/13.93b5a16c.js"><link rel="prefetch" href="/assets/js/14.a054ac31.js"><link rel="prefetch" href="/assets/js/15.5110b658.js"><link rel="prefetch" href="/assets/js/16.88d964b7.js"><link rel="prefetch" href="/assets/js/17.a5bd58c1.js"><link rel="prefetch" href="/assets/js/18.02df09cf.js"><link rel="prefetch" href="/assets/js/19.311ec1dc.js"><link rel="prefetch" href="/assets/js/20.ec00da0e.js"><link rel="prefetch" href="/assets/js/21.c49dd055.js"><link rel="prefetch" href="/assets/js/22.9bf87bfa.js"><link rel="prefetch" href="/assets/js/23.2cb87349.js"><link rel="prefetch" href="/assets/js/24.a1ba2e26.js"><link rel="prefetch" href="/assets/js/25.3e9379a9.js"><link rel="prefetch" href="/assets/js/26.58e392b1.js"><link rel="prefetch" href="/assets/js/28.5bdb8527.js"><link rel="prefetch" href="/assets/js/3.2ca08218.js"><link rel="prefetch" href="/assets/js/4.053e04ec.js"><link rel="prefetch" href="/assets/js/5.259e5c48.js"><link rel="prefetch" href="/assets/js/6.0e3dc7d3.js"><link rel="prefetch" href="/assets/js/7.0c75973d.js"><link rel="prefetch" href="/assets/js/8.dcece914.js"><link rel="prefetch" href="/assets/js/9.6a6bbe5c.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.1a8e0fbc.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container no-sidebar"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Any Block Docs</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/guide/" class="nav-link">
+  Guide
+</a></div><div class="nav-item"><a href="/config/" class="nav-link">
+  Config
+</a></div><div class="nav-item"><a href="https://v1.vuepress.vuejs.org" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  VuePress
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="/zh/" class="nav-link router-link-active">
+  zh
+</a></div><div class="nav-item"><a href="/en/" class="nav-link">
+  en
+</a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/guide/" class="nav-link">
+  Guide
+</a></div><div class="nav-item"><a href="/config/" class="nav-link">
+  Config
+</a></div><div class="nav-item"><a href="https://v1.vuepress.vuejs.org" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  VuePress
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div><div class="nav-item"><a href="/zh/" class="nav-link router-link-active">
+  zh
+</a></div><div class="nav-item"><a href="/en/" class="nav-link">
+  en
+</a></div> <!----></nav>  <!----> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="插件接入二次开发-文档编写中"><a href="#插件接入二次开发-文档编写中" class="header-anchor">#</a> 插件接入二次开发（文档编写中）</h1> <p>因为AnyBlock做了一件Obsidian标准接口里没有提供的功能 ———— 真正地将 “特殊语法” 从块里释放了出来。
+得益于OB接口允许插件之间的通信，其他开发者如果想要将使用一种类似的功能，可以接入AB插件进行快速开发。</p> <p>为了方便接入二次开发，这里
+如果你并非程序员，也可以看一下第一节（Tree-Level）的内容，会让你对插件的设计和使用更加熟悉。</p> <h2 id="tree-level"><a href="#tree-level" class="header-anchor">#</a> Tree-Level</h2> <p>注意：这里的level数越小，代表父层次越高，level表示的其实是 <code>indent-level</code> 。并且这里允许level为非正数或非整数</p> <p>tree-level
+[2table]</p> <ul><li>list的level | <code>-</code> 前的空格数量+1（范围[1,n]）</li> <li>位于根部正文的level | 0 （哪怕缩进，但注意列表下的缩进会被视为列表项）</li> <li>负级列表的level（实验功能） | <code>&lt;</code> 的数量的负数（范围 [-3,-1]）</li> <li>标题的level | <code>#</code> 的数量减去十（范围 [-9,-4]）</li> <li>特殊规则 - QA层的level | 0.5</li></ul> <p>此外，
+列表选择器只会选择列表层级。
+负列表选择器能选择负列表、正文、列表层级。
+而标题或首尾选择器能选择全部的标题、负列表、正文、列表层级。</p> <h1 id="接口"><a href="#接口" class="header-anchor">#</a> 接口</h1> <h2 id="注册新的处理器"><a href="#注册新的处理器" class="header-anchor">#</a> 注册新的处理器</h2> <p>&lt;&lt; 这是一种类似于 <code>registerMarkdownPostProcessor()</code> 的方法，主要区别：</p> <ol><li>要处理的文本不会局限于代码块中，而是基于 <code>Range</code>。
+<code>Range</code> 可以通过各种局部或全局选择器进行选择，它会告诉你你要处理的是哪一部分的文本内容，你也可以在设置中打开 <code>线装饰</code> 功能，来查看被选择的文本范围。
+然后，你可以使用新的注册器对该区域进行处理。</li> <li>该新的注册器还允许你使用正则等方式去匹配识别符</li> <li>你可以注册两种处理器：文本处理器和渲染处理器
+文本处理器可以叠加多个，渲染处理器之后不能再使用处理器</li></ol> <h2 id="处理器接口"><a href="#处理器接口" class="header-anchor">#</a> 处理器接口</h2> <p>接口（v1.2旧版）</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">function</span> <span class="token function">registerABProcessor</span><span class="token punctuation">(</span><span class="token parameter"><span class="token literal-property property">sim</span><span class="token operator">:</span> ABProcessorSpecSimp</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/** ab处理器接口 - 语法糖版 */</span>
+<span class="token keyword">interface</span> <span class="token class-name">ABProcessorSpecSimp</span><span class="token punctuation">{</span>
+  <span class="token literal-property property">id</span><span class="token operator">:</span> string            <span class="token comment">// 唯一标识</span>
+  <span class="token literal-property property">name</span><span class="token operator">:</span> string          <span class="token comment">// 处理器名字</span>
+  match<span class="token operator">?</span><span class="token operator">:</span> RegExp<span class="token operator">|</span>string <span class="token comment">// 处理器匹配正则（不填则为id，而不是name！name可以被翻译或是重复的）</span>
+  detail<span class="token operator">?</span><span class="token operator">:</span> string       <span class="token comment">// 处理器描述</span>
+  is_render<span class="token operator">?</span><span class="token operator">:</span> boolean   <span class="token comment">// 是否渲染处理器，默认为true。false则为文本处理器</span>
+  <span class="token function-variable function">process</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token literal-property property">el</span><span class="token operator">:</span>HTMLDivElement<span class="token punctuation">,</span> <span class="token literal-property property">header</span><span class="token operator">:</span>string<span class="token punctuation">,</span> <span class="token literal-property property">content</span><span class="token operator">:</span>string</span><span class="token punctuation">)</span><span class="token operator">=&gt;</span> HTMLElement<span class="token operator">|</span>string
+                        <span class="token comment">// 处理器</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>v1.3调整：扩展了处理器类型，以前仅支持文本处理器/渲染处理器两种，现在支持：</p> <ul><li>文本处理器|  文本-&gt;文本</li> <li>文本渲染器|  文本-&gt;界面</li> <li>渲染修饰器|  界面-&gt;界面（一般通过被包含到一个div实现）</li> <li>文本解析器|  文本-&gt;数据（现在只有列表解析器一种）</li> <li>数据转化器|  数据-&gt;数据</li> <li>数据渲染器|  数据-&gt;界面</li></ul> <p>我用个树形来解释
+[list2mermaid]</p> <ul><li>文本| 文本| 界面</li> <li>文本
+<ul><li>数据1| 数据1| 界面</li> <li>数据2| 数据2| 界面</li> <li>数据3| 数据3| 界面</li></ul></li> <li>界面| 界面</li></ul> <p>所以，新版接口为</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">function</span> <span class="token function">registerABProcessor</span><span class="token punctuation">(</span><span class="token parameter"><span class="token literal-property property">sim</span><span class="token operator">:</span> ABProcessorSpecSimp</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/** ab处理器接口 - 语法糖版 */</span>
+<span class="token keyword">interface</span> <span class="token class-name">ABProcessorSpecSimp</span><span class="token punctuation">{</span>
+  <span class="token literal-property property">id</span><span class="token operator">:</span> string            <span class="token comment">// 唯一标识</span>
+  <span class="token literal-property property">name</span><span class="token operator">:</span> string          <span class="token comment">// 处理器名字</span>
+  match<span class="token operator">?</span><span class="token operator">:</span> RegExp<span class="token operator">|</span>string <span class="token comment">// 处理器匹配正则（不填则为id，而不是name！name可以被翻译或是重复的）</span>
+  detail<span class="token operator">?</span><span class="token operator">:</span> string       <span class="token comment">// 处理器描述</span>
+  <span class="token comment">// type_from: TypeProcessorData   // （自动识别）处理器输入类型</span>
+  <span class="token comment">// type_to: TypeProcessorData     // （自动识别）处理器输出类型</span>
+  <span class="token literal-property property">is_show</span><span class="token operator">:</span> boolean      <span class="token comment">// 是否在推荐栏进行推荐（若否，则只能通过查表发现该处理器）</span>
+  <span class="token function-variable function">process</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token literal-property property">el</span><span class="token operator">:</span>HTMLDivElement<span class="token punctuation">,</span> <span class="token literal-property property">header</span><span class="token operator">:</span>string<span class="token punctuation">,</span> <span class="token literal-property property">content</span><span class="token operator">:</span>string</span><span class="token punctuation">)</span><span class="token operator">=&gt;</span> HTMLElement<span class="token operator">|</span>string
+                        <span class="token comment">// 处理器</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>只有当两个处理器的from-to接口相匹配时，才能串联他们<br>
+你可能会看到的常见数据：List_TableItem、List_ListItem、Tree</p> <h3 id="树格式"><a href="#树格式" class="header-anchor">#</a> 树格式</h3> <p>知识前置：<a href="#Tree-Level">Tree-Level</a>
+AB插件会自动将局部的列表选择器或全局选择器里的大纲，转化为树形格式
+（用列表格式存储，相较于抽象语法树AST更类似于md-it的Tokens，但语法会简单得多）</p> <p>有多种不同格式的树，根据content的类型来判断</p> <div class="language-typescript extra-class"><pre class="language-typescript"><code><span class="token punctuation">{</span>
+    level<span class="token operator">:</span><span class="token builtin">number</span><span class="token punctuation">,</span>
+    content<span class="token operator">:</span> str<span class="token operator">|</span>Dom<span class="token operator">|</span>Chat<span class="token operator">|</span><span class="token builtin">any</span>
+<span class="token punctuation">}</span><span class="token punctuation">[</span><span class="token punctuation">]</span>
+</code></pre></div><p>你可以直接使用这个树形格式快速开发</p> <h3 id="处理器冲突问题"><a href="#处理器冲突问题" class="header-anchor">#</a> 处理器冲突问题</h3> <p>同种范围管理器的处理器，由于存在注册的先后问题并不会冲突。
+不同范围管理器，则可能进行冲突。</p> <p>如果他们的范围是真包含关系，范围更大的有可能影响范围更小的，也可能不影响（例如大范围的使用md方式）。
+如果他们的范围是交错关系，则可能会产生bug。
+一般而言不会发生后者这种情况，除非使用自由度较高的首尾范围选择器，这也是为什么我会说要谨慎使用首尾范围选择器，最好能用标题选择器来代替之</p> <h2 id="范围选择器"><a href="#范围选择器" class="header-anchor">#</a> 范围选择器</h2> <p>有两个范围选择器：Md范围选择器、HTML范围选择器</p> <p>Md范围选择器接口：</p> <div class="language-typescript extra-class"><pre class="language-typescript"><code><span class="token keyword">export</span> <span class="token keyword">interface</span> <span class="token class-name">MdSelectorSpec</span> <span class="token punctuation">{</span>
+  from<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">,</span>     <span class="token comment">// 替换范围</span>
+  to<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">,</span>       <span class="token comment">// .</span>
+  header<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">,</span>   <span class="token comment">// 头不是信息</span>
+  selector<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token comment">// 范围选择方式</span>
+  content<span class="token operator">:</span> <span class="token builtin">string</span>   <span class="token comment">// 内容信息</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>HTML范围选择器接口：</p> <div class="language-typescript extra-class"><pre class="language-typescript"><code><span class="token punctuation">{</span>
+
+<span class="token punctuation">}</span>
+
+
+sub_el<span class="token punctuation">,</span> mdSrc<span class="token punctuation">.</span>header<span class="token punctuation">,</span> mdSrc<span class="token punctuation">.</span>content
+</code></pre></div><h1 id="一些内部处理器"><a href="#一些内部处理器" class="header-anchor">#</a> 一些内部处理器</h1> <p>这些内部处理器对于</p> <h1 id="beta-生命周期"><a href="#beta-生命周期" class="header-anchor">#</a> （beta）生命周期</h1> <h1 id="beta-用到的一些工具"><a href="#beta-用到的一些工具" class="header-anchor">#</a> （beta）用到的一些工具</h1> <p>Obsidian、CodeMirror、Mermaid 自不用多提。
+Doxygen是一个可以根据代码注释生成文档的工具，支持HTML、CHM、<a href="https://so.csdn.net/so/search?q=LaTex&amp;spm=1001.2101.3001.7020" target="_blank" rel="noopener noreferrer">LaTex<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>等格式。主要支持C语言、Python语言，还支持C++、Java、C#等语言。</p></div> <footer class="page-edit"><!----> <!----></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.2495d552.js" defer></script><script src="/assets/js/2.4113e566.js" defer></script><script src="/assets/js/27.627786ba.js" defer></script>
+  </body>
+</html>

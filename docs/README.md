@@ -1,5 +1,3 @@
-[Other Language（其他语言）](./docs/)
-
 # obsidian-any-block
 
 A Obsidian Plugin. You can flexibility to create a 'Block' by some means.
@@ -8,7 +6,7 @@ A Obsidian Plugin. You can flexibility to create a 'Block' by some means.
 
 Function：Block conversion、list to table or other tree graph，See the `demo` sample folder for details
 
-[Usage Tutorial & Sample Library](./docs/en)
+[Usage Tutorial & Sample Library](./en)
 
 ## If bug
 
@@ -16,7 +14,7 @@ Function：Block conversion、list to table or other tree graph，See the `demo`
 
 ## Suport command
 
-Look the setup panel or [Usage Tutorial & Sample Library](./docs/en)
+Look the setup panel or [Usage Tutorial & Sample Library](./en)
 
 Here are some of the more common processors:
 - list2table  (2datatable)
@@ -29,37 +27,37 @@ Here are some of the more common processors:
 
 
 
-![](docs/en/png/list2table.png)
+![](./en/png/list2table.png)
 
-![](docs/en/png/list2tableT.png)
+![](./en/png/list2tableT.png)
 
-![](docs/en/png/list2lt.png)
+![](./en/png/list2lt.png)
 
-![](docs/en/png/list2tab.png)
+![](./en/png/list2tab.png)
 
-![](docs/en/png/list2mermaid.png)
+![](./en/png/list2mermaid.png)
 
-![](docs/en/png/list2mindmap.png)
+![](./en/png/list2mindmap.png)
 
-![](docs/en/png/titleSelector.png)
+![](./en/png/titleSelector.png)
 
-![](docs/en/png/addTitle.png)
+![](./en/png/addTitle.png)
 
-![](docs/en/png/scroll.png)
+![](./en/png/scroll.png)
 
-![](docs/en/png/overfold.png)
+![](./en/png/overfold.png)
 
-![](docs/en/png/flod.png)
+![](./en/png/flod.png)
 
-![](docs/en/png/heimu.gif)
+![](./en/png/heimu.gif)
 
-![](docs/en/png/userProcessor.png)
+![](./en/png/userProcessor.png)
 
 ## support
 
 开发不易，赞助入口（可备注：OB插件support）
 
-![](docs/en/png/support_zfb.png)![](docs/en/png/support_wechat.png)
+![](./en/png/support_zfb.png)![](./en/png/support_wechat.png)
 
 
 ![Obsidian Downloads](https://img.shields.io/badge/dynamic/json?logo=obsidian&color=%23483699&label=downloads&query=%24%5B%22obsidian-any-block%22%5D.downloads&url=https%3A%2F%2Fraw.githubusercontent.com%2Fobsidianmd%2Fobsidian-releases%2Fmaster%2Fcommunity-plugin-stats.json)

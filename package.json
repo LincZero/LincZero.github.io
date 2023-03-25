@@ -1,0 +1,20 @@
+{
+  "name": "any-block-site",
+  "version": "0.0.1",
+  "description": "Intro obsidian plugin —— AnyBlock",
+  "main": "index.js",
+  "authors": {
+    "name": "",
+    "email": ""
+  },
+  "repository": "https://github.com/LincZero/any-block-site",
+  "scripts": {
+    "dev": "vuepress dev docs",
+    "build": "vuepress build docs"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "vuepress": "^1.5.3",
+    "webpack": "^4.42.0"
+  }
+}
