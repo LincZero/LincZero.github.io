@@ -1,0 +1,19 @@
+{
+  "name": "linczero-vuepress",
+  "version": "1.0.0",
+  "description": "Linc's WebSite",
+  "license": "GPLv3",
+  "type": "module",
+  "scripts": {
+    "docs:build": "vuepress-vite build src",
+    "docs:clean-dev": "vuepress-vite dev src --clean-cache",
+    "docs:dev": "vuepress-vite dev src",
+    "docs:update-package": "pnpm dlx vp-update"
+  },
+  "devDependencies": {
+    "@vuepress/bundler-vite": "2.0.0-rc.8",
+    "vue": "^3.4.16",
+    "vuepress": "2.0.0-rc.8",
+    "vuepress-theme-hope": "2.0.0-rc.31"
+  }
+}
