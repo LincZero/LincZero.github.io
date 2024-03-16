@@ -1,0 +1,143 @@
+// 配色取自：https://peiseka.com/index-index-peise-id-1112.html 在0A0E12背景下的值
+// $theme-color-level0: var(--darkreader-text--code-color);
+// $theme-color-level1: #FFB78C;
+// $theme-color-level2: #FFF08C;
+// $theme-color-level3: #BBFF8C;
+// $theme-color-level4: #8CFFCE;
+// $theme-color-level5: #BD8CFF;
+// $theme-color-level6: #096dd9;
+// $theme-color-level7: #096dd9;
+
+// 配置取自utools color插件的UI色卡/open color第三、八序列倒序
+html[data-theme="dark"] {
+  --theme-color-level0: var(--darkreader-text--code-color);
+  --theme-color-level1: #ffc078;
+  --theme-color-level2: #ffe066;
+  --theme-color-level3: #c0eb75;
+  --theme-color-level4: #8ce99a;
+  --theme-color-level5: #63e6be;
+  --theme-color-level6: #66d9e8;
+  --theme-color-level7: #74c0fc;
+  --theme-color-level8: #91a7ff;
+  --theme-color-level9: #b197fc;
+  --theme-color-level10: #e599f7;
+}
+
+html[data-theme="light"] {
+  --theme-color-level0: var(--text-color);
+  --theme-color-level1: #d9480f;
+  --theme-color-level2: #e67700;
+  --theme-color-level3: #5c940d;
+  --theme-color-level4: #2b8a3e;
+  --theme-color-level5: #087f5b;
+  --theme-color-level6: #0b7285;
+  --theme-color-level7: #1864ab;
+  --theme-color-level8: #364fc7;
+  --theme-color-level9: #5f3dc4;
+  --theme-color-level10: #862e9c;
+}
+
+// 资源目录大纲 - 彩虹色
+#sidebar {
+  .vp-sidebar-links
+  .vp-sidebar-title {
+    color: var(--theme-color-level1);
+  }
+
+  .vp-sidebar-links .vp-sidebar-links
+  .vp-sidebar-title {
+    color: var(--theme-color-level2);
+  }
+
+  .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links
+  .vp-sidebar-title {
+    color: var(--theme-color-level3);
+  }
+
+  .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links
+  .vp-sidebar-title {
+    color: var(--theme-color-level4);
+  }
+
+  .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links
+  .vp-sidebar-title {
+    color: var(--theme-color-level5);
+  }
+
+  .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links
+  .vp-sidebar-title {
+    color: var(--theme-color-level6);
+  }
+
+  .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links
+  .vp-sidebar-title {
+    color: var(--theme-color-level7);
+  }
+
+  .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links
+  .vp-sidebar-title {
+    color: var(--theme-color-level8);
+  }
+
+  .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links
+  .vp-sidebar-title {
+    color: var(--theme-color-level9);
+  }
+
+  .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links .vp-sidebar-links
+  .vp-sidebar-title {
+    color: var(--theme-color-level10);
+  }
+}
+
+// 路径导航 - 彩虹色
+#main-content>nav.vp-breadcrumb{
+  li:nth-child(1)>a { color: var(--theme-color-level0) }
+  li:nth-child(2)>a { color: var(--theme-color-level1) }
+  li:nth-child(3)>a { color: var(--theme-color-level2) }
+  li:nth-child(4)>a { color: var(--theme-color-level3) }
+  li:nth-child(5)>a { color: var(--theme-color-level4) }
+  li:nth-child(6)>a { color: var(--theme-color-level5) }
+  li:nth-child(7)>a { color: var(--theme-color-level6) }
+  li:nth-child(8)>a { color: var(--theme-color-level7) }
+  li:nth-child(9)>a { color: var(--theme-color-level8) }
+  li:nth-child(10)>a { color: var(--theme-color-level9) }
+  li:nth-child(11)>a { color: var(--theme-color-level10) }
+  li:last-child>a { color: var(--theme-color-level0) }
+}
+
+// 正文标题 - 彩虹色
+#main-content {
+  h1 { color: var(--theme-color-level1) }
+  h2 { color: var(--theme-color-level2) }
+  h3 { color: var(--theme-color-level3) }
+  h4 { color: var(--theme-color-level4) }
+  h5 { color: var(--theme-color-level5) }
+  h6 { color: var(--theme-color-level6) }
+  h7 { color: var(--theme-color-level7) }
+}
+
+// toc标题 - 彩虹色
+#main-content #toc {
+  li>a{
+    color: var(--theme-color-level1);
+  }
+  li li>a {
+    color: var(--theme-color-level2);
+  }
+  li li li>a {
+    color: var(--theme-color-level3);
+  }
+  li li li li>a {
+    color: var(--theme-color-level4);
+  }
+  li li li li li>a {
+    color: var(--theme-color-level5);
+  }
+  li li li li li li>a {
+    color: var(--theme-color-level6);
+  }
+  li li li li li li li>a {
+    color: var(--theme-color-level7);
+  }
+}
