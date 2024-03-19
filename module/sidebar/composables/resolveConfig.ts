@@ -1,8 +1,9 @@
 /**
  * @file resolveConfig.ts
  * @description
- * resolveArraySidebarItems 生成侧边栏数据项，但奇怪的是似乎不是全局只调用一次，而setup::setupSidebarItems则是
- * 其子函数 resolveArraySidebarItems 负责增加 type 字段、修改 prefix 字段等
+ * resolveArraySidebarItems 生成侧边栏数据项，每次访问网站仅调用一次
+ * 其子函数 resolveArraySidebarItems 负责增加 type 字段、修改 prefix 字段、设置文件夹节点 等
+ * 核心数据来源：sidebarData，自定义需要修改node侧代码
  */
 
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
@@ -61,7 +62,7 @@ export const resolveArraySidebarItems = ({
     item: SidebarItem,
     pathPrefix = prefix,
   ): ResolvedSidebarPageItem | ResolvedSidebarGroupItem => {
-    const childItem = isString(item)
+    const childItem = isString(item) // ! true then file, false then folder. so resolveLinkInfo only deal with file
       ? resolveLinkInfo(resolvePrefix(pathPrefix, item))
       : item.link
         ? {
@@ -73,7 +74,11 @@ export const resolveArraySidebarItems = ({
                     .link,
                 }),
           }
-        : item;
+        : {
+            ...item,
+            text: item.prefix.slice(0, -1), // tmp
+          };
+    //console.log("SidebarLog > [resolveConfig::handleChildItem]", childItem, isString(item));
 
     // Resolved group item
     if ("children" in childItem) {
@@ -88,7 +93,6 @@ export const resolveArraySidebarItems = ({
         type: "group",
         ...childItem,
         prefix,
-        //text: childItem.prefix.slice(0, -1),
         children: children.map((item) => handleChildItem(item, prefix)),
       };
     }
@@ -101,7 +105,7 @@ export const resolveArraySidebarItems = ({
   };
 
   //console.log("SidebarLog > [resolveConfig::resolveArraySidebarItems]");
-  //console.log("SidebarLog < [resolveConfig::resolveArraySidebarItems]", config.map((item) => handleChildItem(item)), "old:", JSON.parse(JSON.stringify(config)));
+  //console.log("SidebarLog < [resolveConfig::resolveArraySidebarItems]", config.map((item) => handleChildItem(item)), "snapshot:", JSON.parse(JSON.stringify(config)));
   return config.map((item) => handleChildItem(item));
 };
 

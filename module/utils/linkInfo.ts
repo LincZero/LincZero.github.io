@@ -1,6 +1,7 @@
 /**
- * @description 修改：文件名使用文件名而非其他名
- * 需要注意的是 resolveLinkInfo 的返回值的文件夹还会被修改
+ * @description 修改：文件名使用文件名而非h1
+ * 需要注意的是 resolveLinkInfo 的返回值只有文件数据，没有文件夹数据
+ * 另外需要注意的是 README 的路径名是没有 README.md 的，没办法通过路径名拿到
  */
 
 import { ensureEndingSlash, isLinkAbsolute } from "@vuepress/helper/client";
@@ -34,8 +35,7 @@ export const resolveLinkInfo = (
 ): AutoLinkOptions => {
   const { meta, path, notFound } = resolveRoute<ArticleInfo>(item);
 
-  //console.log("SidebarLog > [linkInfo::resolveLinkInfo]")
-  return notFound
+  let ret = notFound
     ? { text: path, link: path }
     : {
         text:
@@ -47,4 +47,7 @@ export const resolveLinkInfo = (
           ? { icon: meta[ArticleInfoType.icon] }
           : {}),
       };
+
+  //console.log("SidebarLog < [linkInfo::resolveLinkInfo] ret:", ret);
+  return ret;
 };
