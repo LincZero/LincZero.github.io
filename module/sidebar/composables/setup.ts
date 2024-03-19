@@ -35,6 +35,7 @@ export const sidebarItemsSymbol: InjectionKey<SidebarItemsRef> = Symbol(
  * Create sidebar items ref and provide as global computed in setup
  */
 export const setupSidebarItems = (): void => {
+  //console.log("SidebarLog > [setup::setupSidebarItems]");
   const frontmatter = usePageFrontmatter<ThemeNormalPageFrontmatter>();
   const themeLocale = useThemeLocaleData();
   const page = usePageData();
@@ -66,8 +67,8 @@ export const setupSidebarItems = (): void => {
       }),
   );
 
-  // console.log("[setup::setupSidebarItems]", sidebarItems?.value)
   provide(sidebarItemsSymbol, sidebarItems);
+  //console.log("SidebarLog < [setup::setupSidebarItems] sidebarItems:", sidebarItems?.value, "snapshot:", JSON.parse(JSON.stringify(sidebarItems?.value)))
 };
 
 /**

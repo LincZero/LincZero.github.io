@@ -1,5 +1,6 @@
 /**
  * @description 修改：文件名使用文件名而非其他名
+ * 需要注意的是 resolveLinkInfo 的返回值的文件夹还会被修改
  */
 
 import { ensureEndingSlash, isLinkAbsolute } from "@vuepress/helper/client";
@@ -33,6 +34,7 @@ export const resolveLinkInfo = (
 ): AutoLinkOptions => {
   const { meta, path, notFound } = resolveRoute<ArticleInfo>(item);
 
+  //console.log("SidebarLog > [linkInfo::resolveLinkInfo]")
   return notFound
     ? { text: path, link: path }
     : {

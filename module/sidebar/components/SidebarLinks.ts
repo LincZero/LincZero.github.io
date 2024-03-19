@@ -47,11 +47,11 @@ export default defineComponent({
   setup(props) {
     const route = useRoute();
     const openGroupIndexs = ref(props.isAutoFold ? [-1] : []);
-    //const id = Math.floor(Math.random() * 100);
-    //console.log("[SidebarLinks::setup]", id, SidebarGroup, SidebarChild, props.config);
+    const id = Math.floor(Math.random() * 100);
+    //console.log("SidebarLog - [SidebarLinks::setup]", id, SidebarGroup, SidebarChild, props.config);
 
     const toggleGroup = (index: number): void => {
-      //console.log("[SidebarLinks::toggle]", id, JSON.stringify(openGroupIndexs.value), index);
+      //console.log("SidebarLog - [SidebarLinks::toggle]", id, JSON.stringify(openGroupIndexs.value), index);
       if (props.isAutoFold) {
         openGroupIndexs.value = [index];
       } else {
@@ -71,7 +71,7 @@ export default defineComponent({
 
         if (!props.isAutoFold && !openGroupIndexs.value.includes(index))
           openGroupIndexs.value.push(index);
-        //console.log("[SidebarLinks::watch]", id, JSON.stringify(openGroupIndexs.value), index); // 话说上面两行好像没什么用
+        //console.log("SidebarLog - [SidebarLinks::watch]", id, JSON.stringify(openGroupIndexs.value), index); // 话说上面两行好像没什么用
       },
       { immediate: true, flush: "post" },
     );

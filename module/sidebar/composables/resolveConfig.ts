@@ -88,6 +88,7 @@ export const resolveArraySidebarItems = ({
         type: "group",
         ...childItem,
         prefix,
+        //text: childItem.prefix.slice(0, -1),
         children: children.map((item) => handleChildItem(item, prefix)),
       };
     }
@@ -99,7 +100,8 @@ export const resolveArraySidebarItems = ({
     };
   };
 
-  //console.log("[resolveConfig::resolveArraySidebarItems]", config.map((item) => handleChildItem(item)))
+  //console.log("SidebarLog > [resolveConfig::resolveArraySidebarItems]");
+  //console.log("SidebarLog < [resolveConfig::resolveArraySidebarItems]", config.map((item) => handleChildItem(item)), "old:", JSON.parse(JSON.stringify(config)));
   return config.map((item) => handleChildItem(item));
 };
 
@@ -159,9 +161,11 @@ export const resolveSidebarItems = ({
   routeLocale,
   page,
   headerDepth,
-}: ResolveSidebarOptions): ResolvedSidebarItem[] =>
+}: ResolveSidebarOptions): ResolvedSidebarItem[] => {
+  //console.log("SidebarLog > [resolveConfig::resolveSidebarItems] sidebarData:", JSON.parse(JSON.stringify(sidebarData)), JSON.parse(JSON.stringify(<SidebarArrayOptions>sidebarData[routeLocale])));
+
   // Resolve sidebar items according to the config
-  config === "structure"
+  return config === "structure"
     ? resolveArraySidebarItems({
         config: <SidebarArrayOptions>sidebarData[routeLocale],
         page,
@@ -173,3 +177,4 @@ export const resolveSidebarItems = ({
       : isPlainObject(config)
         ? resolveMultiSidebarItems({ config, page, headerDepth })
         : [];
+}
