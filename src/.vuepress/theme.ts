@@ -24,6 +24,7 @@ export default hopeTheme(
     },
     toc: true,
     headerDepth: 6,
+    sidebarSorter: "filename",
 
     // 插件类
     plugins: {
