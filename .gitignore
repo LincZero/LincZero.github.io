@@ -4,5 +4,5 @@ src/.vuepress/.cache/
 src/.vuepress/.temp/
 src/.vuepress/dist/
 
-src/*
+# src/*
 !src/.vuepress/

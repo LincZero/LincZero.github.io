@@ -1,0 +1,3 @@
+[submodule "src/MdNote_Public"]
+	path = src/MdNote_Public
+	url = https://github.com/LincZero/MdNote_Public.git
