@@ -43,7 +43,7 @@ export default hopeTheme(
         imgLazyload: true, // 懒加载图片
         imgSize: true, // 图片大小
         include: true, // 包括
-        // katex: true, // TeX数学公式渲染工具 (二选一，katex), install katex before enabling it
+        katex: true, // TeX数学公式渲染工具 (二选一，katex), install katex before enabling it
         // mathjax: true, // TeX数学公式渲染工具 (二选一，mathjax), mathjax-full before enabling it
         mark: true, // 标记
         // mermaid: true, // Mermaid 图表工具, install mermaid before enabling it
