@@ -43,6 +43,12 @@ export default hopeTheme(
     toc: true,
     headerDepth: 6,
     sidebarSorter: "filename",
+    encrypt: {
+      config: {
+        "/MdNote_Private/": ["dfajiohjffolwseinf"],
+        "/MdNote_Work/简历/": ["Boss直聘123", "Boss123", "boss123", "58同城123", "58123", "前程无忧123", "51123", "猎聘123", "智联招聘123"],
+      },
+    },
 
     // 插件类
     plugins: {
