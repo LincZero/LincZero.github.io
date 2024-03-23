@@ -16,7 +16,25 @@ export default hopeTheme(
     docsDir: "src",
     locales: {
       "/": {
-        sidebar: "structure",
+        navbar: [
+          {
+            text: "Public/",
+            link: "/MdNote_Public/",
+          },
+          {
+            text: "Work/",
+            link: "/MdNote_Work/",
+          },
+          {
+            text: "Private/",
+            link: "/MdNote_Private/",
+          },
+        ],
+        sidebar: {
+          "/MdNote_Public/": "structure",
+          "/MdNote_Work/": "structure",
+          "/MdNote_Private/": "structure",
+        },
         metaLocales: {
           editLink: "在 GitHub 上编辑此页",
         },
