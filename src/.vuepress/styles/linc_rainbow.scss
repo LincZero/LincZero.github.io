@@ -23,7 +23,7 @@ html[data-theme="dark"] {
   --theme-color-level10: #e599f7;
 }
 
-html[data-theme="light"] {
+/*html[data-theme="light"] {
   --theme-color-level0: var(--text-color);
   --theme-color-level1: #d9480f;
   --theme-color-level2: #e67700;
@@ -35,6 +35,20 @@ html[data-theme="light"] {
   --theme-color-level8: #364fc7;
   --theme-color-level9: #5f3dc4;
   --theme-color-level10: #862e9c;
+}*/
+
+html[data-theme="light"] {
+  --theme-color-level0: var(--text-color);
+  --theme-color-level1: #d9480f;
+  --theme-color-level2: #e67700;
+  --theme-color-level3: var(--text-color);
+  --theme-color-level4: var(--text-color);
+  --theme-color-level5: var(--text-color);
+  --theme-color-level6: var(--text-color);
+  --theme-color-level7: var(--text-color);
+  --theme-color-level8: var(--text-color);
+  --theme-color-level9: var(--text-color);
+  --theme-color-level10: var(--text-color);
 }
 
 // 资源目录大纲 - 彩虹色

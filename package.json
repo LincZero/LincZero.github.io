@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@vuepress/bundler-vite": "2.0.0-rc.8",
+    "@vuepress/plugin-docsearch": "2.0.0-rc.21",
     "@vuepress/utils": "2.0.0-rc.2",
     "@vueuse/core": "^10.9.0",
     "vue": "^3.4.21",

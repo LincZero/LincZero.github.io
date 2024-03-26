@@ -47,11 +47,17 @@ export default hopeTheme(
       config: {
         "/MdNote_Private/": ["dfajiohjffolwseinf"],
         "/MdNote_Work/简历/": ["Boss直聘123", "Boss123", "boss123", "58同城123", "58123", "前程无忧123", "51123", "猎聘123", "智联招聘123"],
+        "/MdNote_Public/03. 生活技能与生活生产": ["789456123"],
       },
     },
 
     // 插件类
     plugins: {
+      docsearch: {
+        appId: "247IUCFQ4Q",
+        apiKey: "707332eeb6a1daf0e6ecfbb63e27afbc",
+        indexName: "linczeroio"
+      },
       // comment: {}, // 评论系统的配置
       mdEnhance: { // 扩展 Markdown 的功能
         align: true, // 对齐
