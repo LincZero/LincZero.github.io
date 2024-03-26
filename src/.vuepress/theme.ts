@@ -46,7 +46,7 @@ export default hopeTheme(
     encrypt: {
       config: {
         "/MdNote_Private/": ["dfajiohjffolwseinf"],
-        "/MdNote_Work/简历/": ["Boss直聘123", "Boss123", "boss123", "58同城123", "58123", "前程无忧123", "51123", "猎聘123", "智联招聘123"],
+        "/MdNote_Work/个人信息/": ["Boss直聘123", "Boss123", "boss123", "58同城123", "58123", "前程无忧123", "51123", "猎聘123", "智联招聘123"],
         "/MdNote_Public/03. 生活技能与生活生产": ["789456123"],
       },
     },
@@ -55,7 +55,7 @@ export default hopeTheme(
     plugins: {
       docsearch: {
         appId: "247IUCFQ4Q",
-        apiKey: "707332eeb6a1daf0e6ecfbb63e27afbc",
+        apiKey: "b8883b05027bfa9fc73f21286ed7395e", // 707332eeb6a1daf0e6ecfbb63e27afbc
         indexName: "linczeroio"
       },
       // comment: {}, // 评论系统的配置
