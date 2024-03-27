@@ -21,10 +21,10 @@ export default hopeTheme(
             text: "Public/",
             link: "/MdNote_Public/",
           },
-          {
-            text: "Work/",
-            link: "/MdNote_Work/",
-          },
+          //{
+          //  text: "Work/",
+          //  link: "/MdNote_Work/",
+          //},
           {
             text: "Private/",
             link: "/MdNote_Private/",

@@ -1,6 +1,19 @@
 // place your custom styles here
 @import 'linc_rainbow.scss';
 //@import 'linc_wide.scss';
-.vp-sidebar { // 滑动条
+
+// 滑动条
+.vp-sidebar {
   scrollbar-color: initial;
+}
+
+// 列表 (fix: Chrome默认的点消失了)
+li {
+  list-style-type: disc;
+}
+li li {
+  list-style-type: circle;
+}
+li li li {
+  list-style-type: square;
 }
