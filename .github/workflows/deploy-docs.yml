@@ -15,7 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: submodule1 - set tokens
-        # ${{ secrets.VUEPRESS }}
         run: |
           git config --global http.extraheader "Authorization: token ${{ secrets.VUEPRESS }}"
           git config --global url."https://x-access-token:${{ secrets.VUEPRESS }}@github.com/".insteadOf "https://github.com/"
@@ -26,6 +25,7 @@ jobs:
           fetch-depth: 0
           # 如果你文档需要 Git 子模块，取消注释下一行
           submodules: true
+          token: '${{ secrets.VUEPRESS }}'
 
       - name: submodule3 - 更新子模块到最新 (通过访问令牌)
         run: |
