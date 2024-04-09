@@ -14,21 +14,18 @@ jobs:
   deploy-gh-pages:
     runs-on: ubuntu-latest
     steps:
-      - name: submodule1 - set tokens
-        run: |
-          git config --global http.extraheader "Authorization: token ${{ secrets.VUEPRESS }}"
-          git config --global url."https://x-access-token:${{ secrets.VUEPRESS }}@github.com/".insteadOf "https://github.com/"
-
-      - name: submodule2 - Checkout
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           # 如果你文档需要 Git 子模块，取消注释下一行
           submodules: true
           token: '${{ secrets.VUEPRESS }}'
 
-      - name: submodule3 - 更新子模块到最新 (通过访问令牌)
+      - name: Checkout - 更新子模块到最新 (通过访问令牌)
         run: |
+          git config --global http.extraheader "Authorization: token ${{ secrets.VUEPRESS }}"
+          git config --global url."https://x-access-token:${{ secrets.VUEPRESS }}@github.com/".insteadOf "https://github.com/"
           git submodule foreach git pull origin main
 
       - name: 安装 pnpm
