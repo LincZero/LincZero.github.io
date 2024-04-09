@@ -24,7 +24,6 @@ jobs:
 
       - name: Checkout - 更新子模块到最新
         run: |
-          git config --global http.extraheader "Authorization: token ${{ secrets.VUEPRESS }}"
           git submodule foreach git pull origin main
 
       - name: 安装 pnpm
