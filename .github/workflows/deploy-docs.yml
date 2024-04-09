@@ -17,8 +17,7 @@ jobs:
       - name: submodule1 - set tokens
         # ${{ secrets.VUEPRESS }}
         run: |
-          export VUEPRESS_TOKEN = ${{ secrets.VUEPRESS }}
-          git config --global http.extraheader "Authorization: token $VUEPRESS_TOKEN"
+          git config --global http.extraheader "Authorization: token ${{ secrets.VUEPRESS }}"
           git config --global url."https://x-access-token:${{ secrets.VUEPRESS }}@github.com/".insteadOf "https://github.com/"
 
       - name: submodule2 - Checkout
