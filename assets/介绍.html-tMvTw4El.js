@@ -1,0 +1,97 @@
+import{_ as n}from"./plugin-vue_export-helper-DlAUqK2U.js";import{o as a,c as e,a as s}from"./app-9z1y9ucS.js";const t={},i=s(`<h1 id="vagrant" tabindex="-1"><a class="header-anchor" href="#vagrant"><span>Vagrant</span></a></h1><p>官网：https://www.vagrantup.com/</p><h2 id="vagrant是什么" tabindex="-1"><a class="header-anchor" href="#vagrant是什么"><span>Vagrant是什么</span></a></h2><p>Vagrant是一个软件，可以自动化虚拟机的安装和配置流程。目前市面上个人PC的主流操作系统不是Windows就是MacOS。对于这些用户，如果需要用Linux环境进行开发或学习，使用虚拟机无疑是最方便的选择。</p><p>而Vagrant更进一步，可以让你通过编写一个Vagrantfile来控制虚拟机的启动、虚拟机网络环境的配置、虚拟机与主机间的文件共享，以及启动后自动执行一些配置脚本，比如自动执行一个shell script来安装一些必备的开发工具，如Mysql。</p><p><strong>这意味着，当你需要在多台机器间同步开发进度时，只需要同步Vagrantfile，就可以保证各台机器拥有一致的开发环境。</strong></p><p>另外，即便对于计算机小白用户，Vagrant也是一个利器。以前我们为了学习一门语言，必须先手动安装这门语言的编译环境。这期间的各种痛苦想必各位深有体会。有了Vagrant后，我们可以下载别人写好的Vagrantfile，然后运行<code>vagrant up</code>，vagrant就会自动下载虚拟机镜像，自动加载镜像并配置虚拟机，然后交给我们一个即开即用的学习环境。</p><p>这样，由于使用了教师调试好的学习环境，小白们就可以免受环境相关的各种Bug的困扰，这无疑会提高学习效率。</p><p>这个教程总结了Vagrant的基本使用方法。</p><h2 id="vagrant的依赖程序" tabindex="-1"><a class="header-anchor" href="#vagrant的依赖程序"><span>Vagrant的依赖程序</span></a></h2><p>既然是配置虚拟机，那么自然需要虚拟机程序和被虚拟的操作系统镜像（Image）。</p><p>前者常用的选择有VirtualBox和VMWare，后者则包括Ubuntu、FreeBSD等等。 Vagrant称前者为<code>provider</code>，称后者为<code>box</code>。</p><p>原则上，我们可以自由搭配<code>provider</code>和<code>box</code>，但由于VirtualBox开源且免费，Vagrant将其作为默认的provider。所以，一般会先安装VirtualBox，再安装Vagrant。</p><h2 id="vagrant的基本概念" tabindex="-1"><a class="header-anchor" href="#vagrant的基本概念"><span>Vagrant的基本概念</span></a></h2><p>假设我们使用VirtualBox作为provider。</p><p>安装好Vagrant后，新建一个空文件夹，将其路径视作项目的根路径。然后运行终端并进入这个路径，键入<code>vagrant init</code>，此文件夹中会多出一个Vagrantfile。用文本编辑器打开后，会发现该文件由ruby语言编写，且大部分行都被注释掉。一般未注释的内容如下：</p><div class="language-bash line-numbers-mode" data-ext="sh" data-title="sh"><pre class="language-bash"><code>Vagrant.configure<span class="token punctuation">(</span><span class="token string">&quot;2&quot;</span><span class="token punctuation">)</span> <span class="token keyword">do</span> <span class="token operator">|</span>config<span class="token operator">|</span>
+    config.vm.box <span class="token operator">=</span> <span class="token string">&quot;base&quot;</span>
+end 
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>解释如下：</p><ol><li><code>do...end</code>结构在ruby中称为块（block），可以简单理解为<code>Vagrant.configure(&quot;2&quot;)</code>执行到某一步时程序被挂起，并将一个需要配置的对象交给块，由块内的语句进行具体配置，当块内的语句依次执行完后，配置好的对象又被交回给<code>Vagrant.configure(&quot;2&quot;)</code>，之前被挂起的程序则继续执行直到完毕。</li><li><code>.configure(&quot;2&quot;)</code>中的<code>2</code>是指配置文件的语法规则的版本。虽然是基于ruby，Vagrantfile仍然有一套自己的语法细则。按照时间先后来说，目前（2016年7月）有V1与V2两套配置语法。自然新的语法更先进。所以目前最新版本的Vagrant（1.8.4）默认使用V2规则。也许未来还会有V3、V4……</li><li><code>config.vm.box</code>直译过来即“配置虚拟机盒子”，因此这一步指定将要使用哪个虚拟机镜像（box）。接下来详细解释下Vagrant如何管理boxes。</li></ol><h2 id="vagrant-vs-docker" tabindex="-1"><a class="header-anchor" href="#vagrant-vs-docker"><span>vagrant vs docker</span></a></h2><p>参考：https://kinsta.com/blog/vagrant-vs-docker/</p><p>DevOps 团队面临着越来越大的压力，需要快速向客户提供更强大的功能。云提供商通过具有出色 CLI 和 API 集成的可扩展平台提供解决方案。不幸的是，云提供商公开的接口可能不兼容。但一些云原生工具可帮助 DevOps 团队为任何云提供商构建自定义解决方案。</p><p>Vagrant 和 Docker 是两个这样的工具。了解它们的作用以及它们如何协同工作是充分利用云环境的关键。</p><p>Vagrant 是一个用于在单个工作流程中构建和管理虚拟机 (VM) 环境的工具。无论您是构建本地虚拟机以与虚拟机管理程序一起运行还是仅构建云虚拟机，Vagrant 都提供一致的配置格式、单一 CLI 和共享配置程序来安装软件和更改配置。</p><p>Docker 提供了将软件和支持配置打包成跨多个平台一致运行的映像的能力。 Docker 让 DevOps 团队确信软件将在本地工作站上运行，就像在托管云平台上运行一样。</p><h3 id="为什么使用-docker-相对于-vagrant" tabindex="-1"><a class="header-anchor" href="#为什么使用-docker-相对于-vagrant"><span>为什么使用 Docker（相对于 Vagrant）？</span></a></h3><p>DevOps 团队通常使用 Docker 来交付和运行 Web 应用程序，包括与消息队列集成或托管在响应基于云的触发器和事件的功能即服务 (FaaS) 平台上的云原生应用程序</p><p>Kubernetes 等平台构建在 Docker 之上，允许大规模编排容器。此外，每个云提供商都支持在其平台即服务 (PaaS) 产品中运行 Docker 容器的功能。现在很难找到不支持 Docker 的 PaaS。</p><p>Docker 还可以分发和执行基于 CLI 的工具，所有流行的云原生工具都提供嵌入其 CLI 的 Docker 映像。</p><h1 id="其他" tabindex="-1"><a class="header-anchor" href="#其他"><span>其他</span></a></h1><p>GPT4</p><p>比较VMWare、VirtualBox（跨平台、开源、兼容性、使用人数）。以及比较Docker、Vagrant。并给出选用建议</p><hr><p>首先我们来比较 VMWare 和 VirtualBox：</p><ul><li><p>跨平台</p><ul><li><p>VMWare：提供 Workstation（适用于 Windows 和 Linux） 和 Fusion（适用于 Mac） 方案，具有较好的跨平台支持。</p></li><li><p>VirtualBox： 支持 Windows、Mac、Linux 以及 Solaris 等操作系统，也具有较好的跨平台支持。</p></li></ul></li><li><p>开源</p><ul><li><p>VMWare：部分产品需要付费授权，例如 Workstation Pro 和 Fusion Pro。</p></li><li><p>VirtualBox：完全开源，可以免费使用。</p></li></ul></li><li><p>兼容性</p><ul><li><p>VMWare：支持众多操作系统，兼容性较好。</p></li><li><p>VirtualBox：同样支持多种操作系统，但可能在特定操作系统上的虚拟化表现略逊于 VMWare。</p></li></ul></li><li><p>使用人数</p><ul><li><p>VMWare：因其强大的功能和性能，尤其在商业领域得到广泛使用。</p></li><li><p>VirtualBox：开源免费，对个人开发者以及教育领域等更具吸引力。</p></li></ul></li></ul><p>接下来比较 Docker 和 Vagrant：</p><ul><li><p>Docker</p><ul><li><p>容器化技术：运行在一致的环境中，避免了类似“在我机器上可以运行”的问题。</p></li><li><p>轻量级：轻量级的虚拟化技术，资源消耗较低，启动速度快。</p></li><li><p>可扩展性：非常适合用于微服务架构；</p></li><li><p>社区活跃，主流操作系统上均有支持。</p></li></ul></li><li><p>Vagrant</p><ul><li><p>基于虚拟机技术，应用运行环境更加隔离，安全性更高。</p></li><li><p>使用简单，可跨平台支持，Vagrantfile 配置可实现一致的开发、测试环境。</p></li><li><p>可与其他虚拟化平台（如 VirtualBox, VMWare 等）结合使用。</p></li></ul></li></ul><p>选用建议：</p><ol><li>如果需要在多种操作系统中运行操作系统级别的虚拟化，根据预算及使用场景，可以选择 VMWare（商业需求较高）或 VirtualBox（开源免费，个人开发者及教育领域）。</li><li>对于开发环境的一致性要求较高，或者需要构建、部署微服务架构的场景，推荐使用 Docker。</li><li>如果希望快速构建一个跨平台的虚拟开发环境，选择 Vagrant 是比较方便的。</li></ol><h1 id="使用" tabindex="-1"><a class="header-anchor" href="#使用"><span>使用</span></a></h1><h2 id="常用命令" tabindex="-1"><a class="header-anchor" href="#常用命令"><span>常用命令</span></a></h2><div class="language-bash line-numbers-mode" data-ext="sh" data-title="sh"><pre class="language-bash"><code><span class="token comment"># box相关</span>
+vagrant box <span class="token function">add</span> ubuntu/xenial64（介绍几个官方推荐）
+vagrant box list
+
+<span class="token comment"># vargrant init</span>
+vargrant init <span class="token comment"># 会在当前目录生成一个Vagrantfile文件</span>
+
+<span class="token comment"># 虚拟机相关</span>
+vargrant up
+vargrant <span class="token function">ssh</span> <span class="token comment"># 虚拟机连接</span>
+vargrant <span class="token function">halt</span>
+vagrant <span class="token function">suspend</span>
+vagrant destory
+vagrant reload
+vagrant reload <span class="token parameter variable">--provision</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="vargrant文件" tabindex="-1"><a class="header-anchor" href="#vargrant文件"><span>Vargrant文件</span></a></h2><p>大部分选项都是默认注释的，<strong>我这里取消一部分注释只是为了高亮看起来方便，并不意味着你需要去取消这些注释</strong></p><div class="language-bash line-numbers-mode" data-ext="sh" data-title="sh"><pre class="language-bash"><code><span class="token comment"># -*- mode: ruby -*-</span>
+<span class="token comment"># vi: set ft=ruby :</span>
+
+<span class="token comment"># All Vagrant configuration is done below. The &quot;2&quot; in Vagrant.configure</span>
+<span class="token comment"># configures the configuration version (we support older styles for</span>
+<span class="token comment"># backwards compatibility). Please don&#39;t change it unless you know what</span>
+<span class="token comment"># you&#39;re doing.</span>
+Vagrant.configure<span class="token punctuation">(</span><span class="token string">&quot;2&quot;</span><span class="token punctuation">)</span> <span class="token keyword">do</span> <span class="token operator">|</span>config<span class="token operator">|</span>
+  <span class="token comment"># The most common configuration options are documented and commented below.</span>
+  <span class="token comment"># For a complete reference, please see the online documentation at</span>
+  <span class="token comment"># https://docs.vagrantup.com.</span>
+
+  <span class="token comment"># Every Vagrant development environment requires a box. You can search for</span>
+  <span class="token comment"># boxes at https://vagrantcloud.com/search.</span>
+  config.vm.box <span class="token operator">=</span> <span class="token string">&quot;base&quot;</span> <span class="token comment"># 虚拟机所使用的镜像，需要自行提供box</span>
+
+  <span class="token comment"># Disable automatic box update checking. If you disable this, then</span>
+  <span class="token comment"># boxes will only be checked for updates when the user runs</span>
+  <span class="token comment"># \`vagrant box outdated\`. This is not recommended.</span>
+  config.vm.box_check_update <span class="token operator">=</span> <span class="token boolean">false</span> <span class="token comment"># 定义box是否去查找更新</span>
+
+  <span class="token comment"># Create a forwarded port mapping which allows access to a specific port</span>
+  <span class="token comment"># within the machine from a port on the host machine. In the example below,</span>
+  <span class="token comment"># accessing &quot;localhost:8080&quot; will access port 80 on the guest machine.</span>
+  <span class="token comment"># NOTE: This will enable public access to the opened port</span>
+  config.vm.network <span class="token string">&quot;forwarded_port&quot;</span>, guest: <span class="token number">80</span>, host: <span class="token number">8080</span> <span class="token comment"># 定义网络专属转发1</span>
+
+  <span class="token comment"># Create a forwarded port mapping which allows access to a specific port</span>
+  <span class="token comment"># within the machine from a port on the host machine and only allow access</span>
+  <span class="token comment"># via 127.0.0.1 to disable public access</span>
+  config.vm.network <span class="token string">&quot;forwarded_port&quot;</span>, guest: <span class="token number">80</span>, host: <span class="token number">8080</span>, host_ip: <span class="token string">&quot;127.0.0.1&quot;</span> <span class="token comment"># 定义网络专属转发2</span>
+
+  <span class="token comment"># Create a private network, which allows host-only access to the machine</span>
+  <span class="token comment"># using a specific IP.</span>
+  config.vm.network <span class="token string">&quot;private_network&quot;</span>, ip: <span class="token string">&quot;192.168.33.10&quot;</span> <span class="token comment"># 定义网络专属转发3</span>
+
+  <span class="token comment"># Create a public network, which generally matched to bridged network.</span>
+  <span class="token comment"># Bridged networks make the machine appear as another physical device on</span>
+  <span class="token comment"># your network.</span>
+  config.vm.network <span class="token string">&quot;public_network&quot;</span> <span class="token comment"># 定义网络专属转发4</span>
+
+  <span class="token comment"># Share an additional folder to the guest VM. The first argument is</span>
+  <span class="token comment"># the path on the host to the actual folder. The second argument is</span>
+  <span class="token comment"># the path on the guest to mount the folder. And the optional third</span>
+  <span class="token comment"># argument is a set of non-required options.</span>
+  config.vm.synced_folder <span class="token string">&quot;../data&quot;</span>, <span class="token string">&quot;/vagrant_data&quot;</span> <span class="token comment"># 虚拟机的同步目录</span>
+
+  <span class="token comment"># Disable the default share of the current code directory. Doing this</span>
+  <span class="token comment"># provides improved isolation between the vagrant box and your host</span>
+  <span class="token comment"># by making sure your Vagrantfile isn&#39;t accessable to the vagrant box.</span>
+  <span class="token comment"># If you use this you may want to enable additional shared subfolders as</span>
+  <span class="token comment"># shown above.</span>
+  <span class="token comment"># config.vm.synced_folder &quot;.&quot;, &quot;/vagrant&quot;, disabled: true</span>
+
+  <span class="token comment"># Provider-specific configuration so you can fine-tune various</span>
+  <span class="token comment"># backing providers for Vagrant. These expose provider-specific options.</span>
+  <span class="token comment"># Example for VirtualBox:</span>
+  <span class="token comment">#</span>
+  config.vm.provider <span class="token string">&quot;virtualbox&quot;</span> <span class="token keyword">do</span> <span class="token operator">|</span>vb<span class="token operator">|</span> <span class="token comment"># VirtualBox相关的配置</span>
+    <span class="token comment"># 在开启机器时显示VirtualBox的UI界面</span>
+    vb.gui <span class="token operator">=</span> <span class="token boolean">true</span>
+  
+    <span class="token comment"># 自定义虚拟机内存大小</span>
+    vb.memory <span class="token operator">=</span> <span class="token string">&quot;1024&quot;</span>
+  end
+  <span class="token comment">#</span>
+  <span class="token comment"># View the documentation for the provider you are using for more</span>
+  <span class="token comment"># information on available options.</span>
+
+  <span class="token comment"># Enable provisioning with a shell script. Additional provisioners such as</span>
+  <span class="token comment"># Ansible, Chef, Docker, Puppet and Salt are also available. Please see the</span>
+  <span class="token comment"># documentation for more information about their specific syntax and use.</span>
+  config.vm.provision <span class="token string">&quot;shell&quot;</span>, inline: <span class="token operator">&lt;&lt;-</span><span class="token environment constant">SHELL</span> <span class="token comment"># 适配器，虚拟机在第一次启动时需要进行一些什么操作</span>
+    <span class="token function">apt-get</span> update
+    <span class="token function">apt-get</span> <span class="token function">install</span> <span class="token parameter variable">-y</span> apache2
+  <span class="token environment constant">SHELL</span>
+end
+
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h1 id="实践" tabindex="-1"><a class="header-anchor" href="#实践"><span>实践</span></a></h1><p>eBPF环境配置那里有些笔记</p>`,47),o=[i];function l(r,c){return a(),e("div",null,o)}const u=n(t,[["render",l],["__file","介绍.html.vue"]]),v=JSON.parse('{"path":"/MdNote_Public/01.%20%E8%AE%BE%E8%AE%A1%E5%BC%80%E5%8F%91%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%94%9F%E4%BA%A7/Virtual/%E8%99%9A%E6%8B%9F%E6%9C%BA/Vagrant/%E4%BB%8B%E7%BB%8D.html","title":"Vagrant","lang":"zh-CN","frontmatter":{"description":"Vagrant 官网：https://www.vagrantup.com/ Vagrant是什么 Vagrant是一个软件，可以自动化虚拟机的安装和配置流程。目前市面上个人PC的主流操作系统不是Windows就是MacOS。对于这些用户，如果需要用Linux环境进行开发或学习，使用虚拟机无疑是最方便的选择。 而Vagrant更进一步，可以让你通过编写一...","head":[["meta",{"property":"og:url","content":"http://192.168.0.101:8080/MdNote_Public/01.%20%E8%AE%BE%E8%AE%A1%E5%BC%80%E5%8F%91%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%94%9F%E4%BA%A7/Virtual/%E8%99%9A%E6%8B%9F%E6%9C%BA/Vagrant/%E4%BB%8B%E7%BB%8D.html"}],["meta",{"property":"og:site_name","content":"Linc 的小站"}],["meta",{"property":"og:title","content":"Vagrant"}],["meta",{"property":"og:description","content":"Vagrant 官网：https://www.vagrantup.com/ Vagrant是什么 Vagrant是一个软件，可以自动化虚拟机的安装和配置流程。目前市面上个人PC的主流操作系统不是Windows就是MacOS。对于这些用户，如果需要用Linux环境进行开发或学习，使用虚拟机无疑是最方便的选择。 而Vagrant更进一步，可以让你通过编写一..."}],["meta",{"property":"og:type","content":"article"}],["meta",{"property":"og:locale","content":"zh-CN"}],["meta",{"property":"article:author","content":"LincZero"}],["script",{"type":"application/ld+json"},"{\\"@context\\":\\"https://schema.org\\",\\"@type\\":\\"Article\\",\\"headline\\":\\"Vagrant\\",\\"image\\":[\\"\\"],\\"dateModified\\":null,\\"author\\":[{\\"@type\\":\\"Person\\",\\"name\\":\\"LincZero\\",\\"url\\":\\"https://github.com/LincZero/\\"}]}"]]},"headers":[{"level":1,"title":"Vagrant","slug":"vagrant","link":"#vagrant","children":[{"level":2,"title":"Vagrant是什么","slug":"vagrant是什么","link":"#vagrant是什么","children":[]},{"level":2,"title":"Vagrant的依赖程序","slug":"vagrant的依赖程序","link":"#vagrant的依赖程序","children":[]},{"level":2,"title":"Vagrant的基本概念","slug":"vagrant的基本概念","link":"#vagrant的基本概念","children":[]},{"level":2,"title":"vagrant vs docker","slug":"vagrant-vs-docker","link":"#vagrant-vs-docker","children":[{"level":3,"title":"为什么使用 Docker（相对于 Vagrant）？","slug":"为什么使用-docker-相对于-vagrant","link":"#为什么使用-docker-相对于-vagrant","children":[]}]}]},{"level":1,"title":"其他","slug":"其他","link":"#其他","children":[]},{"level":1,"title":"使用","slug":"使用","link":"#使用","children":[{"level":2,"title":"常用命令","slug":"常用命令","link":"#常用命令","children":[]},{"level":2,"title":"Vargrant文件","slug":"vargrant文件","link":"#vargrant文件","children":[]}]},{"level":1,"title":"实践","slug":"实践","link":"#实践","children":[]}],"git":{"createdTime":null,"updatedTime":null,"contributors":[]},"readingTime":{"minutes":8.6,"words":2579},"filePathRelative":"MdNote_Public/01. 设计开发与数据生产/Virtual/虚拟机/Vagrant/介绍.md","autoDesc":true}');export{u as comp,v as data};
