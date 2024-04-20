@@ -1,0 +1,61 @@
+import{_ as l}from"./plugin-vue_export-helper-DlAUqK2U.js";import{r as t,o,c as r,b as n,d as e,e as s,a as i}from"./app-CsHIiQ5U.js";const c={},d=i('<h1 id="doxygen" tabindex="-1"><a class="header-anchor" href="#doxygen"><span>Doxygen</span></a></h1><h1 id="目录" tabindex="-1"><a class="header-anchor" href="#目录"><span>目录</span></a></h1><h1 id="doxygen-1" tabindex="-1"><a class="header-anchor" href="#doxygen-1"><span>Doxygen</span></a></h1><p>安装和使用教程：https://www.jianshu.com/p/1191b0cc6ae2（配合软件面的截图翻译，应该都能懂）</p><h1 id="专题" tabindex="-1"><a class="header-anchor" href="#专题"><span>专题</span></a></h1><h2 id="画图技巧" tabindex="-1"><a class="header-anchor" href="#画图技巧"><span>画图技巧</span></a></h2><p>参考：</p>',7),p={href:"https://blog.csdn.net/u014213012/article/details/123064358",target:"_blank",rel:"noopener noreferrer"},u={href:"https://whatacold.io/zh-cn/blog/2021-02-16-doxygen-cpp-correct-callgraphs/",target:"_blank",rel:"noopener noreferrer"},v={href:"https://zhuanlan.zhihu.com/p/571965687",target:"_blank",rel:"noopener noreferrer"},m=i(`<p>踩坑：如果需要GrapViz要另外安装，否则无法生成图。函数调用图GrapViz可以画，而原生的不能</p><h2 id="样式技巧" tabindex="-1"><a class="header-anchor" href="#样式技巧"><span>样式技巧</span></a></h2><h2 id="markdown技巧" tabindex="-1"><a class="header-anchor" href="#markdown技巧"><span>Markdown技巧</span></a></h2><h1 id="doxyfile-使用流程" tabindex="-1"><a class="header-anchor" href="#doxyfile-使用流程"><span>DoxyFile &amp;&amp; 使用流程</span></a></h1><p>个人常用流程：</p><h2 id="使用需知" tabindex="-1"><a class="header-anchor" href="#使用需知"><span>使用需知</span></a></h2><p>（该Doxygen生成流程基于Windows平台上，其他平台可能需要自行调整，但有Doxyfile应该能保持一致性，问题不大）</p><ol><li>安装Windows Doxygen，然后导入Doxyfile</li><li>安装GrahViz (不使用默认的Diagram，为了能画更复杂的调用图)</li><li>修改Wizard&gt;Project里的 <code>Source code directory</code>、<code>Destination directory</code>，分别是源码目录和输出目录</li><li>切换到Run选项卡，按Run doxygen就可以了。结束后可在输出目录或按Show HTML进行查看</li></ol><h2 id="一些修改过的选项" tabindex="-1"><a class="header-anchor" href="#一些修改过的选项"><span>一些修改过的选项</span></a></h2><p>想要查看 Doxyfile文件 修改过的内容，更推荐借助Doxygen软件的Expert查看。实时性更强 （防止修改者修改内容后忘了更新.md）</p><div class="language-python line-numbers-mode" data-ext="py" data-title="py"><pre class="language-python"><code><span class="token comment"># 画图类</span>
+HAVE_DOT <span class="token operator">=</span> YES        <span class="token comment"># 告诉 Doxygen ，您的系统已经安装了Graphviz。Graphviz是一套提供了dot语言解释的开源图形可视化软件</span>
+UML_LOCK <span class="token operator">=</span> YES        <span class="token comment"># 改变所生成的类图的外观，使其更像UML风格。其主要改变内容包括：隐藏非公有的属性和方法，展示类间的继承和包含关系等。</span>
+CALL_GRAPH <span class="token operator">=</span> YES     <span class="token comment"># 是否绘制函数的调用图</span>
+CALLER_GRAPH <span class="token operator">=</span> YES <span class="token comment"># 是否绘制函数的被调用图</span>
+
+<span class="token comment"># 其他类</span>
+JAVADOC_AUTOBRIEF <span class="token operator">=</span> YES <span class="token comment"># 会在类的Member Functions和Attributes表格处显示 Brief</span>
+EXTRACT_PRIVATE <span class="token operator">=</span> YES <span class="token comment"># 获取私有方法和成员。默认关闭，如果打包库确实不需要，但这个文档的目的是方便开发，看私有是需要的</span>
+EXCLUDE_PATTERNS <span class="token operator">=</span> <span class="token operator">*</span><span class="token operator">/</span>src<span class="token operator">/</span>utils <span class="token comment"># 排除的文件夹的路径</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h1 id="注释补充" tabindex="-1"><a class="header-anchor" href="#注释补充"><span>注释补充</span></a></h1><h2 id="文件注释" tabindex="-1"><a class="header-anchor" href="#文件注释"><span>文件注释</span></a></h2><p>文件头部加上以下代码</p><div class="language-cpp line-numbers-mode" data-ext="cpp" data-title="cpp"><pre class="language-cpp"><code><span class="token comment">/**
+ * @file CTestBase.h
+ * @author L
+ * @brief 测试基类
+ * @date 2023-5-31
+ */</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="文件夹注释" tabindex="-1"><a class="header-anchor" href="#文件夹注释"><span>文件夹注释</span></a></h2><p>可以写在文件夹中的任何文件中，但通常建议在文档文件或者文件夹中的主文件中添加 (&quot;README&quot;或&quot;documentation&quot;或与文件夹同名的文件?)，以帮助其他人更容易地找到它。</p><div class="language-cpp line-numbers-mode" data-ext="cpp" data-title="cpp"><pre class="language-cpp"><code><span class="token comment">/**
+ * @dir /path/to/folder
+ * @brief A brief description of the folder.
+ * @details A more detailed description of the folder.
+ */</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="类注释或代码注释" tabindex="-1"><a class="header-anchor" href="#类注释或代码注释"><span>类注释或代码注释</span></a></h2><div class="language-cpp line-numbers-mode" data-ext="cpp" data-title="cpp"><pre class="language-cpp"><code><span class="token number">1.</span> 普通注释
+<span class="token comment">/**
+ * 检测通信联通状态.
+ * @param timeout (int)
+ *   单位(ms), 等待超时时间.
+ * @return (double)
+ *   - On success, latency, unit(ms).
+ *   - On failure, -1.
+ */</span>
+<span class="token keyword">int</span> <span class="token function">check_comm</span><span class="token punctuation">(</span><span class="token keyword">int</span> timeout<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token number">2.</span> brief省略版（下面两个等价）
+    
+<span class="token comment">/// start function</span>
+<span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    
+<span class="token comment">/// \\brief start function</span>
+<span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token number">3.</span> brief与detail省略版（下面两个等价）。
+需要注意需要有一个空行，否则都将视为brief，内容过长不规范。除非下面有@标识，则不需要空行
+
+<span class="token comment">/**
+ * This is the brief description for the function.
+ * 
+ * This is more detailed description about the function, which provides further
+ * information about its purpose, usage, and behavior. You can continue writing
+ * this detailed description for as long as needed.
+ */</span>
+<span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">someFunction</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/**
+ * @brief This is the brief description for the function.
+ * 
+ * @detail This is more detailed description about the function, which provides further
+ * information about its purpose, usage, and behavior. You can continue writing
+ * this detailed description for as long as needed.
+ */</span>
+<span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">someFunction</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div>`,20);function h(b,k){const a=t("ExternalLinkIcon");return o(),r("div",null,[d,n("ul",null,[n("li",null,[e("GrapViz类图和函数调用图： "),n("a",p,[e("Windows下使用Doxygen+GrapViz生成类图和调用图"),s(a)])]),n("li",null,[e("函数调用图： "),n("a",u,[e("Doxygen 终于可以正确生成函数调用图了！"),s(a)])]),n("li",null,[e("UML类图： "),n("a",v,[e("使用 Doxygen 从源代码生成 UML 类图"),s(a)])])]),m])}const y=l(c,[["render",h],["__file","Doxygen.html.vue"]]),x=JSON.parse('{"path":"/MdNote_Public/01.%20%E8%AE%BE%E8%AE%A1%E5%BC%80%E5%8F%91%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%94%9F%E4%BA%A7/Develop/03.%20Tools/01.%20%E7%9F%A5%E8%AF%86%E5%B1%82/%E6%B3%A8%E9%87%8A%E7%AE%A1%E7%90%86/Doxygen.html","title":"Doxygen","lang":"zh-CN","frontmatter":{"description":"Doxygen 目录 Doxygen 安装和使用教程：https://www.jianshu.com/p/1191b0cc6ae2（配合软件面的截图翻译，应该都能懂） 专题 画图技巧 参考： GrapViz类图和函数调用图： Windows下使用Doxygen+GrapViz生成类图和调用图 函数调用图： Doxygen 终于可以正确生成函数调用图了！...","head":[["meta",{"property":"og:url","content":"http://192.168.0.101:8080/MdNote_Public/01.%20%E8%AE%BE%E8%AE%A1%E5%BC%80%E5%8F%91%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%94%9F%E4%BA%A7/Develop/03.%20Tools/01.%20%E7%9F%A5%E8%AF%86%E5%B1%82/%E6%B3%A8%E9%87%8A%E7%AE%A1%E7%90%86/Doxygen.html"}],["meta",{"property":"og:site_name","content":"Linc 的小站"}],["meta",{"property":"og:title","content":"Doxygen"}],["meta",{"property":"og:description","content":"Doxygen 目录 Doxygen 安装和使用教程：https://www.jianshu.com/p/1191b0cc6ae2（配合软件面的截图翻译，应该都能懂） 专题 画图技巧 参考： GrapViz类图和函数调用图： Windows下使用Doxygen+GrapViz生成类图和调用图 函数调用图： Doxygen 终于可以正确生成函数调用图了！..."}],["meta",{"property":"og:type","content":"article"}],["meta",{"property":"og:locale","content":"zh-CN"}],["meta",{"property":"article:author","content":"LincZero"}],["script",{"type":"application/ld+json"},"{\\"@context\\":\\"https://schema.org\\",\\"@type\\":\\"Article\\",\\"headline\\":\\"Doxygen\\",\\"image\\":[\\"\\"],\\"dateModified\\":null,\\"author\\":[{\\"@type\\":\\"Person\\",\\"name\\":\\"LincZero\\",\\"url\\":\\"https://github.com/LincZero/\\"}]}"]]},"headers":[{"level":1,"title":"Doxygen","slug":"doxygen","link":"#doxygen","children":[]},{"level":1,"title":"目录","slug":"目录","link":"#目录","children":[]},{"level":1,"title":"Doxygen","slug":"doxygen-1","link":"#doxygen-1","children":[]},{"level":1,"title":"专题","slug":"专题","link":"#专题","children":[{"level":2,"title":"画图技巧","slug":"画图技巧","link":"#画图技巧","children":[]},{"level":2,"title":"样式技巧","slug":"样式技巧","link":"#样式技巧","children":[]},{"level":2,"title":"Markdown技巧","slug":"markdown技巧","link":"#markdown技巧","children":[]}]},{"level":1,"title":"DoxyFile && 使用流程","slug":"doxyfile-使用流程","link":"#doxyfile-使用流程","children":[{"level":2,"title":"使用需知","slug":"使用需知","link":"#使用需知","children":[]},{"level":2,"title":"一些修改过的选项","slug":"一些修改过的选项","link":"#一些修改过的选项","children":[]}]},{"level":1,"title":"注释补充","slug":"注释补充","link":"#注释补充","children":[{"level":2,"title":"文件注释","slug":"文件注释","link":"#文件注释","children":[]},{"level":2,"title":"文件夹注释","slug":"文件夹注释","link":"#文件夹注释","children":[]},{"level":2,"title":"类注释或代码注释","slug":"类注释或代码注释","link":"#类注释或代码注释","children":[]}]}],"git":{"createdTime":null,"updatedTime":null,"contributors":[]},"readingTime":{"minutes":2.92,"words":876},"filePathRelative":"MdNote_Public/01. 设计开发与数据生产/Develop/03. Tools/01. 知识层/注释管理/Doxygen.md","autoDesc":true}');export{y as comp,x as data};
