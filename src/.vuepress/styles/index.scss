@@ -7,6 +7,11 @@
   scrollbar-color: initial;
 }
 
+// 代码块制表制表符。可以用 .language-c 为不同语言设置
+pre code {
+  tab-size: 4;
+}
+
 // 列表 (fix: Chrome默认的点消失了)
 li {
   list-style-type: disc;
