@@ -91,40 +91,44 @@ highlights:
       - title: Qt/PyQt
         icon: code
         #details: Check markdown links
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/C__/
+        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Platform/Multi/QT（Cpp）/
 
       - title: Electron
         icon: code
         #details: Check markdown links
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/C__/
+        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Platform/Multi/Electron（Web）/
 
       - title: Vue
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/C/
+        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Platform/Web/02. 前端框架/Vue/
 
       - title: Android
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/Java/      
+        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Platform/Android/  
 
       - title: 数据库
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/Python/
+        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Platform/Web/04. 后端/数据库/
 
       - title: 前端
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/JavaScript/
+        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Platform/Web/
 
       - title: 机器/深度学习
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/TypeScript/
+        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Type/Artificial_Intelligence/
 
-      - title: 文档处理
+      - title: 文档处理1
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/Rust/
+        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/02. Theory/Type/Doc/
+
+      - title: 文档处理2
+        icon: code
+        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Type/Doc/
 
       - title: 游戏
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/Go/
+        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Platform/SoftCode/Game/
 
       - title: SCAPP
         icon: code
