@@ -8,7 +8,7 @@ export default hopeTheme(
       name: "LincZero",
       url: "https://github.com/LincZero/",
     },
-    repo: "LincZero/LincZero-Vuepress",
+    repo: "LincZero/LincZero.github.io",
     iconAssets: "fontawesome-with-brands",
     logo: "/logo.svg",
 
@@ -18,16 +18,16 @@ export default hopeTheme(
       "/": {
         navbar: [
           {
-            text: "Public/",
+            text: "公有文档",
             link: "/MdNote_Public/",
           },
-          //{
-          //  text: "Work/",
-          //  link: "/MdNote_Work/",
-          //},
           {
-            text: "Private/",
+            text: "私有文档",
             link: "/MdNote_Private/",
+          },
+          {
+            text: "特殊权限 (路径隐藏)",
+            link: "/MdNote_Hide1/",
           },
         ],
         sidebar: {
