@@ -22,3 +22,15 @@ li li {
 li li li {
   list-style-type: square;
 }
+
+// 内联样式
+html[data-theme="dark"] {
+  // 加粗
+  strong {
+    color: #f56c6c;
+  }
+  // 斜体
+  em {
+    color: #ffff88;
+  }
+}
