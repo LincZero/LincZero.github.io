@@ -1,11 +1,12 @@
-import { defineUserConfig } from "vuepress"; // vuepress
-import { getDirname, path } from "@vuepress/utils" // vuepress别名系统，需要：pnpm install -D @vuepress/utils
-import theme from "./theme.ts"; // hope主题
-import alias from "./alias.ts"; // hope主题
+import { defineUserConfig } from "vuepress";        // vuepress
 
-const __dirname = getDirname(import.meta.url)
+import theme from "./theme.ts";                     // hope主题 - 默认部分
+import alias from "./alias.ts";                     // hope主题 - 别名扩展
+import extendsMarkdown from "./mdit_plugin.ts";     // hope主题 - mdit扩展
+
 export default defineUserConfig({
-  // 导航类
+  
+  // ------------------ 导航类 ------------------
   base: "/",
   locales: {
     "/": {
@@ -17,14 +18,15 @@ export default defineUserConfig({
   markdown: {
     headers: {
       level: [1, 2, 3, 4, 5, 6] // 不然的话toc会受限
-    }
+    },
   },
 
-  // 扩展类
+  // ------------------ 扩展类 ------------------
   theme,
   alias,
+  extendsMarkdown,
 
-  // 其他
+  // ------------------ 其他 ---------------------
   // 使网页成为PWA
   // shouldPrefetch: false, // 是否预获取
 });
