@@ -2,6 +2,15 @@
 @import 'linc_rainbow.scss';
 //@import 'linc_wide.scss';
 
+
+// 目录树项不换行
+#sidebar {
+  overflow-x: auto;
+  >ul.vp-sidebar-links {
+    min-width: max-content; 
+  }
+}
+
 // 滑动条
 .vp-sidebar {
   scrollbar-color: initial;
