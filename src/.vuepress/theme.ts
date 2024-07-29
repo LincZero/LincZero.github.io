@@ -1,3 +1,5 @@
+/// hope主题相关的设置
+
 import { hopeTheme } from "vuepress-theme-hope";
 
 export default hopeTheme(

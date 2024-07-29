@@ -1,7 +1,12 @@
 // place your custom styles here
 @import 'linc_rainbow.scss';
+@import 'any_block.scss';
 //@import 'linc_wide.scss';
 
+// 首页首banner加高
+#main-content > header.vp-hero-info-wrapper {
+  height: 700px !important; // calc(100vh - 60px)
+}
 
 // 目录树项不换行
 #sidebar {

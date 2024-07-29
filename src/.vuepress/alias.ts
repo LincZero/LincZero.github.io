@@ -1,3 +1,5 @@
+/// VuePress 别名系统，用于别名替换
+
 import { getDirname, path } from "@vuepress/utils" // vuepress别名系统，需要：pnpm install -D @vuepress/utils
 
 const __dirname = getDirname(import.meta.url)

@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@vuepress/helper": "2.0.0-rc.19",
-    "katex": "^0.16.9"
+    "katex": "^0.16.9",
+    "markdown-it-container": "^4.0.0"
   }
 }
