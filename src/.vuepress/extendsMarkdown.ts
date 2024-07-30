@@ -2,10 +2,51 @@
  * markdown-it 扩展相关 + markdown-it-anyBlock 的实现
  * 
  * 其中插件部分暂自用，等需要发布时再从这里剥离开，放到npm官网上
+ * 
+ * @detail
+ * 依赖问题：
+ * - 1. MarkdownIt
+ *       这里的回调函数自带有一个md，按理说是不需要再安一个的。但vuePress给的mdit对象可能存在问题：
+ *       - 部分属性访问报错可能是VuePress定义省略的原因。可通过 安装 + import type MarkdownIt from "markdown-it" 解决，这里我仅仅是ts-ignore了
+ *       - 原始的无插件md对象，调用render不报错。但如果用vuepress给的md对象，renderInline正常，但调用render会编译报错 (后来发现和mdEnhance的include冲突了)
+ * - 2. MarkdownItConstructor
+ *       安装 + import MarkdownItConstructor from "markdown-it-container";
+ * - 3. JsDom。这个是解决平台兼容问题
+ *       跨平台兼容依赖问题：
+ *       - 在Obsidian环境，能够使用document
+ *       - 在vuepress和mdit环境，他是使用纯文本来解析渲染md而非面向对象，也不依赖document。
+ *         所以为了兼顾这个，需要额外安装Node.js中能使用的[jsdom](https://github.com/jsdom/jsdom)
+ *         JSDOM是一个模拟浏览器环境的库，主要用于服务器端渲染。
+ *   
+ *       jsdom 老install失败。网上搜说：
+ *       a: jsdom 依赖于 contextify，而 contextify 最近才支持 windows。安装它需要 python 和 C++ 编译器。
+ *       b: jsdom 使用 contextify 在 DOM 上运行 JavaScript。而 contextify 需要本地 C++ 编译器。根据官方自述，在 Windows 平台上必须安装一堆东西
+ *       不过我后来尝试按一个回答中那样指定了版本就可以了：npm install -D jsdom@4.2.0
+ * 
+ *       另外就是需要注意jsdom创建的dom和正常的dom是不一样的：
+ *       const dom2: HTMLElement = new JSDOM("<h2>777</h2>")
+ *       const dom1 = document.createElement("h2"); dom1.textContent = "666";
+ *       el.appendChild(dom2) // dom2会报错，而dom1不会
+ * 
+ * 使用 AnyBlockConvert 的一个别扭的转化
+ * - 原mdit逻辑：str --md.render--> html_str
+ * - 原obplugin逻辑：str --callback--> html
+ *     - callback: str --ob的MarkdownRenderer.renderMarkdown--> html
+ * - 现混合逻辑：str --> html --outerHTML--> html_str
+ *     - callback：str --MarkdownIt.render--> html_str --innerHTML--> html
  */
 
-// import type MarkdownIt from "markdown-it";
+// 这一组依赖可以见文件注释
+//import MarkdownIt from "markdown-it"
 import MarkdownItConstructor from "markdown-it-container";
+import jsdom from "jsdom"
+const { JSDOM } = jsdom;
+const { document } = (new JSDOM(`...`)).window;
+
+// markdown-it-anyblock 插件
+import { ABConvertManager } from "./plugin/ABConvertManager/ABConvertManager"
+import "./plugin/ABConvertManager/converter/abc_text"    // 加载所有处理器和选择器
+//import "./plugin/ABConvertManager/converter/abc_list"    // ^
 
 interface Options {
   multiline: boolean;
@@ -56,8 +97,7 @@ function abSelector_squareInline(md: markdownit, options?: Partial<Options>): vo
     // (3) 插入ab块token
     let token = state.push('fence', 'codee', 1)
     token.info = "AnyBlock"
-    token.content = `${ab_header}${ab_content}`+
-      `\n\n[debug] startLine:${ab_startLine}, endLine:${ab_endLine}`
+    token.content = `${ab_header}${ab_content}`
     token.map = [ab_startLine, ab_endLine]
     //token.markup = '[ABB]';
     return true
@@ -129,18 +169,39 @@ function abRender_fence(md: markdownit, options?: Partial<Options>): void {
   md.renderer.rules.fence = (tokens, idx, options, env, self) => {
     // 查看是否匹配
     let token = tokens[idx]
-    if (token.info.toLowerCase() != "anyblock") {
-      return oldFence(tokens, idx, options, env, self)
-    }
+    let lines = token.content.split('\n')
+    if (token.info.toLowerCase() != "anyblock") { return oldFence(tokens, idx, options, env, self) }
+
+    // 抽离指令头和内容
+    let ab_header: string|undefined = lines.shift()
+    if (typeof ab_header === 'undefined') { return oldFence(tokens, idx, options, env, self) }
+    const match = ab_header.match(/\[(.*)\]/)
+    if (!match || match?.length < 1) { return oldFence(tokens, idx, options, env, self) }
+    ab_header = match[1]
+    let ab_content: string = lines.join('\n')
+    ab_content = ab_content.trimStart() // TODO 这里去除了空行以外的前面空格，是否存在问题
+
+    // anyBlock专属渲染 - 测试
+    //let rawCode = oldFence(tokens, idx, options, env, self);
+    //return `<!--beforebegin--><div class="any-block-debug language-${token.info.trim()} extra-class">` +
+    //`<!--afterbegin-->${rawCode}<!--beforeend--></div><!--afterend-->`
 
     // anyBlock专属渲染
-    let rawCode = oldFence(tokens, idx, options, env, self);
-    return `<!--beforebegin--><div class="any-block-debug language-${token.info.trim()} extra-class">` +
-    `<!--afterbegin-->${rawCode}<!--beforeend--></div><!--afterend-->`
+    let el: HTMLDivElement = document.createElement("div")  // 临时el，未appendClild到dom中，脱离作用域会自动销毁
+        // 用临时el是因为 mdit render 是 md_str 转 html_str 的，而Ob和原插件那边是使用HTML类的，要兼容
+    ABConvertManager.autoABConvert(el, ab_header, ab_content)
+    return el.outerHTML
   }
 }
 
 export default  (md: markdownit) => {
+  // 定义默认渲染行为
+  ABConvertManager.getInstance().redefine_renderMarkdown((markdown: string, el: HTMLElement): void => {
+    const result: string = md.render(markdown)
+    const el_child = document.createElement("div"); el.appendChild(el_child); el_child.innerHTML = result;
+  })
+
+  // 加载插件
   // md.use(anyBlock)
   md.use(abSelector_squareInline)
   md.use(abSelector_container)

@@ -74,7 +74,7 @@ export default hopeTheme(
         // gfm: true, // GitHub 风格的 Markdown，gfm requires mathjax-full to provide tex support
         imgLazyload: true, // 懒加载图片
         imgSize: true, // 图片大小
-        include: true, // 包括
+        // include: true, // 导入其他文件 @WARN 启用的话会和mdit插件那边的 `md.render()` 冲突
         katex: true, // TeX数学公式渲染工具 (二选一，katex), install katex before enabling it
         // mathjax: true, // TeX数学公式渲染工具 (二选一，mathjax), mathjax-full before enabling it
         mark: true, // 标记
