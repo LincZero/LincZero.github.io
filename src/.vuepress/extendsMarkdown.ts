@@ -27,24 +27,39 @@
  *       const dom2: HTMLElement = new JSDOM("<h2>777</h2>")
  *       const dom1 = document.createElement("h2"); dom1.textContent = "666";
  *       el.appendChild(dom2) // dom2会报错，而dom1不会
+ * - 4. AnyBlockConvert 插件主体
  * 
- * 使用 AnyBlockConvert 的一个别扭的转化
- * - 原mdit逻辑：str --md.render--> html_str
- * - 原obplugin逻辑：str --callback--> html
+ * 使用 AnyBlockConvert 的一个别扭的转化：
+ * - 原mdit逻辑
+ *     - str --md.render--> html_str
+ * - 原obplugin逻辑
+ *     - str --callback--> html
  *     - callback: str --ob的MarkdownRenderer.renderMarkdown--> html
- * - 现混合逻辑：str --> html --outerHTML--> html_str
+ * - 现混合复用逻辑
+ *     - str --callback--> html --outerHTML--> html_str
  *     - callback：str --MarkdownIt.render--> html_str --innerHTML--> html
  */
 
-// 这一组依赖可以见文件注释
-//import MarkdownIt from "markdown-it"
-import MarkdownItConstructor from "markdown-it-container";
-import jsdom from "jsdom"
-const { JSDOM } = jsdom;
-const { document } = (new JSDOM(`...`)).window;
+/// 下面的依赖可以见上面文件注释
 
-// markdown-it-anyblock 插件
+// 1. markdown-it
+//import MarkdownIt from "markdown-it"
+
+// 2. markdown-it-container
+import MarkdownItConstructor from "markdown-it-container";
+
+// 3. JsDom。仅用于提供document对象支持 (如果在Ob中则请注释掉他，用ob自带document对象的)
+import jsdom from "jsdom"
+const { JSDOM } = jsdom
+const dom = new JSDOM(`<!DOCTYPE html><html><body></body></html>`)
+global.window = dom.window
+global.document = dom.window.document
+global.NodeList = dom.window.NodeList
+global.HTMLElement = dom.window.document
+
+// 4. markdown-it-anyblock 插件
 import { ABConvertManager } from "./plugin/ABConvertManager/ABConvertManager"
+import { ABReg } from "./plugin/ABConvertManager/ABReg"
 import "./plugin/ABConvertManager/converter/abc_text"    // 加载所有处理器和选择器
 //import "./plugin/ABConvertManager/converter/abc_list"    // ^
 
@@ -75,8 +90,7 @@ function abSelector_squareInline(md: markdownit, options?: Partial<Options>): vo
       const max = state.eMarks[state.line]  // 这行字符的结束位置
       text = state.src.substring(pos, max)  // 这一行的内容
       // 若不匹配则退出
-      const reg = /^\[(.*)\]$/;
-      const match = text.match(reg)
+      const match = text.match(ABReg.reg_header)
       if (!match || !match.length) return false
     }
 
@@ -121,7 +135,7 @@ function abSelector_squareInline(md: markdownit, options?: Partial<Options>): vo
       const max = state.eMarks[state.line]  // 这行字符的结束位置
 
       const text = state.src.substring(pos, max) // 这一行的内容
-      if (text.trim().match(/^-\s/)) {
+      if (text.trim().match(ABReg.reg_list)) {
         ab_content += "\n" + text
         state.line += 1
         findEnd2()
