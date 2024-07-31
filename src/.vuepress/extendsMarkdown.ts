@@ -83,7 +83,7 @@ function abSelector_squareInline(md: markdownit, options?: Partial<Options>): vo
   md.block.ruler.before('paragraph', 'anyBlock_paragraph', function (state,startLine,endLine) {
     
     // (1) 匹配ab块头部
-    let text: String;
+    let text: string
     {
       state.line = startLine
       const pos = state.bMarks[state.line]  // 这行字符的初始位置
@@ -95,17 +95,19 @@ function abSelector_squareInline(md: markdownit, options?: Partial<Options>): vo
     }
 
     // (2) 匹配ab块范围
+    // const prefix // ab块 - 前缀，TODO 前缀功能以后再做，暂不支持。不过ob的mc要处理前缀避免嵌套问题，感觉mdit的token应该不需要处理？
+    let ab_blankLine_counter = 0            // ab块 - 连续空行计数器，为1则跳到下行，为2则结束ab块
     const ab_startLine: number = state.line // ab块 - 起始行
-    let ab_content: String = ""             // ab块 - 内容
+    let ab_content: string = ""             // ab块 - 内容
+    let ab_blockType: string = ""           // ab块 - 块类型
     state.line += 1
-    findEnd1()
-    findEnd2()
+    findAbEnd()
     // 若不匹配则退出
     if (ab_content.trim() == "") {
       state.line = ab_startLine
       return false
     }
-    const ab_header: String = text          // ab块 - 头部
+    const ab_header: string = text          // ab块 - 头部
     const ab_endLine: number = state.line   // ab块 - 结束行
 
     // (3) 插入ab块token
@@ -118,28 +120,37 @@ function abSelector_squareInline(md: markdownit, options?: Partial<Options>): vo
 
     // -------------------------- 子函数部分 ------------------------
 
-    /// 找到ab块的结尾 - 1，允许下一行为空格
-    function findEnd1() {
-      const pos = state.bMarks[state.line];  // 这行字符的初始位置
-      const max = state.eMarks[state.line];  // 这行字符的结束位置
-      const text = state.src.substring(pos, max); // 这一行的内容
-      if (text.trim() == "") {
-        ab_content += "\n"
-        state.line = state.line + 1
-      }
-    }
-
-    /// 找到ab块的结尾 - 2，迭代部分
-    function findEnd2() {
+    /// 找到ab块的结尾，迭代部分
+    function findAbEnd() {
       const pos = state.bMarks[state.line]  // 这行字符的初始位置
       const max = state.eMarks[state.line]  // 这行字符的结束位置
-
       const text = state.src.substring(pos, max) // 这一行的内容
-      if (text.trim().match(ABReg.reg_list)) {
+
+      // 连续空行计数
+      if (text.trim() == "") {
+        ab_blankLine_counter++;
+        if (ab_blankLine_counter < 2) {
+          ab_content += "\n"
+          state.line += 1
+          return findAbEnd()
+        }
+        else {
+          return
+        }
+      } else {
+        ab_blankLine_counter = 0;
+      }
+
+      // 匹配项 (第一行和其他行不同的)
+      let reg;
+      if (ab_blockType == "") { reg = ABReg.reg_list_noprefix; ab_blockType = "list" }
+      else { reg = /^(-\s|\s).*$/ }
+      if (reg.test(text)) {
         ab_content += "\n" + text
         state.line += 1
-        findEnd2()
+        return findAbEnd()
       }
+      return
     }
   })
 }
