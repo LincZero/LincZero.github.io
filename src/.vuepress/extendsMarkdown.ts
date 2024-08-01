@@ -48,11 +48,14 @@
 // 2. markdown-it-container
 import MarkdownItConstructor from "markdown-it-container";
 
-// 3. JsDom。仅用于提供document对象支持 (如果在Ob中则请注释掉他，用ob自带document对象的)
+// 3. JsDom。仅用于提供document对象支持 (如果Ob环境中则不需要，用ob自带document对象的)
 import jsdom from "jsdom"
 const { JSDOM } = jsdom
-const dom = new JSDOM(`<!DOCTYPE html><html><body></body></html>`)
+const dom = new JSDOM(`<!DOCTYPE html><html><body></body></html>`, {
+  url: 'http://localhost/', // @warn 若缺少该行，则在mdit+build环境下，编译报错
+});
 global.window = dom.window
+global.history = dom.window.history // @warn 若缺少该行，则在mdit+build环境下，编译报错：ReferenceError: history is not defined
 global.document = dom.window.document
 global.NodeList = dom.window.NodeList
 global.HTMLElement = dom.window.document
@@ -60,8 +63,15 @@ global.HTMLElement = dom.window.document
 // 4. markdown-it-anyblock 插件
 import { ABConvertManager } from "./plugin/ABConvertManager/ABConvertManager"
 import { ABReg } from "./plugin/ABConvertManager/ABReg"
-import "./plugin/ABConvertManager/converter/abc_text"    // 加载所有处理器和选择器
-//import "./plugin/ABConvertManager/converter/abc_list"    // ^
+
+// 加载所有转换器
+// (都是可选的。例如如果不想要mermaid部分，就将mermaid部分注释掉就可以了，插件大小就会由7MB变成200KB不到)
+// （当然，如果A转换器依赖B转换器，那么你导入A必然导入B）
+import "./plugin/ABConvertManager/converter/abc_text"
+import "./plugin/ABConvertManager/converter/abc_list"
+//import "./plugin/ABConvertManager/converter/abc_deco"
+//import "./plugin/ABConvertManager/converter/abc_ex"
+//import "./plugin/ABConvertManager/converter/abc_mermaid"
 
 interface Options {
   multiline: boolean;
@@ -228,7 +238,6 @@ export default  (md: markdownit) => {
   })
 
   // 加载插件
-  // md.use(anyBlock)
   md.use(abSelector_squareInline)
   md.use(abSelector_container)
   md.use(abRender_fence)
