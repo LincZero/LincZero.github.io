@@ -212,7 +212,8 @@ function abRender_fence(md: markdownit, options?: Partial<Options>): void {
     //`<!--afterbegin-->${rawCode}<!--beforeend--></div><!--afterend-->`
 
     // anyBlock专属渲染
-    let el: HTMLDivElement = document.createElement("div")  // 临时el，未appendClild到dom中，脱离作用域会自动销毁
+    let el: HTMLDivElement = document.createElement("div"); el.classList.add("ab-note", "drop-shadow");
+        // 临时el，未appendClild到dom中，脱离作用域会自动销毁
         // 用临时el是因为 mdit render 是 md_str 转 html_str 的，而Ob和原插件那边是使用HTML类的，要兼容
     ABConvertManager.autoABConvert(el, ab_header, ab_content)
     return el.outerHTML

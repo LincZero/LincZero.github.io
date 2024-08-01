@@ -1,0 +1,291 @@
+:root{
+  // --pre-background-color: rgb(36,36,36)
+  --pre-background-color: #1b1b1b // 作者的样式
+}
+
+/**
+ * 替换内容
+ * .ab-replace
+ *   .ab-note
+ *   .ab-button
+ */
+.ab-replace{
+  /*background-color: #272e3a;*/
+  position: relative;
+  border-radius: 4px;
+
+  .ab-note{
+    position: relative;
+    /*padding: 24px 12px 12px 12px;*/
+  }
+
+  .ab-button{
+    box-sizing: border-box;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+  }
+
+  img.cm-widgetBuffer{
+    height: 2px;
+  }
+}
+
+.ab-note{
+  table[modeT="true"]{  // 表格转置
+    tr { display: block; float: left; }
+    th, td { display: block; }
+  }
+
+  // 修复ob新版本导致表格宽度减少
+  table {
+    display: table;
+    width: 100%;
+  }
+
+  // 标签栏
+  .ab-tab-root{
+    border: solid royalblue 1px;
+    >ul {
+      height: 30px;
+    }
+    .ab-tab-tab {
+      float: left;
+      list-style: none;
+      height: 30px;
+      // width: 80px;
+      line-height: 30px;
+      padding: 0 5px;
+      text-align: center;
+      border: solid royalblue 1px;
+    }
+    .ab-tab-tab[is_activate="true"]{
+      background-color: slateblue;
+    }
+    .ab-tab-content {
+      clear: both;
+      padding: 8px 10px;
+    }
+  }
+
+  // 通用表格
+  .ab-table{
+    td>p:first-child,
+    th>p:first-child,
+    .ab-list-table-witharrow>p:first-child
+    {
+      margin-top: 0;
+    }
+    td>p:last-child,
+    th>p:last-child,
+    .ab-list-table-witharrow>p:last-child{
+      margin-bottom: 0;
+    }
+
+    border-collapse:collapse; // 去除单元格间距
+    td,th{
+      padding: 2px 5px;
+      border: solid #363636 1px;
+    }
+  }
+
+  // 列表格
+  .ab-list-table{
+    .ab-foldable-tr>td:first-child{
+      >div{
+        padding-left: 15px;
+        position: relative;
+      }
+    }
+    .ab-foldable-tr[able_fold="true"]>td:first-child{
+      >div::before{
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 0;
+      }
+    }
+    .ab-foldable-tr[able_fold="true"][is_fold="true"]>td:first-child{
+      >div::before{
+        top: 5px;
+        left: 2px;
+        border: 6px solid transparent;
+        border-left-color: #d9d9d9;
+      }
+    }
+    .ab-foldable-tr[able_fold="true"][is_fold="false"]>td:first-child{
+      >div::before{
+        top: 9px;
+        left: -1px;
+        border: 6px solid transparent;
+        border-top-color: #d9d9d9;
+      }
+    }
+    // 缩进
+    .ab-foldable-tr[tr_level="1"]>td:first-child{padding-left: calc(1*12px);}
+    .ab-foldable-tr[tr_level="2"]>td:first-child{padding-left: calc(2*12px);}
+    .ab-foldable-tr[tr_level="3"]>td:first-child{padding-left: calc(3*12px);}
+    .ab-foldable-tr[tr_level="4"]>td:first-child{padding-left: calc(4*12px);}
+    .ab-foldable-tr[tr_level="5"]>td:first-child{padding-left: calc(5*12px);}
+    .ab-foldable-tr[tr_level="6"]>td:first-child{padding-left: calc(6*12px);}
+    .ab-foldable-tr[tr_level="7"]>td:first-child{padding-left: calc(7*12px);}
+    .ab-foldable-tr[tr_level="8"]>td:first-child{padding-left: calc(8*12px);}
+  }
+
+  // Folder
+  .ab-list-table.ab-list-folder{
+    border: none;
+    td{
+      white-space: nowrap;
+    }
+  }
+
+  // FAQ
+  .markdown-rendered.ab-faq-content{
+    p:first-child {margin-top: 0;}
+    p:last-child {margin-bottom: 0;}
+  }
+  .ab-faq{
+    .ab-faq-line{
+      line-height: 30px;
+      width: 100%;
+      padding: 0 15px 0 15px;
+      clear: both;
+      overflow-y: auto;
+      
+      .ab-faq-bubble {
+        float: left;
+        width: calc(100% - 75px);
+      }
+    }
+    .ab-faq-line.ab-faq-q,
+    .ab-faq-line.ab-faq-Q{
+      background-color: #1e53ee;
+      border-radius: 12px 12px 0 0;
+    }
+    .ab-faq-line.ab-faq-a,
+    .ab-faq-line.ab-faq-A{
+      background-color: #f5f8fe;
+      border-radius: 0 0 12px 12px;
+      color: #a994a6;
+      margin-bottom: 20px;
+    }
+    .ab-faq-line::before{
+      float: left;
+      width: 24px;
+    }
+    .ab-faq-line.ab-faq-q::before,
+    .ab-faq-line.ab-faq-Q::before{
+      content: "Q";
+    }
+    .ab-faq-line.ab-faq-a::before,
+    .ab-faq-line.ab-faq-A::before{
+      content: "A";
+    }
+  }
+
+  // 折叠
+  .ab-deco-fold{
+    .ab-deco-fold-button{
+      background-color: slateblue;
+      height: 30px;
+      line-height: 30px;
+      padding-left: 6px;
+      border-radius: 5px;
+      width: 100%;
+    }
+  }
+
+  // 滚动
+  .ab-deco-scroll.ab-deco-scroll-y{
+    overflow-y:auto;
+  }
+  .ab-deco-scroll.ab-deco-scroll-x{
+    overflow-x:auto;
+    white-space: nowrap;
+  }
+
+  // 超出折叠
+  .ab-deco-overfold{
+    overflow-y: hidden;
+    position: relative;
+    .ab-deco-overfold-button{
+      position: absolute;
+      bottom: 0;
+      height: 40px;
+      line-height: 40px;
+      width: 100%;
+      text-align: center;
+      box-sizing: content-box;
+    }
+    .ab-deco-overfold-content{
+      margin-bottom: 40px;
+    }
+  }
+  .ab-deco-overfold[is-fold="true"]{
+    .ab-deco-overfold-button{
+      padding-top: 60px;
+      background-image: linear-gradient(-180deg, rgba(24, 26, 27, 0) 0%, rgb(24, 26, 27) 100%)
+    }
+  }
+
+  // 黑幕
+  .ab-deco-heimu, .ab-deco-heimu a{
+    background-color: #252525;
+    color:#252525;
+    text-shadow: none;
+  }::selection{
+    background:#9ab0c0;
+    color:#fff;
+  }
+  .ab-deco-heimu:hover, .ab-deco-heimu:hover a{
+    transition:color .13s linear;
+    color:#fff;
+  }
+
+  // 标题
+  .ab-deco-title{
+    width: 100%;
+    p{
+      font-size: 17px;
+      line-height: 17px;
+      margin: 0;
+      margin-bottom: 10px;
+    }
+    .ab-deco-title-title{
+      height: auto;
+    }
+    .ab-deco-title-title[title-type="table"]>p{
+      font-weight: bold;
+      text-align: center;
+      margin-top: 10px;
+      margin-bottom: 16px;
+    }
+    .ab-deco-title-title[title-type="pre"]>p{
+      display: inline;
+      font-size: 16px;
+      font-weight: 400;
+      background-color: var(--pre-background-color);
+      padding: 8px 16px 11px 16px;
+      border-radius: 8px 8px 0 0;
+      margin: 0;
+    }
+    .ab-deco-title-title[title-type="quote"]>p{
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .ab-deco-title-title[title-type="ul"]>p{
+      font-weight: bold;
+    }
+  }
+}
+
+div.md-table-fig1{
+  overflow-x:scroll;
+  transform:scaleY(-1);
+}
+table.md-table-fig2{
+  overflow-x:scroll;
+  transform:scaleY(-1);
+  white-space: nowrap;
+}
