@@ -59,6 +59,7 @@ global.history = dom.window.history // @warn 若缺少该行，则在mdit+build�
 global.document = dom.window.document
 global.NodeList = dom.window.NodeList
 global.HTMLElement = dom.window.document
+dom.window.scrollTo = ()=>{} // @warn 若缺少该行，编译警告：Error: Not implemented: window.scrollTo，且过多的该编译警告引发错误： RangeError: Maximum call stack size exceeded
 
 // 4. markdown-it-anyblock 插件
 import { ABConvertManager } from "./plugin/ABConvertManager/ABConvertManager"
@@ -130,7 +131,7 @@ function abSelector_squareInline(md: markdownit, options?: Partial<Options>): vo
 
     // -------------------------- 子函数部分 ------------------------
 
-    /// 找到ab块的结尾，迭代部分
+    /// 找到ab块的结尾，迭代部分 // TODO，没有做到文件尾的判断，可能导致严重bug
     function findAbEnd() {
       const pos = state.bMarks[state.line]  // 这行字符的初始位置
       const max = state.eMarks[state.line]  // 这行字符的结束位置
