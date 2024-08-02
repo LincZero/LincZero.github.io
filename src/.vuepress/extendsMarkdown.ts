@@ -70,9 +70,11 @@ import { ABReg } from "./plugin/ABConvertManager/ABReg"
 // （当然，如果A转换器依赖B转换器，那么你导入A必然导入B）
 import "./plugin/ABConvertManager/converter/abc_text"
 import "./plugin/ABConvertManager/converter/abc_list"
-//import "./plugin/ABConvertManager/converter/abc_deco"
-//import "./plugin/ABConvertManager/converter/abc_ex"
+import "./plugin/ABConvertManager/converter/abc_deco"
+import "./plugin/ABConvertManager/converter/abc_ex"
+// 非基础的可选转换器
 //import "./plugin/ABConvertManager/converter/abc_mermaid"
+import "./plugin/ABConvertManager/converter/abc_markmap"
 
 interface Options {
   multiline: boolean;
