@@ -59,7 +59,7 @@ global.history = dom.window.history // @warn 若缺少该行，则在mdit+build�
 global.document = dom.window.document
 global.NodeList = dom.window.NodeList
 global.HTMLElement = dom.window.document
-dom.window.scrollTo = ()=>{} // @warn 若缺少该行，编译警告：Error: Not implemented: window.scrollTo，且过多的该编译警告引发错误： RangeError: Maximum call stack size exceeded
+dom.window.scrollTo = ()=>{} // @warn 若缺少该行，编译警告：Error: Not implemented: window.scrollTo
 
 // 4. markdown-it-anyblock 插件
 import { ABConvertManager } from "./plugin/ABConvertManager/ABConvertManager"
@@ -131,13 +131,19 @@ function abSelector_squareInline(md: markdownit, options?: Partial<Options>): vo
 
     // -------------------------- 子函数部分 ------------------------
 
-    /// 找到ab块的结尾，迭代部分 // TODO，没有做到文件尾的判断，可能导致严重bug
+    /// 找到ab块的结尾，迭代部分
     function findAbEnd() {
       const pos = state.bMarks[state.line]  // 这行字符的初始位置
       const max = state.eMarks[state.line]  // 这行字符的结束位置
       const text = state.src.substring(pos, max) // 这一行的内容
 
-      // 连续空行计数
+      // 1. 文章末行结束
+      if (state.line > endLine) {
+        state.line = endLine
+        return
+      }
+
+      // 2. 连续空行结束
       if (text.trim() == "") {
         ab_blankLine_counter++;
         if (ab_blankLine_counter < 2) {
@@ -152,7 +158,7 @@ function abSelector_squareInline(md: markdownit, options?: Partial<Options>): vo
         ab_blankLine_counter = 0;
       }
 
-      // 匹配项 (第一行和其他行不同的)
+      // 3. 非匹配项结束 (第一行和其他行不同的)
       let reg;
       if (ab_blockType == "") { reg = ABReg.reg_list_noprefix; ab_blockType = "list" }
       else { reg = /^(-\s|\s).*$/ }
