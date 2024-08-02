@@ -78,7 +78,7 @@ export default hopeTheme(
         katex: true, // TeX数学公式渲染工具 (二选一，katex), install katex before enabling it
         // mathjax: true, // TeX数学公式渲染工具 (二选一，mathjax), mathjax-full before enabling it
         mark: true, // 标记
-        // mermaid: true, // Mermaid 图表工具, install mermaid before enabling it
+        mermaid: true, // Mermaid 图表工具, install mermaid before enabling it
         playground: { // 在线代码演示设置
           presets: ["ts", "vue"], // 预设
         },

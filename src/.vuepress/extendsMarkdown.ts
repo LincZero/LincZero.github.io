@@ -73,7 +73,7 @@ import "./plugin/ABConvertManager/converter/abc_list"
 import "./plugin/ABConvertManager/converter/abc_deco"
 import "./plugin/ABConvertManager/converter/abc_ex"
 // 非基础的可选转换器
-//import "./plugin/ABConvertManager/converter/abc_mermaid"
+import "./plugin/ABConvertManager/converter/abc_mermaid"
 import "./plugin/ABConvertManager/converter/abc_markmap"
 
 interface Options {
@@ -235,6 +235,18 @@ function abRender_fence(md: markdownit, options?: Partial<Options>): void {
         // 临时el，未appendClild到dom中，脱离作用域会自动销毁
         // 用临时el是因为 mdit render 是 md_str 转 html_str 的，而Ob和原插件那边是使用HTML类的，要兼容
     ABConvertManager.autoABConvert(el, ab_header, ab_content)
+    
+    // 特殊：anyBlcok的特殊转文字输出 (主要用于额外修复服务器环境导致的 mermaid bug)
+    // TODO !!! 这种用法是有问题的，和ab的接口设计是冲突的，仅临时使用后面要规范一下
+    if (el.classList.contains("ab-mermaid-label")) {
+      const subEl = el.querySelector(".ab-mermaid-data")
+      if (subEl) {
+        token.content = subEl.getAttribute("mermaidText")??token.content
+        token.info = "mermaid"
+        return oldFence(tokens, idx, options, env, self);
+      }
+    }
+
     return el.outerHTML
   }
 }
