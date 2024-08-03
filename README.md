@@ -6,6 +6,33 @@
 
 笔记内容，如非特殊标注，则为原创，转载需署名。
 
+## 编译相关
+
+### js内存满的错误
+
+注意，扩展比较多，容易爆内存，出现报错：FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory
+
+参考：
+
+- https://theme-hope.vuejs.press/zh/faq/common-error.html#fatal-error-xxx-javascript-heap-out-of-memory
+- 
+
+需要：
+
+```bash
+# if Linux
+export NODE_OPTIONS="--max-old-space-size=8192"
+# if Windows
+Set NODE_OPTIONS="--max-old-space-size=8192"
+# if Windows PowerShell
+$env:NODE_OPTIONS="--max-old-space-size=8192"
+# if this is the instruction in the compilation
+node --max-old-space-size=8192 xxxxxxx_original_instruction
+
+# 验证 (我在VSCode用`$env`那条才成功了，其他不行)
+node -e 'console.log(v8.getHeapStatistics().heap_size_limit/(1024*1024))'
+```
+
 ## 部署相关
 
 ### Github Page
