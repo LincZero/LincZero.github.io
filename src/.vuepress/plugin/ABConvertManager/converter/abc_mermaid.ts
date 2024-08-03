@@ -2,6 +2,8 @@
  * AB转换器 - mermaid相关
  * 
  * (可选) 参考：在Ob插件中增加7.1MB
+ * 
+ * 使用注意项：在ob/mdit中的写法不同，本文件搜索render_mermaidText函数。里面有三种策略。ob推荐策略1，mdit推荐策略3
  */
 
 import {ABConvert_IOEnum, ABConvert, type ABConvert_SpecSimp} from "./ABConvert"

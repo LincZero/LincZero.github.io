@@ -65,16 +65,15 @@ dom.window.scrollTo = ()=>{} // @warn 若缺少该行，编译警告：Error: No
 import { ABConvertManager } from "./plugin/ABConvertManager/ABConvertManager"
 import { ABReg } from "./plugin/ABConvertManager/ABReg"
 
-// 加载所有转换器
-// (都是可选的。例如如果不想要mermaid部分，就将mermaid部分注释掉就可以了，插件大小就会由7MB变成200KB不到)
-// （当然，如果A转换器依赖B转换器，那么你导入A必然导入B）
+// 加载所有转换器 (都是可选的)
+// (当然，如果A转换器依赖B转换器，那么你导入A必然导入B)
 import "./plugin/ABConvertManager/converter/abc_text"
 import "./plugin/ABConvertManager/converter/abc_list"
+import "./plugin/ABConvertManager/converter/abc_table"
 import "./plugin/ABConvertManager/converter/abc_deco"
 import "./plugin/ABConvertManager/converter/abc_ex"
-// 非基础的可选转换器
-import "./plugin/ABConvertManager/converter/abc_mermaid"
-import "./plugin/ABConvertManager/converter/abc_markmap"
+import "./plugin/ABConvertManager/converter/abc_mermaid" // 可选建议：7.1MB
+import "./plugin/ABConvertManager/converter/abc_markmap" // 可选建议：1.3MB
 
 interface Options {
   multiline: boolean;
