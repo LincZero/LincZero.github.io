@@ -58,7 +58,13 @@ global.window = dom.window
 global.history = dom.window.history // @warn 若缺少该行，则在mdit+build环境下，编译报错：ReferenceError: history is not defined
 global.document = dom.window.document
 global.NodeList = dom.window.NodeList
-global.HTMLElement = dom.window.document
+global.HTMLElement = dom.window.HTMLElement
+global.HTMLDivElement = dom.window.HTMLDivElement
+global.HTMLPreElement = dom.window.HTMLPreElement
+global.HTMLQuoteElement = dom.window.HTMLQuoteElement
+global.HTMLTableElement = dom.window.HTMLTableElement
+global.HTMLUListElement = dom.window.HTMLUListElement
+global.HTMLScriptElement = dom.window.HTMLScriptElement
 dom.window.scrollTo = ()=>{} // @warn 若缺少该行，编译警告：Error: Not implemented: window.scrollTo
 
 // 4. markdown-it-anyblock 插件
