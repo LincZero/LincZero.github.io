@@ -77,7 +77,7 @@ import "./plugin/ABConvertManager/converter/abc_text"
 import "./plugin/ABConvertManager/converter/abc_list"
 import "./plugin/ABConvertManager/converter/abc_table"
 //import "./plugin/ABConvertManager/converter/abc_deco"
-import "./plugin/ABConvertManager/converter/abc_ex"
+//import "./plugin/ABConvertManager/converter/abc_ex"
 //import "./plugin/ABConvertManager/converter/abc_mermaid" // 可选建议：7.1MB
 //import "./plugin/ABConvertManager/converter/abc_markmap" // 可选建议：1.3MB
 
