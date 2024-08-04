@@ -125,15 +125,16 @@ function abSelector_squareInline(md: markdownit, options?: Partial<Options>): vo
       state.line = ab_startLine
       return false
     }
-    const ab_header: string = text          // ab块 - 头部
-    const ab_endLine: number = state.line   // ab块 - 结束行
+    const ab_header: string = text          // ab块 - 头部 (包含)
+    const ab_endLine: number = state.line   // ab块 - 结束行 (不包含)
 
     // (3) 插入ab块token
-    let token = state.push('fence', 'codee', 1)
+    let token = state.push('fence', 'code', 1)
     token.info = "AnyBlock"
     token.content = `${ab_header}${ab_content}`
     token.map = [ab_startLine, ab_endLine]
-    //token.markup = '[ABB]';
+    token.markup = '~~~';
+    token.nesting = 0;
     return true
 
     // -------------------------- 子函数部分 ------------------------
@@ -146,14 +147,14 @@ function abSelector_squareInline(md: markdownit, options?: Partial<Options>): vo
 
       // 1. 文章末行结束
       if (state.line > endLine) {
-        state.line = endLine
+        state.line = endLine+1
         return
       }
 
       // 2. 连续空行结束
       if (text.trim() == "") {
-        ab_blankLine_counter++;
-        if (ab_blankLine_counter < 2) {
+        if (ab_blankLine_counter < 1) {
+          ab_blankLine_counter++;
           ab_content += "\n"
           state.line += 1
           return findAbEnd()
@@ -214,6 +215,7 @@ function abRender_fence(md: markdownit, options?: Partial<Options>): void {
   const oldFence = md.renderer.rules.fence || function(tokens, idx, options, env, self) {
     return self.renderToken(tokens, idx, options);
   };
+  // console.log("typeof oldFence:", typeof(md.renderer.rules.fence))
 
   md.renderer.rules.fence = (tokens, idx, options, env, self) => {
     // 查看是否匹配
@@ -241,16 +243,21 @@ function abRender_fence(md: markdownit, options?: Partial<Options>): void {
         // 用临时el是因为 mdit render 是 md_str 转 html_str 的，而Ob和原插件那边是使用HTML类的，要兼容
     ABConvertManager.autoABConvert(el, ab_header, ab_content)
     
+    // anyBlock特殊情况 - 需要再渲染
     // 特殊：当AnyBlock的mermaid使用嵌入 `ab-data` 的策略返回纯文字时采用
     // anyBlcok的特殊转文字输出 (主要用于额外修复服务器环境导致的 mermaid bug)
     // TODO !!! 这种用法是有问题的，和ab的接口设计是冲突的，仅临时使用后面要规范一下
-    if (el.classList.contains("ab-mermaid-label")) {
-      const subEl = el.querySelector(".ab-mermaid-data")
+    if (el.classList.contains("ab-raw")) {
+      const subEl = el.querySelector(".ab-raw-data")
       if (subEl) {
-        token.content = subEl.getAttribute("mermaidText")??token.content
-        token.info = "mermaid"
+        token.content = subEl.getAttribute("content-data")??token.content
+        token.info = subEl.getAttribute("type-data")??"lossType"
+        
+        // 方式1，直接再渲染
         // warn：后来发现，如果用走这里的方式渲染mermaid，可以是可以，笔记少没事。但笔记多则会使用非常多的内存，导致内存爆了
         return oldFence(tokens, idx, options, env, self);
+
+        // 方式2，当作普通fence输出，但似乎不会再被转化？
       }
     }
 

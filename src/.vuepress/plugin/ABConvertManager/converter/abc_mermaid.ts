@@ -138,7 +138,8 @@ async function data2mindmap(
   list_itemInfo: List_ListItem, 
   div: HTMLDivElement
 ){
-  const subEl = document.createElement("div"); div.appendChild(subEl); subEl.textContent = "停用，请换markmap指令"
+  const subEl = document.createElement("div"); div.appendChild(subEl);
+    subEl.textContent = "Disable, please replace `markmap` command"; subEl.setAttribute("style", "border: solid 2px red; padding: 10px;");
   return div
 
   let list_newcontent:string[] = []
@@ -167,8 +168,8 @@ async function render_mermaidText(mermaidText: string, div: HTMLElement) {
   // 3. 四选一，完全不渲染，直接返回。mdit可以用这种，但不符合anyblock插件的规范，因为这个插件最后出来的一定是html来的
   // 为了避免ab的输出一定是html，这里用标注来解决
   // TODO !!! 这种用法是有问题的，和ab的接口设计是冲突的，仅临时使用后面要规范一下
-  // div.classList.add("ab-mermaid-label")
-  // div.innerHTML = `<div class="ab-mermaid-data" mermaidText='${mermaidText}'></div>`
+  // div.classList.add("ab-raw")
+  // div.innerHTML = `<div class="ab-raw-data" type-data="mermaid" content-data='${mermaidText}'></div>`
 
   // 4. 四选一，纯动态/手动渲染
   // 优点：无需安装mermaid环境

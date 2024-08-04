@@ -64,21 +64,25 @@ export default hopeTheme(
       mdEnhance: { // 扩展 Markdown 的功能
         align: true, // 对齐
         attrs: true, // 属性
-        // chart: true,  // 图表 install chart.js before enabling it
         codetabs: true, // 代码标签
         demo: true, // 演示
         // component: true, // insert component easily
-        // echarts: true, // Echarts 图表工具，install echarts before enabling it
-        figure: true, // Figure 图表工具
-        // flowchart: true, // 流程图，install flowchart.ts before enabling it
         // gfm: true, // GitHub 风格的 Markdown，gfm requires mathjax-full to provide tex support
         imgLazyload: true, // 懒加载图片
         imgSize: true, // 图片大小
         // include: true, // 导入其他文件 @WARN 启用的话会和mdit插件那边的 `md.render()` 冲突
+
+        // 文生图类：
         katex: true, // TeX数学公式渲染工具 (二选一，katex), install katex before enabling it
         // mathjax: true, // TeX数学公式渲染工具 (二选一，mathjax), mathjax-full before enabling it
-        mark: true, // 标记
         mermaid: true, // Mermaid 图表工具, install mermaid before enabling it
+        markmap: true, // 思维导图，pnpm add -D markmap-lib markmap-toolbar markmap-view
+        // chart: true,  // 图表 install chart.js before enabling it
+        // echarts: true, // Echarts 图表工具，install echarts before enabling it
+        figure: true, // Figure 图表工具
+        // flowchart: true, // 流程图，install flowchart.ts before enabling it
+
+        mark: true, // 标记
         playground: { // 在线代码演示设置
           presets: ["ts", "vue"], // 预设
         },
