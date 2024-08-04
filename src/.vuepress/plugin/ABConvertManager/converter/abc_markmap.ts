@@ -56,8 +56,10 @@ function list2markmap(markdown: string, div: HTMLDivElement) {
 
 	// (可选) 手动渲染按钮
 	const svg_btn = document.createElement("button"); div.appendChild(svg_btn); svg_btn.textContent = "ChickMe ReRender Markmap";
-  svg_btn.setAttribute("style", "background-color: argb(255, 125, 125, 0.5)");
-  svg_btn.setAttribute("onclick", `console.log("svg chick"); let script_el = document.querySelector('script[script-id="ab-markmap-script"]');
+	svg_btn.setAttribute("style", "background-color: argb(255, 125, 125, 0.5)");
+	svg_btn.setAttribute("onclick", `
+	console.log("markmap chick");
+	let script_el = document.querySelector('script[script-id="ab-markmap-script"]');
 	if (script_el) script_el.remove();
 	script_el = document.createElement('script'); document.head.appendChild(script_el);
 	script_el.type = "module";

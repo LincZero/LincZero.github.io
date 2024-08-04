@@ -241,7 +241,8 @@ function abRender_fence(md: markdownit, options?: Partial<Options>): void {
         // 用临时el是因为 mdit render 是 md_str 转 html_str 的，而Ob和原插件那边是使用HTML类的，要兼容
     ABConvertManager.autoABConvert(el, ab_header, ab_content)
     
-    // 特殊：anyBlcok的特殊转文字输出 (主要用于额外修复服务器环境导致的 mermaid bug)
+    // 特殊：当AnyBlock的mermaid使用嵌入 `ab-data` 的策略返回纯文字时采用
+    // anyBlcok的特殊转文字输出 (主要用于额外修复服务器环境导致的 mermaid bug)
     // TODO !!! 这种用法是有问题的，和ab的接口设计是冲突的，仅临时使用后面要规范一下
     if (el.classList.contains("ab-mermaid-label")) {
       const subEl = el.querySelector(".ab-mermaid-data")
