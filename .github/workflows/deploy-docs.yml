@@ -1,7 +1,7 @@
 
 name: 部署文档
 env: 
-    NODE_OPTIONS: --max_old_space_size=8192
+    NODE_OPTIONS: --max_old_space_size=12288
 
 on:
   push:
@@ -47,6 +47,7 @@ jobs:
         env:
           NODE_OPTIONS: --max_old_space_size=8192
         run: |-
+          node -e 'console.log(v8.getHeapStatistics())'
           pnpm run docs:build
           > src/.vuepress/dist/.nojekyll
 
