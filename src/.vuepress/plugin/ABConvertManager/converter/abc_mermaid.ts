@@ -13,11 +13,11 @@ import {ABReg} from "../ABReg"
 
 // mermaid相关
 import mermaid from "mermaid"
-import mindmap from '@mermaid-js/mermaid-mindmap';
-const initialize = mermaid.registerExternalDiagrams([mindmap]);
-export const mermaid_init = async () => {
-  await initialize;
-};
+//import mindmap from '@mermaid-js/mermaid-mindmap';
+//const initialize = mermaid.registerExternalDiagrams([mindmap]);
+//export const mermaid_init = async () => {
+//  await initialize;
+//};
 
 /**
  * 生成一个随机id
@@ -137,6 +137,9 @@ async function data2mindmap(
   list_itemInfo: List_ListItem, 
   div: HTMLDivElement
 ){
+  const subEl = document.createElement("div"); div.appendChild(subEl); subEl.textContent = "停用，请换markmap指令"
+  return div
+
   let list_newcontent:string[] = []
   for (let item of list_itemInfo){
     // 等级转缩进，以及"\n" 转化 <br/>

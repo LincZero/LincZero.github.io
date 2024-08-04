@@ -15,7 +15,7 @@
 参考：
 
 - https://theme-hope.vuejs.press/zh/faq/common-error.html#fatal-error-xxx-javascript-heap-out-of-memory
-- 
+- https://stackoverflow.com/questions/53230823/fatal-error-ineffective-mark-compacts-near-heap-limit-allocation-failed-javas
 
 需要：
 
@@ -29,9 +29,16 @@ $env:NODE_OPTIONS="--max-old-space-size=8192"
 # if this is the instruction in the compilation
 node --max-old-space-size=8192 xxxxxxx_original_instruction
 
-# 验证 (我在VSCode用`$env`那条才成功了，其他不行)
+# 验证内存 (我在VSCode用`$env`那条才成功了，其他不行)
 node -e 'console.log(v8.getHeapStatistics().heap_size_limit/(1024*1024))'
+# 验证更多
+node
+> v8.getHeapStatistics()
 ```
+
+检查：https://github.com/watson/memory-usage
+
+都没解决……我后来定位到产生该错误的一行，发现是mermaid，然后将其版本由 "^10.9.1" 退至 "9.1.7"，就好了
 
 ## 部署相关
 

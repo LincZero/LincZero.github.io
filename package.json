@@ -27,6 +27,6 @@
     "@mermaid-js/mermaid-mindmap": "^9.3.0",
     "@vuepress/helper": "2.0.0-rc.19",
     "katex": "^0.16.9",
-    "mermaid": "^10.9.1"
+    "mermaid": "9.1.7"
   }
 }
