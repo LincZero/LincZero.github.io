@@ -185,7 +185,7 @@ async function render_mermaidText(mermaidText: string, div: HTMLElement) {
   script_el.textContent = \`
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
   mermaid.initialize({ startOnLoad: false });
-  const el_mermaids = document.querySelectorAll('.mermaid');
+  const el_mermaids = document.querySelectorAll('.ab-mermaid-raw');
   function getID(length=16){
     return Number(Math.random().toString().substr(3,length) + Date.now()).toString(36);
   }
@@ -194,7 +194,7 @@ async function render_mermaidText(mermaidText: string, div: HTMLElement) {
     el_mermaid.innerHTML = svg
   }
   \``);
-  const pre_div = document.createElement("pre"); div.appendChild(pre_div); pre_div.classList.add("mermaid"); pre_div.textContent = mermaidText;
+  const pre_div = document.createElement("pre"); div.appendChild(pre_div); pre_div.classList.add("ab-mermaid-raw"); pre_div.textContent = mermaidText;
   
   return div
 }

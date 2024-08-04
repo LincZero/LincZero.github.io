@@ -249,6 +249,7 @@ function abRender_fence(md: markdownit, options?: Partial<Options>): void {
       if (subEl) {
         token.content = subEl.getAttribute("mermaidText")??token.content
         token.info = "mermaid"
+        // warn：后来发现，如果用走这里的方式渲染mermaid，可以是可以，笔记少没事。但笔记多则会使用非常多的内存，导致内存爆了
         return oldFence(tokens, idx, options, env, self);
       }
     }
