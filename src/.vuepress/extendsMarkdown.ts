@@ -215,7 +215,6 @@ function abRender_fence(md: markdownit, options?: Partial<Options>): void {
   const oldFence = md.renderer.rules.fence || function(tokens, idx, options, env, self) {
     return self.renderToken(tokens, idx, options);
   };
-  // console.log("typeof oldFence:", typeof(md.renderer.rules.fence))
 
   md.renderer.rules.fence = (tokens, idx, options, env, self) => {
     // 查看是否匹配
@@ -243,21 +242,15 @@ function abRender_fence(md: markdownit, options?: Partial<Options>): void {
         // 用临时el是因为 mdit render 是 md_str 转 html_str 的，而Ob和原插件那边是使用HTML类的，要兼容
     ABConvertManager.autoABConvert(el, ab_header, ab_content)
     
-    // anyBlock特殊情况 - 需要再渲染
-    // 特殊：当AnyBlock的mermaid使用嵌入 `ab-data` 的策略返回纯文字时采用
-    // anyBlcok的特殊转文字输出 (主要用于额外修复服务器环境导致的 mermaid bug)
-    // TODO !!! 这种用法是有问题的，和ab的接口设计是冲突的，仅临时使用后面要规范一下
+    // anyBlock特殊情况 - 需要再渲染 (ob不需要，主要是vuepress有些插件可以复用一下，并且处理mdit无客户端环境可能存在的问题)
     if (el.classList.contains("ab-raw")) {
       const subEl = el.querySelector(".ab-raw-data")
       if (subEl) {
         token.content = subEl.getAttribute("content-data")??token.content
         token.info = subEl.getAttribute("type-data")??"lossType"
         
-        // 方式1，直接再渲染
-        // warn：后来发现，如果用走这里的方式渲染mermaid，可以是可以，笔记少没事。但笔记多则会使用非常多的内存，导致内存爆了
+        // warn：后来发现，如果用走这里的方式渲染，可以是可以，笔记少没事。但笔记多则会使用非常多的内存，导致内存爆了
         return oldFence(tokens, idx, options, env, self);
-
-        // 方式2，当作普通fence输出，但似乎不会再被转化？
       }
     }
 
