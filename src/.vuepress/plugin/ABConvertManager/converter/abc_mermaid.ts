@@ -11,14 +11,13 @@ import {ABConvertManager} from "../ABConvertManager"
 import {ListProcess, type List_ListItem} from "./abc_list"
 import {ABReg} from "../ABReg"
 
-// mermaid相关
+// mermaid相关 - 要在这里自己渲才需要
 //import mermaid from "mermaid"
 //import mindmap from '@mermaid-js/mermaid-mindmap';
 //const initialize = mermaid.registerExternalDiagrams([mindmap]);
 //export const mermaid_init = async () => {
 //  await initialize;
 //};
-/// mermaid.initialize({ startOnLoad: false });
 
 /**
  * 生成一个随机id
