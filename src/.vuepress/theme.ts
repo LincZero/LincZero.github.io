@@ -65,7 +65,7 @@ export default hopeTheme(
         // mdit - 容器语法
         align: true, // mdit容器 - 对齐
         attrs: true, // mdit容器 - 属性
-        demo: true, // mdit容器 - 演示
+        demo: true, // mdit容器 - 代码演示
         tabs: true, // mdit容器 - 标签
 
         // mdit - 内联语法
@@ -88,9 +88,9 @@ export default hopeTheme(
         // flowchart: true, // 流程图，install flowchart.ts before enabling it
 
         // 其他
-        codetabs: true, // 代码标签
+        codetabs: true, // 代码块分组
         // component: true, // insert component easily
-        // gfm: true, // GitHub 风格的 Markdown，gfm requires mathjax-full to provide tex support
+        // gfm: true, // GFM 警告，类似ob的callout
         playground: { // 在线代码演示设置
           presets: ["ts", "vue"], // 预设
         },
@@ -110,7 +110,7 @@ export default hopeTheme(
             },
           },
         ],
-        vPre: true, // Vue 预处理
+        vPre: true, // Vue 预处理，Mustache 语法
         // vuePlayground: true, // Vue 种植场, install @vue/repl before enabling it
       },
     }
