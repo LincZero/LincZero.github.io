@@ -138,9 +138,9 @@ async function data2mindmap(
   list_itemInfo: List_ListItem, 
   div: HTMLDivElement
 ){
-  const subEl = document.createElement("div"); div.appendChild(subEl);
-    subEl.textContent = "Disable, please replace `markmap` command"; subEl.setAttribute("style", "border: solid 2px red; padding: 10px;");
-  return div
+  // const subEl = document.createElement("div"); div.appendChild(subEl);
+  //   subEl.textContent = "Disable, please replace `markmap` command"; subEl.setAttribute("style", "border: solid 2px red; padding: 10px;");
+  // return div
 
   let list_newcontent:string[] = []
   for (let item of list_itemInfo){

@@ -62,27 +62,35 @@ export default hopeTheme(
       },
       // comment: {}, // 评论系统的配置
       mdEnhance: { // 扩展 Markdown 的功能
-        align: true, // 对齐
-        attrs: true, // 属性
-        codetabs: true, // 代码标签
-        demo: true, // 演示
-        // component: true, // insert component easily
-        // gfm: true, // GitHub 风格的 Markdown，gfm requires mathjax-full to provide tex support
-        imgLazyload: true, // 懒加载图片
-        imgSize: true, // 图片大小
-        // include: true, // 导入其他文件 @WARN 启用的话会和mdit插件那边的 `md.render()` 冲突
+        // mdit - 容器语法
+        align: true, // mdit容器 - 对齐
+        attrs: true, // mdit容器 - 属性
+        demo: true, // mdit容器 - 演示
+        tabs: true, // mdit容器 - 标签
 
-        // 文生图类：
+        // mdit - 内联语法
+        imgLazyload: true, // 懒加载图片
+        // imgSize: true, // 图片大小, ![Alt](/example.bmp =x300)
+        // include: true, // 导入其他文件，`<!-- @include: filename -->`，@WARN 启用的话会和mdit插件那边的 `md.render()` 冲突
+        mark: true, // ==高亮==
+        sub: true, // _子项_
+        sup: true, // ^上标^
+
+        // mdit - 文生图类
         katex: true, // TeX数学公式渲染工具 (二选一，katex), install katex before enabling it
         // mathjax: true, // TeX数学公式渲染工具 (二选一，mathjax), mathjax-full before enabling it
         mermaid: true, // Mermaid 图表工具, install mermaid before enabling it
         markmap: true, // 思维导图，pnpm add -D markmap-lib markmap-toolbar markmap-view
+        // plantuml: true, // Plantuml 图表工具
         // chart: true,  // 图表 install chart.js before enabling it
         // echarts: true, // Echarts 图表工具，install echarts before enabling it
         figure: true, // Figure 图表工具
         // flowchart: true, // 流程图，install flowchart.ts before enabling it
 
-        mark: true, // 标记
+        // 其他
+        codetabs: true, // 代码标签
+        // component: true, // insert component easily
+        // gfm: true, // GitHub 风格的 Markdown，gfm requires mathjax-full to provide tex support
         playground: { // 在线代码演示设置
           presets: ["ts", "vue"], // 预设
         },
@@ -102,9 +110,6 @@ export default hopeTheme(
             },
           },
         ],
-        sub: true, // 子项
-        sup: true, // 上标
-        tabs: true, // 标签
         vPre: true, // Vue 预处理
         // vuePlayground: true, // Vue 种植场, install @vue/repl before enabling it
       },
