@@ -37,6 +37,14 @@ li li li {
   list-style-type: square;
 }
 
+// ab表格，取消自带的隔行表格着色
+.ab-table {
+  // tr:nth-child(2n+1)
+  tr {
+    background: none;
+  }
+}
+
 // 内联样式
 html[data-theme="dark"] {
   // 加粗
