@@ -75,8 +75,10 @@ import { ABReg } from "./ABReg"
 import "./converter/abc_text"
 import "./converter/abc_list"
 import "./converter/abc_table"
+import "./converter/abc_dir_tree"
 import "./converter/abc_deco"
 import "./converter/abc_ex"
+import "./converter/abc_plantuml"
 import "./converter/abc_mermaid" // 可选建议：7.1MB
 import "./converter/abc_markmap" // 可选建议：1.3MB
 

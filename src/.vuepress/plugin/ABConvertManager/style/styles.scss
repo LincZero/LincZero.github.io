@@ -134,7 +134,7 @@
       }
     }
     .ab-foldable-tr[able_fold="true"][is_fold="true"]>td:first-child{ // 箭头图标
-      >div::before{
+      >div:first-child::before{
         top: 5px;
         left: 2px;
         border: 6px solid transparent;
@@ -143,7 +143,7 @@
       }
     }
     .ab-foldable-tr[able_fold="true"][is_fold="false"]>td:first-child{ // 箭头图标
-      >div::before{
+      >div:first-child::before{
         top: 9px;
         left: -1px;
         border: 6px solid transparent;
@@ -160,6 +160,43 @@
     .ab-foldable-tr[tr_level="6"]>td:first-child{padding-left: calc(6*12px);}
     .ab-foldable-tr[tr_level="7"]>td:first-child{padding-left: calc(7*12px);}
     .ab-foldable-tr[tr_level="8"]>td:first-child{padding-left: calc(8*12px);}
+    .ab-foldable-tr[tr_level="9"]>td:first-child{padding-left: calc(9*12px);}
+    .ab-foldable-tr[tr_level="10"]>td:first-child{padding-left: calc(10*12px);}
+    .ab-foldable-tr[tr_level="11"]>td:first-child{padding-left: calc(11*12px);}
+    .ab-foldable-tr[tr_level="12"]>td:first-child{padding-left: calc(12*12px);}
+    .ab-foldable-tr[tr_level="13"]>td:first-child{padding-left: calc(13*12px);}
+    .ab-foldable-tr[tr_level="14"]>td:first-child{padding-left: calc(14*12px);}
+    .ab-foldable-tr[tr_level="15"]>td:first-child{padding-left: calc(15*12px);}
+    .ab-foldable-tr[tr_level="16"]>td:first-child{padding-left: calc(16*12px);}
+
+    // Folder
+    &.ab-table-folder .ab-foldable-tr{
+      td:first-child {
+        white-space: nowrap;
+        vertical-align: top;
+      }
+      &>td>div{
+        // float: left; (这个没办法让div下的div2和div3在同一行，用inline-block代替之)
+        display: inline-block;
+        &.ab-list-table-witharrow {
+          padding-left: 6px; // old 15
+        }
+      }
+      .ab-list-table-svg svg{
+        width: 14px;
+        height: 14px;
+        fill: lightgoldenrodyellow;
+      }
+      // 边框处理
+      td:first-child {
+        border: none;
+      }
+      td {
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
+      }
+    }
   }
 
   // 首列重点表格
@@ -266,14 +303,6 @@
     }
     tr:last-child td {
       border-bottom: none;
-    }
-  }
-
-  // Folder
-  table.ab-list-table.ab-list-folder{
-    border: none !important;
-    td{
-      white-space: nowrap;
     }
   }
 
@@ -417,12 +446,13 @@
   }
 }
 
+// 设置面板中表格的滚动条翻转
 div.md-table-fig1{
   overflow-x:scroll;
   transform:scaleY(-1);
-}
-table.md-table-fig2{
-  overflow-x:scroll;
-  transform:scaleY(-1);
-  white-space: nowrap;
+  table.md-table-fig2{
+    overflow-x:scroll;
+    transform:scaleY(-1);
+    white-space: nowrap;
+  }
 }
