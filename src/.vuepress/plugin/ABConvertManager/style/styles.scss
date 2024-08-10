@@ -67,26 +67,45 @@
 
   // 标签栏
   .ab-tab-root{
-    border: solid royalblue 1px;
-    >ul {
-      height: 30px;
-    }
-    .ab-tab-tab {
-      float: left;
-      list-style: none;
-      height: 30px;
-      // width: 80px;
-      line-height: 30px;
-      padding: 0 5px;
-      text-align: center;
-      border: solid royalblue 1px;
-    }
-    .ab-tab-tab[is_activate="true"]{
-      background-color: slateblue;
+    --ab-tab-root-bg-color: #0d1117; // #ffffff;
+    --ab-tab-root-bd-color: #34343f; // #e0e0e0;
+    --ab-tab-root-tx-color: #9e9e9e; // blackc
+    .ab-tab-nav {
+      height: 40px;
+      box-sizing: border-box;
+      border: 2px solid var(--ab-tab-root-bd-color);
+      background-color: var(--ab-tab-root-bd-color);
+      color: var(--ab-tab-root-tx-color);
+      border-bottom: none;
+      border-radius: 10px 10px 0 0;
+      .ab-tab-nav-item {
+        height: 38px; // 40-2
+        box-shadow: none;
+        border: none;
+        border-radius: 10px 10px 0 0;
+        padding-left: 20px;
+        padding-right: 20px;
+        font-size: 0.9em;
+        font-weight: bold;
+        &[is_activate="false"] {
+          background-color: var(--ab-tab-root-bd-color);
+          color: var(--ab-tab-root-tx-color);
+        }
+        &[is_activate="true"]{
+          background-color: var(--ab-tab-root-bg-color);
+          color: var(--ab-tab-root-tx-color);
+        }
+      }
     }
     .ab-tab-content {
-      clear: both;
-      padding: 8px 10px;
+      border: 2px solid var(--ab-tab-root-bd-color);
+      background-color: var(--ab-tab-root-bg-color);
+      color: var(--ab-tab-root-tx-color);
+      border-top: none;
+      padding: 10px 20px;
+      .ab-tab-content-item {
+
+      }
     }
   }
 
@@ -114,6 +133,12 @@
     td,th{
       padding: 2px 5px;
       border: solid #363636 1px;
+    }
+
+    // 取消自带的隔行表格着色
+    // tr:nth-child(2n+1)
+    tr {
+      background: none;
     }
   }
 
@@ -444,15 +469,85 @@
       font-weight: bold;
     }
   }
+
+  // 快捷的二层容器 container
+  .ab-items {
+    --ab-tab-root-bg-color: #0d1117; // #ffffff;
+    --ab-tab-root-bd-color: #34343f; // #e0e0e0;
+    --ab-tab-root-tx-color: #9e9e9e; // blackc
+  
+    // 分栏
+    &.ab-col{
+      display: flex; // Flexbox 布局
+      flex-wrap: wrap; // 元素换行显示
+      gap: 1rem; // 间隙
+      .ab-items-item {        
+        flex: 1 0 calc(33.33% - 1rem); // 每个项目的宽度大约为容器的 33.33%，减去间隙的一半
+        box-sizing: border-box; // 确保 padding 和 border 不影响元素的实际大小
+        padding: 10px;
+      }
+    }
+    // 卡片
+    &.ab-card{
+      display: flex; // Flexbox 布局
+      flex-wrap: wrap; // 元素换行显示
+      gap: 1rem; // 间隙
+      .ab-items-item {
+        flex: 1 0 calc(25% - 1rem); // 每个项目的宽度大约为容器的 33.33%，减去间隙的一半
+        box-sizing: border-box; // 确保 padding 和 border 不影响元素的实际大小
+        color: var(--ab-tab-root-tx-color);
+        background-color: var(--ab-tab-root-bg-color);
+        border: solid 2px var(--ab-tab-root-bd-color);
+        box-shadow: #34343f;
+        padding: 10px;
+      }
+    }
+  }
 }
 
 // 设置面板中表格的滚动条翻转
 div.md-table-fig1{
   overflow-x:scroll;
   transform:scaleY(-1);
-  table.md-table-fig2{
+  table.ab-setting.md-table-fig2{
     overflow-x:scroll;
+    text-overflow: clip !important;
     transform:scaleY(-1);
     white-space: nowrap;
   }
 }
+
+// 自定义样式
+.ab-custom-text-red {color: red;}
+.ab-custom-text-orange {color: orange;}
+.ab-custom-text-yellow {color: yellow;}
+.ab-custom-text-green {color: green;}
+.ab-custom-text-cyan {color: cyan;}
+.ab-custom-text-blue {color: blue;}
+.ab-custom-text-purple {color: purple;}
+.ab-custom-text-white {color: white;}
+.ab-custom-text-black {color: black;}
+.ab-custom-bg-red {background-color: red;}
+.ab-custom-bg-orange {background-color: orange;}
+.ab-custom-bg-yellow {background-color: yellow;}
+.ab-custom-bg-green {background-color: green;}
+.ab-custom-bg-cyan {background-color: cyan;}
+.ab-custom-bg-blue {background-color: blue;}
+.ab-custom-bg-purple {background-color: purple;}
+.ab-custom-bg-white {background-color: white;}
+.ab-custom-bg-black {background-color: black;}
+.ab-custom-dire-top {vertical-align: top;}
+.ab-custom-dire-down {vertical-align: bottom;}
+.ab-custom-dire-left {text-align: left;}
+.ab-custom-dire-right {text-align: right;}
+.ab-custom-dire-center {vertical-align: middle; text-align: center;}
+.ab-custom-dire-hcenter {text-align: center;}
+.ab-custom-dire-vcenter {vertical-align: middle;}
+.ab-custom-dire-justify {text-align: justify;}
+.ab-custom-font-large {font-size: large;}
+.ab-custom-font-largex {font-size: x-large;}
+.ab-custom-font-largexx {font-size: xx-large;}
+.ab-custom-font-small {font-size: small;}
+.ab-custom-font-smallx {font-size: x-small;}
+.ab-custom-font-smallxx {font-size: xx-small;}
+.ab-custom-font-bold {font-weight: bold;}

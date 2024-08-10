@@ -187,12 +187,14 @@ export class DirProcess{
         let td = document.createElement(is_head?"th":"td"); tr!.appendChild(td); td.setAttribute("rowspan", cell_item.tableRowSpan.toString());        
         if (cell_item.tableColumn==0 && is_folder) { // 首列，处理文件夹
           let td_svg = document.createElement("div"); td.appendChild(td_svg); td_svg.classList.add("ab-list-table-svg")
-          // https://www.w3schools.com/css/css_icons.asp, https://fontawesome.com/
-          if (cell_item.type=="folder") {
-            td_svg.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"/></svg>`
-            cell_item.content = cell_item.content.slice(0, -1);
-          } else {
-            td_svg.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"/></svg>`
+          // 文件夹/文件图标 // https://www.w3schools.com/css/css_icons.asp, https://fontawesome.com/
+          if (!is_head) {
+            if (cell_item.type=="folder") {
+              td_svg.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"/></svg>`
+              cell_item.content = cell_item.content.slice(0, -1);
+            } else {
+              td_svg.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"/></svg>`
+            }
           }
         }
         let td_cell = document.createElement("div"); td.appendChild(td_cell); td_cell.classList.add("ab-list-table-witharrow");
@@ -204,7 +206,8 @@ export class DirProcess{
       const l_tr:NodeListOf<HTMLElement> = tbody.querySelectorAll("tr")
       for (let i=0; i<l_tr.length; i++){
         const tr = l_tr[i]
-        // 1. 二选一，嵌入内联onclick，mdit使用
+        // 1. 二选一，嵌入内联onclick
+        // 当前mdit使用
         tr.setAttribute("onclick", `
           const tr = this
           const l_tr = tr.parentNode.querySelectorAll("tr")
@@ -224,23 +227,24 @@ export class DirProcess{
           }
           if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
         `)
-        // 2. 二选一，正常绑定方法，ob使用
-        //tr.onclick = ()=>{
-        //  const tr_level = Number(tr.getAttribute("tr_level"))
-        //  if (isNaN(tr_level)) return
-        //  const tr_isfold = tr.getAttribute("is_fold")
-        //  if (!tr_isfold) return
-        //  let flag_do_fold = false  // 防止折叠最小层
-        //  for (let j=i+1; j<l_tr.length; j++){
-        //    const tr2 = l_tr[j]
-        //    const tr_level2 = Number(tr2.getAttribute("tr_level"))
-        //    if (isNaN(tr_level2)) break
-        //    if (tr_level2<=tr_level) break
-        //    (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
-        //    flag_do_fold = true
-        //  }
-        //  if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
-        //}
+        // 2. 二选一，正常绑定方法
+        // 当前ob使用
+        // tr.onclick = ()=>{
+        //   const tr_level = Number(tr.getAttribute("tr_level"))
+        //   if (isNaN(tr_level)) return
+        //   const tr_isfold = tr.getAttribute("is_fold")
+        //   if (!tr_isfold) return
+        //   let flag_do_fold = false  // 防止折叠最小层
+        //   for (let j=i+1; j<l_tr.length; j++){
+        //     const tr2 = l_tr[j]
+        //     const tr_level2 = Number(tr2.getAttribute("tr_level"))
+        //     if (isNaN(tr_level2)) break
+        //     if (tr_level2<=tr_level) break
+        //     (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+        //     flag_do_fold = true
+        //   }
+        //   if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+        // }
       }
 
     }

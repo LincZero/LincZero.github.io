@@ -48,13 +48,6 @@ export class ListProcess{
     return this.data2list(list_itemInfo)
   }
 
-  /** 一级列表转标签栏 */
-  static list2tab(text: string, div: HTMLDivElement, modeT=false) {
-    let data = this.list2data(text)
-    data = this.data_mL_2_2L1B(data)
-    return this.data2tab(data, div, modeT)
-  }
-
   /** 去除列表的inline */
   static listXinline(text: string){
     const data = this.list2data(text)
@@ -287,151 +280,6 @@ export class ListProcess{
     return list_itemInfo2
   }
 
-  /** 多层树转二层一叉树
-   * example:
-   * - 1
-   *  - 2
-   *   - 3
-   *  - 2
-   * to:
-   * - 1
-   *  - 2\n   - 3\n  - 2
-   */
-  private static data_mL_2_2L1B(
-    list_itemInfo: List_ListItem
-  ){
-    let list_itemInfo2: List_ListItem = []
-    let level1 = -1
-    let level2 = -1
-    let flag_leve2 = false  // 表示触发过level2，当遇到level1会重置
-    for (let itemInfo of list_itemInfo) {
-      if (level1<0) {                                             // 未配置level1
-        level1=0//itemInfo.level;
-      }
-      if (level1>=itemInfo.level){                                // 是level1
-        list_itemInfo2.push({
-          content: itemInfo.content.trim(),
-          level: level1
-        })
-        flag_leve2 = false
-        continue
-      }
-      if (level2<0) {                                             // 未配置level2
-        level2=1//itemInfo.level;
-      }
-      if (true){                                                  // 是level2/level2+/level2-
-        if (!flag_leve2){                                           // 新建
-          list_itemInfo2.push({
-            content: itemInfo.content.trim(),
-            level: level2
-          })
-          flag_leve2 = true
-          continue
-        }
-        else {                                                      // 内换行
-          let old_itemInfo = list_itemInfo2.pop()
-          if(old_itemInfo){
-            let new_content = itemInfo.content.trim()
-            if (itemInfo.level>level2) new_content = "- "+new_content
-            for (let i=0; i<(itemInfo.level-level2); i++) new_content = " "+new_content;
-            new_content = old_itemInfo.content+"\n"+new_content
-            list_itemInfo2.push({
-              content: new_content,
-              level: level2
-            })
-          }
-        }
-      }
-    }
-    return list_itemInfo2
-  }
-
-  /** 多层树转二层树
-   * example:
-   * - 1
-   *  - 2
-   *   - 3
-   *  - 2
-   * to:
-   * - 1
-   *  - 2\n   - 3
-   *  - 2
-   */
-  static data_mL_2_2L(
-    list_itemInfo: List_ListItem
-  ){
-    let list_itemInfo2: List_ListItem = []
-    let level1 = -1
-    let level2 = -1
-    for (let itemInfo of list_itemInfo) {
-      if (level1<0) {                                             // 未配置level1
-        level1=0//itemInfo.level;
-      }
-      if (level1>=itemInfo.level){                                // 是level1
-        list_itemInfo2.push({
-          content: itemInfo.content.trim(),
-          level: level1
-        })
-        continue
-      }
-      if (level2<0) {                                             // 未配置level2
-        level2=1//itemInfo.level;
-      }
-      if (level2>=itemInfo.level){                                // 是level2/level2-
-        list_itemInfo2.push({
-          content: itemInfo.content.trim(),
-          level: level2
-        })
-        continue
-      }
-      else{                                                       // level2+，内换行                                                     // 
-        let old_itemInfo = list_itemInfo2.pop()
-        if(old_itemInfo){
-          let new_content = itemInfo.content.trim()
-          if (itemInfo.level>level2) new_content = "- "+new_content
-          for (let i=0; i<(itemInfo.level-level2); i++) new_content = " "+new_content;
-          new_content = old_itemInfo.content+"\n"+new_content
-          list_itemInfo2.push({
-            content: new_content,
-            level: level2
-          })
-        }
-      }
-    }
-    return list_itemInfo2
-
-    /*
-    let list_itemInfo2: {content: string;level: number;}[] = []
-    let level1 = -1
-    let level2 = -1
-    for (let itemInfo of list_itemInfo) {
-      let this_level: number                                      // 一共三种可能：0、1、(1+)表
-      if (level1<0) {level1=itemInfo.level; this_level = level1}  // 未配置level1
-      else if (level1>=itemInfo.level) this_level = level1        // 是level1
-      else if (level2<0) {level2=itemInfo.level; this_level = level2}  // 未配置level2
-      else if (level2>=itemInfo.level) this_level = level2             // 是level2
-      else { // (level2<itemInfo.level)                           // 依然是level2，但进行内换行，并把列表符和缩进给加回去
-        let old_itemInfo = list_itemInfo2.pop()
-        if(old_itemInfo){
-          let new_content = "- "+itemInfo.content.trim()
-          for (let i=0; i<(itemInfo.level-level2); i++) new_content = " "+new_content;
-          new_content = old_itemInfo.content+"\n"+new_content
-          list_itemInfo2.push({
-            content: new_content,
-            level: level2
-          })
-        }
-        continue
-      }
-      list_itemInfo2.push({
-        content: itemInfo.content.trim(),
-        level: level2
-      })
-    }
-    console.log("前后数据", list_itemInfo, list_itemInfo2)
-    return list_itemInfo2*/
-  }
-
   /** 二层树转多层一叉树 
    * example:
    * - 1
@@ -488,64 +336,6 @@ export class ListProcess{
     const newcontent = list_newcontent.join("\n")
     return newcontent
   }
-
-  /** 列表数据转标签栏 */
-  private static data2tab(
-    list_itemInfo: List_ListItem, 
-    div: HTMLDivElement,
-    modeT: boolean
-  ){
-    // GeneratorTab，原svelte代码
-    {
-      const tab = document.createElement("div"); div.appendChild(tab); tab.classList.add("ab-tab-root")
-      if (modeT) tab.setAttribute("modeT", "true")
-      const ul = document.createElement("ul"); tab.appendChild(ul);
-      const content = document.createElement("div"); tab.appendChild(content);
-      let current_dom:HTMLElement|null = null
-      for (let i=0; i<list_itemInfo.length; i++){
-        const itemInfo = list_itemInfo[i]
-        if (!current_dom){            // 找开始标志
-          if (itemInfo.level==0){
-            const li = document.createElement("li"); ul.appendChild(li); li.classList.add("ab-tab-tab");
-              li.textContent = itemInfo.content.slice(0,20); li.setAttribute("is_activate", i==0?"true":"false");
-            current_dom = document.createElement("div"); content.appendChild(current_dom); current_dom.classList.add("ab-tab-content");
-              current_dom.setAttribute("style", i==0?"display:block":"display:none"); current_dom.setAttribute("is_activate", i==0?"true":"false");
-          }
-        }
-        else{                         // 找结束，不需要找标志，因为传过来的是二层一叉树
-          current_dom.classList.add("markdown-rendered")
-          ABConvertManager.getInstance().m_renderMarkdownFn(itemInfo.content, current_dom)
-          current_dom = null
-        }
-      }
-      // 元素全部创建完再来绑按钮事件，不然有可能有问题
-      const lis:NodeListOf<HTMLLIElement> = tab.querySelectorAll(".ab-tab-tab")
-      const contents = tab.querySelectorAll(".ab-tab-content")
-      if (lis.length!=contents.length) console.warn("ab-tab-tab和ab-tab-content的数量不一致")
-      for (let i=0; i<lis.length; i++){
-        lis[i].onclick = ()=>{
-          for (let j=0; j<contents.length; j++){
-            lis[j].setAttribute("is_activate", "false")
-            contents[j].setAttribute("is_activate", "false")
-            contents[j].setAttribute("style", "display:none")
-          }
-          lis[i].setAttribute("is_activate", "true")
-          contents[i].setAttribute("is_activate", "true")
-          contents[i].setAttribute("style", "display:block")
-        }
-      }
-    }
-
-    return div
-  }
-
-  /** 列表数据转时间线 */
-  /*private static data2timeline(
-    list_itemInfo: List_ListInfo, 
-    div: HTMLDivElement
-  ){
-    
-  }*/
 }
 
 const abc_title2list = ABConvert.factory({
@@ -567,20 +357,5 @@ const abc_listXinline = ABConvert.factory({
   process_return: ABConvert_IOEnum.text,
   process: (el, header, content)=>{
     return ListProcess.listXinline(content)
-  }
-})
-
-const abc_list2tab = ABConvert.factory({
-  id: "list2tab",
-  name: "一级列表转标签栏",
-  match: /list2(md)?tab(T)?$/,
-  default: "list2mdtab",
-  process_param: ABConvert_IOEnum.text,
-  process_return: ABConvert_IOEnum.el,
-  process: (el, header, content)=>{
-    const matchs = header.match(/list2(md)?tab(T)?$/)
-    if (!matchs) return el
-    ListProcess.list2tab(content, el, matchs[2]=="T")
-    return el
   }
 })

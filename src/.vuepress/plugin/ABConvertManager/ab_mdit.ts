@@ -68,19 +68,22 @@ global.HTMLScriptElement = dom.window.HTMLScriptElement
 dom.window.scrollTo = ()=>{} // @warn 若缺少该行，编译警告：Error: Not implemented: window.scrollTo
 
 // 4. markdown-it-anyblock 插件
+// import { ABConvertManager } from "./index"
 import { ABConvertManager } from "./ABConvertManager"
 import { ABReg } from "./ABReg"
 // 加载所有转换器 (都是可选的)
 // (当然，如果A转换器依赖B转换器，那么你导入A必然导入B)
 import "./converter/abc_text"
 import "./converter/abc_list"
+import "./converter/abc_c2list"
 import "./converter/abc_table"
 import "./converter/abc_dir_tree"
 import "./converter/abc_deco"
 import "./converter/abc_ex"
-import "./converter/abc_plantuml"
-import "./converter/abc_mermaid" // 可选建议：7.1MB
-import "./converter/abc_markmap" // 可选建议：1.3MB
+import "./converter/abc_mdit_container"
+import "./converter/abc_plantuml" // 可选建议：
+import "./converter/abc_mermaid"  // 可选建议：7.1MB
+import "./converter/abc_markmap"  // 可选建议：1.3MB
 
 interface Options {
   multiline: boolean;

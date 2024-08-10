@@ -13,10 +13,14 @@ tagline: |
   仅为个人自用的笔记库，记录学习与生活笔记<br>
   此页为施工中，更多向导内容详见 “导航”
 actions:
-  - text: 公有文档
+  - text: 公开文档
     link: ./MdNote_Public/
     icon: signs-post
     type: primary
+
+  - text: 产品文档
+    icon: lightbulb
+    link: ./MdNote_Public/产品文档/
 
   - text: 编程
     icon: lightbulb
@@ -24,7 +28,7 @@ actions:
 
   - text: 3D
     icon: lightbulb
-    link: ./MdNote_Public/01.%20%E8%AE%BE%E8%AE%A1%E5%BC%80%E5%8F%91%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%94%9F%E4%BA%A7/3D//
+    link: ./MdNote_Public/01.%20%E8%AE%BE%E8%AE%A1%E5%BC%80%E5%8F%91%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%94%9F%E4%BA%A7/3D/
 
   - text: 导航
     icon: lightbulb
@@ -32,7 +36,7 @@ actions:
 
 highlights:
   # 编程笔记 - 按语言划分
-  - header: 编程笔记 - 按编写语言划分
+  - header: 笔记 - 按编程语言划分
     description: |
       注意编程笔记的分类优先级：工程 > 理论 > 语言，当你找不到想要的内容时，看看是否在其他的分类项当中。<br>
       例如："Qt"相关的就不会出现在C++中，"Android"相关的就不会出现在Java中
@@ -82,7 +86,7 @@ highlights:
         link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/C_/
 
   # 常用类别分支
-  - header: 编程笔记 - 按工程类别划分
+  - header: 笔记 - 按工程类别划分
     #description: Customizable outlook with full a11y support.
     #image: /assets/image/ui.svg
     bgImage: https://theme-hope-assets.vuejs.press/bg/7-light.svg
@@ -118,15 +122,15 @@ highlights:
         icon: code
         link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Type/Artificial_Intelligence/
 
-      - title: 文档处理1
+      - title: 解析渲染
         icon: code
         link: ./MdNote_Public/01. 设计开发与数据生产/Develop/02. Theory/Type/Doc/
 
-      - title: 文档处理2
+      - title: 文档技巧
         icon: code
         link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Type/Doc/
 
-      - title: 游戏
+      - title: 游戏引擎
         icon: code
         link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Platform/SoftCode/Game/
 
