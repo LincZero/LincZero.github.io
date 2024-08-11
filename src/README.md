@@ -20,7 +20,7 @@ actions:
 
   - text: 产品文档
     icon: lightbulb
-    link: ./MdNote_Public/产品文档/
+    link: ./MdNote_Public/ProductDoc/
 
   - text: 编程
     icon: lightbulb

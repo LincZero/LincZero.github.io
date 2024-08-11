@@ -121,8 +121,12 @@ function abSelector_squareInline(md: markdownit, options?: Partial<Options>): vo
     let ab_blankLine_counter = 0            // ab块 - 连续空行计数器，为1则跳到下行，为2则结束ab块
     const ab_startLine: number = state.line // ab块 - 起始行
     let ab_content: string = ""             // ab块 - 内容
-    let ab_blockType: string = ""           // ab块 - 块类型
     state.line += 1
+
+    let ab_blockType: string = ""           // ab块 - 块类型
+    let reg;
+    let heading_number: number = 0;
+    let code_str: string;
     findAbEnd()
     // 若不匹配则退出
     if (ab_content.trim() == "") {
@@ -171,10 +175,60 @@ function abSelector_squareInline(md: markdownit, options?: Partial<Options>): vo
       }
 
       // 3. 非匹配项结束 (第一行和其他行不同的)
-      let reg;
-      if (ab_blockType == "") { reg = ABReg.reg_list_noprefix; ab_blockType = "list" }
-      else { reg = /^(-\s|\s).*$/ }
-      if (reg.test(text)) {
+      // 3.1. 还没匹配规则先看匹配规则
+      if (ab_blockType == "") {
+        if (ABReg.reg_list_noprefix.test(text)) {
+          ab_blockType = "list"
+          reg = ABReg.reg_list_noprefix;
+        } else if (ABReg.reg_heading_noprefix.test(text)) {
+          ab_blockType = "heading";
+          reg = ABReg.reg_heading_noprefix;
+          const match = text.match(reg)
+          if (!match || !match[3]) return
+          heading_number = match[3].length-1
+        } else if (ABReg.reg_code_noprefix.test(text)) {
+          ab_blockType = "code"
+          reg = ABReg.reg_code_noprefix;
+          const match = text.match(reg)
+          if (!match || !match[3]) return
+          code_str = match[3]
+        } else if (ABReg.reg_quote_noprefix.test(text)) {
+          ab_blockType = "quote"
+          reg = ABReg.reg_quote_noprefix;
+        } else if (ABReg.reg_table_noprefix.test(text)) {
+          ab_blockType = "table"
+          reg = ABReg.reg_table_noprefix;
+        } else {
+          return
+        }
+        ab_content += "\n" + text
+        state.line += 1
+        return findAbEnd()
+      }
+      // 3.2. 已经有匹配规则的按匹配规则的来
+      if (ab_blockType == "list" || ab_blockType == "quote" || ab_blockType == "table") {
+        if (reg.test(text)) {
+          ab_content += "\n" + text
+          state.line += 1
+          return findAbEnd()
+        }
+      } else if (ab_blockType == "heading") {
+        if (reg.test(text)) {
+          const match = text.match(reg)
+          if (match && match[3] && (match[3].length-1) < heading_number) return
+        }
+        ab_content += "\n" + text
+        state.line += 1
+        return findAbEnd()
+      } else if (ab_blockType == "code") {
+        if (reg.test(text)) {
+          const match = text.match(reg)
+          if (match && match[3] && match[3] == code_str) {
+            ab_content += "\n" + text
+            state.line += 1
+            return
+          }
+        }
         ab_content += "\n" + text
         state.line += 1
         return findAbEnd()
