@@ -179,7 +179,7 @@ function abSelector_squareInline(md: markdownit, options?: Partial<Options>): vo
       if (ab_blockType == "") {
         if (ABReg.reg_list_noprefix.test(text)) {
           ab_blockType = "list"
-          reg = ABReg.reg_list_noprefix;
+          reg = /^(-\s|\s).*$/ // ABReg.reg_list_noprefix;
         } else if (ABReg.reg_heading_noprefix.test(text)) {
           ab_blockType = "heading";
           reg = ABReg.reg_heading_noprefix;
