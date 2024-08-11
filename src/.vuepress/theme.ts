@@ -63,6 +63,7 @@ export default hopeTheme(
       // comment: {}, // 评论系统的配置
       mdEnhance: { // 扩展 Markdown 的功能
         // mdit - 容器语法
+        alert: true, // obsidain callout
         align: true, // mdit容器 - 对齐
         attrs: true, // mdit容器 - 属性
         demo: true, // mdit容器 - 代码演示
