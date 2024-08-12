@@ -31,6 +31,10 @@ export default hopeTheme(
             text: "特殊权限 (路径隐藏)",
             link: "/MdNote_Hide1/",
           },
+          {
+            text: "博客页 (路径隐藏)",
+            link: "/MdNote_Blog1/",
+          },
         ],
         sidebar: {
           "/MdNote_Public/": "structure",
@@ -59,6 +63,9 @@ export default hopeTheme(
         appId: "247IUCFQ4Q",
         apiKey: "b8883b05027bfa9fc73f21286ed7395e", // 707332eeb6a1daf0e6ecfbb63e27afbc
         indexName: "linczeroio"
+      },
+      blog: { // 博客系统
+        article: "/MdNote_BlogHide/",
       },
       // comment: {}, // 评论系统的配置
       mdEnhance: { // 扩展 Markdown 的功能
