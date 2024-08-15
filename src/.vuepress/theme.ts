@@ -1,6 +1,8 @@
 /// hope主题相关的设置
 
 import { hopeTheme } from "vuepress-theme-hope";
+import { navbarConfig } from "./theme_navbar";
+import { sidebarConfig } from "./theme_sidebar";
 
 export default hopeTheme(
   {
@@ -18,29 +20,8 @@ export default hopeTheme(
     docsDir: "src",
     locales: {
       "/": {
-        navbar: [
-          {
-            text: "公有文档",
-            link: "/MdNote_Public/",
-          },
-          {
-            text: "私有文档",
-            link: "/MdNote_Private/",
-          },
-          {
-            text: "特殊权限 (路径隐藏)",
-            link: "/MdNote_Hide1/",
-          },
-          {
-            text: "博客页 (路径隐藏)",
-            link: "/MdNote_Blog1/",
-          },
-        ],
-        sidebar: {
-          "/MdNote_Public/": "structure",
-          "/MdNote_Work/": "structure",
-          "/MdNote_Private/": "structure",
-        },
+        navbar: navbarConfig,
+        sidebar: sidebarConfig,
         metaLocales: {
           editLink: "在 GitHub 上编辑此页",
         },

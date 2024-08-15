@@ -3,8 +3,8 @@
 import { defineUserConfig } from "vuepress";        // vuepress
 
 import theme from "./theme.ts";                     // hope主题 - 默认部分
-import alias from "./alias.ts";                     // hope主题 - 别名扩展
-import extendsMarkdown from "./extendsMarkdown.ts";     // hope主题 - mdit扩展
+import alias from "./config_alias.ts";                     // hope主题 - 别名扩展
+import extendsMarkdown from "./config_extendsMarkdown.ts";     // hope主题 - mdit扩展
 
 export default defineUserConfig({
   

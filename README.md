@@ -66,3 +66,27 @@ git submodule foreach git pull origin main
 ### Cloudflare Pages
 
 为照顾 GitHub Page 无法稳定访问情况，备份了一个页面：https://linczero-github-io.pages.dev/
+
+## 笔记部分
+
+前面已经讲了，还有另外两个子项目。现在这里说一下子项目会遇到的问题：
+
+- 问题
+  - 笔记在ty和ob中折返，经常会出现：No content changes found
+- 原因
+  - https://ggame.gledos.science/mkdocs/No_content_Changes_found.html
+    
+    Obsidian 编辑、预览过的文件，会自动把 CRLF 替换成 LF，也就是说 Obsidian 不尊重原始文件的换行字符
+- 解决方法1
+  - 无用，并不是这个原因
+    ```bash
+    # 在git上禁用检查文件模式
+    git config core.filemode false
+    ```
+- 解决方法2
+  - 删掉这些修改
+    ```bash
+    git rm -r --cached .
+    ```
+- 解决方法3
+  - 不管了，把全部文件都转换成 LF 的，然后 VS Code 使用 LF 来编写
