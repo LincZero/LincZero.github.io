@@ -9,7 +9,7 @@
 import { ABReg } from '../ABReg'
 import {ABConvert_IOEnum, ABConvert, type ABConvert_SpecSimp} from "./ABConvert"
 import {ABConvertManager} from "../ABConvertManager"
-import {ListProcess, type ListItem, type List_ListItem} from "./abc_list"
+import type {ListItem, List_ListItem} from "./abc_list"
 
 
 /**
@@ -349,11 +349,18 @@ export class C2ListProcess{
 
   /// 将二列列表转 `容器-元素` 结构
   static c2data2items(c2listdata:List_C2ListItem, el:HTMLElement): HTMLElement {
-    const col = document.createElement("div"); el.appendChild(col); col.classList.add("ab-items")
+    const el_items = document.createElement("div"); el.appendChild(el_items); el_items.classList.add("ab-items")
+    let el_item:HTMLElement|null = null;
     for (let item of c2listdata) {
-      if (item.level == 0) continue
-      const col_item = document.createElement("div"); col.appendChild(col_item); col_item.classList.add("ab-items-item")
-      ABConvertManager.getInstance().m_renderMarkdownFn(item.content, col_item)
+      if (item.level == 0) {
+        el_item = document.createElement("div"); el_items.appendChild(el_item); el_item.classList.add("ab-items-item")
+        const el_title = document.createElement("div"); el_item.appendChild(el_title); el_title.classList.add("ab-items-title")
+        ABConvertManager.getInstance().m_renderMarkdownFn(item.content, el_title)
+      } else {
+        if (!el_item) continue;
+        const el_content = document.createElement("div"); el_item.appendChild(el_content); el_content.classList.add("ab-items-content")
+        ABConvertManager.getInstance().m_renderMarkdownFn(item.content, el_content)
+      }
     }
     return el
   }
@@ -369,8 +376,7 @@ const abc_list2tab = ABConvert.factory({
   process: (el, header, content)=>{
     const matchs = header.match(/list2(md)?tab(T)?$/)
     if (!matchs) return el
-    let data = ListProcess.list2data(content)
-    let c2listData: List_C2ListItem = C2ListProcess.data_mL_2_2L1B(data)
+    const c2listData = C2ListProcess.list2c2data(content)
     C2ListProcess.c2data2tab(c2listData, el, matchs[2]=="T")
     return el
   }
@@ -397,8 +403,7 @@ const abc_list2col = ABConvert.factory({
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.el,
   process: (el, header, content)=>{
-    let data = ListProcess.list2data(content)
-    let c2listData: List_C2ListItem = C2ListProcess.data_mL_2_2L1B(data)
+    const c2listData = C2ListProcess.list2c2data(content)
     C2ListProcess.c2data2items(c2listData, el)
     el.querySelector("div")?.classList.add("ab-col")
     return el
@@ -426,8 +431,7 @@ const abc_list2card = ABConvert.factory({
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.el,
   process: (el, header, content)=>{
-    let data = ListProcess.list2data(content)
-    let c2listData: List_C2ListItem = C2ListProcess.data_mL_2_2L1B(data)
+    const c2listData = C2ListProcess.list2c2data(content)
     C2ListProcess.c2data2items(c2listData, el)
     el.querySelector("div")?.classList.add("ab-card")
     return el

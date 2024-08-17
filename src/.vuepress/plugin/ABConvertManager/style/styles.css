@@ -339,22 +339,28 @@
   border-bottom: none;
 }
 
-.ab-note table.ab-table-fc td:first-child {
+.ab-note table.ab-table-fc td[col_index="0"] {
   white-space: nowrap;
   font-weight: 500;
   vertical-align: top;
 }
 
-.ab-note table.ab-table-timeline td:first-child {
+.ab-note table.ab-table-timeline td {
+  border-right: none;
+  padding-left: 20px;
+}
+
+.ab-note table.ab-table-timeline td[col_index="0"] {
   border: none;
   border-left: none;
   border-right: solid 2px;
+  padding-left: 5px;
   padding-right: 20px;
   color: orange;
   position: relative;
 }
 
-.ab-note table.ab-table-timeline td:first-child::after {
+.ab-note table.ab-table-timeline td[col_index="0"]::after {
   position: absolute;
   top: 1em;
   transform: translateY(-50%);
@@ -365,14 +371,6 @@
   background-color: orange;
   border-radius: 50%;
   border: solid 2px;
-}
-
-.ab-note table.ab-table-timeline td:nth-child(2) {
-  padding-left: 20px;
-}
-
-.ab-note table.ab-table-timeline td:last-child {
-  border-right: none;
 }
 
 .ab-note table.ab-table-timeline tr:first-child td {
@@ -550,13 +548,13 @@
   padding: 10px;
 }
 
-.ab-note .ab-items.ab-card {
+.ab-note .ab-items.ab-card1 {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
 }
 
-.ab-note .ab-items.ab-card .ab-items-item {
+.ab-note .ab-items.ab-card1 .ab-items-item {
   flex: 1 0 calc(25% - 1rem);
   box-sizing: border-box;
   color: var(--ab-tab-root-tx-color);
@@ -564,6 +562,41 @@
   border: solid 2px var(--ab-tab-root-bd-color);
   box-shadow: #34343f;
   padding: 10px;
+}
+
+.ab-note .ab-items.ab-card {
+  column-count: 4;
+  column-gap: 10px;
+}
+
+.ab-note .ab-items.ab-card .ab-items-item {
+  break-inside: avoid-column;
+  box-sizing: border-box;
+  color: var(--ab-tab-root-tx-color);
+  background-color: var(--ab-tab-root-bg-color);
+  border: solid 2px var(--ab-tab-root-bd-color);
+  box-shadow: #34343f;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+}
+
+.ab-note .ab-items.ab-card3 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 1rem;
+  grid-template-rows: masonry;
+}
+
+.ab-note .ab-items.ab-card3 .ab-items-item {
+  width: 100%;
+  display: block;
+  box-sizing: border-box;
+  color: var(--ab-tab-root-tx-color);
+  background-color: var(--ab-tab-root-bg-color);
+  border: solid 2px var(--ab-tab-root-bd-color);
+  box-shadow: #34343f;
+  padding: 5px 10px;
+  margin-bottom: 0.8rem;
 }
 
 div.md-table-fig1 {
