@@ -60,7 +60,7 @@ export default hopeTheme(
         // mdit - 内联语法
         imgLazyload: true, // 懒加载图片
         // imgSize: true, // 图片大小, ![Alt](/example.bmp =x300)
-        include: true, // 导入其他文件，`<!-- @include: filename -->`，@WARN rc33之前启用的话会和mdit插件那边的 `md.render()` 冲突
+        // include: true, // 导入其他文件，`<!-- @include: filename -->`，@WARN rc33之前启用的话会和mdit插件那边的 `md.render()` 冲突
         mark: true, // ==高亮==
         sub: true, // _子项_
         sup: true, // ^上标^
