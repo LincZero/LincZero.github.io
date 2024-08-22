@@ -29,7 +29,7 @@ export default hopeTheme(
     },
     toc: true,
     headerDepth: 6,
-    sidebarSorter: "filename",
+    sidebarSorter: ["readme", "order", "filename"],
     encrypt: {
       config: {
         "/MdNote_Private/": ["dfajiohjffolwseinf"],
