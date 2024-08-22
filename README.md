@@ -90,11 +90,3 @@ git submodule foreach git pull origin main
     ```
 - 解决方法3
   - 不管了，把全部文件都转换成 LF 的，然后 VS Code 使用 LF 来编写
-
-## 已知bug
-
-重渲染行为会导致mdit图片失效，但在Obsidian中不会
-
-看起来是因为插件在定义默认渲染行为时，没有传入额外的元信息
-
-修复：像 alert 插件是正常的，可能可以参考一下那边？
