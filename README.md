@@ -17,7 +17,19 @@
 - https://theme-hope.vuejs.press/zh/faq/common-error.html#fatal-error-xxx-javascript-heap-out-of-memory
 - https://stackoverflow.com/questions/53230823/fatal-error-ineffective-mark-compacts-near-heap-limit-allocation-failed-javas
 
-需要：
+CICD需要：构建文档时设置env
+
+```bash
+- name: 构建文档
+  env:
+    NODE_OPTIONS: --max_old_space_size=12288
+  run: |-
+    node -e 'console.log(v8.getHeapStatistics())'
+    pnpm run docs:build
+    > src/.vuepress/dist/.nojekyll
+```
+
+Windows/Linux 需要：
 
 ```bash
 # if Linux
@@ -37,8 +49,6 @@ node
 ```
 
 检查：https://github.com/watson/memory-usage
-
-都没解决……我后来定位到产生该错误的一行，发现是mermaid，然后将其版本由 "^10.9.1" 退至 "9.1.7"，就好了
 
 ### 版本更新
 

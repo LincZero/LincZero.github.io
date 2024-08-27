@@ -6,3 +6,5 @@ src/.vuepress/dist/
 
 # src/*
 !src/.vuepress/
+
+tmp_docs/
