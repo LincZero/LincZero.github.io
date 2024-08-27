@@ -9,7 +9,7 @@
 import { ABReg } from '../ABReg'
 import {ABConvert_IOEnum, ABConvert, type ABConvert_SpecSimp} from "./ABConvert"
 import {ABConvertManager} from "../ABConvertManager"
-import { type ListItem, type List_ListItem, ListProcess, abc_title2listdata, abc_list2listdata } from "./abc_list"
+import { type ListItem, type List_ListItem, ListProcess } from "./abc_list"
 import { type C2ListItem, type List_C2ListItem, C2ListProcess } from "./abc_c2list"
 
 /**
@@ -45,6 +45,11 @@ export type List_TableItem = TableItem[]
 
 /// 一些表格相关的工具集
 export class TableProcess{
+  /** 列表转表格 */
+  static list2table(text: string, div: HTMLDivElement, modeT=false): HTMLDivElement {
+    let list_itemInfo = ListProcess.list2data(text)
+    return TableProcess.data2table(list_itemInfo, div, modeT)
+  }
 
   /** 列表转二维表格 */
   static list2ut(text: string, div: HTMLDivElement, modeT=false) {
@@ -61,22 +66,15 @@ export class TableProcess{
 
   /** 列表转时间线 */
   static list2timeline(text: string, div: HTMLDivElement, modeT=false) {
-    let data = C2ListProcess.list2c2data(text)
+    let data = ListProcess.list2data(text)
+    data = ListProcess.data2strict(data)
+    data = C2ListProcess.data_mL_2_2L(data)
     div = TableProcess.data2table(data, div, modeT)
     const table = div.querySelector("table")
     if (table) table.classList.add("ab-table-fc", "ab-table-timeline")
     return div 
   }
-
-  /** 标题转时间线 */
-  static title2timeline(text: string, div: HTMLDivElement, modeT=false) {
-    let data = C2ListProcess.title2c2data(text)
-    div = TableProcess.data2table(data, div, modeT)
-    const table = div.querySelector("table")
-    if (table) table.classList.add("ab-table-fc", "ab-table-timeline")
-    return div 
-  }
-
+  
   /** 列表数据转表格 */
   static data2table(
     list_itemInfo: List_ListItem, 
@@ -146,6 +144,7 @@ export class TableProcess{
           if (item.tableRow!=index_line) continue
           let td = document.createElement(is_head?"th":"td"); tr.appendChild(td);
             td.setAttribute("rowspan", item.tableRowSpan.toString()); td.setAttribute("col_index", item.level.toString())
+          td.classList.add("markdown-rendered")
           ABConvertManager.getInstance().m_renderMarkdownFn(item.content, td)
         }
       }
@@ -161,13 +160,13 @@ const abc_title2table = ABConvert.factory({
   name: "标题到表格",
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.el,
-  process: (el, header, content: string): HTMLElement=>{
-    const data: List_ListItem = abc_title2listdata.process(el, header, content) as List_ListItem
-    return el = TableProcess.data2table(data, el, false) as HTMLDivElement
+  process: (el, header, content)=>{
+    content = ListProcess.title2list(content, el)
+    TableProcess.list2table(content, el)
+    return el
   }
 })
 
-// 纯组合，后续用别名模块替代
 const abc_list2table = ABConvert.factory({
   id: "list2table",
   name: "列表转表格",
@@ -175,11 +174,11 @@ const abc_list2table = ABConvert.factory({
   default: "list2table",
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.el,
-  process: (el, header, content: string): HTMLElement=>{
+  process: (el, header, content)=>{
     const matchs = header.match(/list2(md)?table(T)?/)
     if (!matchs) return el
-    const data: List_ListItem = abc_list2listdata.process(el, header, content) as List_ListItem
-    return el = TableProcess.data2table(data, el, matchs[2]=="T") as HTMLDivElement
+    TableProcess.list2table(content, el, matchs[2]=="T")
+    return el
   }
 })
 
@@ -189,7 +188,7 @@ const abc_list2c2table = ABConvert.factory({
   match: "list2c2t",
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.el,
-  process: (el, header, content: string): HTMLElement=>{
+  process: (el, header, content)=>{
     let data = C2ListProcess.list2c2data(content)
     TableProcess.data2table(data, el, false)
     return el
@@ -203,7 +202,7 @@ const abc_list2ut = ABConvert.factory({
   default: "list2ut",
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.el,
-  process: (el, header, content: string): HTMLElement=>{
+  process: (el, header, content)=>{
     const matchs = header.match(/list2(md)?ut(T)?/)
     if (!matchs) return el
     TableProcess.list2ut(content, el, matchs[2]=="T")
@@ -218,25 +217,10 @@ const abc_list2timeline = ABConvert.factory({
   default: "list2mdtimeline",
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.el,
-  process: (el, header, content: string): HTMLElement=>{
+  process: (el, header, content)=>{
     const matchs = header.match(/list2(md)?timeline(T)?/)
     if (!matchs) return el
     TableProcess.list2timeline(content, el, matchs[2]=="T")
-    return el
-  }
-})
-
-const abc_title2timeline = ABConvert.factory({
-  id: "title2timeline",
-  name: "标题转时间线",
-  match: /title2(md)?timeline(T)?/,
-  default: "title2mdtimeline",
-  process_param: ABConvert_IOEnum.text,
-  process_return: ABConvert_IOEnum.el,
-  process: (el, header, content: string): HTMLElement=>{
-    const matchs = header.match(/title2(md)?timeline(T)?/)
-    if (!matchs) return el
-    TableProcess.title2timeline(content, el, matchs[2]=="T")
     return el
   }
 })

@@ -12,12 +12,12 @@ import {ListProcess, type List_ListItem} from "./abc_list"
 import {ABReg} from "../ABReg"
 
 // mermaid相关 - 要在这里自己渲才需要
-import mermaid from "mermaid"
-import mindmap from '@mermaid-js/mermaid-mindmap';
-const initialize = mermaid.registerExternalDiagrams([mindmap]);
-export const mermaid_init = async () => {
-  await initialize;
-};
+//import mermaid from "mermaid"
+//import mindmap from '@mermaid-js/mermaid-mindmap';
+//const initialize = mermaid.registerExternalDiagrams([mindmap]);
+//export const mermaid_init = async () => {
+//  await initialize;
+//};
 
 /**
  * 生成一个随机id
@@ -34,23 +34,10 @@ const abc_title2mindmap = ABConvert.factory({
   name: "标题到脑图",
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.el,
-  process: async (el, header, content: string): Promise<HTMLElement>=>{
-    const data = ListProcess.title2data(content) as List_ListItem
-    const el2 = await data2mindmap(data, el)
-    return el2
-  }
-})
-
-// 纯组合，后续用别名模块替代
-const abc_list2mindmap = ABConvert.factory({
-  id: "list2mindmap",
-  name: "列表转mermaid思维导图",
-  process_param: ABConvert_IOEnum.text,
-  process_return: ABConvert_IOEnum.el,
-  process: async (el, header, content: string): Promise<HTMLElement>=>{
-    const data = ListProcess.list2data(content) as List_ListItem
-    const el2 = await data2mindmap(data, el)
-    return el2
+  process: (el, header, content)=>{
+    content = ListProcess.title2list(content, el)
+    list2mindmap(content, el)
+    return el
   }
 })
 
@@ -59,8 +46,19 @@ const abc_list2mermaid = ABConvert.factory({
   name: "列表转mermaid流程图",
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.el,
-  process: (el, header, content: string): HTMLElement=>{
+  process: (el, header, content)=>{
     list2mermaid(content, el)
+    return el
+  }
+})
+
+const abc_list2mindmap = ABConvert.factory({
+  id: "list2mindmap",
+  name: "列表转mermaid思维导图",
+  process_param: ABConvert_IOEnum.text,
+  process_return: ABConvert_IOEnum.el,
+  process: (el, header, content)=>{
+    list2mindmap(content, el)
     return el
   }
 })
@@ -73,12 +71,11 @@ const abc_mermaid = ABConvert.factory({
   detail: "由于需要兼容脑图，这里会使用插件内置的最新版mermaid",
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.el,
-  process: async (el, header, content: string): Promise<HTMLElement>=>{
+  process: (el, header, content)=>{
     let matchs = content.match(/^mermaid(\((.*)\))?$/)
     if (!matchs) return el
     if (matchs[1]) content = matchs[2]+"\n"+content
-    const el2 = render_mermaidText(content, el)
-    return el2
+    return render_mermaidText(content, el)
   }
 })
 
@@ -89,6 +86,12 @@ function list2mermaid(text: string, div: HTMLDivElement) {
   let list_itemInfo = ListProcess.list2data(text)
   let mermaidText = data2mermaidText(list_itemInfo)
   return render_mermaidText(mermaidText, div)
+}
+
+/** 列表转mermaid思维导图 */
+function list2mindmap(text: string, div: HTMLDivElement) {
+  let list_itemInfo = ListProcess.list2data(text)
+  return data2mindmap(list_itemInfo, div)
 }
 
 /** 列表数据转mermaid流程图
@@ -155,7 +158,7 @@ async function render_mermaidText(mermaidText: string, div: HTMLElement) {
   // full-ob使用
   // - 优点: 最快，无需通过二次转换
   // - 缺点: abc模块要内置mermaid，旧版插件使用是因为当时的obsidian内置的mermaid版本太老了
-  // - 选用：目前的ob环境中用是最好。vuepress-mdit中则有另一个bug，DOMPurify丢失：https://github.com/mermaid-js/mermaid/issues/5204
+  // - 选用：目前的ob环境中用是最好。vuepress-mdit中则有另一个bug：https://github.com/mermaid-js/mermaid/issues/5204
   // - 补充：废弃函数：mermaid.mermaidAPI.renderAsync("ab-mermaid-"+getID(), mermaidText, (svgCode:string)=>{ div.innerHTML = svgCode })
   // const { svg } = await mermaid.render("ab-mermaid-"+getID(), mermaidText)
   // div.innerHTML = svg
@@ -164,6 +167,7 @@ async function render_mermaidText(mermaidText: string, div: HTMLElement) {
   // - 优点：abc模块无需重复内置mermaid
   // - 缺点：在ob里中，一个mermaid块的变更会导致所在页面内的所有mermaid一起变更，在mdit里似乎id会有问题
   // min-ob使用
+  // div.classList.add("markdown-rendered")
   // ABConvertManager.getInstance().m_renderMarkdownFn("```mermaid\n"+mermaidText+"\n```", div)
 
   // 3. 四选一。这里不渲，交给上一层让上一层渲

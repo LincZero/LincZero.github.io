@@ -12,14 +12,13 @@ import {ListProcess, type List_ListItem} from "./abc_list"
 import plantumlEncoder from "plantuml-encoder"
 
 const abc_list2jsontext = ABConvert.factory({
-  id: "json2pumlJson",
-  name: "json到可视化",
+  id: "list2jsontext",
+  name: "列表到json文本",
   process_param: ABConvert_IOEnum.text,
-  process_return: ABConvert_IOEnum.el,
-  process: (el, header, content: string): HTMLElement=>{
-    content = "@startjson\n" + content + "\n@endjson\n"
-    render_pumlText(content, el)
-    return el
+  process_return: ABConvert_IOEnum.text,
+  process: (el, header, content)=>{
+    content = "Developing..."
+    return content
   }
 })
 
@@ -28,7 +27,7 @@ const abc_list2pumlWBS = ABConvert.factory({
   name: "列表到puml工作分解结构",
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.el,
-  process: (el, header, content: string): HTMLElement=>{
+  process: (el, header, content)=>{
     let listdata:List_ListItem = ListProcess.list2data(content)
     listdata = ListProcess.data2strict(listdata)
     let newContent = "@startwbs\n"
@@ -50,7 +49,7 @@ const abc_list2pumlMindmap = ABConvert.factory({
   name: "列表到puml思维导图",
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.el,
-  process: (el, header, content: string): HTMLElement=>{
+  process: (el, header, content)=>{
     let listdata:List_ListItem = ListProcess.list2data(content)
     listdata = ListProcess.data2strict(listdata)
     let newContent = "@startmindmap\n"

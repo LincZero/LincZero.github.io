@@ -319,8 +319,6 @@ function abRender_fence(md: markdownit, options?: Partial<Options>): void {
 export default function ab_mdit(md: markdownit, options?: Partial<Options>): void {
   // 定义默认渲染行为
   ABConvertManager.getInstance().redefine_renderMarkdown((markdown: string, el: HTMLElement): void => {
-    el.classList.add("markdown-rendered")
-    
     const result: string = md.render(markdown)
     const el_child = document.createElement("div"); el.appendChild(el_child); el_child.innerHTML = result;
   })

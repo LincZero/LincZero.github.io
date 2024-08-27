@@ -20,6 +20,7 @@
 
 import {ABConvert_IOEnum, ABConvert, type ABConvert_SpecSimp} from "./ABConvert"
 import {ABConvertManager} from "../ABConvertManager"
+import {ListProcess, type List_ListItem} from "./abc_list"
 import {ABReg} from "../ABReg"
 
 /**
@@ -33,8 +34,6 @@ function getID(length=16){
 
 // markmap about
 import { Transformer, builtInPlugins } from 'markmap-lib'
-import type { C2ListItem } from "./abc_c2list";
-import { abc_title2listdata } from "./abc_list";
 const transformer = new Transformer();
 //import { Markmap, loadCSS, loadJS } from 'markmap-view'
 
@@ -43,11 +42,23 @@ id: "list2markmap",
 name: "列表到脑图 (markmap)",
 process_param: ABConvert_IOEnum.text,
 process_return: ABConvert_IOEnum.el,
-process: (el, header, content: string): HTMLElement=>{
+process: (el, header, content)=>{
 		list2markmap(content, el)
 		return el
 	}
 })
+
+const abc_title2mindmap = ABConvert.factory({
+	id: "title2markmap",
+	name: "标题到脑图 (markmap)",
+	process_param: ABConvert_IOEnum.text,
+	process_return: ABConvert_IOEnum.el,
+	process: (el, header, content)=>{
+			content = ListProcess.title2list(content, el)
+			list2markmap(content, el)
+			return el
+		}
+	})
 
 function list2markmap(markdown: string, div: HTMLDivElement) {
 	// 1. markdown解析 (markmap-lib)
@@ -76,7 +87,7 @@ function list2markmap(markdown: string, div: HTMLDivElement) {
 		div.innerHTML = `<div class="ab-raw-data" type-data="markmap" content-data='${markdown}'></div>`
 
 		// 4. 四选一。纯动态/手动渲染 (优缺点见abc_mermaid的相似方法)。
-		// 旧Ob使用，现在Ob的刷新按钮统一放在了外面
+		// 当前ob使用
 		// const svg_btn = document.createElement("button"); div.appendChild(svg_btn); svg_btn.textContent = "ChickMe ReRender Markmap";
 		// svg_btn.setAttribute("style", "background-color: argb(255, 125, 125, 0.5)");
 		// svg_btn.setAttribute("onclick", `
