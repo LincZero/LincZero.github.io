@@ -6,18 +6,32 @@
  */
 
 import { ABConvertManager } from "../ABConvertManager"
+import type { List_C2ListItem } from "./abc_c2list"
+import type { List_ListItem } from "./abc_list"
+import type { List_TableItem } from "./abc_table"
 
 /**
- * ab处理器子接口
- * @warn 暂时不允许扩展，处理器的参数和返回值目前还是使用的手动一个一个来检查的
- * 待增加一个list和json专用格式
+ * ab处理器子接口 - 类型声明
+ * 
+ * @detail
+ * TODO 待增加一个list和json专用格式
  */
 export enum ABConvert_IOEnum {
-  text = "string",
-  el = "HTMLElement",
-  el_text = "HTMLElementString"
+  text = "string", // string
+  el = "HTMLElement", // HTMLElement
+  // el_text = "string", // string
+  json = "json_string", // string
+  list_strem = "array", // object
+  c2list_strem = "array2", // object  
 }
-export type ABConvert_IOType = string|HTMLElement|void // TODO null是旧的别名系统，以后要删掉
+export type ABConvert_IOType =
+  string|           // text/el_text
+  HTMLElement|      // html元素
+  void|             // TODO void是旧的别名系统，以后要删掉
+  List_ListItem|    // 多叉树 数据流
+  List_C2ListItem|  // 二层树 数据流
+  List_TableItem|   // 表格用 数据流
+  Object            // json对象
 
 /**
  * AB转换器的抽象基类
@@ -37,7 +51,7 @@ export class ABConvert {
   process_alias: string           // 组装，如果不为空串则会覆盖process方法，但扔需要给process一个空实现
   process_param: ABConvert_IOEnum|null
   process_return: ABConvert_IOEnum|null
-  process: (el:HTMLDivElement, header:string, content:string|any)=> ABConvert_IOType // html->html的处理器不需要用到content参数
+  process: (el:HTMLDivElement, header:string, content:any)=> any // html->html的处理器不需要用到content参数
   is_disable: boolean = false     // 是否禁用，默认false
   register_from: string = "内置"  // 自带、其他插件、面板设置，如果是其他插件，则需要提供插件的名称（不知道能不能自动识别）
                                   // TODO，这个词条应该修改成 “作者名” 鼓励二次开发
@@ -181,8 +195,8 @@ export interface ABConvert_SpecSimp{
   process_alias?: string    // 组装，如果不为空串则会覆盖process方法，但扔需要给process一个空实现
   process_param?: ABConvert_IOEnum
   process_return?: ABConvert_IOEnum
-  process: (el:HTMLDivElement, header:string, content:string)=> any
-                            // 处理器
+  process: (el:HTMLDivElement, header:string, content:ABConvert_IOType)=> ABConvert_IOType
+                            // 处理器。话说第三个参数以前是只能接收string的，现在应该改为：上一次修改后的结果
 }
 
 /**
