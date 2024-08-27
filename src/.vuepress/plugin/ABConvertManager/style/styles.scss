@@ -12,6 +12,23 @@
   --pre-background-color: #1b1b1b; // 作者的样式
 }
 
+.app-container {
+  // 阅读模式
+  .markdown-reading-view {
+    .ab-replace{
+      margin-bottom: 22px;
+    }
+  }
+  // 源码/实时模式
+  .markdown-source-view {
+    .ab-replace{
+      margin-bottom: 0;
+    }
+  }
+  // 源码模式
+  .markdown-source-view.is-live-preview {}
+}
+
 /**
  * 替换内容
  * .ab-replace
@@ -41,15 +58,19 @@
 }
 
 .ab-note{
-  table[modeT="true"]{  // 表格转置
-    tr { display: block; float: left; }
-    th, td { display: block; }
+  // 修复重渲染表格宽度过宽的问题
+  .ab-note table,
+  .markdown-rendered table {
+    min-width: 0;
   }
-
   // 修复ob新版本导致表格宽度减少
   table {
     display: table;
     width: 100%;
+  }
+  table[modeT="true"]{  // 表格转置
+    tr { display: block; float: left; }
+    th, td { display: block; }
   }
 
   // 未渲染前的mermaid
@@ -71,7 +92,7 @@
     --ab-tab-root-bd-color: #34343f; // #e0e0e0;
     --ab-tab-root-tx-color: #9e9e9e; // blackc
     .ab-tab-nav {
-      height: 40px;
+      // height: 40px;
       box-sizing: border-box;
       border: 2px solid var(--ab-tab-root-bd-color);
       background-color: var(--ab-tab-root-bd-color);
@@ -109,26 +130,32 @@
     }
   }
 
+  // 使单元格内容更紧凑 - 去除单元格内部的间隔 (首尾)
+  td>p:first-child, th>p:first-child, // ob x 5
+  td>ul:first-child, th>ul:first-child,
+  .ab-list-table-witharrow>p:first-child,
+  .ab-nodes-content>p:first-child,
+  td>div>p:first-child, th>div>p:first-child, // mdit x 5
+  td>div>ul:first-child, th>div>ul:first-child, 
+  .ab-list-table-witharrow>div>p:first-child,
+  .ab-nodes-content>div>p:first-child
+  {
+    margin-top: 0;
+  }
+  td>p:last-child, th>p:last-child, // ob x 5
+  td>ul:last-child, th>ul:last-child, 
+  .ab-list-table-witharrow>p:last-child,
+  .ab-nodes-content>p:last-child,
+  td>div>p:last-child, th>div>p:last-child, // mdit x 5
+  td>div>ul:last-child, th>div>ul:last-child,
+  .ab-list-table-witharrow>div>p:last-child,
+  .ab-nodes-content>div>p:last-child
+  {
+    margin-bottom: 0;
+  }
+
   // 通用表格
   table.ab-table{
-    // 使空格内容更紧凑 - 去除单元格内部的间隔 (首尾)
-    td>p:first-child, th>p:first-child, // ob x 5
-    td>ul:first-child, th>ul:first-child,
-    .ab-list-table-witharrow>p:first-child,
-    td>div>p:first-child, th>div>p:first-child, // mdit x 5
-    td>div>ul:first-child, th>div>ul:first-child, 
-    .ab-list-table-witharrow>div>p:first-child
-    {
-      margin-top: 0;
-    }
-    td>p:last-child, th>p:last-child, // ob x 5
-    td>ul:last-child, th>ul:last-child, 
-    .ab-list-table-witharrow>p:last-child,
-    td>div>p:last-child, th>div>p:last-child, // mdit x 5
-    td>div>ul:last-child, th>div>ul:last-child,
-    .ab-list-table-witharrow>div>p:last-child{
-      margin-bottom: 0;
-    }
     // 使空格内容更紧凑 -  去除单元格之间的间距
     border-collapse:collapse;
     td,th{
@@ -476,9 +503,10 @@
     background-color: #252525;
     color:#252525;
     text-shadow: none;
-  }::selection{
-    background:#9ab0c0;
-    color:#fff;
+    &::selection{
+      background:#9ab0c0;
+      color:#fff;
+    }
   }
   .ab-deco-heimu:hover, .ab-deco-heimu:hover a{
     transition:color .13s linear;
@@ -538,24 +566,30 @@
         padding: 10px;
       }
     }
-    // 卡片 (对齐, flex布局)
-    &.ab-card1{
-      display: flex; // Flexbox 布局
-      flex-wrap: wrap; // 元素换行显示
-      gap: 1rem; // 间隙
-      .ab-items-item {
-        flex: 1 0 calc(25% - 1rem); // 每个项目的宽度大约为容器的 33.33%，减去间隙的一半
 
+    // 卡片
+    &.ab-card{
+      // 布局无关部分
+      .ab-items-item {
         box-sizing: border-box; // 确保 padding 和 border 不影响元素的实际大小
         color: var(--ab-tab-root-tx-color);
         background-color: var(--ab-tab-root-bg-color);
         border: solid 2px var(--ab-tab-root-bd-color);
         box-shadow: #34343f;
-        padding: 10px;
+
+        padding: 5px 10px;
+        margin-bottom: 10px;
       }
-    }
-    // 卡片 (瀑布流, column-count方式)
-    &.ab-card{
+
+      // 方式一，对齐, flex布局
+      /*display: flex; // Flexbox 布局
+      flex-wrap: wrap; // 元素换行显示
+      gap: 1rem; // 间隙
+      .ab-items-item {
+        flex: 1 0 calc(25% - 1rem); // 每个项目的宽度大约为容器的 33.33%，减去间隙的一半
+      }*/
+
+      // 方式二，瀑布流, column-count方式
       // 列数。其中ob默认700px宽，我定义的小宽度是800，大宽度是1100。假设一列加边框200px较好
       column-count: 4; // css不支持查询ab.card的宽度，只能查屏幕，这个得让js来
       // @media (max-width: 1400px) { column-count: 6; }
@@ -567,35 +601,106 @@
       column-gap: 10px; // 列间距
       .ab-items-item {
         break-inside: avoid-column; // 防止单个元素被拆分到多列
-
-        box-sizing: border-box; // 确保 padding 和 border 不影响元素的实际大小
-        color: var(--ab-tab-root-tx-color);
-        background-color: var(--ab-tab-root-bg-color);
-        border: solid 2px var(--ab-tab-root-bd-color);
-        box-shadow: #34343f;
-        padding: 5px 10px;
-        margin-bottom: 10px;
       }
-    }
-    // 卡片 (瀑布流, grid网格顺序，但兼容性有问题)
-    &.ab-card3 {
-      display: grid;
+
+      // 方式三，瀑布流, grid网格顺序，但兼容性有问题
+      /*display: grid;
       grid-template-columns: repeat(4, 1fr);
       grid-gap: 1rem; // 间隙
       grid-template-rows: masonry; // 兼容有问题，只有火狐支持，还tm的要开选项
       .ab-items-item {
         width: 100%;
         display: block;
+      }*/
 
-        box-sizing: border-box; // 确保 padding 和 border 不影响元素的实际大小
-        color: var(--ab-tab-root-tx-color);
-        background-color: var(--ab-tab-root-bg-color);
-        border: solid 2px var(--ab-tab-root-bd-color);
-        box-shadow: #34343f;
-        padding: 5px 10px;
-        margin-bottom: 0.8rem;
+      // 方式四，瀑布流, flex布局，一定程度的排序 (非绝对)，但需要给一个合适的高度
+      /*display: flex;          // Flexbox 布局
+      flex-wrap: wrap; // 元素换行显示
+      // gap: 1rem;           // 间隙
+      flex-direction: column; // 按列填充
+      .ab-items-item {
+        position: relative;
+        width: calc(100% / 4);
+        padding: 5px;
+        box-sizing: border-box;
+        &:nth-child(4n+1){ order: 1; }
+        &:nth-child(4n+2){ order: 2; }
+        &:nth-child(4n+3){ order: 3; }
+        &:nth-child(4n+0){ order: 4; }
+      }*/
+    }
+
+    // 补充结合样式
+    &.ab-col1 { column-count: 1 !important; }
+    &.ab-col2 { column-count: 2 !important; }
+    &.ab-col3 { column-count: 3 !important; }
+    &.ab-col4 { column-count: 4 !important; }
+    &.ab-col5 { column-count: 5 !important; }
+    &.ab-col6 { column-count: 6 !important; }
+    &.ab-col7 { column-count: 7 !important; }
+    &.ab-col8 { column-count: 8 !important; }
+  }
+
+  // 括弧图
+  .ab-nodes {
+    // display: flex;
+    // flex-direction: column;
+    // align-items: flex-start;
+    // gap: 1em; // 根的上下间距
+
+    // 圆弧左侧
+    .ab-nodes-content {
+      display: inline-block;
+      background-color: rgba(100,100,100,0.25);
+      padding: 5px 10px 5px 10px;
+      margin-left: 5px;
+    }
+    // 圆弧右侧
+    .ab-nodes-children {
+      display: flex;
+      flex-direction: column;
+      // align-items
+      gap: 1.2em; // 上下间距
+
+      // border-left: 2px solid currentColor; // black;
+      padding-left: 0.8em;
+      position: relative; // 作为定位容器
+      // 圆弧样式 - 中间箭头
+      .ab-nodes-bracket {
+        content: "";
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        top: calc(50% - 4px);
+        left: calc(-8px - 2px + 1px); // 重合一个px避免出现黑线
+        clip-path: polygon(100% 0, 100% 100%, 13.40% 50%); // 裁剪成等边三角形
+        background-color: currentColor;
+      }
+      // 圆弧样式 - 两头弯曲
+      .ab-nodes-bracket2 {
+        content: "";
+        position: absolute;
+        width: 10px;
+        height: 100%; // JS: 缩短第一个和最后一个节点的一半
+        top: 0;       // JS: 第一个节点的一半
+        left: -2px;
+        border-radius: 10px 0 0 10px;
+        border-left: 2px solid currentColor;
+        border-top: 2px solid currentColor;
+        border-bottom: 2px solid currentColor;
+      }
+
+      // 节点内容
+      .ab-nodes-node {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1.2em;   // 左右间隙
       }
     }
+    // 最外面的那个不显示
+    &>.ab-nodes-node>.ab-nodes-bracket { display: none; }
+    &>.ab-nodes-node>.ab-nodes-bracket2 { display: none; }
   }
 }
 

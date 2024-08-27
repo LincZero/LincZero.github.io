@@ -11,6 +11,14 @@
   --pre-background-color: #1b1b1b;
 }
 
+.app-container .markdown-reading-view .ab-replace {
+  margin-bottom: 22px;
+}
+
+.app-container .markdown-source-view .ab-replace {
+  margin-bottom: 0;
+}
+
 /**
  * 替换内容
  * .ab-replace
@@ -39,6 +47,16 @@
   height: 2px;
 }
 
+.ab-note .ab-note table,
+.ab-note .markdown-rendered table {
+  min-width: 0;
+}
+
+.ab-note table {
+  display: table;
+  width: 100%;
+}
+
 .ab-note table[modeT="true"] tr {
   display: block;
   float: left;
@@ -46,11 +64,6 @@
 
 .ab-note table[modeT="true"] th, .ab-note table[modeT="true"] td {
   display: block;
-}
-
-.ab-note table {
-  display: table;
-  width: 100%;
 }
 
 .ab-note pre.ab-mermaid-raw {
@@ -72,7 +85,6 @@
 }
 
 .ab-note .ab-tab-root .ab-tab-nav {
-  height: 40px;
   box-sizing: border-box;
   border: 2px solid var(--ab-tab-root-bd-color);
   background-color: var(--ab-tab-root-bd-color);
@@ -110,26 +122,30 @@
   padding: 10px 20px;
 }
 
-.ab-note table.ab-table {
-  border-collapse: collapse;
-}
-
-.ab-note table.ab-table td > p:first-child, .ab-note table.ab-table th > p:first-child,
-.ab-note table.ab-table td > ul:first-child, .ab-note table.ab-table th > ul:first-child,
-.ab-note table.ab-table .ab-list-table-witharrow > p:first-child,
-.ab-note table.ab-table td > div > p:first-child, .ab-note table.ab-table th > div > p:first-child,
-.ab-note table.ab-table td > div > ul:first-child, .ab-note table.ab-table th > div > ul:first-child,
-.ab-note table.ab-table .ab-list-table-witharrow > div > p:first-child {
+.ab-note td > p:first-child, .ab-note th > p:first-child,
+.ab-note td > ul:first-child, .ab-note th > ul:first-child,
+.ab-note .ab-list-table-witharrow > p:first-child,
+.ab-note .ab-nodes-content > p:first-child,
+.ab-note td > div > p:first-child, .ab-note th > div > p:first-child,
+.ab-note td > div > ul:first-child, .ab-note th > div > ul:first-child,
+.ab-note .ab-list-table-witharrow > div > p:first-child,
+.ab-note .ab-nodes-content > div > p:first-child {
   margin-top: 0;
 }
 
-.ab-note table.ab-table td > p:last-child, .ab-note table.ab-table th > p:last-child,
-.ab-note table.ab-table td > ul:last-child, .ab-note table.ab-table th > ul:last-child,
-.ab-note table.ab-table .ab-list-table-witharrow > p:last-child,
-.ab-note table.ab-table td > div > p:last-child, .ab-note table.ab-table th > div > p:last-child,
-.ab-note table.ab-table td > div > ul:last-child, .ab-note table.ab-table th > div > ul:last-child,
-.ab-note table.ab-table .ab-list-table-witharrow > div > p:last-child {
+.ab-note td > p:last-child, .ab-note th > p:last-child,
+.ab-note td > ul:last-child, .ab-note th > ul:last-child,
+.ab-note .ab-list-table-witharrow > p:last-child,
+.ab-note .ab-nodes-content > p:last-child,
+.ab-note td > div > p:last-child, .ab-note th > div > p:last-child,
+.ab-note td > div > ul:last-child, .ab-note th > div > ul:last-child,
+.ab-note .ab-list-table-witharrow > div > p:last-child,
+.ab-note .ab-nodes-content > div > p:last-child {
   margin-bottom: 0;
+}
+
+.ab-note table.ab-table {
+  border-collapse: collapse;
 }
 
 .ab-note table.ab-table td, .ab-note table.ab-table th {
@@ -479,7 +495,7 @@
   text-shadow: none;
 }
 
-.ab-note ::selection {
+.ab-note .ab-deco-heimu::selection, .ab-note .ab-deco-heimu a::selection {
   background: #9ab0c0;
   color: #fff;
 }
@@ -548,29 +564,40 @@
   padding: 10px;
 }
 
-.ab-note .ab-items.ab-card1 {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.ab-note .ab-items.ab-card1 .ab-items-item {
-  flex: 1 0 calc(25% - 1rem);
-  box-sizing: border-box;
-  color: var(--ab-tab-root-tx-color);
-  background-color: var(--ab-tab-root-bg-color);
-  border: solid 2px var(--ab-tab-root-bd-color);
-  box-shadow: #34343f;
-  padding: 10px;
-}
-
 .ab-note .ab-items.ab-card {
+  /*display: flex; // Flexbox 布局
+      flex-wrap: wrap; // 元素换行显示
+      gap: 1rem; // 间隙
+      .ab-items-item {
+        flex: 1 0 calc(25% - 1rem); // 每个项目的宽度大约为容器的 33.33%，减去间隙的一半
+      }*/
   column-count: 4;
   column-gap: 10px;
+  /*display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 1rem; // 间隙
+      grid-template-rows: masonry; // 兼容有问题，只有火狐支持，还tm的要开选项
+      .ab-items-item {
+        width: 100%;
+        display: block;
+      }*/
+  /*display: flex;          // Flexbox 布局
+      flex-wrap: wrap; // 元素换行显示
+      // gap: 1rem;           // 间隙
+      flex-direction: column; // 按列填充
+      .ab-items-item {
+        position: relative;
+        width: calc(100% / 4);
+        padding: 5px;
+        box-sizing: border-box;
+        &:nth-child(4n+1){ order: 1; }
+        &:nth-child(4n+2){ order: 2; }
+        &:nth-child(4n+3){ order: 3; }
+        &:nth-child(4n+0){ order: 4; }
+      }*/
 }
 
 .ab-note .ab-items.ab-card .ab-items-item {
-  break-inside: avoid-column;
   box-sizing: border-box;
   color: var(--ab-tab-root-tx-color);
   background-color: var(--ab-tab-root-bg-color);
@@ -580,23 +607,94 @@
   margin-bottom: 10px;
 }
 
-.ab-note .ab-items.ab-card3 {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 1rem;
-  grid-template-rows: masonry;
+.ab-note .ab-items.ab-card .ab-items-item {
+  break-inside: avoid-column;
 }
 
-.ab-note .ab-items.ab-card3 .ab-items-item {
-  width: 100%;
-  display: block;
-  box-sizing: border-box;
-  color: var(--ab-tab-root-tx-color);
-  background-color: var(--ab-tab-root-bg-color);
-  border: solid 2px var(--ab-tab-root-bd-color);
-  box-shadow: #34343f;
-  padding: 5px 10px;
-  margin-bottom: 0.8rem;
+.ab-note .ab-items.ab-col1 {
+  column-count: 1 !important;
+}
+
+.ab-note .ab-items.ab-col2 {
+  column-count: 2 !important;
+}
+
+.ab-note .ab-items.ab-col3 {
+  column-count: 3 !important;
+}
+
+.ab-note .ab-items.ab-col4 {
+  column-count: 4 !important;
+}
+
+.ab-note .ab-items.ab-col5 {
+  column-count: 5 !important;
+}
+
+.ab-note .ab-items.ab-col6 {
+  column-count: 6 !important;
+}
+
+.ab-note .ab-items.ab-col7 {
+  column-count: 7 !important;
+}
+
+.ab-note .ab-items.ab-col8 {
+  column-count: 8 !important;
+}
+
+.ab-note .ab-nodes .ab-nodes-content {
+  display: inline-block;
+  background-color: rgba(100, 100, 100, 0.25);
+  padding: 5px 10px 5px 10px;
+  margin-left: 5px;
+}
+
+.ab-note .ab-nodes .ab-nodes-children {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2em;
+  padding-left: 0.8em;
+  position: relative;
+}
+
+.ab-note .ab-nodes .ab-nodes-children .ab-nodes-bracket {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  top: calc(50% - 4px);
+  left: calc(-8px - 2px + 1px);
+  clip-path: polygon(100% 0, 100% 100%, 13.4% 50%);
+  background-color: currentColor;
+}
+
+.ab-note .ab-nodes .ab-nodes-children .ab-nodes-bracket2 {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 100%;
+  top: 0;
+  left: -2px;
+  border-radius: 10px 0 0 10px;
+  border-left: 2px solid currentColor;
+  border-top: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+}
+
+.ab-note .ab-nodes .ab-nodes-children .ab-nodes-node {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.2em;
+}
+
+.ab-note .ab-nodes > .ab-nodes-node > .ab-nodes-bracket {
+  display: none;
+}
+
+.ab-note .ab-nodes > .ab-nodes-node > .ab-nodes-bracket2 {
+  display: none;
 }
 
 div.md-table-fig1 {

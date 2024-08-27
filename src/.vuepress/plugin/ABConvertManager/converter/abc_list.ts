@@ -9,6 +9,7 @@
 import { ABReg } from '../ABReg'
 import {ABConvert_IOEnum, ABConvert, type ABConvert_SpecSimp} from "./ABConvert"
 import {ABConvertManager} from "../ABConvertManager"
+import { children, current_component } from 'svelte/internal';
 
 /**
  * 通用列表数据，一个元素等于是一个列表项
@@ -36,24 +37,16 @@ export interface ListItem {
 }[]
 export type List_ListItem = ListItem[]
 
+// 列表节点结构
+export type listNodes = {
+  content: string;
+  children: listNodes[];
+}
+
 /// 一些列表相关的工具集
 export class ListProcess{
 
   // ----------------------- str -> listData ------------------------
-  
-  /** title转列表 */
-  static title2list(text: string, div: HTMLDivElement): string {
-    if (!text.trimStart().startsWith("#")) return text // 不让重复调用
-    let list_itemInfo = this.title2data(text)
-    list_itemInfo = this.data2strict(list_itemInfo).map((item: ListItem, index)=>{ return {content: item.content, level: item.level*2}})
-    return this.data2list(list_itemInfo)
-  }
-
-  /** 去除列表的inline */
-  static listXinline(text: string){
-    const data = this.list2data(text)
-    return this.data2list(data)
-  }
 
   /** 
    * 列表文本转列表数据 
@@ -130,6 +123,142 @@ export class ListProcess{
   }
 
   /**
+   * listStream结构 转 树型结构
+   * 
+   * @detail
+   * 与list2data不同，这里仅识别 `: ` 作为分割符
+   * 
+   * @param text
+   * @return
+   * {
+   *   content: string;        // 内容
+   *   level: number;          // 级别 (缩进空格数)
+   * }
+   * to
+   * {
+   *   content: string
+   *   children: []
+   * }
+   */
+  static list2listnode(text: string): listNodes[]{
+    let data: List_ListItem = ListProcess.list2data(text, false)
+    data = ListProcess.data2strict(data)
+    let nodes: listNodes[] = []
+    let prev_nodes: listNodes[] = [] // 缓存每个level的最新节点
+
+    let current_data: listNodes
+    for (let index = 0; index<data.length; index++) {
+      // 当前节点
+      const item = data[index]
+      current_data = {
+        content: item.content,
+        children: []
+      }
+      prev_nodes[item.level] = current_data
+
+      // 放入节点树的对应位置中
+      if (item.level>=1 && prev_nodes.hasOwnProperty(item.level-1)) {
+        prev_nodes[item.level-1].children.push(current_data)
+      } else if (item.level==0) {
+        nodes.push(current_data)
+      } else {
+        console.error(`list数据不合规，没有正规化. level:${item.level}, prev_nodes:${prev_nodes}`)
+        return nodes
+      }
+    }
+    return nodes
+  }
+
+  static list2json(text: string): object{
+    interface NestedObject {              // 可递归的节点类型
+      [key: string]: NestedObject | string | number | any[];
+    }
+    let data: List_ListItem = ListProcess.list2data(text, false)
+    data = ListProcess.data2strict(data)
+    let nodes: NestedObject = {}         // 节点树
+    let prev_nodes: NestedObject[] = []  // 缓存每个level的最新节点
+
+    // 第一次变换，所有节点为 "key": {...} 形式
+    for (let index = 0; index<data.length; index++) {
+      // 当前节点
+      const item = data[index]
+      const current_key: string = item.content
+      const current_value: NestedObject = {}
+      prev_nodes[item.level] = current_value
+
+      // 放入节点树的对应位置中
+      if (item.level>=1 && prev_nodes.hasOwnProperty(item.level-1)) {
+        let lastItem = prev_nodes[item.level-1]
+        if (typeof lastItem != "object" || Array.isArray(lastItem)) {
+          console.error(`list数据不合规，父节点的value值不是{}类型`)
+          return nodes
+        }
+        lastItem[current_key] = current_value
+      } else if (item.level==0) {
+        nodes[current_key] = current_value
+      } else {
+        console.error(`list数据不合规，没有正规化. level:${item.level}, prev_nodes:${prev_nodes}`)
+        return nodes
+      }
+    }
+
+    // 第二、三次变换
+    let nodes2: NestedObject = nodes
+    traverse(nodes2)
+
+    return nodes2
+
+    /**
+     * 递归遍历json，对obj进行两次变换
+     * 
+     * @detail
+     * - 节点 "k:v": {空} 展开为 "k": "v"
+     * - 部分转列表
+     * 
+     * @param
+     * 后两个参数是为了方便将整个obj替换掉，不然在地址不变的前提下array替换obj会很麻烦
+     */
+    function traverse(obj: NestedObject|any[], objSource?:any, objSource2?:string) {
+      if (Array.isArray(obj)) return
+      
+      // 变换：节点 "k:v": {空} 展开为 "k": "v"
+      const keys = Object.keys(obj)
+      let count_null = 0
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i]; if (!obj.hasOwnProperty(key)) continue;
+        const value = obj[key]
+        if (typeof value === 'object' && !Array.isArray(value)) {  // (b1) 对象
+          if (Object.keys(value).length === 0) {  // (b11) k-v展开
+            let index = key.indexOf(": ");
+            if (index > 0) {
+              delete obj[key]; i--; // @warn 希望新插入的k-v在后面，否则顺序问题很严重
+              obj[key.slice(0, index)] = key.slice(index+1)
+            } else {
+              obj[key] = ""
+              count_null++
+            }
+          } else {                                // (b12) 递归调用
+            traverse(value, obj, key);
+          }
+        } else {                                  // (b2) 非对象/数组对象
+        }
+      }
+
+      // 变换：尾判断，满足需求的json转成列表
+      if (objSource && objSource2) {
+        let newObj: (string|number|{})[] = []
+        if (count_null == keys.length) {
+          for (let i = 0; i < keys.length; i++) {
+            const key = keys[i]; if (!obj.hasOwnProperty(key)) continue;
+            newObj.push(key)
+          }
+          objSource[objSource2] = newObj
+        }
+      }
+    }
+  }
+
+  /**
    * 标题大纲转列表数据（@todo 正文的level+10，要减掉）
    * 
    * @detail
@@ -140,7 +269,7 @@ export class ListProcess{
    * 3. 列表等级,  = `(.*)-`个数+1,  取值[0]
    * 
    */
-  private static title2data(text: string){
+  static title2data(text: string){
     let list_itemInfo:List_ListItem = []
 
     const list_text = text.split("\n")
@@ -332,7 +461,7 @@ export class ListProcess{
    * - title2list会用到
    * - 妙用：list2data + data2list = listXinline
    */
-  private static data2list(
+  static data2list(
     list_itemInfo: List_ListItem
   ){
     let list_newcontent:string[] = [] // 传入参数以列表项为单位，这个以行为单位
@@ -348,26 +477,123 @@ export class ListProcess{
     const newcontent = list_newcontent.join("\n")
     return newcontent
   }
+
+  /** 
+   * 将多列列表转 `节点` 结构
+   * 
+   * .ab-nodes
+   *   .ab-nodes-content
+   *   .ab-nodes-children
+   *     (递归包含)
+   *     .ab-nodes
+   *     .ab-nodes
+   */
+  static data2nodes(listdata:List_ListItem, el:HTMLElement): HTMLElement {
+    const el_root = document.createElement("div"); el.appendChild(el_root); el_root.classList.add("ab-nodes")
+    const el_root2 = document.createElement("div"); el_root.appendChild(el_root2); el_root2.classList.add("ab-nodes-children") // 特点是无对应的content和bracket
+    let cache_els:HTMLElement[] = []  // 缓存各个level的最新节点 (level为0的节点在序列0处)，根节点另外处理
+    
+    for (let item of listdata) {
+      // 节点准备
+      const el_node = document.createElement("div"); el_node.classList.add("ab-nodes-node")
+      const el_node_content = document.createElement("div"); el_node.appendChild(el_node_content); el_node_content.classList.add("ab-nodes-content")
+      ABConvertManager.getInstance().m_renderMarkdownFn(item.content, el_node_content)
+      const el_node_children = document.createElement("div"); el_node.appendChild(el_node_children); el_node_children.classList.add("ab-nodes-children")
+      const el_node_barcket = document.createElement("div"); el_node_children.appendChild(el_node_barcket); el_node_barcket.classList.add("ab-nodes-bracket"); el_node_barcket.style.setProperty("display", "none")
+      const el_node_barcket2 = document.createElement("div"); el_node_children.appendChild(el_node_barcket2); el_node_barcket2.classList.add("ab-nodes-bracket2"); el_node_barcket2.style.setProperty("display", "none")
+      cache_els[item.level] = el_node_children
+      
+      // 将节点放入合适的位置
+      if (item.level == 0) {
+        el_root2.appendChild(el_node)
+      } else if (item.level >= 1 && cache_els.hasOwnProperty(item.level-1)) {
+        cache_els[item.level-1].appendChild(el_node)
+        ;(cache_els[item.level-1].childNodes[0] as HTMLElement)?.style?.setProperty("display", "block")
+        ;(cache_els[item.level-1].childNodes[1] as HTMLElement)?.style?.setProperty("display", "block")
+      }
+      else {
+        console.error("节点错误")
+        return el
+      }
+    }
+    return el
+  }
 }
 
-const abc_title2list = ABConvert.factory({
-  id: "title2list",
-  name: "标题到列表",
+export const abc_list2listdata = ABConvert.factory({
+  id: "list2listdata",
+  name: "列表到listdata",
   process_param: ABConvert_IOEnum.text,
-  process_return: ABConvert_IOEnum.text,
-  detail: "也可以当作是更强大的列表解析器",
-  process: (el, header, content)=>{
-    content = ListProcess.title2list(content, el)
-    return content
+  process_return: ABConvert_IOEnum.list_strem,
+  detail: "列表到listdata",
+  process: (el, header, content: string): List_ListItem=>{
+    return ListProcess.list2data(content) as List_ListItem
   }
 })
 
-const abc_listXinline = ABConvert.factory({
-  id: "listXinline",
-  name: "列表消除内联换行",
+export const abc_title2listdata = ABConvert.factory({
+  id: "title2listdata",
+  name: "标题到listdata",
   process_param: ABConvert_IOEnum.text,
+  process_return: ABConvert_IOEnum.list_strem,
+  detail: "标题到listdata",
+  process: (el, header, content: string): List_ListItem=>{
+    return ListProcess.title2data(content) as List_ListItem
+  }
+})
+
+const abc_listdata2list = ABConvert.factory({
+  id: "listdata2list",
+  name: "listdata到列表",
+  process_param: ABConvert_IOEnum.list_strem,
   process_return: ABConvert_IOEnum.text,
-  process: (el, header, content)=>{
-    return ListProcess.listXinline(content)
+  detail: "listdata到列表",
+  process: (el, header, content: List_ListItem): string=>{
+    return ListProcess.data2list(content) as string
+  }
+})
+
+const abc_listdata2nodes = ABConvert.factory({
+  id: "listdata2nodes",
+  name: "listdata到节点",
+  process_param: ABConvert_IOEnum.list_strem,
+  process_return: ABConvert_IOEnum.el,
+  detail: "listdata到节点",
+  process: (el, header, content: List_ListItem): HTMLElement=>{
+    return ListProcess.data2nodes(content, el) as HTMLElement
+  }
+})
+
+const abc_listdata2strict = ABConvert.factory({
+  id: "listdata2strict",
+  name: "listdata严格化",
+  process_param: ABConvert_IOEnum.list_strem,
+  process_return: ABConvert_IOEnum.list_strem,
+  process: (el, header, content: List_ListItem): List_ListItem=>{
+    return ListProcess.data2strict(content)
+  }
+})
+
+export const abc_list2listnode = ABConvert.factory({
+  id: "list2listnode",
+  name: "列表到listnode (beta)",
+  process_param: ABConvert_IOEnum.text,
+  process_return: ABConvert_IOEnum.json,
+  detail: "列表到listnode",
+  process: (el, header, content: string): string=>{
+    const data: listNodes[] = ListProcess.list2listnode(content)
+    return JSON.stringify(data, null, 2) // TMP
+  }
+})
+
+export const abc_list2json = ABConvert.factory({
+  id: "list2json",
+  name: "列表到json (beta)",
+  process_param: ABConvert_IOEnum.text,
+  process_return: ABConvert_IOEnum.json,
+  detail: "列表到json",
+  process: (el, header, content: string): string=>{
+    const data: object = ListProcess.list2json(content)
+    return JSON.stringify(data, null, 2) // TMP
   }
 })
