@@ -316,10 +316,16 @@ function abRender_fence(md: markdownit, options?: Partial<Options>): void {
     // demo: src="./assets/abc.png" -> src="@source/MdNote_Public/Guide/assets/abc.png"
     let ret = el.outerHTML
     if (env.filePathRelative) {
-      const sourecePath = "@source/"+env.filePathRelative.substring(0, (env.filePathRelative.lastIndexOf('/')??0)+1); // 'MdNote_Public/Guide/README.md' -> '@source/MdNote_Public/Guide/'
+      const rootPath:string = env.filePathRelative.substring(0, (env.filePathRelative.lastIndexOf('/')??0)+1); // 'MdNote_Public/Guide/README.md' -> '@source/MdNote_Public/Guide/'
+      // img
       ret = ret.replace(/<img src="(\.[^"]+)"/g, (match, relativePath) => { // 可能的bug：/<img [^>]*src="(\.[^"]+)"[^>]*>/g 这个匹配严格一点，但弄起来很麻烦。先假设mdit的img的src属性必在最前面
-        const absoluteUrl = sourecePath + relativePath;
+        const absoluteUrl:string = "@source/" + rootPath + relativePath;
         return `<img src="${absoluteUrl}"`;
+      })
+      // link
+      ret = ret.replace(/<routelink to="(\.[^"]+)">([^<]*)<\/routelink>/g, (match, relativePath, linkContent) => {
+        const absoluteUrl:string = "/" + rootPath + relativePath;
+        return `<a href="${absoluteUrl}">${linkContent}</a>`;
       })
     }
 
