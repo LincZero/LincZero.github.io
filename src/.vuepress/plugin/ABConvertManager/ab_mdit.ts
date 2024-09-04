@@ -102,7 +102,7 @@ interface Options {
  * 选择 [] 包裹的正文段
  */
 function abSelector_squareInline(md: markdownit, options?: Partial<Options>): void {
-  md.block.ruler.before('paragraph', 'anyBlock_paragraph', function (state,startLine,endLine) {
+  md.block.ruler.before('paragraph', 'AnyBlockParagraph', function (state,startLine,endLine) {
     
     // (1) 匹配ab块头部
     let text: string
@@ -137,7 +137,7 @@ function abSelector_squareInline(md: markdownit, options?: Partial<Options>): vo
     const ab_endLine: number = state.line   // ab块 - 结束行 (不包含)
 
     // (3) 插入ab块token
-    let token = state.push('fence', 'code', 1)
+    let token = state.push('fence', 'code', 0)
     token.info = "AnyBlock"
     token.content = `${ab_header}${ab_content}`
     token.map = [ab_startLine, ab_endLine]
@@ -312,7 +312,9 @@ function abRender_fence(md: markdownit, options?: Partial<Options>): void {
       }
     }
 
-    // url修正。(正常情况下，img在 mdit img parse 阶段，路径替换就已经完成了。这里拖到渲染阶段才来完成...是有问题的)
+    // url修正
+    // 原来的正常流程：img在 mdit img parse 阶段，路径替换就已经完成了
+    // 现在的流程补充：现在局部的img实际上走的是 md.render()，虽然应该也是走parse-render流程，但可能是由于缺少env? 反之没有路径调整这部分的处理，这里补上
     // demo: src="./assets/abc.png" -> src="@source/MdNote_Public/Guide/assets/abc.png"
     let ret = el.outerHTML
     if (env.filePathRelative) {

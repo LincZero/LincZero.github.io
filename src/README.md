@@ -53,21 +53,21 @@ highlights:
         icon: code
         link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/C/
 
-      - title: Java
-        icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/Java/      
-
       - title: Python
         icon: code
         link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/Python/
+
+      - title: TypeScript
+        icon: code
+        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/TypeScript/
 
       - title: JavaScript
         icon: code
         link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/JavaScript/
 
-      - title: TypeScript
+      - title: Java
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/TypeScript/
+        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/Java/      
 
       - title: Rust
         icon: code
@@ -92,10 +92,22 @@ highlights:
     bgImage: https://theme-hope-assets.vuejs.press/bg/7-light.svg
     bgImageDark: https://theme-hope-assets.vuejs.press/bg/7-dark.svg
     features:
+      - title: 网络
+        icon: code
+        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/02. Theory/Computer/03. 计算机系统 - 专题或子系统的字典版/下层相关/Network/
+        
+      - title: SCAPP
+        icon: code
+        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/02. Theory/Computer/
+
       - title: Qt/PyQt
         icon: code
         #details: Check markdown links
         link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Platform/Multi/QT（Cpp）/
+
+      - title: 前端
+        icon: code
+        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Platform/Web/
 
       - title: Electron
         icon: code
@@ -110,18 +122,6 @@ highlights:
         icon: code
         link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Platform/Android/  
 
-      - title: 数据库
-        icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Platform/Web/04. 后端/数据库/
-
-      - title: 前端
-        icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Platform/Web/
-
-      - title: 机器/深度学习
-        icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Type/Artificial_Intelligence/
-
       - title: 解析渲染
         icon: code
         link: ./MdNote_Public/01. 设计开发与数据生产/Develop/02. Theory/Type/Doc/
@@ -130,17 +130,17 @@ highlights:
         icon: code
         link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Type/Doc/
 
+      - title: 数据库
+        icon: code
+        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Platform/Web/04. 后端/数据库/
+
+      - title: 机器/深度学习
+        icon: code
+        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Type/Artificial_Intelligence/
+
       - title: 游戏引擎
         icon: code
         link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Platform/SoftCode/Game/
-
-      - title: SCAPP
-        icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/02. Theory/Computer/
-
-      - title: 网络
-        icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/02. Theory/Computer/03. 计算机系统 - 专题或子系统的字典版/下层相关/Network/
 
 copyright: false
 footer: 自用，未经许可禁止转载任何内容 | Copyright © 2024-present LincZero
