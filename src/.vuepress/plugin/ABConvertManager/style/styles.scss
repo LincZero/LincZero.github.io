@@ -7,11 +7,39 @@
  * 编辑ABC模块的该文件时，需要手动编译/使用vscode `easy sass` 插件
  */
 
-:root{
-  // --pre-background-color: rgb(36,36,36)
-  --pre-background-color: #1b1b1b; // 作者的样式
+/**
+ * 颜色相关
+ */
+ :root {
+  --ab-tab-root-bg-color: #0d1117;  // #ffffff;
+  --ab-tab-root-bd-color: #34343f;  // #e0e0e0;
+  --ab-tab-root-tx-color: #9e9e9e;  // blackc
+
+  --ab-bright-color: orange;        // lightgoldenrodyellow、yellowgreen
+  --pre-background-color: #1b1b1b;  // rgb(36,36,36)
+}
+// 获取一些Obsidian的默认颜色并覆盖默认颜色 (mdit不可用)
+.theme-dark,
+.theme-light{
+  --ab-tab-root-bg-color: var(--color-base-00);
+  --ab-tab-root-bd-color: var(--color-base-30);
+  --ab-tab-root-tx-color: var(--color-base-70);
+
+  --ab-bright-color: var(--blockquote-border-color);
+  --pre-background-color: var(--secondary-background);
+}
+// 获取VuePress的默认颜色并覆盖默认颜色
+html[data-theme="light"] #app,
+html[data-theme="dark"] #app{
+  --ab-tab-root-bg-color: var(--bg-color);     // --code-bg-color
+  --ab-tab-root-bd-color: var(--border-color); // --code-border-color
+  --ab-tab-root-tx-color: var(--text-color);   // --code-color
+
+  --ab-bright-color: var(--theme-color);
+  --pre-background-color: var(--code-bg-color);
 }
 
+// obsidian各模式下的微调
 .app-container {
   // 阅读模式
   .markdown-reading-view {
@@ -22,7 +50,8 @@
   // 源码/实时模式
   .markdown-source-view {
     .ab-replace{
-      margin-bottom: 0;
+      margin-top: -18px; // 消除CM自带的间隙
+      margin-bottom: -18px;
     }
   }
   // 源码模式
@@ -88,9 +117,6 @@
 
   // 标签栏
   .ab-tab-root{
-    --ab-tab-root-bg-color: #0d1117; // #ffffff;
-    --ab-tab-root-bd-color: #34343f; // #e0e0e0;
-    --ab-tab-root-tx-color: #9e9e9e; // blackc
     .ab-tab-nav {
       // height: 40px;
       box-sizing: border-box;
@@ -343,7 +369,7 @@
       .ab-list-table-svg svg{
         width: 14px;
         height: 14px;
-        fill: lightgoldenrodyellow;
+        fill: var(--ab-bright-color);
       }
       // 边框处理
       td:first-child {
@@ -378,7 +404,7 @@
       border-right: solid 2px;
       padding-left: 5px;
       padding-right: 20px;
-      color: orange;
+      color: var(--ab-bright-color);
 
       position: relative;
       &::after {
@@ -390,7 +416,7 @@
         right: -8px;
 
         content: '';
-        background-color: orange;
+        background-color: var(--ab-bright-color);
         border-radius: 50%;
         border: solid 2px;
       }
@@ -456,7 +482,7 @@
   // 折叠
   .ab-deco-fold{
     .ab-deco-fold-button{
-      background-color: slateblue;
+      background-color: var(--ab-bright-color);
       height: 30px;
       line-height: 30px;
       padding-left: 6px;
@@ -551,10 +577,6 @@
 
   // 快捷的二层容器 container
   .ab-items {
-    --ab-tab-root-bg-color: #0d1117; // #ffffff;
-    --ab-tab-root-bd-color: #34343f; // #e0e0e0;
-    --ab-tab-root-tx-color: #9e9e9e; // blackc
-  
     // 分栏
     &.ab-col{
       display: flex; // Flexbox 布局
@@ -648,19 +670,19 @@
     // align-items: flex-start;
     // gap: 1em; // 根的上下间距
 
-    // 圆弧左侧
+    // 圆弧节点，最左侧必是
     .ab-nodes-content {
       display: inline-block;
       background-color: rgba(100,100,100,0.25);
-      padding: 5px 10px 5px 10px;
+      padding: 2px 10px;
       margin-left: 5px;
     }
-    // 圆弧右侧
+    // 圆弧节点组，最右测必是
     .ab-nodes-children {
       display: flex;
       flex-direction: column;
       // align-items
-      gap: 1.2em; // 上下间距
+      gap: 16px; // 上下间距，旧1.2em/20px
 
       // border-left: 2px solid currentColor; // black;
       padding-left: 0.8em;
@@ -717,36 +739,36 @@ div.md-table-fig1{
 }
 
 // 自定义样式
-.ab-custom-text-red {color: red;}
-.ab-custom-text-orange {color: orange;}
-.ab-custom-text-yellow {color: yellow;}
-.ab-custom-text-green {color: green;}
-.ab-custom-text-cyan {color: cyan;}
-.ab-custom-text-blue {color: blue;}
-.ab-custom-text-purple {color: purple;}
-.ab-custom-text-white {color: white;}
-.ab-custom-text-black {color: black;}
-.ab-custom-bg-red {background-color: red;}
-.ab-custom-bg-orange {background-color: orange;}
-.ab-custom-bg-yellow {background-color: yellow;}
-.ab-custom-bg-green {background-color: green;}
-.ab-custom-bg-cyan {background-color: cyan;}
-.ab-custom-bg-blue {background-color: blue;}
-.ab-custom-bg-purple {background-color: purple;}
-.ab-custom-bg-white {background-color: white;}
-.ab-custom-bg-black {background-color: black;}
-.ab-custom-dire-top {vertical-align: top;}
-.ab-custom-dire-down {vertical-align: bottom;}
-.ab-custom-dire-left {text-align: left;}
-.ab-custom-dire-right {text-align: right;}
-.ab-custom-dire-center {vertical-align: middle; text-align: center;}
-.ab-custom-dire-hcenter {text-align: center;}
-.ab-custom-dire-vcenter {vertical-align: middle;}
-.ab-custom-dire-justify {text-align: justify;}
-.ab-custom-font-large {font-size: large;}
-.ab-custom-font-largex {font-size: x-large;}
-.ab-custom-font-largexx {font-size: xx-large;}
-.ab-custom-font-small {font-size: small;}
-.ab-custom-font-smallx {font-size: x-small;}
-.ab-custom-font-smallxx {font-size: xx-small;}
-.ab-custom-font-bold {font-weight: bold;}
+.ab-custom-text-red {color: red !important;}
+.ab-custom-text-orange {color: orange !important;}
+.ab-custom-text-yellow {color: yellow !important;}
+.ab-custom-text-green {color: green !important;}
+.ab-custom-text-cyan {color: cyan !important;}
+.ab-custom-text-blue {color: blue !important;}
+.ab-custom-text-purple {color: purple !important;}
+.ab-custom-text-white {color: white !important;}
+.ab-custom-text-black {color: black !important;}
+.ab-custom-bg-red {background-color: red !important;}
+.ab-custom-bg-orange {background-color: orange !important;}
+.ab-custom-bg-yellow {background-color: yellow !important;}
+.ab-custom-bg-green {background-color: green !important;}
+.ab-custom-bg-cyan {background-color: cyan !important;}
+.ab-custom-bg-blue {background-color: blue !important;}
+.ab-custom-bg-purple {background-color: purple !important;}
+.ab-custom-bg-white {background-color: white !important;}
+.ab-custom-bg-black {background-color: black !important;}
+.ab-custom-dire-top * {vertical-align: top !important;}
+.ab-custom-dire-down * {vertical-align: bottom !important;}
+.ab-custom-dire-left * {text-align: left !important;}
+.ab-custom-dire-right * {text-align: right !important;}
+.ab-custom-dire-center * {vertical-align: middle !important; text-align: center !important;}
+.ab-custom-dire-hcenter * {text-align: center !important;}
+.ab-custom-dire-vcenter * {vertical-align: middle !important;}
+.ab-custom-dire-justify * {text-align: justify !important;}
+.ab-custom-font-large {font-size: large !important;}
+.ab-custom-font-largex {font-size: x-large !important;}
+.ab-custom-font-largexx {font-size: xx-large !important;}
+.ab-custom-font-small {font-size: small !important;}
+.ab-custom-font-smallx {font-size: x-small !important;}
+.ab-custom-font-smallxx {font-size: xx-small !important;}
+.ab-custom-font-bold {font-weight: bold !important;}

@@ -23,7 +23,8 @@ export const ABReg = {
    * - 允许 `%%` 和 `:` 的规则是V3新增的
    */
   // 有前缀版本（给选择器用）
-  reg_header:   /^((\s|>\s|-\s|\*\s|\+\s)*)(%%)?(\[((?!toc)(?!TOC)[0-9a-zA-Z\u4e00-\u9fa5].*)\]):?(%%)?\s*$/,
+  reg_header:   /^((\s|>\s|-\s|\*\s|\+\s)*)(%%)?(\[((?!toc|TOC|< )[0-9a-zA-Z\u4e00-\u9fa5].*)\]):?(%%)?\s*$/,
+  reg_header_up:/^((\s|>\s|-\s|\*\s|\+\s)*)(%%)?(\[((?!toc|TOC)< [0-9a-zA-Z\u4e00-\u9fa5].*)\]):?(%%)?\s*$/,  // 向上检查标志的 头部选择器
   reg_mdit_head:/^((\s|>\s|-\s|\*\s|\+\s)*)(:::)\s?(.*)/,         // TODO 应该改成 `::::*`
   reg_mdit_tail:/^((\s|>\s|-\s|\*\s|\+\s)*)(:::)/,
 
@@ -34,7 +35,8 @@ export const ABReg = {
   reg_table:    /^((\s|>\s|-\s|\*\s|\+\s)*)(\|(.*)\|)/,
 
   // 无前缀版本（给处理器用，处理器不需要处理前缀，前缀在选择器阶段已经被去除了）
-  reg_header_noprefix:   /^((\s)*)(%%)?(\[((?!toc)(?!TOC)[0-9a-zA-Z\u4e00-\u9fa5].*)\]):?(%%)?\s*$/,
+  reg_header_noprefix:   /^((\s)*)(%%)?(\[((?!toc|TOC|< )[0-9a-zA-Z\u4e00-\u9fa5].*)\]):?(%%)?\s*$/,
+  reg_header_up_noprefix:/^((\s)*)(%%)?(\[((?!toc|TOC)< [0-9a-zA-Z\u4e00-\u9fa5].*)\]):?(%%)?\s*$/,
   reg_mdit_head_noprefix:/^((\s)*)(:::)\s?(.*)/,
   reg_mdit_tail_noprefix:/^((\s)*)(:::)/,
 
@@ -48,4 +50,14 @@ export const ABReg = {
   reg_indentline_noprefix:/^\s+?\S/,
 
   inline_split: /\| |,  |， |\.  |:  |： /, // 内联切分。除`|`外，半角符号+两空格，或全角符号+一空格
+}
+
+/**
+ * ABConvert的设置
+ * 
+ * @detail
+ * 可以被obsidian的设置覆盖，如果没有GUI设置页面，可以人工修改
+ */
+export let ABCSetting = {
+  is_debug: false
 }
