@@ -1,6 +1,7 @@
 // place your custom styles here
 @import 'linc_rainbow.scss';
 @import '../plugin/ABConvertManager/style/styles.scss';
+@import '../plugin/callout/index.scss';
 //@import 'linc_wide.scss';
 
 // 首页首banner加高
@@ -47,4 +48,10 @@ html[data-theme="dark"] {
   em {
     color: #ffff88;
   }
+}
+
+// 背景色
+html[data-theme="dark"] {
+  --bg-color: #1f1f1f; // 由深到浅：原 #0d1117、vsc #1f1f1f、ob #242424
+  --bg-color-secondary: #181818; // 由深到浅：原 #161b22、vsc #181818、ob #1b1b1b
 }

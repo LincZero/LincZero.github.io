@@ -37,6 +37,9 @@ devDependencies:
   markdown-it-container:
     specifier: ^4.0.0
     version: 4.0.0
+  markdown-it-obsidian-callouts:
+    specifier: ^0.2.6
+    version: 0.2.6(markdown-it@14.1.0)
   markmap-lib:
     specifier: ^0.17.0
     version: 0.17.0(markmap-common@0.17.0)
@@ -2869,6 +2872,14 @@ packages:
 
   /markdown-it-mark@4.0.0:
     resolution: {integrity: sha512-YLhzaOsU9THO/cal0lUjfMjrqSMPjjyjChYM7oyj4DnyaXEzA8gnW6cVJeyCrCVeyesrY2PlEdUYJSPFYL4Nkg==}
+    dev: true
+
+  /markdown-it-obsidian-callouts@0.2.6(markdown-it@14.1.0):
+    resolution: {integrity: sha512-GCsdwEQZU+J8a+F6Gm9igzNMWdj+amkzgKMBbYoAKTkfBiaP1Vf1QkCuD3hj0R6V7qT0r9QwvPxo5AJtQdnx0A==}
+    peerDependencies:
+      markdown-it: ^14.0.0
+    dependencies:
+      markdown-it: 14.1.0
     dev: true
 
   /markdown-it-sub@2.0.0:

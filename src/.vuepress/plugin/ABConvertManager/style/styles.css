@@ -18,8 +18,8 @@
   --pre-background-color: #1b1b1b;
 }
 
-.theme-dark,
-.theme-light {
+.theme-light,
+.theme-dark {
   --ab-tab-root-bg-color: var(--color-base-00);
   --ab-tab-root-bd-color: var(--color-base-30);
   --ab-tab-root-tx-color: var(--color-base-70);

@@ -18,6 +18,7 @@
     "@vueuse/core": "^10.9.0",
     "jsdom": "^24.1.1",
     "markdown-it-container": "^4.0.0",
+    "markdown-it-obsidian-callouts": "^0.2.6",
     "markmap-lib": "^0.17.0",
     "markmap-toolbar": "^0.17.0",
     "markmap-view": "^0.17.0",

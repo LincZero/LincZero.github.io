@@ -19,8 +19,8 @@
   --pre-background-color: #1b1b1b;  // rgb(36,36,36)
 }
 // 获取一些Obsidian的默认颜色并覆盖默认颜色 (mdit不可用)
-.theme-dark,
-.theme-light{
+.theme-light,
+.theme-dark{
   --ab-tab-root-bg-color: var(--color-base-00);
   --ab-tab-root-bd-color: var(--color-base-30);
   --ab-tab-root-tx-color: var(--color-base-70);
