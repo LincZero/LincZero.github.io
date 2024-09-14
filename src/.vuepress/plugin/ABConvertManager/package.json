@@ -15,6 +15,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run build_tsc",
     "build_tsc": "tsc",
+    "build_tsup": "tsup",
     "build_vite": "vite build",
     "build_rollup": "rollup -c",
     "prepublishOnly": "npm run build"
@@ -33,6 +34,8 @@
     "jsdom": "^25.0.0",
     "markdown-it-container": "^4.0.0",
     "rollup": "^4.21.3",
+    "tsup": "^8.2.4",
+    "typescript": "^5.6.2",
     "vite": "^5.4.5"
   }
 }

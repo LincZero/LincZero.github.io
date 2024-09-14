@@ -6,13 +6,16 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   build: {
+    target: "ESNext",
     assetsInlineLimit: 0, // 禁用文件hash
     minify: false, // 禁用代码压缩，包括混淆
     lib: {
+      // 入口
       // 二选一，mdit版
       entry: 'src/index_mdit.ts',
       // 二选一，ob版
       // entry: 'src/index_ob.ts',
+
       name: 'MdItAnyBlock',
       formats: ['es', 'cjs'], //  ['es', 'cjs']
       fileName: (format) => format == 'es'
