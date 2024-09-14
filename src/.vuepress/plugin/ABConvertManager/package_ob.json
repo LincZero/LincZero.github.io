@@ -1,0 +1,22 @@
+{
+  "name": "any-block-converter-obsidian",
+  "version": "3.1.3-beta9",
+  "description": "```typescript\r import { ABConvertManager } from \"ABConvertManager\"",
+  "main": "dist/index_ob.js",
+  "types": "@types/index_ob.d.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "LincZero",
+  "license": "GNU Affero General Public License v3.0",
+  "dependencies": {
+    "@mermaid-js/mermaid-mindmap": "^9.3.0",
+    "markmap-lib": "^0.17.0",
+    "mermaid": "^10.9.1",
+    "plantuml-encoder": "^1.4.0"
+  },
+  "devDependencies": {
+    "@types/plantuml-encoder": "^1.4.2"
+  }
+}

@@ -1,7 +1,8 @@
 /**
- * markdown-it 扩展相关 + markdown-it-anyBlock 的实现
+ * - obsidian版的，那么index.ts是入口函数
+ * - mdit版的，那么index_mdit.ts是入口函数
  * 
- * 其中插件部分暂自用，等需要发布时再从这里剥离开，放到npm官网上
+ * markdown-it 扩展相关 + markdown-it-anyBlock 的实现
  * 
  * @detail
  * 依赖问题：
@@ -54,6 +55,7 @@ const { JSDOM } = jsdom
 const dom = new JSDOM(`<!DOCTYPE html><html><body></body></html>`, {
   url: 'http://localhost/', // @warn 若缺少该行，则在mdit+build环境下，编译报错
 });
+// @ts-ignore 不能将类型“DOMWindow”分配给类型“Window & typeof globalThis”
 global.window = dom.window
 global.history = dom.window.history // @warn 若缺少该行，则在mdit+build环境下，编译报错：ReferenceError: history is not defined
 global.document = dom.window.document
@@ -84,6 +86,7 @@ import "./converter/abc_mdit_container"
 import "./converter/abc_plantuml" // 可选建议：
 import "./converter/abc_mermaid"  // 可选建议：7.1MB
 import "./converter/abc_markmap"  // 可选建议：1.3MB
+import MarkdownIt from "markdown-it";
 
 interface Options {
   multiline: boolean;
@@ -101,7 +104,7 @@ interface Options {
  * @detail
  * 选择 [] 包裹的正文段
  */
-function abSelector_squareInline(md: markdownit, options?: Partial<Options>): void {
+function abSelector_squareInline(md: MarkdownIt, options?: Partial<Options>): void {
   md.block.ruler.before('paragraph', 'AnyBlockParagraph', function (state,startLine,endLine) {
     
     // (1) 匹配ab块头部
@@ -243,7 +246,7 @@ function abSelector_squareInline(md: markdownit, options?: Partial<Options>): vo
  * 
  * @detail 选择 `:::anyBlock` 包裹的片段
  */
-function abSelector_container(md: markdownit, options?: Partial<Options>): void {
+function abSelector_container(md: MarkdownIt, options?: Partial<Options>): void {
   md.use(MarkdownItConstructor, 'AnyBlockContainer', {
 
     validate: function(params) {
@@ -269,7 +272,7 @@ function abSelector_container(md: markdownit, options?: Partial<Options>): void 
 /**
  * 渲染 anyBlock 块 - codeBlock/fence 规则
  */
-function abRender_fence(md: markdownit, options?: Partial<Options>): void {
+function abRender_fence(md: MarkdownIt, options?: Partial<Options>): void {
   const oldFence = md.renderer.rules.fence || function(tokens, idx, options, env, self) {
     return self.renderToken(tokens, idx, options);
   };
@@ -335,7 +338,7 @@ function abRender_fence(md: markdownit, options?: Partial<Options>): void {
   }
 }
 
-export default function ab_mdit(md: markdownit, options?: Partial<Options>): void {
+export default function ab_mdit(md: MarkdownIt, options?: Partial<Options>): void {
   // 定义默认渲染行为
   ABConvertManager.getInstance().redefine_renderMarkdown((markdown: string, el: HTMLElement): void => {
     el.classList.add("markdown-rendered")

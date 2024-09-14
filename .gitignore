@@ -3,8 +3,7 @@ node_modules/
 src/.vuepress/.cache/
 src/.vuepress/.temp/
 src/.vuepress/dist/
-
 # src/*
-!src/.vuepress/
+# !src/.vuepress/
 
 tmp_docs/

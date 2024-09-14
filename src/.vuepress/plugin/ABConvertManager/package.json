@@ -1,20 +1,38 @@
 {
-  "name": "any-block-converter",
-  "version": "3.1.0",
+  "name": "any-block-converter-markdown-it",
+  "version": "3.1.3-beta9",
   "description": "```typescript\r import { ABConvertManager } from \"ABConvertManager\"",
-  "main": "index.js",
+  "main": "dist/index_mdit.js",
+  "types": "@types/index_mdit.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index_mdit.js",
+      "require": "./dist/index_mdit.cjs"
+    }
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run build_tsc",
+    "build_tsc": "tsc",
+    "build_vite": "vite build",
+    "build_rollup": "rollup -c",
+    "prepublishOnly": "npm run build"
   },
   "author": "LincZero",
   "license": "GNU Affero General Public License v3.0",
   "dependencies": {
-    "@mermaid-js/mermaid-mindmap": "^9.3.0",
-    "markmap-lib": "^0.17.0",
-    "mermaid": "^10.9.1",
+    "markdown-it": "^14.1.0",
     "plantuml-encoder": "^1.4.0"
   },
   "devDependencies": {
-    "@types/plantuml-encoder": "^1.4.2"
+    "@types/jsdom": "^21.1.7",
+    "@types/markdown-it": "^14.1.2",
+    "@types/markdown-it-container": "^2.0.10",
+    "@types/plantuml-encoder": "^1.4.2",
+    "jsdom": "^25.0.0",
+    "markdown-it-container": "^4.0.0",
+    "rollup": "^4.21.3",
+    "vite": "^5.4.5"
   }
 }

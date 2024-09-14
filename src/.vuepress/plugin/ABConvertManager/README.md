@@ -24,7 +24,9 @@ ABConvertManager.getInstance().redefine_renderMarkdown((markdown: string, el: HT
 ABConvertManager.autoABConvert(el:HTMLDivElement, header:string, content:string): HTMLElement
 ```
 
-### Obsidian 回调函数设置
+### 其中，回调函数设置详细说下
+
+Obsidian 回调设置如下：
 
 ```typescript
 ABConvertManager.getInstance().redefine_renderMarkdown((markdown: string, el: HTMLElement): void => {
@@ -59,13 +61,34 @@ ABConvertManager.getInstance().redefine_renderMarkdown((markdown: string, el: HT
 })
 ```
 
-### MarkdownIt 回调函数设置
+MarkdownIt 回调函数设置如下：
 
 ```typescript
 ABConvertManager.getInstance().redefine_renderMarkdown((markdown: string, el: HTMLElement): void => {
     const result: string = md.render(markdown)
     const el_child = document.createElement("div"); el.appendChild(el_child); el_child.innerHTML = result;
 })
+```
+
+至于其他平台的可以参考上面两者进行设置
+
+### 使用流程改良 (npm版)
+
+作者上传npm：
+
+```bash
+$ npm adduser  # 先登录，在vscode里他会让我打开浏览器来登录
+Username: ...
+Password: ...
+
+$ npm publish  # 上传 (注意不要重名、npm账号可能需要邮箱验证)
+```
+
+从npm下载并使用：
+
+```bash
+$pnpm install -D any-block-converter-markdown-it@3.1.2 # 我这里的vuepress环境统一用pnpm (实际上根据你的习惯使用npm也好)
+# 后面的使用和前面类似
 ```
 
 ## 开发/设计/架构补充
@@ -155,3 +178,20 @@ import DOMPurify from "isomorphic-dompurify"
 // 替换
 import DOMPurify from "dompurify"
 ```
+
+### npm使用可能遇到的报错
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module
+
+解决见：https://stackoverflow.com/questions/65384754/error-err-module-not-found-cannot-find-module
+
+1. 手动添加.js扩展名
+2. 设置别名，
+   tsconfig.json: 
+   ```json
+   "paths": {
+      "@theme-hope/*": ["./src/client/*.js"]
+    }
+   ```
+3. 设置环境变量 (windows设置麻烦点，见我个人网站的仓库的主repo那里写过一次，这里不写了)
+   `NODE_OPTIONS='--experimental-specifier-resolution=node'`
