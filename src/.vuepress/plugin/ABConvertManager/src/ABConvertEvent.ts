@@ -96,7 +96,8 @@ export function abConvertEvent(d: Element|Document) {
   }
 
   // xxx2markmap，渲染事件
-  if (d.querySelector('.ab-markmap-svg')) {
+  // 注意：markdown-it 版本不要用这个
+  if (false && d.querySelector('.ab-markmap-svg')) {
     let script_el: HTMLScriptElement|null = document.querySelector('script[script-id="ab-markmap-script"]');
     if (script_el) script_el.remove();
     script_el = document.createElement('script'); document.head.appendChild(script_el);

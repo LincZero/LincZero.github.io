@@ -1,10 +1,11 @@
 /// VuePress 相关的设置
 
-import { defineUserConfig } from "vuepress";        // vuepress
+import { defineUserConfig } from "vuepress";                  // vuepress
 
-import theme from "./theme.ts";                     // hope主题 - 默认部分
-import alias from "./config_alias.ts";                     // hope主题 - 别名扩展
-import extendsMarkdown from "./config_extendsMarkdown.ts";     // hope主题 - mdit扩展
+import theme from "./theme.ts";                               // hope主题 - 默认部分
+import alias from "./config_alias.ts";                        // hope主题 - 别名扩展
+import extendsMarkdown from "./config_extendsMarkdown.ts";    // hope主题 - mdit扩展
+import plugins from "./config_plugins.ts";                    // hope主题 - 插件扩展
 
 export default defineUserConfig({
   
@@ -27,6 +28,7 @@ export default defineUserConfig({
   theme,
   alias,
   extendsMarkdown,
+  plugins,
 
   // ------------------ 其他 ---------------------
   // 使网页成为PWA
