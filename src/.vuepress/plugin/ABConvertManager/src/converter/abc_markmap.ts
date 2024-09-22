@@ -62,6 +62,7 @@ function list2markmap(markdown: string, div: HTMLDivElement) {
 		// // if (assets.scripts) loadJS(assets.scripts, { getMarkmap: () => {} });
 		// const mindmaps = document.querySelectorAll('.ab-markmap-svg'); // 注意一下这里的选择器
 		// for(const mindmap of mindmaps) {
+		//  mindmap.innerHTML = "";
 		// 	const datajson: string|null = mindmap.getAttribute('data-json')
 		// 	if (datajson === null) { console.error("ab-markmap-svg without data-json") }
 		// 	g_markmap = Markmap.create(mindmap as SVGElement, undefined, JSON.parse(datajson as string));
@@ -90,14 +91,18 @@ function list2markmap(markdown: string, div: HTMLDivElement) {
 		// import { Markmap, } from 'https://jspm.dev/markmap-view';
 		// const mindmaps = document.querySelectorAll('.ab-markmap-svg');
 		// for(const mindmap of mindmaps) {
+		//  mindmap.innerHTML = "";
 		// 	Markmap.create(mindmap,null,JSON.parse(mindmap.getAttribute('data-json')));
 		// }\``);
 		// // TODO 似乎是这里导致了`'`符号的异常
-		// const svg_div = document.createElement("div"); div.appendChild(svg_div);
+		// const svg_div = document.createElement("div");
 		// let height_adapt = 100 + markdown.split("\n").length*25; // 仅大致估算px: 100 + (0~40)行 * 25 = [200~1000]。如果要准确估计，得自己解析一遍，麻烦
 		// if (height_adapt>1000) height_adapt = 1000;
-		// const html_str = `<svg class="ab-markmap-svg" data-json='${JSON.stringify(root)}' style="height: ${height_adapt}px;"></svg>`
+		// const randomId = Math.random().toString(36).substring(2);
+		// let id = `ab-markmap-${randomId}`;
+		// const html_str = `<svg class="ab-markmap-svg" id="${id}" data-json='${JSON.stringify(root)}' style="height: ${height_adapt}px;"></svg>`
 		// svg_div.innerHTML = html_str
+		// div.innerHTML = svg_div.outerHTML;
 	}
 
 	return div
