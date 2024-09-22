@@ -16,7 +16,7 @@ export default defineClientConfig({
  * 调用：客户端加载时被调用
  */
 function newPageHook_init (
-  delay = 300,
+  delay = 1000,
   showInMobile = false,
 ): void {
   // 一些参数准备
@@ -32,7 +32,9 @@ function newPageHook_init (
   const newPageHookFn = async (): Promise<void> => {
     // console.log("newPageHook_fn", page.value.path)
     await nextTick()
-    await wait(delay)
+    await wait(delay/4) // 分两次更新，能确保响应够快，同时慢修改加载慢的东西
+    abConvertEvent(document)
+    await wait(delay/4*3)
     abConvertEvent(document)
   }
 

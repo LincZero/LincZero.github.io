@@ -1,8 +1,8 @@
-import copyCodePlugin from "./plugin/newPageHook"
+import newPageHook from "./plugin/newPageHook"
 type PluginConfig = any;
 
 const plugins: PluginConfig = [
-  copyCodePlugin
+  newPageHook
 ]
 
 export default plugins
