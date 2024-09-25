@@ -177,25 +177,29 @@ html[data-theme="dark"] #app {
   }
 
   // 使单元格内容更紧凑 - 去除单元格内部的间隔 (首尾)
-  td>p:first-child, th>p:first-child, // ob x 5
+  td>p:first-child, th>p:first-child, // ob x 8
   td>ul:first-child, th>ul:first-child,
   .ab-list-table-witharrow>p:first-child,
   .ab-nodes-content>p:first-child,
-  td>div>p:first-child, th>div>p:first-child, // mdit x 5
+  .ab-items-item>div>p:first-child, .ab-items-item>div>ul:first-child,
+  td>div>p:first-child, th>div>p:first-child, // mdit x 8
   td>div>ul:first-child, th>div>ul:first-child, 
   .ab-list-table-witharrow>div>p:first-child,
-  .ab-nodes-content>div>p:first-child
+  .ab-nodes-content>div>p:first-child,
+  .ab-items-item>div>div>p:first-child, .ab-items-item>div>div>ul:first-child
   {
     margin-top: 0;
   }
-  td>p:last-child, th>p:last-child, // ob x 5
+  td>p:last-child, th>p:last-child, // ob x 8
   td>ul:last-child, th>ul:last-child, 
   .ab-list-table-witharrow>p:last-child,
   .ab-nodes-content>p:last-child,
-  td>div>p:last-child, th>div>p:last-child, // mdit x 5
+  .ab-items-item>div>p:last-child, .ab-items-item>div>ul:last-child,
+  td>div>p:last-child, th>div>p:last-child, // mdit x 8
   td>div>ul:last-child, th>div>ul:last-child,
   .ab-list-table-witharrow>div>p:last-child,
-  .ab-nodes-content>div>p:last-child
+  .ab-nodes-content>div>p:last-child,
+  .ab-items-item>div>div>p:last-child, .ab-items-item>div>div>ul:last-child
   {
     margin-bottom: 0;
   }
@@ -427,6 +431,7 @@ html[data-theme="dark"] #app {
       color: var(--ab-bright-color);
 
       position: relative;
+      overflow: visible;
       &::after {
         position: absolute;
         top: 1em;
@@ -617,10 +622,23 @@ html[data-theme="dark"] #app {
         color: var(--ab-tab-root-tx-color);
         background-color: var(--ab-tab-root-bg-color);
         border: solid 2px var(--ab-tab-root-bd-color);
+        border-radius: 6px;
         box-shadow: #34343f;
-
-        padding: 5px 10px;
         margin-bottom: 10px;
+        padding: 5px 10px;
+
+        &>div {
+          padding-top: 5px;
+          padding-bottom: 5px;
+        }
+
+        .ab-items-title {
+          color: var(--ab-bright-color);
+          border-bottom: 1px solid var(--ab-bright-color);
+        }
+        .ab-items-content {
+          
+        }
       }
 
       // 方式一，对齐, flex布局
@@ -699,6 +717,10 @@ html[data-theme="dark"] #app {
     }
     // 圆弧节点组，最右测必是
     .ab-nodes-children {
+      &[has_children="false"] {
+        display: none;
+      }
+
       display: flex;
       flex-direction: column;
       // align-items
@@ -714,7 +736,7 @@ html[data-theme="dark"] #app {
         width: 8px;
         height: 8px;
         top: calc(50% - 4px);
-        left: calc(-8px - 2px + 1px); // 重合一个px避免出现黑线
+        left: calc(-8px + 2px); // 重合一个px避免出现黑线
         clip-path: polygon(100% 0, 100% 100%, 13.40% 50%); // 裁剪成等边三角形
         background-color: currentColor;
       }
@@ -725,7 +747,7 @@ html[data-theme="dark"] #app {
         width: 10px;
         height: calc(100% - 8px);  // JS: 缩短第一个和最后一个节点的一半
         top: 4px;                  // JS: 第一个节点的一半
-        left: -2px;
+        left: 0;
         border-radius: 10px 0 0 10px;
         border-left: 2px solid currentColor;
         border-top: 2px solid currentColor;
@@ -761,10 +783,20 @@ html[data-theme="dark"] #app {
       }
 
       .ab-nodes-bracket {
-        width: 6px;
+        display: none;
         width: 6px;
         top: calc(50% - 4px);
-        left: calc(-8px - 0px + 1px)
+        left: calc(-8px + 2px)
+      }
+    }
+
+    // 间隔换padding，方便 “接线”
+    .ab-nodes-content {
+      padding-right: 1.2em;
+    }
+    .ab-nodes-children {
+      .ab-nodes-node {
+        gap: 0;
       }
     }
   }
@@ -836,3 +868,10 @@ div.md-table-fig1{
 .ab-custom-font-smallx {font-size: x-small !important;}
 .ab-custom-font-smallxx {font-size: xx-small !important;}
 .ab-custom-font-bold {font-weight: bold !important;}
+
+/**************** 兼容性补充 ******************/
+
+// BT主题在阅读模式下会干扰表格高度 (不确定有无其他误影响)
+.ab-note :is(.markdown-preview-view,.markdown-rendered).is-readable-line-width:not(.matrix) :is(.markdown-rendered) {
+  width: auto;
+}

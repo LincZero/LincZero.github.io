@@ -21,6 +21,7 @@
 import {ABConvert_IOEnum, ABConvert, type ABConvert_SpecSimp} from "./ABConvert"
 import {ABConvertManager} from "../ABConvertManager"
 import {ABReg} from "../ABReg"
+import { abConvertEvent, markmap_event } from "../ABConvertEvent";
 
 /**
  * 生成一个随机id
@@ -45,6 +46,8 @@ process_param: ABConvert_IOEnum.text,
 process_return: ABConvert_IOEnum.el,
 process: (el, header, content: string): HTMLElement=>{
 		list2markmap(content, el)
+    markmap_event(el)
+    // setTimeout(()=>{abConvertEvent(el)}, 500);
 		return el
 	}
 })
@@ -77,7 +80,7 @@ function list2markmap(markdown: string, div: HTMLDivElement) {
 		div.innerHTML = `<div class="ab-raw-data" type-data="markmap" content-data='${markdown}'></div>`
 
 		// 4. 四选一。纯动态/手动渲染 (优缺点见abc_mermaid的相似方法)。
-		// 旧Ob使用，现在Ob的刷新按钮统一放在了外面
+		// 4.1. 旧Ob使用
 		// const svg_btn = document.createElement("button"); div.appendChild(svg_btn); svg_btn.textContent = "ChickMe ReRender Markmap";
 		// svg_btn.setAttribute("style", "background-color: argb(255, 125, 125, 0.5)");
 		// svg_btn.setAttribute("onclick", `
@@ -94,15 +97,13 @@ function list2markmap(markdown: string, div: HTMLDivElement) {
 		//  mindmap.innerHTML = "";
 		// 	Markmap.create(mindmap,null,JSON.parse(mindmap.getAttribute('data-json')));
 		// }\``);
-		// // TODO 似乎是这里导致了`'`符号的异常
-		// const svg_div = document.createElement("div");
-		// let height_adapt = 100 + markdown.split("\n").length*25; // 仅大致估算px: 100 + (0~40)行 * 25 = [200~1000]。如果要准确估计，得自己解析一遍，麻烦
-		// if (height_adapt>1000) height_adapt = 1000;
-		// const randomId = Math.random().toString(36).substring(2);
-		// let id = `ab-markmap-${randomId}`;
-		// const html_str = `<svg class="ab-markmap-svg" id="${id}" data-json='${JSON.stringify(root)}' style="height: ${height_adapt}px;"></svg>`
+    // 4.2. 新Ob使用，现在Ob的刷新按钮统一放在了外面
+    // let height_adapt = 30 + markdown.split("\n").length*15; // 1. 仅大致估算px: 30 + (0~50)行 * 15 = [30~780]。2. 如果要准确估计，得自己解析一遍，麻烦。3. 并且后面会有个事件覆盖掉这个大致高度，所以这里不重要。4. 另外采用"偏小"策略，视觉效果好一些
+    // if (height_adapt>1000) height_adapt = 1000;
+    // const id = Math.random().toString(36).substring(2);
+		// const svg_div = document.createElement("div"); div.appendChild(svg_div); svg_div.classList.add("ab-markmap-div"); svg_div.id = "ab-markmap-div-"+id
+		// const html_str = `<svg class="ab-markmap-svg" id="ab-markmap-${id}" data-json='${JSON.stringify(root)}' style="height:${height_adapt}px"></svg>` // TODO 似乎是这里导致了`'`符号的异常
 		// svg_div.innerHTML = html_str
-		// div.innerHTML = svg_div.outerHTML;
 	}
 
 	return div

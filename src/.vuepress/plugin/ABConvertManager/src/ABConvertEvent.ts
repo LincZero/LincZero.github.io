@@ -7,8 +7,10 @@
  * 这些操作统一注册在此处
  */
 
+import { MarkdownEditView } from "obsidian";
+
 /**
- * 一些AB块的后触发事件
+ * 一些AB块的后触发事件 - css加载完触发
  * 
  * @param d 这里有两种可能：
  *   - 一是局部刷新，d就是局部的div
@@ -21,46 +23,95 @@ export function abConvertEvent(d: Element|Document) {
     const list_children = d.querySelectorAll(".ab-nodes-node")
     for (let children of list_children) {
       // 元素准备
+      const el_content = children.querySelector(".ab-nodes-content") as HTMLElement; if (!el_content) continue
       const el_child = children.querySelector(".ab-nodes-children") as HTMLElement; if (!el_child) continue
       const el_bracket = el_child.querySelector(".ab-nodes-bracket") as HTMLElement; if (!el_bracket) continue
       const el_bracket2 = el_child.querySelector(".ab-nodes-bracket2") as HTMLElement; if (!el_bracket2) continue
-      const childNodes = el_child.childNodes;
-      if (childNodes.length < 3) {
+      const els_child = el_child.childNodes;
+      if (els_child.length < 3) {
         el_bracket.style.setProperty("display", "none")
         el_bracket2.style.setProperty("display", "none")
         continue
       }
-      const el_child_first = childNodes[2] as HTMLElement;
-      const el_child_last = childNodes[childNodes.length - 1] as HTMLElement;
+      const el_child_first = els_child[2] as HTMLElement;
+      const el_child_last = els_child[els_child.length - 1] as HTMLElement;
+      const el_child_first_content = el_child_first.querySelector(".ab-nodes-content") as HTMLElement
+      const el_child_last_content = el_child_last.querySelector(".ab-nodes-content") as HTMLElement
 
-      // if (childNodes.length == 3) { 
-      //   const heightToReduce = (el_child_first.offsetHeight + el_child_last.offsetHeight) / 2;
-      //   el_bracket2.style.setProperty("height", `0`);
-      //   el_bracket2.style.setProperty("top", `${el_child_first.offsetHeight/2-2}px`);
-      // }
+      // 参数准备
+      // 有两种情况，如果height非零则高度等于 (height) (通常1-1结构会是这种情况)，若无则高度等于 (100%-heightToReduce)
+      let height = 0;
+      let heightToReduce = (el_child_first.offsetHeight + el_child_last.offsetHeight) / 2;
 
       // 修改伪类
-      // 以前这里只判断childNodes.length，但后来发现哪怕后面只有一个，但这一个后面可能又接不止一个。所以要动态多算下高度
-      const heightToReduce = (el_child_first.offsetHeight + el_child_last.offsetHeight) / 2;
-      if (childNodes.length == 3 && el_bracket2.offsetHeight - heightToReduce < 20) {
-        el_bracket2.style.setProperty("height", `20px`);
-        el_bracket2.style.setProperty("top", `${el_child_first.offsetHeight/2-10}px`);
-      } else {
-        el_bracket2.style.setProperty("height", `calc(100% - ${heightToReduce}px)`);
-        el_bracket2.style.setProperty("top", `${el_child_first.offsetHeight/2}px`);
+      if (els_child.length == 3) { // 结构：1-1
+        height = (el_child_first_content.offsetHeight-20) > 20 ? (el_child_first_content.offsetHeight-20) : 20
+        el_bracket2.style.cssText = `
+          height: ${height}px;
+          top: calc(50% - ${(height)/2}px);
+        `
+      } else { // 结构：1-n
+        el_bracket2.style.cssText = `
+          height: calc(100% - ${heightToReduce}px);
+          top: ${el_child_first.offsetHeight/2}px;
+        `
       }
 
-      // min版 (存在问题：内换行有问题，而且样式不统一。而且用canvas的思路应该是不对的，应该参考mehrmaid用svg，还能包裹div)
-      /*if (Array.prototype.includes.call(els_min, children)) {
-        if (childNodes.length == 3 && el_bracket2.offsetHeight - heightToReduce < 20) {
-          el_bracket2.style.setProperty("height", `0px`);
-          el_bracket2.style.setProperty("top", `${el_child_first.offsetHeight/2+11}px`);
-          el_bracket2.style.setProperty("border-top", `none`);
-          el_bracket2.style.setProperty("width", `38px`); // 可以溢出点
-          el_bracket2.style.setProperty("left", `-20px`);
-          el_bracket.style.setProperty("display", "none");
+      // 修改伪类 - min样式版 (注意：不要因为用cssText覆盖而把样式给漏了)
+      if (Array.prototype.includes.call(els_min, children)) {
+        if (els_child.length == 3) { // 结构：1-1，有圆点
+          el_bracket.style.cssText = `
+            display: block;
+            top: calc(50% + ${el_content.offsetHeight/2}px - 3px);
+            clip-path: circle(40% at 50% 40%);
+          `
+        } else { // 结构：1-n，无圆点，是延长线
+          el_bracket.setAttribute("display", "none")
+          // el_bracket.style.cssText = `
+          //   display: block;
+          //   height: 1px;
+          //   top: calc(50% + ${el_content.offsetHeight/2}px - 1px);
+          //   width: 18px; /* 可以溢出点 */
+          //   left: -20px;
+          //   border-bottom: 1px solid var(--node-color);
+          //   clip-path: none;
+          // `
         }
-        else {
+
+        if (els_child.length == 3 && el_content.offsetHeight == el_child_first_content.offsetHeight) { // 结构：1-1且高度相同，则用横线代替括号
+          el_bracket2.style.cssText = `
+            height: 1px;
+            top: calc(50% + ${el_content.offsetHeight/2}px - 1px);
+            width: 38px; /* 可以溢出点 */
+            left: -20px;
+            border-radius: 0;
+            border: none;
+            border-bottom: 1px solid var(--node-color);
+          `
+        }
+        else { // 否则在原有基础上微调即可
+          // el_bracket2.style.setProperty("border-radius", "2px 0 0 2px")
+          // if (height==0) {
+          //   el_bracket2.style.setProperty("height", `calc(100% - ${heightToReduce}px + 12px)`); // 原基础+12 (应该要加 el_child_last_content 的半高)
+          // } else {
+          //   el_bracket2.style.setProperty("height", `${height+10}px`); // 原基础+10
+          // }
+          if (els_child.length == 3) {
+            height = el_child_last_content.offsetHeight/2 - el_content.offsetHeight/2;
+            el_bracket2.style.setProperty("height", `${height}px`);
+            el_bracket2.style.setProperty("top", `calc(50% + ${el_content.offsetHeight/2}px)`);
+            el_bracket2.style.setProperty("border-radius", `0 0 0 10px`);
+            el_bracket2.style.setProperty("border-top", `0`);
+          } else {
+            heightToReduce = el_child_first.offsetHeight/2 + el_child_first_content.offsetHeight/2 + el_child_last.offsetHeight/2 - el_child_last_content.offsetHeight/2;
+            el_bracket2.style.setProperty("height", `calc(100% - ${heightToReduce}px + 1px)`);
+            el_bracket2.style.setProperty("top", `${el_child_first.offsetHeight/2 + el_child_first_content.offsetHeight/2 - 1}px`);
+          }
+          el_bracket2.style.setProperty("width", "20px");
+        }
+
+        // 下面的内容弃用。存在问题：用canvas的思路应该是不对的，应该参考mehrmaid用svg，还能包裹div
+        /*else {
           el_bracket2.style.setProperty("height", `100%`);
           el_bracket2.style.setProperty("top", `0`);
           el_bracket2.style.setProperty("width", `38px`); // 可以溢出点
@@ -94,8 +145,8 @@ export function abConvertEvent(d: Element|Document) {
             ctx.lineWidth = 2;
             ctx.stroke();
           }
-        }
-      }*/
+        }*/
+      }
     }
   }
 
@@ -150,8 +201,49 @@ export function abConvertEvent(d: Element|Document) {
     }
   }
 
+  // xxx2markmap，高度重调事件
+  if (d.querySelector('.ab-markmap-div')) {
+    const divEl = d as Element;
+    let markmapId = '';
+    if (divEl.tagName === 'DIV') {
+      markmapId = divEl.querySelector('.ab-markmap-div')?.id || '';
+    }
+    let mindmaps: NodeListOf<HTMLElement>;
+    if (markmapId) {
+      mindmaps = document.querySelectorAll('#' + markmapId);
+    } else {
+      mindmaps = document.querySelectorAll('.ab-markmap-div'); // 注意一下这里的选择器
+    }
+
+    for(const el_div of mindmaps) {
+      const el_svg: SVGGraphicsElement|null = el_div.querySelector("svg")
+      const el_g: SVGGraphicsElement|null|undefined = el_svg?.querySelector("g")
+      if (el_svg && el_g) {
+        // 获取缩放倍数
+        // const transformValue = el_g.getAttribute('transform');
+        // if (transformValue && transformValue.indexOf('scale') > -1) {
+        //   const scaleMatch = transformValue.match(/scale\(([^)]+)\)/);
+        //   if (scaleMatch) {
+        //     const scale_old = parseFloat(scaleMatch[1]);
+        //     ...
+        //   }
+        // }
+        const scale_new = el_g.getBBox().height/el_div.offsetWidth;
+        el_svg.setAttribute("style", `height:${el_g.getBBox().height*scale_new+40}px`); // 重调容器大小
+        // el_g.setAttribute("transform", `translate(20.0,80.0) scale(${scale_new})`) // 重调位置和缩放
+        markmap_event(d) // 好像调位置有问题，只能重渲染了……
+      }
+    }
+  }
+}
+
+/**
+ * 一些AB块的后触发事件 - dom加载完触发 - markmap
+ */
+export function markmap_event(d: Element|Document) {
   // xxx2markmap，渲染事件
   if (d.querySelector('.ab-markmap-svg')) {
+    console.log("  - markmap_event")
     let script_el: HTMLScriptElement|null = document.querySelector('script[script-id="ab-markmap-script"]');
     if (script_el) script_el.remove();
     const divEl = d as Element;
@@ -165,9 +257,11 @@ export function abConvertEvent(d: Element|Document) {
     script_el.textContent = `
     import { Markmap, } from 'https://jspm.dev/markmap-view';
     const markmapId = "${markmapId || ''}";
-    let mindmaps = document.querySelectorAll('.ab-markmap-svg'); // 注意一下这里的选择器
+    let mindmaps;
     if (markmapId) {
       mindmaps = document.querySelectorAll('#' + markmapId);
+    } else {
+      mindmaps = document.querySelectorAll('.ab-markmap-svg'); // 注意一下这里的选择器
     }
     for(const mindmap of mindmaps) {
       mindmap.innerHTML = "";
