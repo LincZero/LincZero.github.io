@@ -59,12 +59,12 @@ export default hopeTheme(
         codetabs: true, // mdit容器 - 代码块分组
 
         // mdit - 内联语法
-        imgLazyload: true,  // 懒加载图片
-        // imgSize: true,   // 图片大小, ![Alt](/example.bmp =x300)
-        // include: true,   // 导入其他文件，`<!-- @include: filename -->`，@WARN 启用的话会和mdit插件那边的 `md.render()` 冲突
         mark: true,         // ==高亮==
         sub: true,          // _子项_
         sup: true,          // ^上标^
+        imgLazyload: true,  // 懒加载图片
+        // imgSize: true,   // 图片大小, ![Alt](/example.bmp =x300)
+        // include: true,   // 导入其他文件，`<!-- @include: filename -->`，@WARN 版本较低时，启用的话会和mdit插件那边的 `md.render()` 冲突
 
         // mdit - 文生图类
         katex: true,        // TeX数学公式渲染工具 (二选一，katex), install katex before enabling it
@@ -74,33 +74,33 @@ export default hopeTheme(
         // plantuml: true,  // Plantuml 图表工具
         // chart: true,     // 图表 install chart.js before enabling it
         // echarts: true,   // Echarts 图表工具，install echarts before enabling it
-        figure: true,       // Figure 图表工具
         // flowchart: true, // 流程图，install flowchart.ts before enabling it
+        // figure: true,    // Figure 图表工具
 
         // 其他
         // component: true, // insert component easily
         // gfm: true,       // Github风格的md，是CommonMark的超集，GitHub Flavored Markdown，见 https://github.github.com/gfm/
-        playground: {       // 在线代码演示设置
-          presets: ["ts", "vue"], // 预设
-        },
+        // playground: {       // 在线代码演示设置
+        //   presets: ["ts", "vue"], // 预设
+        // },
         // vuePlayground: true, // Vue 实验场, install @vue/repl before enabling it
         // revealJs: { // install reveal.js before enabling it
         //   plugins: ["highlight", "math", "search", "notes", "zoom"],
         // },
-        stylize: [ // 样式化工具
-          {
-            matcher: "Recommended", // 匹配器
-            replacer: ({ tag }) => { // 替换器
-              if (tag === "em") // 如果标签为 "em"
-                return {
-                  tag: "Badge", // 替换为 "Badge" 标签
-                  attrs: { type: "tip" }, // 设置属性
-                  content: "Recommended", // 设置内容
-                };
-            },
-          },
-        ],
-        vPre: true, // Vue 预处理，Mustache 语法
+        // stylize: [ // 样式化工具
+        //   {
+        //     matcher: "Recommended", // 匹配器
+        //     replacer: ({ tag }) => { // 替换器
+        //       if (tag === "em") // 如果标签为 "em"
+        //         return {
+        //           tag: "Badge", // 替换为 "Badge" 标签
+        //           attrs: { type: "tip" }, // 设置属性
+        //           content: "Recommended", // 设置内容
+        //         };
+        //     },
+        //   },
+        // ],
+        // vPre: true, // Vue 预处理，Mustache 语法
       },
     }
   },
