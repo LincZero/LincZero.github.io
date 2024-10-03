@@ -1,14 +1,14 @@
 {
   "name": "any-block-converter-markdown-it",
-  "version": "3.1.3-beta9",
+  "version": "3.1.3-beta11",
   "description": "```typescript\r import { ABConvertManager } from \"ABConvertManager\"",
-  "main": "dist/index_mdit.js",
   "types": "@types/index_mdit.d.ts",
   "type": "module",
+  "main": "dist/mdit-any-block.cjs",
   "exports": {
     ".": {
-      "import": "./dist/index_mdit.js",
-      "require": "./dist/index_mdit.cjs"
+      "import": "./dist/mdit-any-block.js",
+      "require": "./dist/mdit-any-block.cjs"
     }
   },
   "scripts": {
@@ -18,10 +18,13 @@
     "build_tsup": "tsup",
     "build_vite": "vite build",
     "build_rollup": "rollup -c",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build_vite"
   },
   "author": "LincZero",
   "license": "GNU Affero General Public License v3.0",
+  "peerDependencies": {
+    "markdown-it": "^14.1.0"
+  },
   "dependencies": {
     "markdown-it": "^14.1.0",
     "plantuml-encoder": "^1.4.0"

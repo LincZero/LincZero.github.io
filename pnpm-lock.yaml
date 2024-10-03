@@ -32,11 +32,14 @@ devDependencies:
     specifier: ^10.9.0
     version: 10.9.0(vue@3.4.21)
   any-block-converter-markdown-it:
-    specifier: 3.1.3-beta9
-    version: 3.1.3-beta9
+    specifier: 3.1.3-beta11
+    version: 3.1.3-beta11(markdown-it@14.1.0)
   jsdom:
     specifier: ^24.1.1
     version: 24.1.1
+  markdown-it:
+    specifier: ^14.1.0
+    version: 14.1.0
   markdown-it-container:
     specifier: ^4.0.0
     version: 4.0.0
@@ -1803,8 +1806,10 @@ packages:
       color-convert: 2.0.1
     dev: true
 
-  /any-block-converter-markdown-it@3.1.3-beta9:
-    resolution: {integrity: sha512-IWWsFmZ92I5c1mRs2f8rwAGwY7k46haf1kG6bCv8l8U6ThX4NIXR6rhy3cmAxEob5qEh8y4zw1iPxeaS00Zitw==}
+  /any-block-converter-markdown-it@3.1.3-beta11(markdown-it@14.1.0):
+    resolution: {integrity: sha512-NIDCs4HrODqYn4sszxWytmPVhcvN3KuXuFbtPVIJneZlkXHZe07iADBwslq4CNaVQWVxYDkBoivyHaeWjdaCuQ==}
+    peerDependencies:
+      markdown-it: ^14.1.0
     dependencies:
       markdown-it: 14.1.0
       plantuml-encoder: 1.4.0

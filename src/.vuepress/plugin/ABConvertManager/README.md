@@ -2,7 +2,7 @@
 
 ## 使用
 
-### 使用流程
+### 使用流程 - 源码版
 
 ```typescript
 // 转换器模块
@@ -24,7 +24,7 @@ ABConvertManager.getInstance().redefine_renderMarkdown((markdown: string, el: HT
 ABConvertManager.autoABConvert(el:HTMLDivElement, header:string, content:string): HTMLElement
 ```
 
-### 其中，回调函数设置详细说下
+**其中，回调函数设置详细说下**
 
 Obsidian 回调设置如下：
 
@@ -72,24 +72,39 @@ ABConvertManager.getInstance().redefine_renderMarkdown((markdown: string, el: HT
 
 至于其他平台的可以参考上面两者进行设置
 
-### 使用流程改良 (npm版)
-
-作者上传npm：
-
-```bash
-$ npm adduser  # 先登录，在vscode里他会让我打开浏览器来登录
-Username: ...
-Password: ...
-
-$ npm publish  # 上传 (注意不要重名、npm账号可能需要邮箱验证)
-```
+### 使用流程 - npm改良版
 
 从npm下载并使用：
 
 ```bash
-$pnpm install -D any-block-converter-markdown-it@3.1.2 # 我这里的vuepress环境统一用pnpm (实际上根据你的习惯使用npm也好)
-# 后面的使用和前面类似
+$pnpm install -D any-block-converter-markdown-it@3.1.3-beta11
+# 后面操作的使用和前面类似
 ```
+
+但是npm版本需要注意：
+
+1. 由于某bug未解决，不支持markmap
+2. 需要在父项目提供jsdom环境：(还要 pnpm install -D jsdom)
+  ```ts
+  import jsdom from "jsdom"
+  const { JSDOM } = jsdom
+  const dom = new JSDOM(`<!DOCTYPE html><html><body></body></html>`, {
+    url: 'http://localhost/', // @warn 若缺少该行，则在mdit+build环境下，编译报错
+  });
+  // @ts-ignore 不能将类型“DOMWindow”分配给类型“Window & typeof globalThis”
+  global.window = dom.window
+  global.history = dom.window.history // @warn 若缺少该行，则在mdit+build环境下，编译报错：ReferenceError: history is not defined
+  global.document = dom.window.document
+  global.NodeList = dom.window.NodeList
+  global.HTMLElement = dom.window.HTMLElement
+  global.HTMLDivElement = dom.window.HTMLDivElement
+  global.HTMLPreElement = dom.window.HTMLPreElement
+  global.HTMLQuoteElement = dom.window.HTMLQuoteElement
+  global.HTMLTableElement = dom.window.HTMLTableElement
+  global.HTMLUListElement = dom.window.HTMLUListElement
+  global.HTMLScriptElement = dom.window.HTMLScriptElement
+  dom.window.scrollTo = ()=>{} // @warn 若缺少该行，编译警告：Error: Not implemented: window.scrollTo
+  ```
 
 ## 开发/设计/架构补充
 
@@ -101,7 +116,7 @@ $pnpm install -D any-block-converter-markdown-it@3.1.2 # 我这里的vuepress环
 
 因为模块化内置了很多 Converter (text->text等)，所以整体叫 Any Block Converter
 
-### 该模块设计不应依赖于Ob插件
+### 架构 - 该模块设计不应依赖于Ob插件
 
 **这个模块以前是依赖Ob插件接口的**，后来才改成可复用的 AnyBlock 转化器。
 
@@ -110,14 +125,7 @@ $pnpm install -D any-block-converter-markdown-it@3.1.2 # 我这里的vuepress环
 1. 要与选择器解耦
 2. 相较于V2版本，为了不依赖于Ob底层，使用一个回调函数去替代 `MarkdownRenderer` 相关函数
 
-### 程序缩写
-
-- `AnyBlock`：`AB`
-- `AnyBlockConvert`：`ABC`
-- `AnyBlockSelector`：`ABS`
-- `AnyBlockRender`：`ABR`
-
-### 格式转换所在位置
+### 架构 - 格式转换所在位置
 
 > ##### 思考
 
@@ -146,6 +154,52 @@ $pnpm install -D any-block-converter-markdown-it@3.1.2 # 我这里的vuepress环
 
 1. 低通用级格式要实现对高通用级格式的互转
 2. 同通用级则实现其他同通用级格式对自己格式的转化
+
+### 规范 - 程序缩写
+
+- `AnyBlock`：`AB`
+- `AnyBlockConvert`：`ABC`
+- `AnyBlockSelector`：`ABS`
+- `AnyBlockRender`：`ABR`
+
+### 构建 - 迁移到npm方式的坑
+
+作者上传npm：
+
+```bash
+$ npm adduser  # 先登录，在vscode里他会让我打开浏览器来登录
+Username: ...
+Password: ...
+
+$ npm publish  # 上传 (注意不要重名、npm账号可能需要邮箱验证)
+```
+
+这里从源码版迁移到npm版踩了很多坑：
+
+- 源码使用
+  - 就是一开始的做法
+  - 相关文件: 无
+  - 使用结果: 成功
+- build_tsc
+  - 使用结果: 成功，但上传npm后失败
+  - NPM使用结果：[ERR_MODULE_NOT_FOUND]
+- build_tsup
+  - 使用结果: Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'markdown-it' imported from ...
+- build_vite
+  - 参考: https://github.com/ebullient/markdown-it-obsidian-callouts/
+  - 相关文件: package.json、tsconfig.json、vite.config.ts
+  - 构建结果: 成功
+  - 使用结果: Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'markdown-it' imported from ...
+    安装mdit后：TypeError: Cannot read properties of undefined (reading 'prototype')
+  - NPM使用结果：TypeError: Cannot read properties of undefined (reading 'prototype')
+- build_rollup
+
+解决：
+
+- 使用报错 `Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'markdown-it' imported from`
+  解决方法: 后来发现是 JSDOM 的原因，暂时把他移到主项目部分了
+- 使用报错 `ReferenceError: Node is not defined`
+  解决方法: 暂时把 import "./converter/abc_markmap" 处理器给禁用了
 
 ## todo
 
