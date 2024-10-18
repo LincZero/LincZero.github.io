@@ -26,6 +26,7 @@
     "markdown-it": "^14.1.0"
   },
   "dependencies": {
+    "jsdom": "^25.0.1",
     "markdown-it": "^14.1.0",
     "plantuml-encoder": "^1.4.0"
   },
@@ -34,7 +35,6 @@
     "@types/markdown-it": "^14.1.2",
     "@types/markdown-it-container": "^2.0.10",
     "@types/plantuml-encoder": "^1.4.2",
-    "jsdom": "^25.0.0",
     "markdown-it-container": "^4.0.0",
     "rollup": "^4.21.3",
     "tsup": "^8.2.4",

@@ -17,6 +17,12 @@
 
   --ab-bright-color: orange;        // lightgoldenrodyellow、yellowgreen
   --pre-background-color: #1b1b1b;  // rgb(36,36,36)
+
+  --ab-table-border-width: 1px;
+  --ab-table-border-color: #363636;
+
+  --ab-width-inner: 100%;
+  --ab-width-outer: 100%;
 }
 // 获取一些Obsidian的默认颜色并覆盖默认颜色 (mdit不可用)
 .theme-dark,
@@ -27,6 +33,9 @@
 
   --ab-bright-color: var(--blockquote-border-color);
   --pre-background-color: var(--secondary-background);
+
+  --ab-table-border-width: var(--table-border-width);
+  --ab-table-border-color: var(--table-border-color);
 }
 // 获取VuePress的默认颜色并覆盖默认颜色
 html[data-theme="light"] #app,
@@ -59,11 +68,20 @@ html[data-theme="dark"] #app {
   --color-pink: #fa99cd;
 }
 
-// obsidian各模式下的微调
+/**
+ * obsidian各模式下的微调
+ * 
+ * 替换内容
+ * .ab-replace         // 整体 (外框、圆角)
+ *   &>.ab-note        // 内容
+ *     &>.ab-replaceEl // 内容 (感觉冗余了)
+ *   &>.ab-button      // 操作控件 (刷新/编辑/下拉框)
+ */
 .app-container {
   // 阅读模式
   .markdown-reading-view {
     .ab-replace{
+      margin-top: 0;
       margin-bottom: 22px;
     }
   }
@@ -73,32 +91,51 @@ html[data-theme="dark"] #app {
       margin-top: -18px; // 消除CM自带的间隙
       margin-bottom: -18px;
     }
+    .block-language-anyblock>.ab-replace {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
   }
   // 源码模式
   .markdown-source-view.is-live-preview {}
 }
+// 打印模式
+.print{
+  .ab-replace>.ab-button {
+    display: none;
+  }
+}
 
 /**
  * 替换内容
- * .ab-replace
- *   .ab-note
- *   .ab-button
+ * .ab-replace         // 整体 (外框、圆角)
+ *   &>.ab-note        // 内容
+ *     &>.ab-replaceEl // 内容 (感觉冗余了)
+ *   &>.ab-button      // 操作控件 (刷新/编辑/下拉框)
  */
 .ab-replace{
   /*background-color: #272e3a;*/
   position: relative;
   border-radius: 4px;
 
-  .ab-note{
+  &>.ab-note{
     position: relative;
     /*padding: 24px 12px 12px 12px;*/
   }
 
-  .ab-button{
+  &>.ab-button{
     box-sizing: border-box;
     position: absolute;
-    right: 4px;
     top: 4px;
+    &.ab-button-1 {
+      right: 4px;
+    }
+    &.ab-button-2 {
+      right: 40px;
+    }
+    &.ab-button-3 {
+      right: 76px;
+    }
   }
 
   img.cm-widgetBuffer{
@@ -107,11 +144,15 @@ html[data-theme="dark"] #app {
 }
 
 .ab-note{
-  // 修复重渲染表格宽度过宽的问题
-  .ab-note table,
-  .markdown-rendered table {
+  // 修复重渲染问题
+  .markdown-rendered table { // 重渲染的表格宽度过宽的问题 (这里好像是Sp主题引起的)
     min-width: 0;
   }
+  .markdown-rendered ul li,
+  .markdown-rendered ol li { // 重渲染的列表间隔会变得特别高
+    margin-bottom: 0;
+  }
+
   // 修复ob新版本导致表格宽度减少
   table {
     display: table;
@@ -210,7 +251,7 @@ html[data-theme="dark"] #app {
     border-collapse:collapse;
     td,th{
       padding: 2px 5px;
-      border: solid #363636 1px;
+      border: solid var(--ab-table-border-width) var(--ab-table-border-color);
     }
 
     // 取消自带的隔行表格着色
@@ -306,7 +347,7 @@ html[data-theme="dark"] #app {
           top: 5px;
           left: 2px;
           border: 6px solid transparent;
-          border-left-color: #d9d9d9;
+          border-left-color: currentColor;
           cursor: pointer;
         }
       }
@@ -315,7 +356,7 @@ html[data-theme="dark"] #app {
           top: 9px;
           left: -1px;
           border: 6px solid transparent;
-          border-top-color: #d9d9d9;
+          border-top-color: currentColor;
           cursor: pointer;
         }
       }
@@ -871,6 +912,14 @@ div.md-table-fig1{
 .ab-custom-font-smallx {font-size: x-small !important;}
 .ab-custom-font-smallxx {font-size: xx-small !important;}
 .ab-custom-font-bold {font-weight: bold !important;}
+// .ab-super-width {
+//   width: var(--ab-width-outer);
+//   margin-left: calc((100% - var(--ab-width-outer)) / 2);
+// }
+.ab-super-width-p { // 指定ab-super-width后的延伸物，不可直接指定
+  width: var(--ab-width-outer);
+  margin-left: calc((100% - var(--ab-width-outer)) / 2);
+}
 
 /**************** 兼容性补充 ******************/
 
