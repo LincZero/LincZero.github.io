@@ -5,6 +5,14 @@
  *
  * vuepress-mdit环境直接用scss，ob这边需要使用css
  * 编辑ABC模块的该文件时，需要手动编译/使用vscode `easy sass` 插件
+ *
+ * 换行问题：AnyBlock的块宽度很多都是不满100%的，在窄区域中显示多文本时经常需要使用换行
+ * - 不换行时
+ *   - white-space: pre (有换行符要换)
+ * - 换行时
+ *   - white-space: normal
+ *   - overflow-wrap: break-word (单词换行)
+ *   - code {white-space: pre;} (一个用于手动控制不换行的方式)
  */
 
 /**
@@ -248,8 +256,11 @@ html[data-theme="dark"] #app {
   // 通用表格
   table.ab-table{
     // 使空格内容更紧凑 -  去除单元格之间的间距
-    border-collapse:collapse;
+    border-collapse: collapse;
     td,th{
+      white-space: normal;
+      overflow-wrap: break-word;
+      code {white-space: pre;}
       padding: 2px 5px;
       border: solid var(--ab-table-border-width) var(--ab-table-border-color);
     }
@@ -421,7 +432,7 @@ html[data-theme="dark"] #app {
     // 仿目录结构的列表格
     &.ab-table-folder .ab-foldable-tr{
       td:first-child {
-        white-space: nowrap;
+        white-space: pre;
         vertical-align: top;
       }
       &>td>div{
@@ -445,15 +456,6 @@ html[data-theme="dark"] #app {
         border-right: none;
         border-bottom: none;
       }
-    }
-  }
-
-  // 首列重点表格
-  table.ab-table-fc {
-    td[col_index="0"] {
-      white-space: nowrap;
-      font-weight: 500;
-      vertical-align: top;
     }
   }
 
@@ -563,7 +565,7 @@ html[data-theme="dark"] #app {
   }
   .ab-deco-scroll.ab-deco-scroll-x{
     overflow-x:auto;
-    white-space: nowrap;
+    white-space: pre;
   }
 
   // 超出折叠
@@ -643,6 +645,10 @@ html[data-theme="dark"] #app {
 
   // 快捷的二层容器 container
   .ab-items {
+    white-space: normal;
+    overflow-wrap: break-word;
+    code {white-space: pre;}
+
     // 分栏
     &.ab-col{
       display: flex; // Flexbox 布局
@@ -744,6 +750,9 @@ html[data-theme="dark"] #app {
 
   // 节点图、括弧图、ab思维导图
   .ab-nodes {
+    white-space: normal;
+    overflow-wrap: break-word;
+    code {white-space: pre;}
     // display: flex;
     // flex-direction: column;
     // align-items: flex-start;
@@ -758,10 +767,6 @@ html[data-theme="dark"] #app {
     }
     // 圆弧节点组，最右测必是
     .ab-nodes-children {
-      &[has_children="false"] {
-        display: none;
-      }
-
       display: flex;
       flex-direction: column;
       // align-items
@@ -805,9 +810,15 @@ html[data-theme="dark"] #app {
         gap: 1.2em;   // 左右间隙
       }
     }
-    // 最外面的那个不显示
+    // 最左侧节点处理，不显示
     &>.ab-nodes-node>.ab-nodes-bracket { display: none; }
     &>.ab-nodes-node>.ab-nodes-bracket2 { display: none; }
+    // 最右侧节点处理
+    .ab-nodes-node[has_children="false"] {
+      &>.ab-nodes-children {
+        display: none;
+      }
+    }
   }
 
   // min版的node图
@@ -844,6 +855,13 @@ html[data-theme="dark"] #app {
       }
     }
   }
+  // 最右侧节点处理
+  .ab-nodes-node[has_children="false"] {
+    &>.ab-nodes-content {
+      padding-right: 4px;
+    }
+  }
+  // 颜色
   .ab-nodes.min>.ab-nodes-children {
     &>.ab-nodes-node:nth-child(8n+1) { --node-color: var(--color-red); }
     &>.ab-nodes-node:nth-child(8n+2) { --node-color: var(--color-orange); }
@@ -912,6 +930,24 @@ div.md-table-fig1{
 .ab-custom-font-smallx {font-size: x-small !important;}
 .ab-custom-font-smallxx {font-size: xx-small !important;}
 .ab-custom-font-bold {font-weight: bold !important;}
+// 首列重点表格
+table.ab-table-fc {
+  td[col_index="0"] {
+    white-space: pre;
+    font-weight: 500;
+    vertical-align: top;
+    width: 0px;
+  }
+}
+.ab-custom-td-nowrap td, .ab-custom-td1-nowrap tr>td:first-child {white-space: pre !important;}
+.ab-custom-td-wrap td, .ab-custom-td1-wrap tr>td:first-child {white-space: normal !important; overflow-wrap: break-word;}
+.ab-custom-td-0 td, .ab-custom-td1-0 tr>td:first-child {width: 0px !important;}
+.ab-custom-td-100 td, .ab-custom-td1-100 tr>td:first-child {width: 100px !important;}
+.ab-custom-td-150 td, .ab-custom-td1-150 tr>td:first-child {width: 150px !important;}
+.ab-custom-td-200 td, .ab-custom-td1-200 tr>td:first-child {width: 200px !important;}
+.ab-custom-td-250 td, .ab-custom-td1-250 tr>td:first-child {width: 250px !important;}
+.ab-custom-td-300 td, .ab-custom-td1-300 tr>td:first-child {width: 300px !important;}
+.ab-custom-td-half td, .ab-custom-td1-half tr>td:first-child {width: 50% !important;}
 // .ab-super-width {
 //   width: var(--ab-width-outer);
 //   margin-left: calc((100% - var(--ab-width-outer)) / 2);

@@ -6,6 +6,14 @@
  *
  * vuepress-mdit环境直接用scss，ob这边需要使用css
  * 编辑ABC模块的该文件时，需要手动编译/使用vscode `easy sass` 插件
+ *
+ * 换行问题：AnyBlock的块宽度很多都是不满100%的，在窄区域中显示多文本时经常需要使用换行
+ * - 不换行时
+ *   - white-space: pre (有换行符要换)
+ * - 换行时
+ *   - white-space: normal
+ *   - overflow-wrap: break-word (单词换行)
+ *   - code {white-space: pre;} (一个用于手动控制不换行的方式)
  */
 /**
  * 颜色相关
@@ -236,8 +244,14 @@ html[data-theme="dark"] #app {
 }
 
 .ab-note table.ab-table td, .ab-note table.ab-table th {
+  white-space: normal;
+  overflow-wrap: break-word;
   padding: 2px 5px;
   border: solid var(--ab-table-border-width) var(--ab-table-border-color);
+}
+
+.ab-note table.ab-table td code, .ab-note table.ab-table th code {
+  white-space: pre;
 }
 
 .ab-note table.ab-table tr {
@@ -414,7 +428,7 @@ html[data-theme="dark"] #app {
 }
 
 .ab-note table.ab-list-table.ab-table-folder .ab-foldable-tr td:first-child {
-  white-space: nowrap;
+  white-space: pre;
   vertical-align: top;
 }
 
@@ -440,12 +454,6 @@ html[data-theme="dark"] #app {
   border-left: none;
   border-right: none;
   border-bottom: none;
-}
-
-.ab-note table.ab-table-fc td[col_index="0"] {
-  white-space: nowrap;
-  font-weight: 500;
-  vertical-align: top;
 }
 
 .ab-note table.ab-table-timeline td {
@@ -550,7 +558,7 @@ html[data-theme="dark"] #app {
 
 .ab-note .ab-deco-scroll.ab-deco-scroll-x {
   overflow-x: auto;
-  white-space: nowrap;
+  white-space: pre;
 }
 
 .ab-note .ab-deco-overfold {
@@ -632,6 +640,15 @@ html[data-theme="dark"] #app {
 
 .ab-note .ab-deco-title .ab-deco-title-title[title-type="ul"] > p {
   font-weight: bold;
+}
+
+.ab-note .ab-items {
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.ab-note .ab-items code {
+  white-space: pre;
 }
 
 .ab-note .ab-items.ab-col {
@@ -736,6 +753,15 @@ html[data-theme="dark"] #app {
   column-count: 8 !important;
 }
 
+.ab-note .ab-nodes {
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.ab-note .ab-nodes code {
+  white-space: pre;
+}
+
 .ab-note .ab-nodes .ab-nodes-content {
   display: inline-block;
   background-color: rgba(100, 100, 100, 0.25);
@@ -749,10 +775,6 @@ html[data-theme="dark"] #app {
   gap: 16px;
   padding-left: 0.8em;
   position: relative;
-}
-
-.ab-note .ab-nodes .ab-nodes-children[has_children="false"] {
-  display: none;
 }
 
 .ab-note .ab-nodes .ab-nodes-children .ab-nodes-bracket {
@@ -796,6 +818,10 @@ html[data-theme="dark"] #app {
   display: none;
 }
 
+.ab-note .ab-nodes .ab-nodes-node[has_children="false"] > .ab-nodes-children {
+  display: none;
+}
+
 .ab-note .ab-nodes.min .ab-nodes-content {
   padding: 0;
   background: none;
@@ -824,6 +850,10 @@ html[data-theme="dark"] #app {
 
 .ab-note .ab-nodes.min .ab-nodes-children .ab-nodes-node {
   gap: 0;
+}
+
+.ab-note .ab-nodes-node[has_children="false"] > .ab-nodes-content {
+  padding-right: 4px;
 }
 
 .ab-note .ab-nodes.min > .ab-nodes-children > .ab-nodes-node:nth-child(8n+1) {
@@ -1011,6 +1041,50 @@ div.md-table-fig1 table.ab-setting.md-table-fig2 {
 
 .ab-custom-font-bold {
   font-weight: bold !important;
+}
+
+table.ab-table-fc td[col_index="0"] {
+  white-space: pre;
+  font-weight: 500;
+  vertical-align: top;
+  width: 0px;
+}
+
+.ab-custom-td-nowrap td, .ab-custom-td1-nowrap tr > td:first-child {
+  white-space: pre !important;
+}
+
+.ab-custom-td-wrap td, .ab-custom-td1-wrap tr > td:first-child {
+  white-space: normal !important;
+  overflow-wrap: break-word;
+}
+
+.ab-custom-td-0 td, .ab-custom-td1-0 tr > td:first-child {
+  width: 0px !important;
+}
+
+.ab-custom-td-100 td, .ab-custom-td1-100 tr > td:first-child {
+  width: 100px !important;
+}
+
+.ab-custom-td-150 td, .ab-custom-td1-150 tr > td:first-child {
+  width: 150px !important;
+}
+
+.ab-custom-td-200 td, .ab-custom-td1-200 tr > td:first-child {
+  width: 200px !important;
+}
+
+.ab-custom-td-250 td, .ab-custom-td1-250 tr > td:first-child {
+  width: 250px !important;
+}
+
+.ab-custom-td-300 td, .ab-custom-td1-300 tr > td:first-child {
+  width: 300px !important;
+}
+
+.ab-custom-td-half td, .ab-custom-td1-half tr > td:first-child {
+  width: 50% !important;
 }
 
 .ab-super-width-p {

@@ -209,7 +209,7 @@ export class C2ListProcess{
     let current_content_prefix:string = "" // level1的子内容的前缀
     for (let line of list_text) {
       const match_list = line.match(ABReg.reg_list_noprefix)
-      if (match_list && !match_list[1] && match_list[1].length<=root_list_level){ // 遇到同等标题
+      if (match_list && !match_list[1] && match_list[1].length<=root_list_level){ // b1. 遇到同等标题，level0新项出现
         add_current_content()
         let content = match_list[4]
         // 替换掉内换行符
@@ -218,6 +218,7 @@ export class C2ListProcess{
           if (inlines.length > 1) {
             const second_part = content.indexOf(inlines[1])
             current_content += content.slice(second_part) + "\n"
+            current_content_prefix = "  " // 内换行前缀必是双空格
             content = inlines[0]
           }
         }
@@ -226,7 +227,7 @@ export class C2ListProcess{
           content: content,
           level: 0
         })
-      } else { // 子内容
+      } else { // b2. 子内容
         if (current_content.trim()=="") { // 第一行的子内容前缀提取
           if (match_list && match_list[1]) current_content_prefix = match_list[1]
           else current_content_prefix = ""
@@ -327,8 +328,8 @@ export class C2ListProcess{
         }
       }
       // 元素全部创建完再来绑按钮事件，不然有可能有问题
-      const lis:NodeListOf<HTMLButtonElement> = tab.querySelectorAll(".ab-tab-nav-item")
-      const contents = tab.querySelectorAll(".ab-tab-content-item")
+      const lis:NodeListOf<HTMLButtonElement> = tab.querySelectorAll(":scope>.ab-tab-nav>.ab-tab-nav-item")
+      const contents = tab.querySelectorAll(":scope>.ab-tab-content>.ab-tab-content-item")
       if (lis.length!=contents.length) console.warn("ab-tab-nav-item和ab-tab-content-item的数量不一致")
       for (let i=0; i<lis.length; i++){
         // 1. 二选一，常规绑定
@@ -350,9 +351,9 @@ export class C2ListProcess{
           const tab_current = this
           const tab_nav = this.parentNode
           const tab_root = tab_nav.parentNode
-          const tab_content = tab_root.querySelector(".ab-tab-content")
-          const tab_nav_items = tab_nav.querySelectorAll(".ab-tab-nav-item")
-          const tab_content_items = tab_content.querySelectorAll(".ab-tab-content-item")
+          const tab_content = tab_root.querySelector(":scope>.ab-tab-content")
+          const tab_nav_items = tab_nav.querySelectorAll(":scope>.ab-tab-nav-item")
+          const tab_content_items = tab_content.querySelectorAll(":scope>.ab-tab-content-item")
           for (let j=0; j<tab_content_items.length; j++){
             tab_nav_items[j].setAttribute("is_activate", "false")
             tab_content_items[j].setAttribute("is_activate", "false")

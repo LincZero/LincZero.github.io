@@ -17,6 +17,25 @@ import { MarkdownEditView } from "obsidian";
  *   - 二是全局刷新，当页面加载完成后会自动调一次，d就是document
  */
 export function abConvertEvent(d: Element|Document) {
+  // 超宽div事件 (仅obsidian)，这个事件应该优先处理
+  if (d.querySelector('.ab-super-width')) {
+    // 局部 (仅obsidian)
+    const els_note: NodeListOf<Element> = d.querySelectorAll(".ab-note");
+    for (const el_note of els_note) {
+      if (el_note.querySelector(".ab-super-width")) {
+        const el_replace: ParentNode | null | undefined = el_note.parentNode;
+        if (el_replace && (el_replace as HTMLElement).classList.contains("ab-replace")) {
+          (el_replace as HTMLElement).classList.add("ab-super-width-p");
+        }
+      }
+    }
+    // 全局 (仅obsidian)，注意这里在docuemnt而非d上寻找
+    const els_view: NodeListOf<Element> = document.querySelectorAll(".app-container .workspace-leaf"); // 支持多窗口
+    for (const el_view of els_view) {
+      (el_view as HTMLElement).style.setProperty('--ab-width-outer', ((el_view as HTMLElement).offsetWidth - 40).toString() + "px"); // 40/2是边距 (必须大于滚动条)
+    }
+  }
+
   // list2nodes，圆弧调整事件
   if (d.querySelector('.ab-nodes-node')) {
     const els_min = document.querySelectorAll(".ab-nodes.min .ab-nodes-node");
@@ -156,8 +175,19 @@ export function abConvertEvent(d: Element|Document) {
       // 1. 准备原元素
       root_el.classList.add("js-waterfall") // 避免：触发两次时，第二次触发会以第一次触发的顺序为基准，再进行调整
       const list_children = root_el.querySelectorAll(".ab-items-item")
+      // 计算列数和列宽
       const columnCountTmp = parseInt(window.getComputedStyle(root_el).getPropertyValue('column-count'))
-      const columnCount: number = (columnCountTmp && columnCountTmp>0)?columnCountTmp:4 // 计算列数和列宽
+      let columnCount: number;
+      if (columnCountTmp && !isNaN(columnCountTmp) && columnCountTmp>0) {
+        columnCount = columnCountTmp;
+      } else if (root_el.classList.contains("ab-col-auto") && list_children.length<=4) {
+        columnCount = list_children.length;
+        root_el.classList.add("ab-col"+columnCount)
+      }
+      else {
+        columnCount = 4;
+        root_el.classList.add("ab-col"+columnCount)
+      }
       // const columnWidth = root_el.clientWidth / columnCount;
 
       // 2. 准备高度缓存、元素缓存
@@ -172,7 +202,8 @@ export function abConvertEvent(d: Element|Document) {
       for (let children of list_children) {
         const minValue: number =  Math.min.apply(null, height_cache);
         const minIndex: number =  height_cache.indexOf(minValue)
-        height_cache[minIndex] += parseInt(window.getComputedStyle(children).getPropertyValue("height"))
+        const heightTmp = parseInt(window.getComputedStyle(children).getPropertyValue("height"))
+        height_cache[minIndex] += (heightTmp && !isNaN(heightTmp) && heightTmp>0) ? heightTmp : 10;
         el_cache[minIndex].push(children as HTMLElement)
       }
 
@@ -231,27 +262,6 @@ export function abConvertEvent(d: Element|Document) {
         el_svg.setAttribute("style", `height:${el_g.getBBox().height*scale_new+40}px`); // 重调容器大小
         // el_g.setAttribute("transform", `translate(20.0,80.0) scale(${scale_new})`) // 重调位置和缩放
         markmap_event(d) // 好像调位置有问题，只能重渲染了……
-      }
-    }
-  }
-
-  // 超宽div事件 - 全局 (仅obsidian)
-  if (d.querySelector('.app-container .workspace-leaf')) {
-    const els_view: NodeListOf<Element> = d.querySelectorAll(".app-container .workspace-leaf"); // 支持多窗口
-    for (const el_view of els_view) {
-      (el_view as HTMLElement).style.setProperty('--ab-width-outer', ((el_view as HTMLElement).offsetWidth - 40).toString() + "px"); // 40/2是边距 (必须大于滚动条)
-      console.log("el_view", el_view)
-    }
-  }
-  // 超宽div事件 - 局部 (仅obsidian)
-  if (d.querySelector('.ab-super-width')) {
-    const els_note: NodeListOf<Element> = d.querySelectorAll(".ab-note");
-    for (const el_note of els_note) {
-      if (el_note.querySelector(".ab-super-width")) {
-        const el_replace: ParentNode | null | undefined = el_note.parentNode;
-        if (el_replace && (el_replace as HTMLElement).classList.contains("ab-replace")) {
-          (el_replace as HTMLElement).classList.add("ab-super-width-p");
-        }
       }
     }
   }
