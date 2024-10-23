@@ -30,7 +30,10 @@
     "vuepress-theme-hope": "2.0.0-rc.31"
   },
   "dependencies": {
+    "@dagrejs/dagre": "^1.1.4",
     "@mermaid-js/mermaid-mindmap": "^9.3.0",
+    "@vue-flow/background": "^1.3.0",
+    "@vue-flow/core": "^1.41.2",
     "@vuepress/helper": "2.0.0-rc.19",
     "katex": "^0.16.9",
     "mermaid": "^10.9.1"
