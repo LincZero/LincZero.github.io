@@ -1,5 +1,7 @@
 import callout_mdit from "markdown-it-obsidian-callouts" // https://github.com/ebullient/markdown-it-obsidian-callouts
 
+import nodeflow_mdit from "./plugin/VueFlowPlugin/index_mdit"
+
 // import ab_mdit from "./plugin/ABConvertManager/dist/index_mdit.js"     // 编译版tsc (成功)
 // import ab_mdit from "./plugin/ABConvertManager/dist/index_mdit"        // 编译版tsup (使用失败 Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'markdown-it')
 // import ab_mdit from "./plugin/ABConvertManager/dist/mdit-any-block.js" // 编译版vite
@@ -28,6 +30,7 @@ dom.window.scrollTo = ()=>{} // @warn 若缺少该行，编译警告：Error: No
 
 // @ts-ignore 找不到名称“markdownit”
 export default  (md: markdownit) => {
+  md.use(nodeflow_mdit)
   md.use(ab_mdit)
   md.use(callout_mdit)
 }
