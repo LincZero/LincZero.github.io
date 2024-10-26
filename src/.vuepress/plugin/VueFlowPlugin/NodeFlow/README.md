@@ -1,5 +1,14 @@
 # README
 
+## Obsidian与VuePress插件共用部分
+
+整个NodeFlow文件夹是共用的，没有任何差异。该文件夹外的部分是不公用的
+
+- obsidian
+  - 入口：使用共用模块里的factoryVueDom
+- vuepress
+  - 入口：直接使用一个vue组件作为入口
+
 ## Obsidian安装插件
 
 (留空)
@@ -8,10 +17,11 @@
 
 和一般的VuePress插件使用方法一样：
 
-1. 和使用普通插件一样，配置插件，在config.ts 中添加/修改 plugins 字段
+1. 复制NodeFlowPlugin文件夹到上述目录
+2. 和使用普通插件一样，配置插件，在config.ts 中添加/修改 plugins 字段
     `import vueflowPlugin from "./plugin/VueFlowPlugin"` 并在plugins列表添加 `vueflowPlugin`
     (准确路径：src/.vuepress/plugin/VueFlowPlugin/，路径可以自己改)
-2. 复制NodeFlowPlugin文件夹到上述目录
+3. 和使用普通mdit插件一样，使用里面的 `index_mdit.ts`
 
 ### 依赖问题
 
