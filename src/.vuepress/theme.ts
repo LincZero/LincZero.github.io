@@ -40,23 +40,24 @@ export default hopeTheme(
 
     // 插件类
     plugins: {
-      docsearch: { // 文档搜索插件
+      seo: true,            // 搜索引擎优化
+      docsearch: {          // 文档搜索插件
         appId: "247IUCFQ4Q",
         apiKey: "b8883b05027bfa9fc73f21286ed7395e", // 707332eeb6a1daf0e6ecfbb63e27afbc
         indexName: "linczeroio"
       },
-      blog: { // 博客系统
+      blog: {               // 博客系统
         article: "/MdNote_BlogHide/",
       },
-      // comment: {}, // 评论系统的配置
-      mdEnhance: { // 扩展 Markdown 的功能
+      // comment: {},       // 评论系统的配置
+      mdEnhance: {          // 扩展 Markdown 的功能 (通常是markdown-it插件)
         // mdit - 容器语法
-        // alert: true, // 被 obsidain callout 代替
-        align: true,    // mdit容器 - 对齐
-        attrs: true,    // mdit容器 - 属性
-        demo: true,     // mdit容器 - 代码演示 // 注意变更: https://plugin-md-enhance.vuejs.press/zh/migration.html#%E5%8F%98%E6%9B%B4
-        tabs: true,     // mdit容器 - 标签
-        codetabs: true, // mdit容器 - 代码块分组
+        // alert: true,     // 被 obsidain callout 代替
+        align: true,        // mdit容器 - 对齐
+        attrs: true,        // mdit容器 - 属性
+        demo: true,         // mdit容器 - 代码演示 // 注意变更: https://plugin-md-enhance.vuejs.press/zh/migration.html#%E5%8F%98%E6%9B%B4
+        tabs: true,         // mdit容器 - 标签
+        codetabs: true,     // mdit容器 - 代码块分组
 
         // mdit - 内联语法
         mark: true,         // ==高亮==
@@ -80,27 +81,28 @@ export default hopeTheme(
         // 其他
         // component: true, // insert component easily
         // gfm: true,       // Github风格的md，是CommonMark的超集，GitHub Flavored Markdown，见 https://github.github.com/gfm/
-        // playground: {       // 在线代码演示设置
+        // playground: {    // 在线代码演示设置
         //   presets: ["ts", "vue"], // 预设
         // },
         // vuePlayground: true, // Vue 实验场, install @vue/repl before enabling it
-        // revealJs: { // install reveal.js before enabling it
+        // revealJs: {      // install reveal.js before enabling it
         //   plugins: ["highlight", "math", "search", "notes", "zoom"],
         // },
-        // stylize: [ // 样式化工具
-        //   {
-        //     matcher: "Recommended", // 匹配器
-        //     replacer: ({ tag }) => { // 替换器
-        //       if (tag === "em") // 如果标签为 "em"
+        // stylize: [       // 样式化工具
+        //   {              // 匹配器
+        //     matcher: "Recommended",
+        //                  // 替换器，这里判断如果标签为 "em" 就替换成 "Badge" 标签，并设置相关的属性和内容
+        //     replacer: ({ tag }) => {
+        //       if (tag === "em")
         //         return {
-        //           tag: "Badge", // 替换为 "Badge" 标签
-        //           attrs: { type: "tip" }, // 设置属性
-        //           content: "Recommended", // 设置内容
+        //           tag: "Badge",
+        //           attrs: { type: "tip" },
+        //           content: "Recommended",
         //         };
         //     },
         //   },
         // ],
-        // vPre: true, // Vue 预处理，Mustache 语法
+        // vPre: true,      // Vue 预处理，Mustache 语法
       },
     }
   },
