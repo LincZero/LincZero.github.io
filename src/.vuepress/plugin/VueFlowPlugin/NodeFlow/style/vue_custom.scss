@@ -4,7 +4,7 @@
  * 因为 esbuild-plugin-vue 有一个问题: https://github.com/pipe01/esbuild-plugin-vue3/issues/30
  */
 
-#app {
+ #app {
   font-family: 'JetBrains Mono', monospace;
 }
 
@@ -172,7 +172,7 @@
     z-index: -1,
   }
   &[aria-label^="Group"] .node-content {
-    background-color: #2e4656; // 40;
+    background-color: rgba($color: #2e4656, $alpha: 0.25);
   }
 }
 
