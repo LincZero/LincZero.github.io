@@ -45,6 +45,8 @@
       :id="item.hasOwnProperty('id')?item['id']:'target-'+index"
       class="custom"
       :indexAttr="index"
+      :nameAttr='item.hasOwnProperty("label")?item.label:item.hasOwnProperty("name")?item.name:item.type'
+      :nameMapAttr='(item.hasOwnProperty("label")?item.label:item.hasOwnProperty("name")?item.name:item.type).toLowerCase().charCodeAt(0)%10'
       type="target"
       :position="Position.Left" />
     <Handle
@@ -53,17 +55,10 @@
       :id="item.hasOwnProperty('id')?item['id']:'source-'+index"
       class="custom"
       :indexAttr="index"
+      :nameAttr='item.hasOwnProperty("label")?item.label:item.hasOwnProperty("name")?item.name:item.type'
+      :nameMapAttr='(item.hasOwnProperty("label")?item.label:item.hasOwnProperty("name")?item.name:item.type).toLowerCase().charCodeAt(0)%10'
       type="source"
       :position="Position.Right" />
-    <!-- Handle - 默认隐藏 -->
-    <Handle v-show="!hasCustomHandle"
-      id="l" class="default" type="target" :position="Position.Left" />
-    <Handle v-show="!hasCustomHandle"
-      id="t" class="default" :position="Position.Top" />
-    <Handle v-show="!hasCustomHandle"
-      id="r" class="default" type="source" :position="Position.Right" />
-    <Handle v-show="!hasCustomHandle"
-      id="b" class="default" :position="Position.Bottom" />
   </div>
 </template>
 
@@ -97,16 +92,6 @@ hasCustomHandle.value = props.data?.inputs?.length!=0 || props.data?.outputs?.le
   stroke: #ec4899 !important; /* 应该改成流动样式 */
   stroke-width: 4;
 }
-.vue-flow__edge[data-id$="0"] .vue-flow__edge-path{ stroke: red !important; }
-.vue-flow__edge[data-id$="1"] .vue-flow__edge-path{ stroke: orange !important; }
-.vue-flow__edge[data-id$="2"] .vue-flow__edge-path{ stroke: yellow !important; }
-.vue-flow__edge[data-id$="3"] .vue-flow__edge-path{ stroke: green !important; }
-.vue-flow__edge[data-id$="4"] .vue-flow__edge-path{ stroke: cyan !important; }
-.vue-flow__edge[data-id$="5"] .vue-flow__edge-path{ stroke: blue !important; }
-.vue-flow__edge[data-id$="6"] .vue-flow__edge-path{ stroke: purple !important; }
-.vue-flow__edge[data-id$="7"] .vue-flow__edge-path{ stroke: gold !important; }
-.vue-flow__edge[data-id$="8"] .vue-flow__edge-path{ stroke: silver !important; }
-.vue-flow__edge[data-id$="9"] .vue-flow__edge-path{ stroke: white !important; }
 </style>
 
 <style scoped>
@@ -253,12 +238,6 @@ hasCustomHandle.value = props.data?.inputs?.length!=0 || props.data?.outputs?.le
 .vue-flow__handle.custom[indexAttr="18"] { top:calc(30px + 18.5 * 24px) }
 .vue-flow__handle.custom[indexAttr="19"] { top:calc(30px + 19.5 * 24px) }
 
-.vue-flow__handle.default {
-  /* background-color: red !important; */
-  background: none;
-  border: none;
-}
-
 .comfyui-node[aria-label="Note"] .comfyui-node-title { background-color: #443322; }
 .comfyui-node[aria-label="Note"] .comfyui-node-content { background-color: #665533; }
 .comfyui-node[aria-label*="Sampler"] .comfyui-node-title { background-color: #223333; }
@@ -269,6 +248,6 @@ hasCustomHandle.value = props.data?.inputs?.length!=0 || props.data?.outputs?.le
   z-index: -1,
 }
 .comfyui-node[aria-label^="Group"] .comfyui-node-content {
-  background-color: #2e465644;
+  background-color: #2e465640;
 }
 </style>

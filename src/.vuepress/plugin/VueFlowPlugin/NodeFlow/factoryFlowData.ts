@@ -184,10 +184,15 @@ function factoryFlowData_comfyui(parsedData:any): {code: number, msg: string, da
      */
     let edges_new: object[] = []
     const edges = parsedData.links;
+    const colors = ["white", "red", "orange", "yellow", "green", "cyan", "blue", "purple", "gold", "silver"]
     edges.forEach((item:any) => {
+      const nameMapAttr = item[5].toLowerCase().charCodeAt(0)%10;
       edges_new.push({
         // 数据转移：
         id: ""+item[0],
+        style: {
+          stroke: colors[nameMapAttr]
+        },
         source: ""+item[1],
         sourceHandle: "source-"+item[2],
         target: ""+item[3],
@@ -247,16 +252,20 @@ function factoryFlowData_list(md:string): {code: number, msg: string, data: obje
   type type_selfChildren = {
     self: string,
     self_data: {
-      // 仅node+socket用
-      id: string,
-      parentId: string,
-      type?: string,
-      // 仅noode用
-      name: string,
-      inputs?: object[],
+      // 仅node+socket用，edge不使用这些属性
+      id: string,           // 节点id
+      parentId: string,     // 父节点id，根节点没有，为 ""
+      name: string,         // 节点名/socket名
+      type: string,         // 类型："n"|"node"|"i"|"input"|"o"|"output"|"v"|"value"|"g"|"group"|"e"|"edge",
+
+      // 仅socket用
+      value?: string,       // value类型的socket使用
+      // 仅noode用，socket与edge不使用这些属性
+      inputs?: object[],    // 节点内的
       outputs?: object[],
-      widgets_values?: string[],
-      // 仅edge用
+      values?: object[],
+
+      // 仅edge用，node与socket不使用这些属性
       from_node?: string,
       from_socket?: string,
       to_node?: string,
@@ -319,11 +328,13 @@ function factoryFlowData_list(md:string): {code: number, msg: string, data: obje
           id: ll_content[0][0],
           parentId: "",
           name: ll_content[0][1]??ll_content[0][0],
+          type: ll_content[3]?"edge":(!ll_content[1]||!ll_content[1][0])?"node":ll_content[1][1]?ll_content[1][1]:ll_content[1][0],
+
+          ...(!ll_content[1])?{}:(!ll_content[1][1])?{value: ""}:{value: ll_content[1][0]},
           inputs: [],
           outputs: [],
-          widgets_values: [],
-          // socket用
-          ...(!ll_content[1]||!ll_content[1][0])?{type: "node"}:{type: ll_content[1][0]},
+          values: [],
+          
           // 线用
           ...(!ll_content[3])?{}:{from_node: ll_content[0][0], from_socket: ll_content[1][0], to_node: ll_content[2][0], to_socket: ll_content[3][0]}
         }
@@ -336,11 +347,24 @@ function factoryFlowData_list(md:string): {code: number, msg: string, data: obje
         result_items.push(current_item)
       } else {
         map_item[current_level-1].children.push(current_item)
-        current_item.self_data.parentId = map_item[current_level-1].self_data.id
-        if (current_item.self_data.type == "input" || current_item.self_data.type == "i") map_item[current_level-1].self_data.inputs.push({id: current_item.self_data.id, name: current_item.self_data.name})
-        else if (current_item.self_data.type == "output" || current_item.self_data.type == "o") map_item[current_level-1].self_data.outputs.push({id: current_item.self_data.id, name: current_item.self_data.name})
-        else if (current_item.self_data.type == "value" || current_item.self_data.type == "v") map_item[current_level-1].self_data.widgets_values.push(current_item.self_data.name)
-        else if (current_item.self_data.type == "node" || current_item.self_data.type == "n") {} // 表示前一个是节点组
+        // 更新与父亲有关数据
+        const parent = map_item[current_level-1].self_data
+        current_item.self_data.parentId = parent.id
+        if (current_item.self_data.type == "input" || current_item.self_data.type == "i") { 
+          parent.type = "node"
+          parent.inputs.push({id: current_item.self_data.id, name: current_item.self_data.name, value: current_item.self_data.value})
+        }
+        else if (current_item.self_data.type == "output" || current_item.self_data.type == "o") {
+          parent.type = "node"
+          parent.outputs.push({id: current_item.self_data.id, name: current_item.self_data.name, value: current_item.self_data.value})
+        }
+        else if (current_item.self_data.type == "value" || current_item.self_data.type == "v") {
+          parent.type = "node"
+          parent.values.push({id: current_item.self_data.id, name: current_item.self_data.name, value: current_item.self_data.value})
+        }
+        else if (current_item.self_data.type == "node" || current_item.self_data.type == "n") {
+          parent.type = "group"
+        }
       }
     }
   } catch (error) {
@@ -357,18 +381,19 @@ function factoryFlowData_list(md:string): {code: number, msg: string, data: obje
     recursion_node(result_items[0].children)
     function recursion_node(items: type_selfChildren[]) {
       for (let item of items) {
-        if (item.self_data.type != "node") continue // socket不处理
+        if (item.self_data.type != "node" && item.self_data.type != "group") continue // socket不处理
         nodes_new.push({
           id: item.self_data.id,
           data: {
+            type: item.self_data.type,
             label: item.self_data.name,
             inputs: item.self_data.inputs,
             outputs: item.self_data.outputs,
-            widgets_values: item.self_data.widgets_values,
+            values: item.self_data.values,
           },
           position: { x: 0, y: 0 },
           ...(item.self_data.parentId==""||item.self_data.parentId=="nodes")?{}:{parentNode: item.self_data.parentId},
-          type: "comfyui",
+          type: "common",
         })
         recursion_node(item.children)
       }
@@ -377,11 +402,16 @@ function factoryFlowData_list(md:string): {code: number, msg: string, data: obje
     // 遍历 - 线
     let edges_new:object[] = []
     let edge_id = 0
+    const colors = ["white", "red", "orange", "yellow", "green", "cyan", "blue", "purple", "gold", "silver"]
     recursion_edge(result_items[1].children)
     function recursion_edge(items: type_selfChildren[]) {
       for (let item of items) {
+        const nameMapAttr = item.self_data.from_node.toLowerCase().charCodeAt(0)%10;
         edges_new.push({
           id: edge_id++,
+          style: { // 这里实际用的id而不是name做映射，可能存在问题
+            stroke: colors[nameMapAttr]
+          },
           source: item.self_data.from_node,
           sourceHandle: item.self_data.from_socket,
           target: item.self_data.to_node,
