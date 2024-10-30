@@ -34,21 +34,19 @@ export default defineUserConfig({
   // ------------------ 扩展类 - 钩子 ------------
   async onInitialized(app) {
     /**
-     * 例如这里我对.json后缀进行处理 (需要先设置pagePatterns允许解析json，否则找不到json文件)
-     * 甚至可以不修改，而用一个新页面替换掉
+     * 对.json后缀进行处理 (需要先设置pagePatterns允许解析json，否则这里遍历不到json文件)
+     * 这里编辑对应的page信息，视情况甚至可以createPage替换、新增、去除
      */
-    for (let i = 0; i < app.pages.length; i++) {
-      const page = app.pages[i];
+    for (const page of app.pages) {
       if (!page.path.endsWith(".json")) continue
-      // console.log("旧页面信息----------------------------------------\n", page)
-      // console.log("新页面信息----------------------------------------\n", newPage)
+      // console.log("旧页面信息---\n", page)
+      // console.log("新页面信息---\n", newPage)
       {
         page.path = page.path+"/"
-        // page.frontmatter = newPage.frontmatter    // 保证能够打开
         page.frontmatter.layout = 'Layout'
         page.content = "```nodeflow-comfyui\n" + page.content + "\n```"
         if(page.sfcBlocks.template?.contentStripped) page.sfcBlocks.template.contentStripped = // HTML内容以这个为准
-          app.markdown.render(page.content)       // 重渲染了
+          app.markdown.render(page.content) // 重新渲染该页
       }
     }
   },
