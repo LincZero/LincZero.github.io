@@ -66,7 +66,6 @@ export const resolveArraySidebarItems = ({
       }
       // `/` 不在末尾
       else {
-        console.log("666", path.slice(0, -1), path.substring(lastSlashIndex))
         path = path.slice(lastSlashIndex+1) // 取最后一个 `/` 后面的内容
       }
     }

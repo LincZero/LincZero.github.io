@@ -12,7 +12,7 @@ function nfRender_fence(md: MarkdownIt, options?: any): void {
 
     // 渲染
     // type vueflow, comfyui
-    return `<VueFlow type="${token.info.slice(9)}" data='${token.content}' />`
+    return `<VueFlow type="${token.info.slice(9)}" data='${(token.content as string).replace(/'/g, "&#39;")}' />`
   }
 }
 
