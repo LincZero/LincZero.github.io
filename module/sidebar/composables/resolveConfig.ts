@@ -47,14 +47,33 @@ export const resolveArraySidebarItems = ({
   config,
   prefix = "",
 }: ResolveArraySidebarOptions): ResolvedSidebarItem[] => {
-  const getLastPartOfPath = (path: string) : String => {
+  /**
+   * 获取路径最后的`/`后面的部分，注意：可能为""
+   * @param couldEmpty 若path末尾为 `/` 时使用
+   *   - 为false时，返回 "/" 或 `/`
+   *   - 为true时，取倒数第二更`/`的后面内容。实现是去掉最后一个字符然后递归一次
+   */
+  const getLastPartOfPath = (path: string, couldEmpty: boolean = true) : string => {
     path = decodeURIComponent(path);
 
     const lastSlashIndex = path.lastIndexOf("/");
-    if (lastSlashIndex != -1) path = path.substring(lastSlashIndex + 1);
-    
+    // 有`/`符号
+    if (lastSlashIndex != -1) { // 能找到
+      // `/` 在末尾
+      if (path.length-1 == lastSlashIndex) {
+        if (couldEmpty) { path = "/" }
+        else { path = getLastPartOfPath(path.slice(0, -1)); }
+      }
+      // `/` 不在末尾
+      else {
+        console.log("666", path.slice(0, -1), path.substring(lastSlashIndex))
+        path = path.slice(lastSlashIndex+1) // 取最后一个 `/` 后面的内容
+      }
+    }
+    // 没有`/`符号
+    else {}
+
     if (path.endsWith(".html")) path = path.slice(0, -5);
-    
     return path;
   }
 
@@ -100,12 +119,13 @@ export const resolveArraySidebarItems = ({
     return {
       type: "page",
       ...childItem,
-      text: getLastPartOfPath(childItem.text),
+      // 一般来说页面的末尾不为 `/`，但不排除使用createPage构造的虚拟页面或重定向
+      text: getLastPartOfPath(childItem.text, false),
     };
   };
 
-  //console.log("SidebarLog > [resolveConfig::resolveArraySidebarItems]");
-  //console.log("SidebarLog < [resolveConfig::resolveArraySidebarItems]", config.map((item) => handleChildItem(item)), "snapshot:", JSON.parse(JSON.stringify(config)));
+  // console.log("SidebarLog > [resolveConfig::resolveArraySidebarItems]");
+  // console.log("SidebarLog < [resolveConfig::resolveArraySidebarItems]", config.map((item) => handleChildItem(item)), "snapshot:", JSON.parse(JSON.stringify(config)));
   return config.map((item) => handleChildItem(item));
 };
 
