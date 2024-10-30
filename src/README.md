@@ -10,7 +10,8 @@ bgImageStyle:
   background-attachment: fixed
 heroText: Linc 的小站
 tagline: |
-  仅为个人自用的笔记库，记录学习与生活笔记<br>
+  这不是什么文档，仅仅是一个自用的个人笔记而已<br>
+  仅记录学习与生活笔记，非面向用户，所以如果有说明不太好的地方欢迎issue<br>
   此页为施工中，更多向导内容详见 “导航”
 actions:
   - text: 公开文档
