@@ -11,9 +11,9 @@ export const navbarConfig = navbar([
     children: [
       { text: "引导", link: "Guide/"},
       { text: "产品文档", link: "ProductDoc/"},
-      { text: "设计开发与数据生产", link: "01. 设计开发与数据生产/"},
-      { text: "十二门类与纯粹知识", link: "02. 十二门类与纯粹知识/"},
-      { text: "生活技能与生活生产", link: "03. 生活技能与生活生产/"},
+      { text: "设计开发与数据生产", link: "01.%20DesignAndDevelop/"},
+      { text: "十二门类与纯粹知识", link: "02.%20SubjectAndKnowledge/"},
+      { text: "生活技能与生活生产", link: "03.%20SkillAndProduction/"},
       { text: "全部", link: ""},
     ]
   },

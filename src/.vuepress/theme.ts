@@ -34,7 +34,7 @@ export default hopeTheme(
       config: {
         "/MdNote_Private/": ["dfajiohjffolwseinf"],
         "/MdNote_Work/个人信息/": ["Boss直聘123", "Boss123", "boss123", "58同城123", "58123", "前程无忧123", "51123", "猎聘123", "智联招聘123"],
-        "/MdNote_Public/03. 生活技能与生活生产": ["789456123"],
+        "/MdNote_Public/03.%20SkillAndProduction": ["789456123"],
       },
     },
 

@@ -56,3 +56,7 @@ html[data-theme="dark"] {
   --bg-color: #1f1f1f; // 由深到浅：原 #0d1117、vsc #1f1f1f、ob #242424
   --bg-color-secondary: #181818; // 由深到浅：原 #161b22、vsc #181818、ob #1b1b1b
 }
+
+.theme-hope-content:not(.custom)>p {
+  text-align: inherit;  // 主题这里默认是justify，很奇怪
+}
