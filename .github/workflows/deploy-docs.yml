@@ -34,6 +34,7 @@ jobs:
         working-directory: ./src/MdNote_Other/
         run: |
           git clone https://github.com/LincZero/ComfyUI_examples.git
+          git clone https://github.com/LincZero/ComfyUI-Workflows-ZHO.git
 
       - name: 安装 pnpm
         uses: pnpm/action-setup@v2
