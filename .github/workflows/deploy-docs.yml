@@ -15,7 +15,7 @@ jobs:
   deploy-gh-pages:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout - 克隆仓库
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -27,19 +27,25 @@ jobs:
         run: |
           git submodule foreach git pull origin main
 
+      - name: Checkout - 一些非子模块的其他仓库
+        working-directory: ./src/
+        run: mkdir MdNote_Other
+      - name: Checkout - 一些非子模块的其他仓库2
+        working-directory: ./src/MdNote_Other/
+        run: |
+          git clone https://github.com/LincZero/ComfyUI_examples.git
+
       - name: 安装 pnpm
         uses: pnpm/action-setup@v2
         with:
           run_install: true
           version: 8
 
-
       - name: 设置 Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
           cache: pnpm
-
 
       - name: 构建文档
         env:
