@@ -11,6 +11,7 @@ export const sidebarConfig = sidebar(
       "/MdNote_Public/01.%20DesignAndDevelop": "structure",
       "/MdNote_Public/02.%20SubjectAndKnowledge": "structure",
       "/MdNote_Public/03.%20SkillAndProduction": "structure",
+    "/MdNote_Other/": "structure",
     "/MdNote_Work/": "structure",
     "/MdNote_Private/": "structure",
   }

@@ -18,6 +18,10 @@ export const navbarConfig = navbar([
     ]
   },
   {
+    text: "其他仓库文档",
+    link: "/MdNote_Other/",
+  },
+  {
     text: "私有文档",
     link: "/MdNote_Private/",
   },
