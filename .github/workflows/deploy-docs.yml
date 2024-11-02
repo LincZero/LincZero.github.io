@@ -33,8 +33,9 @@ jobs:
       - name: Checkout - 一些非子模块的其他仓库2
         working-directory: ./src/MdNote_Other/
         run: |
-          git clone https://github.com/LincZero/ComfyUI_examples.git
-          git clone https://github.com/LincZero/ComfyUI-Workflows-ZHO.git
+          git clone https://github.com/LincDocs/ComfyUI_examples.git
+          git clone https://github.com/LincDocs/ComfyUI-Workflows-ZHO.git
+          git clone https://github.com/LincDocs/ComfyUI-Workflows-Linc.git
 
       - name: 安装 pnpm
         uses: pnpm/action-setup@v2

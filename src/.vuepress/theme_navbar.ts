@@ -18,7 +18,7 @@ export const navbarConfig = navbar([
     ]
   },
   {
-    text: "别人仓库的引用/翻译",
+    text: "其他文档库",
     link: "/MdNote_Other/",
   },
   {
