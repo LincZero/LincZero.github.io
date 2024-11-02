@@ -31,7 +31,7 @@ jobs:
         working-directory: ./src/
         run: |
           git clone https://github.com/LincDocs/MdNote_Public.git
-          git clone https://<${{ secrets.VUEPRESS }}>@github.com/LincDocs/MdNote_Work.git
+          # git clone https://<${{ secrets.VUEPRESS }}>@github.com/LincDocs/MdNote_Work.git
 
       - name: Checkout - 文档库2
         working-directory: ./src/
