@@ -23,9 +23,9 @@ jobs:
           submodules: true
           token: '${{ secrets.VUEPRESS }}'
 
-      - name: Checkout - 更新子模块到最新
-        run: |
-          git submodule foreach git pull origin main
+      # - name: Checkout - 更新子模块到最新
+      #   run: |
+      #     git submodule foreach git pull origin main
 
       - name: Checkout - 一些非子模块的其他仓库
         working-directory: ./src/
@@ -33,6 +33,8 @@ jobs:
       - name: Checkout - 一些非子模块的其他仓库2
         working-directory: ./src/MdNote_Other/
         run: |
+          git clone https://github.com/LincDocs/MoNote_Public.git
+          git clone https://<${{ secrets.VUEPRESS }}>@github.com/LincDocs/MoNote_Work.git
           git clone https://github.com/LincDocs/ComfyUI_examples.git
           git clone https://github.com/LincDocs/ComfyUI-Workflows-ZHO.git
           git clone https://github.com/LincDocs/ComfyUI-Workflows-Linc.git
