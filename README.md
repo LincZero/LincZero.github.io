@@ -73,6 +73,29 @@ git submodule update --recursive --remote
 git submodule foreach git pull origin main
 ```
 
+如果你不想使用我的子模块：
+
+```bash
+# 1. 删除.gitmodules文件里的对应条目
+# 2. 移除子模块配置，这里 path/to/submodule 是你需要卸载的子模块的相对路径
+git rm --cached path/to/submodule
+# 3. 提交
+git commit -m "Removed submodule <submodule name>"
+# 4. 删除子模块目录
+rm -rf path/to/submodule
+```
+
+---
+
+2024-11-02: 
+
+删除了子模块系统，依赖仅依赖脚本进行。
+
+优点：
+
+- 简化、解耦、方便项目的迁移与复用
+- 不太容易存在某个文档库需要强制依赖某个版本以上的编译系统的情况（即两者之间不存在的版本依赖），子模块优点在这不起效
+
 ### Gitee Page
 
 本来打算用 Gitee 镜像网站兼顾 Github 访问不稳的情况，不过 Gitee 官方现在已经停用了。

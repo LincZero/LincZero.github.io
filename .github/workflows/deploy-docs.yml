@@ -27,14 +27,18 @@ jobs:
       #   run: |
       #     git submodule foreach git pull origin main
 
-      - name: Checkout - 一些非子模块的其他仓库
+      - name: Checkout - 文档库1
         working-directory: ./src/
-        run: mkdir MdNote_Other
-      - name: Checkout - 一些非子模块的其他仓库2
-        working-directory: ./src/MdNote_Other/
         run: |
           git clone https://github.com/LincDocs/MdNote_Public.git
           git clone https://<${{ secrets.VUEPRESS }}>@github.com/LincDocs/MdNote_Work.git
+
+      - name: Checkout - 文档库2
+        working-directory: ./src/
+        run: mkdir MdNote_Other
+      - name: Checkout - 文档库2-2
+        working-directory: ./src/MdNote_Other/
+        run: |
           git clone https://github.com/LincDocs/ComfyUI_examples.git
           git clone https://github.com/LincDocs/ComfyUI-Workflows-ZHO.git
           git clone https://github.com/LincDocs/ComfyUI-Workflows-Linc.git
