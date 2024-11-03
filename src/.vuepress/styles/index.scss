@@ -7,7 +7,11 @@
 
 // 首页首banner加高
 #main-content > header.vp-hero-info-wrapper {
-  height: 700px !important; // calc(100vh - 60px)
+  // height: 700px !important; // calc(100vh - 60px)
+  height: calc(100vh - 60px);
+}
+#main-content > div.vp-feature-wrapper {
+  height: calc(50vh - 30px);
 }
 
 // 目录树项不换行

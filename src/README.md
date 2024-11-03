@@ -4,36 +4,35 @@ containerClass: home
 home: true
 icon: home
 title: Home
-bgImage: https://theme-hope-assets.vuejs.press/bg/6-light.svg
-bgImageDark: https://theme-hope-assets.vuejs.press/bg/6-dark.svg
+bgImage: /svg_bg/07.svg
+bgImageDark: /svg_bg/03.svg
 bgImageStyle:
   background-attachment: fixed
 heroText: Linc 的小站
 tagline: |
-  这不是什么文档，仅仅是一个自用的个人笔记而已<br>
-  仅记录学习与生活笔记，非面向用户，所以如果有说明不太好的地方欢迎issue<br>
-  此页为施工中，更多向导内容详见 “导航”
+  这不是什么文档，仅仅是一个自用个人笔记<br>
+  仅记录学习与生活笔记，非面向用户，如果有说明不太好的地方欢迎issue
 actions:
   - text: 公开文档
+    icon: lightbulb
     link: ./MdNote_Public/
-    icon: signs-post
     type: primary
 
   - text: 产品文档
-    icon: lightbulb
+    icon: book
     link: ./MdNote_Public/ProductDoc/
 
+  - text: 导航
+    icon: signs-post
+    link: ./MdNote_Public/Guide/
+
   - text: 编程
-    icon: lightbulb
-    link: ./MdNote_Public/01.%20%E8%AE%BE%E8%AE%A1%E5%BC%80%E5%8F%91%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%94%9F%E4%BA%A7/Develop/
+    icon: code
+    link: ./MdNote_Public/01.%20DesignAndDevelop/Develop/
 
   - text: 3D
-    icon: lightbulb
-    link: ./MdNote_Public/01.%20%E8%AE%BE%E8%AE%A1%E5%BC%80%E5%8F%91%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%94%9F%E4%BA%A7/3D/
-
-  - text: 导航
-    icon: lightbulb
-    link: ./MdNote_Public/Guide/
+    icon: box
+    link: ./MdNote_Public/01.%20DesignAndDevelop/3D/
 
 highlights:
   # 编程笔记 - 按语言划分
@@ -42,106 +41,106 @@ highlights:
       注意编程笔记的分类优先级：工程 > 理论 > 语言，当你找不到想要的内容时，看看是否在其他的分类项当中。<br>
       例如："Qt"相关的就不会出现在C++中，"Android"相关的就不会出现在Java中
     #image: /assets/image/markdown.svg
-    bgImage: https://theme-hope-assets.vuejs.press/bg/1-light.svg
-    bgImageDark: https://theme-hope-assets.vuejs.press/bg/1-dark.svg
+    bgImage: /svg_bg/01.svg
+    bgImageDark: /svg_bg/02.svg
     features:
       - title: C++
         icon: code
         #details: Check markdown links
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/C__/
+        link: ./MdNote_Public/01. DesignAndDevelop/Develop/01. Language/C__/
 
       - title: C
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/C/
+        link: ./MdNote_Public/01. DesignAndDevelop/Develop/01. Language/C/
 
       - title: Python
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/Python/
+        link: ./MdNote_Public/01. DesignAndDevelop/Develop/01. Language/Python/
 
       - title: TypeScript
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/TypeScript/
+        link: ./MdNote_Public/01. DesignAndDevelop/Develop/01. Language/TypeScript/
 
       - title: JavaScript
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/JavaScript/
+        link: ./MdNote_Public/01. DesignAndDevelop/Develop/01. Language/JavaScript/
 
       - title: Java
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/Java/      
+        link: ./MdNote_Public/01. DesignAndDevelop/Develop/01. Language/Java/      
 
       - title: Rust
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/Rust/
+        link: ./MdNote_Public/01. DesignAndDevelop/Develop/01. Language/Rust/
 
       - title: Go
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/Go/
+        link: ./MdNote_Public/01. DesignAndDevelop/Develop/01. Language/Go/
 
       - title: E语言
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/EProgram/
+        link: ./MdNote_Public/01. DesignAndDevelop/Develop/01. Language/EProgram/
 
       - title: C#
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/01. Language/C_/
+        link: ./MdNote_Public/01. DesignAndDevelop/Develop/01. Language/C_/
 
   # 常用类别分支
   - header: 笔记 - 按工程类别划分
     #description: Customizable outlook with full a11y support.
     #image: /assets/image/ui.svg
-    bgImage: https://theme-hope-assets.vuejs.press/bg/7-light.svg
-    bgImageDark: https://theme-hope-assets.vuejs.press/bg/7-dark.svg
+    bgImage: /svg_bg/01.svg
+    bgImageDark: /svg_bg/02.svg
     features:
       - title: 网络
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/02. Theory/Computer/03. 计算机系统 - 专题或子系统的字典版/下层相关/Network/
+        link: ./MdNote_Public/01. DesignAndDevelop/Develop/02. Theory/Computer/03. 计算机系统 - 专题或子系统的字典版/下层相关/Network/
         
       - title: SCAPP
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/02. Theory/Computer/
+        link: ./MdNote_Public/01. DesignAndDevelop/Develop/02. Theory/Computer/
 
       - title: Qt/PyQt
         icon: code
         #details: Check markdown links
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Platform/Multi/QT（Cpp）/
+        link: ./MdNote_Public/01. DesignAndDevelop/Develop/04. Project/Platform/Multi/QT（Cpp）/
 
       - title: 前端
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Platform/Web/
+        link: ./MdNote_Public/01. DesignAndDevelop/Develop/04. Project/Platform/Web/
 
       - title: Electron
         icon: code
         #details: Check markdown links
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Platform/Multi/Electron（Web）/
+        link: ./MdNote_Public/01. DesignAndDevelop/Develop/04. Project/Platform/Multi/Electron（Web）/
 
       - title: Vue
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Platform/Web/02. 前端框架/Vue/
+        link: ./MdNote_Public/01. DesignAndDevelop/Develop/04. Project/Platform/Web/02. 前端框架/Vue/
 
       - title: Android
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Platform/Android/  
+        link: ./MdNote_Public/01. DesignAndDevelop/Develop/04. Project/Platform/Android/  
 
       - title: 解析渲染
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/02. Theory/Type/Doc/
+        link: ./MdNote_Public/01. DesignAndDevelop/Develop/02. Theory/Type/Doc/
 
       - title: 文档技巧
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Type/Doc/
+        link: ./MdNote_Public/01. DesignAndDevelop/Develop/04. Project/Type/Doc/
 
       - title: 数据库
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Platform/Web/04. 后端/数据库/
+        link: ./MdNote_Public/01. DesignAndDevelop/Develop/04. Project/Platform/Web/04. 后端/数据库/
 
       - title: 机器/深度学习
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Type/Artificial_Intelligence/
+        link: ./MdNote_Public/01. DesignAndDevelop/Develop/04. Project/Type/Artificial_Intelligence/
 
       - title: 游戏引擎
         icon: code
-        link: ./MdNote_Public/01. 设计开发与数据生产/Develop/04. Project/Platform/SoftCode/Game/
+        link: ./MdNote_Public/01. DesignAndDevelop/Develop/04. Project/Platform/SoftCode/Game/
 
 copyright: false
 footer: 自用，未经许可禁止转载任何内容 | Copyright © 2024-present LincZero
