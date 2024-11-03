@@ -76,23 +76,10 @@ const props = defineProps({
   },
 })
 
+// 是否有自定义socket，如果没有可能会添加默认的自定义socket
 const hasCustomHandle = ref(false)
 hasCustomHandle.value = props.data?.inputs?.length!=0 || props.data?.outputs?.length!=0
 </script>
-
-<style>
-.vue-flow__node-comfyui.selected .comfyui-node{
-  box-shadow: 0 0 8px 3px #ec4899;
-}
-
-.vue-flow__edge .vue-flow__edge-path{
-  stroke-width: 2;
-}
-.vue-flow__edge.selected .vue-flow__edge-path{
-  stroke: #ec4899 !important; /* 应该改成流动样式 */
-  stroke-width: 4;
-}
-</style>
 
 <style scoped>
 /**
@@ -155,7 +142,7 @@ hasCustomHandle.value = props.data?.inputs?.length!=0 || props.data?.outputs?.le
 
   border-radius: 8px 8px 0 0;
   color: #999999;
-  background-color: #2e4656;
+  background-color: #2e4656f0;
 }
 
 .comfyui-node .comfyui-node-content {
@@ -165,7 +152,7 @@ hasCustomHandle.value = props.data?.inputs?.length!=0 || props.data?.outputs?.le
 
   border-radius: 0 0 8px 8px;
   color: #aaaaaa;
-  background-color: #353535;
+  background-color: #353535f0;
 }
 
 .comfyui-node .comfyui-node-content .item {
@@ -204,18 +191,5 @@ hasCustomHandle.value = props.data?.inputs?.length!=0 || props.data?.outputs?.le
 }
 .comfyui-node .comfyui-node-content .comfyui-node-handle-name>.right {
   text-align: right;
-}
-
-.comfyui-node[aria-label="Note"] .comfyui-node-title { background-color: #443322; }
-.comfyui-node[aria-label="Note"] .comfyui-node-content { background-color: #665533; }
-.comfyui-node[aria-label*="Sampler"] .comfyui-node-title { background-color: #223333; }
-.comfyui-node[aria-label*="Sampler"] .comfyui-node-content { background-color: #335555; }
-.comfyui-node[aria-label^="Group"] {
-  min-width: 200px;
-  height: 200px;
-  z-index: -1,
-}
-.comfyui-node[aria-label^="Group"] .comfyui-node-content {
-  background-color: #2e465640;
 }
 </style>
