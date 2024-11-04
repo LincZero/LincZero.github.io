@@ -49,6 +49,9 @@ export default hopeTheme(
       blog: {               // 博客系统
         article: "/MdNote_BlogHide/",
       },
+      components: {         // 内置组件 (有很多类型，这里就不加不使用的类型了)
+        components: ["PDF"]
+      },
       // comment: {},       // 评论系统的配置
       mdEnhance: {          // 扩展 Markdown 的功能 (通常是markdown-it插件)
         // mdit - 容器语法

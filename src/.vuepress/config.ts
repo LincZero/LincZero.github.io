@@ -1,11 +1,14 @@
 /// VuePress 相关的设置
 
-import { defineUserConfig } from "vuepress";                  // vuepress
+import { App, createPage, defineUserConfig } from "vuepress"; // vuepress
 
 import theme from "./theme.ts";                               // hope主题 - 默认部分
 import alias from "./config_alias.ts";                        // hope主题 - 别名扩展
 import extendsMarkdown from "./config_extendsMarkdown.ts";    // hope主题 - mdit扩展
 import plugins from "./config_plugins.ts";                    // hope主题 - 插件扩展
+
+import * as fs from 'fs';                                     // 用于public静态资源扩展
+import * as path from 'path';
 
 export default defineUserConfig({
   
@@ -23,7 +26,10 @@ export default defineUserConfig({
       level: [1, 2, 3, 4, 5, 6] // 不然的话toc会受限
     },
   },
-  pagePatterns: ["**/*.md", "**/*.json", "!**/*.snippet.md", "!.vuepress", "!node_modules"], // "**/*.pdf"
+  pagePatterns: [
+    "**/*.md", "!**/*.snippet.md", "!.vuepress", "!node_modules",
+    "**/*.json", // "**/*.pdf"
+  ],
 
   // ------------------ 扩展类 ------------------
   theme,
@@ -32,21 +38,53 @@ export default defineUserConfig({
   plugins,
 
   // ------------------ 扩展类 - 钩子 ------------
-  async onInitialized(app) {
+  async onInitialized(app: App) {
     /**
      * 对.json后缀进行处理 (需要先设置pagePatterns允许解析json，否则这里遍历不到json文件)
      * 这里编辑对应的page信息，视情况甚至可以createPage替换、新增、去除
      */
-    for (const page of app.pages) {
-      if (!page.path.endsWith(".json")) continue
-      // console.log("旧页面信息---\n", page)
-      // console.log("新页面信息---\n", newPage)
-      {
+    for (let i = 0; i<app.pages.length; i++) {
+      const page = app.pages[i]
+      if (page.path.endsWith(".json")) {
+        // console.log("旧页面信息---\n", page)
+        // console.log("新页面信息---\n", newPage)
         page.path = page.path+"/"
         page.frontmatter.layout = 'Layout'
         page.content = "```nodeflow-comfyui\n" + page.content + "\n```"
         if(page.sfcBlocks.template?.contentStripped) page.sfcBlocks.template.contentStripped = // HTML内容以这个为准
-          app.markdown.render(page.content) // 重新渲染该页
+          app.markdown.render(page.content) // 重新渲染该页 (好像删了某些东西就会自动重新渲染，不需要手动这一步？)
+      }
+      else if (page.path.endsWith(".pdf")) {}
+    }
+
+    /**
+     * 遍历public静态资源，并将部分映射到虚拟页中
+     * 
+     * (注意这里必须要使用同步方法，不能用异步的!!! 否则可能在读完文件之前就开始其他步骤的解析了)
+     * 旧版实验：
+     * async function traverseDirectory(directory: string) {
+     *   await fsPromise.readdir(directory, { withFileTypes: true }, async (err, files) => {})
+     * await traverseDirectory("./src/.vuepress/public/docs");
+     */
+    {
+      // 创建虚拟页
+      async function fn_newPage(path: string) {
+        console.log(`\n\nCreate Virtual Page:`, path);
+        const newPage = await createPage(app, {
+          path: ('/MdNote_Public/' + path + '/'), // TODO TMP
+          frontmatter: { layout: 'Layout', },
+          content: `# public_docs/${path}\n<PDF url="/${path}" height="1000px" />`,
+        })
+        app.pages.push(newPage)
+      }
+
+      // 读取public静态资源
+      let files = await fs.readdirSync("./src/.vuepress/public/docs/", { withFileTypes: true, recursive: true })
+      for (const file of files) {
+        // 跳过目录 (无需手动递归)
+        if (file.isDirectory()) { continue } // 由于前面开了递归模式，这里就不手动递归了
+        // 如果是文件，添加对应的虚拟页
+        await fn_newPage("docs/"+file.name)
       }
     }
   },

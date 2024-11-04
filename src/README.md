@@ -143,5 +143,5 @@ highlights:
         link: ./MdNote_Public/01. DesignAndDevelop/Develop/04. Project/Platform/SoftCode/Game/
 
 copyright: true
-footer: 自用，未经许可禁止转载任何内容 | Copyright © 2014-present LincZero
+footer: 自用，未经许可禁止转载任何内容 | Copyright © 2015-present LincZero
 ---
