@@ -86,19 +86,25 @@ export default defineUserConfig({
      */
     {
       // 创建虚拟页
-      // 注意：话说我将 `MdNote_Public` 修改成其他不存在的路径会有问题。即这里需要挂载在一个真实路径上! (TODO 也许是个bug，有空再修)
+      // 注意：话说我将 `MdNote_Other` 修改成其他不存在的路径会有问题。即这里需要挂载在一个真实路径上! (TODO 也许是个bug，有空再修)
       async function fn_newPage(path: string) {
         const newPage = await createPage(app, {
-          path: (`/MdNote_Public/docs/${path}/`), // TODO TMP
+          path: (`/MdNote_Other/docs/${path}/`), // TODO TMP
           frontmatter: { layout: 'Layout', },
           content: `# PUBLICDOCS/${path}\n<PDF url="/docs/${path}" height="1000px" zoom="1000"/>`,
         })
-        newPage.filePathRelative = `MdNote_Public/docs/${path}` // 侧边栏显示的关键
+        newPage.filePathRelative = `MdNote_Other/docs/${path}` // 侧边栏显示的关键
         app.pages.push(newPage)
       }
 
       // 读取public静态资源
-      let files = await fs.readdirSync("./src/.vuepress/public/docs/", { withFileTypes: true, recursive: true })
+      let files;
+      try {
+        files = await fs.readdirSync("./src/.vuepress/public/docs/", { withFileTypes: true, recursive: true })
+      } catch {
+        console.warn("without dir: ./src/.vuepress/public/docs/")
+        files = []
+      }
       for (const file of files) {
         // 跳过非pdf
         if (!file.name.endsWith(".pdf")) continue
