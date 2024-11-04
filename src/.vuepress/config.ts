@@ -91,7 +91,7 @@ export default defineUserConfig({
         const newPage = await createPage(app, {
           path: (`/MdNote_Public/docs/${path}/`), // TODO TMP
           frontmatter: { layout: 'Layout', },
-          content: `# PUBLICDOCS/${path}\n<PDF url="/docs/${path}" height="1000px" />`,
+          content: `# PUBLICDOCS/${path}\n<PDF url="/docs/${path}" height="1000px" zoom="1000"/>`,
         })
         newPage.filePathRelative = `MdNote_Public/docs/${path}` // 侧边栏显示的关键
         app.pages.push(newPage)
@@ -100,10 +100,16 @@ export default defineUserConfig({
       // 读取public静态资源
       let files = await fs.readdirSync("./src/.vuepress/public/docs/", { withFileTypes: true, recursive: true })
       for (const file of files) {
+        // 跳过非pdf
+        if (!file.name.endsWith(".pdf")) continue
         // 跳过目录 (无需手动递归)
         if (file.isDirectory()) { continue } // 由于前面开了递归模式，这里就不手动递归了
         // 如果是文件，添加对应的虚拟页
-        await fn_newPage(file.name)
+        let fullname = file.path.replace("src\\.vuepress\\public\\docs\\", "") // 这个fullname的路径构造很奇怪。根据是否有父目录，两种情况都会出现。可能和 `recursive: true` 和windows路径有关
+        if (fullname != file.path) { fullname = fullname.replace(/\\/g, "/") + "/" } // 有父路径
+        else fullname = fullname.replace("./src/.vuepress/public/docs/", "") // 无父路径
+        fullname += file.name
+        await fn_newPage(fullname)
       }
     }
   },

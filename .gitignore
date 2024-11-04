@@ -1,9 +1,11 @@
 
 node_modules/
+
+src/*
+!src/.vuepress/
 src/.vuepress/.cache/
 src/.vuepress/.temp/
 src/.vuepress/dist/
-# src/*
-# !src/.vuepress/
+src/.vuepress/public/docs/
 
 tmp_docs/
