@@ -38,6 +38,24 @@ export default defineUserConfig({
   plugins,
 
   // ------------------ 扩展类 - 钩子 ------------
+  /**
+   * page变量的调试、实验
+   * // 安全修改
+   * {
+   *   // page.filePath = ""
+   *   // page.chunkName = ""
+   *   // page.htmlFilePath = ""
+   *   // page.htmlFilePathRelative = ""
+   * }
+   * // 非安全修改
+   * {
+   *   // page.filePathRelative = ""           // 侧边栏显示的关键
+   *   // page.componentFilePath = ""          // 侧边栏正常，打开文件则运行报错
+   *   // page.componentFilePathRelative = ""  // 编译报错
+   *   // page.chunkFilePath = ""              // 运行报错
+   *   // page.chunkFilePathRelative = ""      // 编译报错
+   * }
+   */
   async onInitialized(app: App) {
     /**
      * 对.json后缀进行处理 (需要先设置pagePatterns允许解析json，否则这里遍历不到json文件)
@@ -68,13 +86,14 @@ export default defineUserConfig({
      */
     {
       // 创建虚拟页
+      // 注意：话说我将 `MdNote_Public` 修改成其他不存在的路径会有问题。即这里需要挂载在一个真实路径上! (TODO 也许是个bug，有空再修)
       async function fn_newPage(path: string) {
-        console.log(`\n\nCreate Virtual Page:`, path);
         const newPage = await createPage(app, {
-          path: ('/MdNote_Public/' + path + '/'), // TODO TMP
+          path: (`/MdNote_Public/docs/${path}/`), // TODO TMP
           frontmatter: { layout: 'Layout', },
-          content: `# public_docs/${path}\n<PDF url="/${path}" height="1000px" />`,
+          content: `# PUBLICDOCS/${path}\n<PDF url="/docs/${path}" height="1000px" />`,
         })
+        newPage.filePathRelative = `MdNote_Public/docs/${path}` // 侧边栏显示的关键
         app.pages.push(newPage)
       }
 
@@ -84,7 +103,7 @@ export default defineUserConfig({
         // 跳过目录 (无需手动递归)
         if (file.isDirectory()) { continue } // 由于前面开了递归模式，这里就不手动递归了
         // 如果是文件，添加对应的虚拟页
-        await fn_newPage("docs/"+file.name)
+        await fn_newPage(file.name)
       }
     }
   },

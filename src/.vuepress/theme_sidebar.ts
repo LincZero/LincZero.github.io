@@ -14,5 +14,6 @@ export const sidebarConfig = sidebar(
     "/MdNote_Other/": "structure",
     "/MdNote_Work/": "structure",
     "/MdNote_Private/": "structure",
+    // "/Public_Docs/": "structure", // 特殊路径，内容为public文件夹对应的虚拟页
   }
 );
