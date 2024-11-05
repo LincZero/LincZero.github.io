@@ -6,6 +6,23 @@
 
 笔记内容，如非特殊标注，则为原创，转载需署名。
 
+## 核心扩展
+
+该网站并非是普通的 VuePress，我做了许多扩展以及魔改，其中非常多的扩展都是个人开发的：
+
+- 插件主题：VuePress-Theme-Hope
+- 仿文件侧边栏 (自研魔改)，组件替换
+- 高通用扩展（可以在VuePress以外使用）
+  - AnyBlock (自研)，用于部分md写法与渲染扩展
+  - newPageHook (自研)，对Markdown-it版本的AnyBlock的补充增强
+  - NodeFlow (自研)，用于节点工作流的显示与扩展
+  - onInitialized-json (自研)，用于对NodeFlow的增强，直接识别工作流json文件
+- markdown-it-obsidian-callout (贡献)，用于obsidian callout语法的渲染，用于代替gfm-alert
+- onInitialized-json (自研)，直接识别pdf库
+- 新的解耦以及工作流 (自研)
+
+上面标 “自研” 的部分均使用 “GPLV3” 开源协议
+
 ## 编译相关
 
 ### js内存满的错误

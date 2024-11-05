@@ -91,7 +91,7 @@ export default defineUserConfig({
         const newPage = await createPage(app, {
           path: (`/MdNote_Other/docs/${path}/`), // TODO TMP
           frontmatter: { layout: 'Layout', },
-          content: `# PUBLICDOCS/${path}\n<PDF url="/docs/${path}" height="1000px" zoom="1000"/>`,
+          content: `# PUBLICDOCS/${path}\n<PDF url="/docs/${path}" height="1000px" zoom="auto" noFullscreen="false"/>`,
         })
         newPage.filePathRelative = `MdNote_Other/docs/${path}` // 侧边栏显示的关键
         app.pages.push(newPage)
