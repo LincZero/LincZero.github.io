@@ -18,7 +18,7 @@
   - NodeFlow (自研)，用于节点工作流的显示与扩展
   - onInitialized-json (自研)，用于对NodeFlow的增强，直接识别工作流json文件
 - markdown-it-obsidian-callout (贡献)，用于obsidian callout语法的渲染，用于代替gfm-alert
-- onInitialized-json (自研)，直接识别pdf库
+- onInitialized-pdf (自研)，直接识别pdf库
 - 新的解耦以及工作流 (自研)
 
 上面标 “自研” 的部分均使用 “GPLV3” 开源协议
