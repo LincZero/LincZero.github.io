@@ -1,4 +1,5 @@
 import callout_mdit from "markdown-it-obsidian-callouts" // https://github.com/ebullient/markdown-it-obsidian-callouts
+import { BiDirectionalLinks } from '@nolebase/markdown-it-bi-directional-links'
 
 import nodeflow_mdit from "./plugin/VueFlowPlugin/index_mdit"
 
@@ -33,4 +34,9 @@ export default  (md: markdownit) => {
   md.use(nodeflow_mdit)
   md.use(ab_mdit)
   md.use(callout_mdit)
+  md.use(BiDirectionalLinks({
+    dir: "./src/",
+    // baseDir: "/src2/",
+    noNoMatchedFileWarning: true  // 找不到对应链接时忽略
+  })) 
 }
