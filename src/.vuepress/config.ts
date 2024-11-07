@@ -27,8 +27,9 @@ export default defineUserConfig({
     },
   },
   pagePatterns: [
-    "**/*.md", "!**/*.snippet.md", "!.vuepress", "!node_modules",
+    "**/*.md", "!**/*.snippet.md",
     "**/*.json", // "**/*.pdf"
+    "!.vuepress", "!node_modules", "!**/.obsidian",
   ],
 
   // ------------------ 扩展类 ------------------
