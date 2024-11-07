@@ -13,9 +13,9 @@
 - 插件主题：VuePress-Theme-Hope
 - 仿文件侧边栏 (自研魔改)，组件替换
 - 高通用扩展（可以在VuePress以外使用）
-  - AnyBlock (自研)，用于部分md写法与渲染扩展
+  - AnyBlock (自研, V3 2024)，用于部分md写法与渲染扩展
   - newPageHook (自研)，对Markdown-it版本的AnyBlock的补充增强
-  - NodeFlow (自研)，用于节点工作流的显示与扩展
+  - NodeFlow (自研, 2024)，用于节点工作流的显示与扩展
   - onInitialized-json (自研)，用于对NodeFlow的增强，直接识别工作流json文件
   - markdown-it-obsidian-callout (贡献)，用于obsidian callout语法的渲染，用于代替gfm-alert
   - @nolebase/markdown-it-bi-directional-links，用于双链的wiki链接语法的支持
