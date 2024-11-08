@@ -32,20 +32,17 @@ export default hopeTheme(
     sidebarSorter: ["readme", "order", "filename"],
     encrypt: {
       config: {
-        "/MdNote_Private/": ["dfajiohjffolwseinf"],
-        "/MdNote_Work/个人信息/": ["Boss直聘123", "Boss123", "boss123", "58同城123", "58123", "前程无忧123", "51123", "猎聘123", "智联招聘123"],
-        "/MdNote_Public/03.%20SkillAndProduction": ["789456123"],
       },
     },
 
     // 插件类
     plugins: {
       seo: true,            // 搜索引擎优化
-      docsearch: {          // 文档搜索插件
-        appId: "247IUCFQ4Q",
-        apiKey: "b8883b05027bfa9fc73f21286ed7395e", // 707332eeb6a1daf0e6ecfbb63e27afbc
-        indexName: "linczeroio"
-      },
+      // docsearch: {          // 文档搜索插件
+      //   appId: "247IUCFQ4Q",
+      //   apiKey: "b8883b05027bfa9fc73f21286ed7395e", // 707332eeb6a1daf0e6ecfbb63e27afbc
+      //   indexName: "linczeroio"
+      // },
       blog: {               // 博客系统
         article: "/MdNote_BlogHide/",
       },
