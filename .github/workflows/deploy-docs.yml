@@ -27,11 +27,12 @@ jobs:
       #   run: |
       #     git submodule foreach git pull origin main
 
+      # 文档的克隆、构建、部署。注意 `clone --depth 1` 只拉取最近一次提交，减少时间
       - name: Checkout - 文档库1
         working-directory: ./src/
         run: |
-          git clone https://github.com/LincDocs/MdNote_Public.git
-          git clone https://${{ secrets.VUEPRESSORG }}@github.com/LincDocs/MdNote_Work.git
+          git clone --depth 1 https://github.com/LincDocs/MdNote_Public.git
+          git clone --depth 1 https://${{ secrets.VUEPRESSORG }}@github.com/LincDocs/MdNote_Work.git
         env:
           GH_TOKEN: ${{ secrets.VUEPRESSORG }}
 
@@ -41,10 +42,10 @@ jobs:
       - name: Checkout - 文档库2-2
         working-directory: ./src/MdNote_Other/
         run: |
-          git clone https://github.com/LincDocs/ComfyUI_examples.git
-          git clone https://github.com/LincDocs/ComfyUI-Workflows-ZHO.git
-          git clone https://github.com/LincDocs/ComfyUI-Workflows-Linc.git
-          git clone https://github.com/LincDocs/Pkmer-Math.git
+          git clone --depth 1 https://github.com/LincDocs/ComfyUI_examples.git
+          git clone --depth 1 https://github.com/LincDocs/ComfyUI-Workflows-ZHO.git
+          git clone --depth 1 https://github.com/LincDocs/ComfyUI-Workflows-Linc.git
+          git clone --depth 1 https://github.com/LincDocs/Pkmer-Math.git
 
       - name: 安装 pnpm
         uses: pnpm/action-setup@v2
