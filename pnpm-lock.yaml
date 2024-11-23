@@ -31,8 +31,8 @@ importers:
         version: 10.9.1
     devDependencies:
       '@nolebase/markdown-it-bi-directional-links':
-        specifier: ^2.8.1
-        version: 2.8.1(markdown-it@14.1.0)
+        specifier: ^2.10.0
+        version: 2.10.0(markdown-it@14.1.0)
       '@vuepress/bundler-vite':
         specifier: 2.0.0-rc.8
         version: 2.0.0-rc.8(@types/node@20.11.28)(sass@1.72.0)
@@ -182,6 +182,10 @@ packages:
 
   '@babel/runtime@7.25.0':
     resolution: {integrity: sha512-7dRy4DwXwtzBrPbZflqxnvfxLF8kdZXPkhymtDeFoFqE6ldzjQFgYTtYIFARcLEYDrqfBfYcZt1WqFxRoyC9Rw==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/runtime@7.26.0':
+    resolution: {integrity: sha512-FDSOghenHTiToteC/QRlv2q3DhPZ/oOXTBoirfWNx1Cx3TMVcGWQtMMmQcSvb/JjpNeGzx8Pq/b4fKEJuWm1sw==}
     engines: {node: '>=6.9.0'}
 
   '@babel/types@7.24.0':
@@ -605,8 +609,8 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@nolebase/markdown-it-bi-directional-links@2.8.1':
-    resolution: {integrity: sha512-7+R56hbnmPhHB9rkqYW9ILS+/MhRo2+vvsWeXkL6/0T2NIOdhxdNF3wUX9+xdZ/8274hIGWglrcbB3xw5uRsug==}
+  '@nolebase/markdown-it-bi-directional-links@2.10.0':
+    resolution: {integrity: sha512-iqmgEF84NIgrN7rK5qYhBCw19k9uKF9AJRKI5RRkE79Zou8sU/fBYdNf86p5XtMJ8CPn8K6ro7BhbBhSuteqEQ==}
     peerDependencies:
       markdown-it: '>=14.0.0'
 
@@ -2706,6 +2710,10 @@ snapshots:
     dependencies:
       regenerator-runtime: 0.14.1
 
+  '@babel/runtime@7.26.0':
+    dependencies:
+      regenerator-runtime: 0.14.1
+
   '@babel/types@7.24.0':
     dependencies:
       '@babel/helper-string-parser': 7.23.4
@@ -3039,7 +3047,7 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
 
-  '@nolebase/markdown-it-bi-directional-links@2.8.1(markdown-it@14.1.0)':
+  '@nolebase/markdown-it-bi-directional-links@2.10.0(markdown-it@14.1.0)':
     dependencies:
       colorette: 2.0.20
       debug: 4.3.7
@@ -4455,7 +4463,7 @@ snapshots:
 
   markmap-common@0.17.0:
     dependencies:
-      '@babel/runtime': 7.25.0
+      '@babel/runtime': 7.26.0
       '@gera2ld/jsx-dom': 2.2.2
       npm2url: 0.2.4
 

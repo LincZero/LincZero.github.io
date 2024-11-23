@@ -18,7 +18,7 @@
   - NodeFlow (自研, 2024)，用于节点工作流的显示与扩展
   - onInitialized-json (自研)，用于对NodeFlow的增强，直接识别工作流json文件
   - markdown-it-obsidian-callout (贡献)，用于obsidian callout语法的渲染，用于代替gfm-alert
-  - @nolebase/markdown-it-bi-directional-links，用于双链的wiki链接语法的支持
+  - @nolebase/markdown-it-bi-directional-links (贡献)，用于双链的wiki链接语法的支持
 - onInitialized-pdf (自研)，直接识别pdf库
 - 新的解耦以及工作流 (自研)
 
