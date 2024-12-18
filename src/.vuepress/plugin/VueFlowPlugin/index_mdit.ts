@@ -1,6 +1,8 @@
 import MarkdownIt from "markdown-it";
+import { nfSetting } from "./NodeFlow/index"
 
 function nfRender_fence(md: MarkdownIt, options?: any): void {
+  nfSetting.md = md
   const oldFence = md.renderer.rules.fence || function(tokens, idx, options, env, self) {
     return self.renderToken(tokens, idx, options);
   };
@@ -11,8 +13,8 @@ function nfRender_fence(md: MarkdownIt, options?: any): void {
     if (!token.info.toLowerCase().startsWith("nodeflow-")) { return oldFence(tokens, idx, options, env, self) }    
 
     // 渲染
-    // type vueflow, comfyui
-    return `<VueFlow type="${token.info.slice(9)}" data='${(token.content as string).replace(/'/g, "&#39;")}' />`
+    // type vueflow, comfyui. v1.1.0不再需要对type进行.slice(9)
+    return `<VueFlow type="${token.info}" data='${(token.content as string).replace(/'/g, "&#39;")}' />`
   }
 }
 

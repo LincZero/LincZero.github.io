@@ -1,242 +1,4 @@
-import {
-  testData_vueflow,
-  testData_vueflow_withoutPos,
-  testData_vueflow_customNode,
-  testData_obcanvas,
-  testData_comfyUI,
-  testData_list
-} from "./test/testData"
-import {
-  testData2
-} from "./test/testData2"
-
-/**
- * 解析并转化json，将各种类型的json转化为统一的vueflow形式
- * 
- * TODO 缺少Schema校验，提高稳定性
- * 
- * @param jsonType 说明了第二个参数的结构类型
- * @param json 不一定是json，list版本的语法是纯文本
- */
-export function factoryFlowData(jsonType:string = "vueflow", json:string = "{nodes:[],edges:[]}"): {code: number, msg: string, data: object} {
-  // demo时，使用默认数据源
-  if (jsonType == "nodeflow-test") { return {code: -2, msg: "msg: " + json, data: {}} }
-  else if (jsonType == "nodeflow-vueflow") { jsonType = "vueflow"; }
-  else if (jsonType == "nodeflow-vueflow-demo") { jsonType = "vueflow"; json = JSON.stringify(testData_vueflow) }
-  else if (jsonType == "nodeflow-vueflow-demo2") { jsonType = "vueflow"; json = JSON.stringify(testData_vueflow_withoutPos) }
-  else if (jsonType == "nodeflow-vueflow-demo3") { jsonType = "vueflow"; json = JSON.stringify(testData_vueflow_customNode) }
-  else if (jsonType == "nodeflow-obcanvas") { jsonType = "obcanvas"; }
-  else if (jsonType == "nodeflow-obcanvas-demo") { jsonType = "obcanvas"; json = JSON.stringify(testData_obcanvas) }
-  else if (jsonType == "nodeflow-comfyui") { jsonType = "comfyui"; }
-  else if (jsonType == "nodeflow-comfyui-demo") { jsonType = "comfyui"; json = JSON.stringify(testData_comfyUI) }
-  else if (jsonType == "nodeflow-comfyui-demo2") { jsonType = "comfyui"; json = JSON.stringify(testData2) }
-  else if (jsonType == "nodeflow-list") { jsonType = "list" }
-  else if (jsonType == "nodeflow-list-demo") { jsonType = "list", json = testData_list }
-
-  // 统一检查
-  let parsedData;
-  if (jsonType != "list") {
-    if (json.trim()=="") {
-      return {code: -1, msg: "error: json content is empty", data: {}}
-    }
-    try {
-      parsedData = JSON.parse(json)
-      if (!parsedData) { return {code: -1, msg: "error: not a legitimate json", data: {}} }
-    } catch (error) {
-      return {code: -1, msg: "error: not a legitimate json: " + error, data: {}}
-    }
-  }
-
-  // 类型分发
-  let result: {code: number, msg: string, data: object}; // TODO：优化，应该减少json的解析次数，很多大json的。应该是code msg data模式
-  if (jsonType == "comfyui") {
-    result = factoryFlowData_comfyui(parsedData)
-  }
-  else if (jsonType=="obcanvas") {
-    result = factoryFlowData_obcanvas(parsedData)
-  } else if (jsonType == "vueflow") {
-    result = {code: 0, msg: "", data: parsedData}
-  } else if (jsonType == "list") {
-    result = factoryFlowData_list(json)
-  } else {
-    return {code: -1, msg: "error: invalid json type: " + jsonType, data: {}}
-  }
-
-  // 再次检查
-  if (result.code != 0) return result
-  if (!result.data.hasOwnProperty("nodes")) {return {code: -1, msg: "json without nodes attrs", data: {}}}
-  if (!result.data.hasOwnProperty("edges")) {return {code: -1, msg: "json without edges attrs", data: {}}}
-  return result
-}
-
-/**
- * obsidian canvas数据转通用节点流数据
- */
-function factoryFlowData_obcanvas(parsedData:any): {code: number, msg: string, data: object} {
-  try {
-    let nodes_new: object[] = []
-    const nodes = parsedData.nodes;
-    nodes.forEach((item:any) => {
-      nodes_new.push({
-        // 数据转移：
-        id: item.id,
-        position: { x: item.x, y: item.y },
-        data: {
-          label: (item.hasOwnProperty("text")) ? item.text :
-            (item.hasOwnProperty("file")) ? item.file : "Error Type: " + item.type
-        },
-        // 数据舍弃：
-        // item.width
-        // item.height
-        // item.type == "text"
-        // 数据新增：
-        type: "obcanvas",
-      });
-    })
-
-    let edges_new: object[] = []
-    const edges = parsedData.edges;
-    edges.forEach((item:any) => {
-      edges_new.push({
-        // 数据转移：
-        id: item.id,
-        source: item.fromNode,
-        target: item.toNode,
-        sourceHandle: item.fromSide,
-        targetHandle: item.toSide,
-        // 数据新增：
-        // type == "default"
-        markerEnd: 'arrowclosed',
-      });
-    })
-
-    return { code: 0, msg: "", data: {nodes: nodes_new, edges: edges_new}}
-  } catch (error) {
-    return {code: -1, msg: "error: obcanvas json parse fail: "+error, data: {}}
-  }
-}
-
-/**
- * comfyui数据转通用节点流数据
- * 
- * TODO 需要注意，普通节点和群组，节点id和标题都是不在宽高尺寸里面的！当前是高度+30，y-30，的方式临时解决
- */
-function factoryFlowData_comfyui(parsedData:any): {code: number, msg: string, data: object} {
-  try {
-    let nodes_new: object[] = []
-    const nodes = parsedData.nodes;
-    nodes.forEach((item:any) => {
-      nodes_new.push({
-        // 数据转移：
-        id: ""+item.id,
-        position: { x: item.pos["0"], y: item.pos["1"]-30 },
-        data: {
-          label: item.hasOwnProperty("title")?item.title:item.type,
-          type: item.type,
-          inputs: item.inputs,
-          outputs: item.outputs,
-          widgets_values: item.widgets_values,
-        },
-        ...(item.hasOwnProperty("size") ?  // 使用 `扩展运算符` 灵活简化
-          { width: item.size["0"]+"px", height: item.size["1"]+30+"px" }
-          : {}
-        ),
-        // 数据舍弃：
-        // item.size
-        // item.properties["Node name for S&R"]
-        // item.widgets_values
-        type: "comfyui",    // 数据新增
-      });
-    })
-
-    /**
-     * comfyui的edges规则比较特殊
-     * 
-     * 以 testData_comfyUI 数据为例： (注意id是从3~9共7个节点)
-     * - nodes
-     *   该部分存储了一部分和线有关的数据，我之前写nodeeditor也有过经验，是为了方便数据传递减少调用次数的优化
-     *   按信息量来说是冗余信息
-     *   
-     *   node_id| inputs_link| outputs_link
-     *   3      | 1,4,6,2    | [7]
-     *   4      |            | [1][3,5][8]
-     *   5      |            | [2]
-     *   6      | 3          | [4]
-     *   7      | 5          | [6]
-     *   8      | 7,8        | [9]
-     *   9      | 9          | 
-     * 
-     * - links
-     *   信息应该是：[线的id, fromNode, fromIndex, toNode, toIndex, 线段类型]
-     *   "links": [
-     *     [1,4,0,3,0,"MODEL"],
-     *     [2,5,0,3,3,"LATENT"],
-     *     [3,4,1,6,0,"CLIP"],
-     *     [4,6,0,3,1,"CONDITIONING"],
-     *     [5,4,1,7,0,"CLIP"],
-     *     [6,7,0,3,2,"CONDITIONING"],
-     *     [7,3,0,8,0,"LATENT"],
-     *     [8,4,2,8,1,"VAE"],
-     *     [9,8,0,9,0,"IMAGE"]
-     *   ],
-     * 
-     * 然后特别需要注意：handle的from/to或source/target的标注是相对于线而言的，不是相对于节点而言的!
-     */
-    let edges_new: object[] = []
-    const edges = parsedData.links;
-    // const colors = ["white", "red", "orange", "yellow", "green", "cyan", "blue", "purple", "gold", "silver"]
-    const colors = [
-      "#ff0000", "#ff4d00", "#ff9900", "#ffe600", "#ccff00",
-      "#80ff00", "#33ff00", "#00ff1a", "#00ff66", "#00ffb3",
-      "#00ffff", "#00b3ff", "#0066ff", "#001aff", "#3300ff",
-      "#8000ff", "#cc00ff", "#ff00e6", "#ff0099", "#ff004c"
-    ]
-    edges.forEach((item:any) => {
-      const nameMapAttr = item[5].toLowerCase().charCodeAt(0)%20;
-      edges_new.push({
-        // 数据转移：
-        id: ""+item[0],
-        style: {
-          stroke: colors[nameMapAttr]
-        },
-        source: ""+item[1],
-        sourceHandle: "source-"+item[2],
-        target: ""+item[3],
-        targetHandle: "target-"+item[4],
-        // 数据舍弃：
-        // 线类型
-        // 数据新增：
-        // type: "default",
-      });
-    })
-
-    const groups = parsedData.groups;
-    let index:number = 0
-    groups.forEach((item:any) => {
-      nodes_new.push({
-        // 数据转移：
-        id: "group-"+index++,
-        position: { x: item.bounding[0], y: item.bounding[1] },
-        width: item.bounding[2]+"px",
-        height: item.bounding[3]+30+"px",
-        data: { label: item.title },
-        ...(item.hasOwnProperty("color") ?
-          { style: {
-            backgroundColor: item.color+"44", // 1/4透明
-            zIndex: -1,
-          }} :
-          {}
-        ),
-        type: "comfyui-group", // 数据新增
-      });
-    })
-    return { code: 0, msg: "", data: {nodes: nodes_new, edges: edges_new}}
-  } catch (error) {
-    return {code: -1, msg: "error: comfyui json parse fail: "+error, data: {}}
-  }
-}
-
-
+import { nfSetting } from "../main/setting"
 
 /**
  * 将md list文本转化为对应json
@@ -254,7 +16,13 @@ function factoryFlowData_comfyui(parsedData:any): {code: number, msg: string, da
  * - aCache_(allCache) 前缀表示缓存所有遍历过的东西 (其实map也可能是这种)
  *   通常简化为 `result_` 前缀
  */
-function factoryFlowData_list(md:string): {code: number, msg: string, data: object} {
+export function factoryFlowData_list(md:string): {code: number, msg: string, data: object} {
+  // 使用demo数据
+  if (md.startsWith("demo")) {
+    if (md == "demo") { md = testData_list }
+    else { return {code: -1, msg: "error demo: "+md, data: {}}  }
+  }
+
   /**
    * self-children-object
    * 
@@ -262,8 +30,8 @@ function factoryFlowData_list(md:string): {code: number, msg: string, data: obje
    * 功能、职责：除解析self-children外，负责解析一些内联语法，例如id、name、value等，**避免把这一步留到下步进行**
    * 
    * 字段内容
-   * - 其中 self、children 特征：通用结构、有效信息量、嵌套结构
-   * - 其中 self_data 特征：冗余的 (去除不减少信息量的)、可用于缓存、便于下一步进行嵌套转扁平化的
+   * - 其中 self、children 特征：通用结构、有效信息量、**嵌套**结构
+   * - 其中 self_data 特征：冗余的 (去除不减少信息量的)、可用于缓存、便于下一步进行嵌套转**扁平**化的
    */
   type type_selfChildren = type_selfChildren_node|type_selfChildren_socket|type_selfChildren_edge
   type type_selfChildren_base = {
@@ -272,7 +40,7 @@ function factoryFlowData_list(md:string): {code: number, msg: string, data: obje
   }
   interface type_selfChildren_node extends type_selfChildren_base {
     self_data: {                                  // node
-      type: "n"|"node"|"g"|"group",
+      type: "n"|"node"|"g"|"group",               // 项类型
       id: string,                                 // 节点id (会显示)
       name: string,                               // 节点名 (会显示)
       parentId: string,                           // 父节点id，根节点没有，为 ""
@@ -309,7 +77,7 @@ function factoryFlowData_list(md:string): {code: number, msg: string, data: obje
     }
   }
 
-  // step1. 先转 self-children-object,
+  // step1. 先转 self-children-object，完成所有语法解析操作
   let edge_id = 0;
   let result_items:type_selfChildren[] = []       // 最终构建成果
   try {
@@ -325,15 +93,19 @@ function factoryFlowData_list(md:string): {code: number, msg: string, data: obje
       const result_exp = current_line.match(/(^\s*)(- )?(.*)/);
       if (!result_exp) continue
 
-      // 仅追加
-      // 有两种做法，选用后者
-      // - 一是先将换行转项，再解析一个项。优点是简单些，但读项次数会x2，后期需要再遍历一遍
-      // - 二是不是先解析项，发现非项再追加到项。优点是语法的内联分析完全在第一步
+      /**
+       * 处理追加项
+       * 
+       * 仅追加
+       * 有两种做法，选用后者
+       * - 一是先将换行转项，再解析一个项。优点是实现简单些。缺点是读项次数会x2，后期需要再遍历一遍
+       * - 二是不是先解析项，发现非项再追加到项。优点是语法的内联分析完全在第一步
+       */
       if (!result_exp[2]) {
-        if (map_indent.length==0) { console.warn("追加换行内容失败: 首行非列表"); continue; }
+        if (map_indent.length==0) { if(nfSetting.isDebug){console.warn("追加换行内容失败: 首行非列表");} continue; }
         const last_item = map_item[map_item.length-1]
         last_item.self += "\n"+result_exp[3] // TODO 暂不支持带空格前缀的换行空格
-        if (!last_item.self_data.hasOwnProperty("value")) { console.warn("追加换行内容失败: 追加节点无vlaue属性"); continue; }
+        if (!last_item.self_data.hasOwnProperty("value")) { if(nfSetting.isDebug){console.warn("追加换行内容失败: 追加节点无vlaue属性");} continue; }
         // @ts-ignore ...上不存在属性“value”
         last_item.self_data.value += (last_item.self_data.value==""?"":"\n")+result_exp[3]
         continue
@@ -534,3 +306,42 @@ function factoryFlowData_list(md:string): {code: number, msg: string, data: obje
     return { code: 0, msg: "", data: {nodes: nodes_new, edges: edges_new}}
   }
 }
+
+export const testData_list = `
+- nodes
+  - node1:KSample
+    - Latent, o
+    - model, i
+    - positive, i
+    - negative, i
+    - Latent, i
+    - seed,
+    - control_after_generate,, randomize
+    - steps,, 20
+    - CFG,, 8.0
+    - sampler_name,, euler
+    - scheduler,, normal
+    - denoise,, 1.00
+    - io defaultTest, i , test
+    - io defaultTest, o, test
+    - t1:noValueTest,
+    - t2:,, noKeyTest
+      mul lines test
+  - node2:KSample
+    - 潜空间, o
+    - 模型, i
+    - 正面条件, i
+    - 负面条件, i
+    - 潜空间, i
+    - 种子,
+    - 运行后操作,
+    - 步数,
+    - CFG,
+    - 采样器/采样方法,
+    - 调度器,
+    - 降噪,
+  - translate
+- edges
+  - node1,Latent, translate,l
+  - translate,r, node2, 潜空间
+`

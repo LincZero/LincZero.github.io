@@ -15,7 +15,7 @@ const props = defineProps<{
 }>()
 
 // json数据处理
-import { factoryFlowData } from "./NodeFlow/factoryFlowData"
+import { factoryFlowData } from "./NodeFlow/index"
 const result = factoryFlowData(props.type, props.data)
 import { ref } from "vue";
 let jsonData = ref({})
@@ -26,7 +26,7 @@ if (result.code == 0) {
 }
 
 // 组件 - 节点流画布
-import NodeFlowContainer from "./NodeFlow/component/NodeFlowContainerS.vue"
+import NodeFlowContainer from "./NodeFlow/component/container/NodeFlowContainerS.vue"
 </script>
 
 <style scoped lang="scss">

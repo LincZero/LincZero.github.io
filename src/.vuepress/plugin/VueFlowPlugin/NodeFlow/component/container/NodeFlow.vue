@@ -1,4 +1,8 @@
-<!-- 主画布 -->
+<!--
+主画布
+
+使用前需要通过具名插槽的方式注册自定义的节点、以及节点项
+-->
 
 <template>
   <VueFlow
@@ -9,23 +13,13 @@
     @nodes-initialized="isNodeInitialized=true">
     <!-- :pan-on-drag="[0,2]" -->
     <Background style="background-color: #222222;" pattern-color="#191919" variant="lines" :gap="16" />
-    <template #node-color-selector="props">
-      <ColorSelectorNode :id="props.id" :data="props.data" />
-    </template>
-    <template #node-color-output>
-      <ColorOutputNode />
-    </template>
-    <template #node-obcanvas="props">
-      <ObcanvasNode :id="props.id" :data="props.data"/>
-    </template>
-    <template #node-comfyui="props">
-      <ComfyUINode :id="props.id" :data="props.data"/>
-    </template>
-    <template #node-comfyui-group="props">
-      <ComfyUINodeGroup :id="props.id" :data="props.data"/>
-    </template>
-    <template #node-common="props">
-      <CommonNode :id="props.id" :data="props.data"/>
+    <!-- 话说这里的设计很神奇。VueFlow先通过数据构造有自定义标签的插槽位置，然后再用具名插槽v-slot(简写#)把插槽内容进行插入/替换 -->
+    <template #node-obcanvas="props"><ObcanvasNode :id="props.id" :data="props.data"/></template>
+    <template #node-comfyui="props"><ComfyUINode :id="props.id" :data="props.data"/></template>
+    <template #node-comfyui-group="props"><ComfyUINodeGroup :id="props.id" :data="props.data"/></template>
+    <template #node-common="props"><CommonNode :id="props.id" :data="props.data"/></template>
+    <template #node-item="props">
+      <ItemNode :id="props.id" :data="props.data"></ItemNode>
     </template>
     <InteractionControls v-if="!props.isMini"/>
   </VueFlow>
@@ -34,23 +28,21 @@
 <script setup lang="ts">
 // 自身属性、通用导入
 const props = defineProps<{
-  jsonData?: object,
+  jsonData?: any,
   isMini: boolean, // true为局部渲染，尽可能简化；false为在更大的独立视图中渲染，可以显示更多东西
 }>()
 import { ref, watch } from 'vue'
-import type { Ref } from 'vue'
 import { useVueFlow } from '@vue-flow/core'
 
 // 组件 - 自定义节点
-import ColorSelectorNode from './CustomNode/ColorSelectorNode.vue'  // 颜色输入
-import ColorOutputNode from './CustomNode/ColorOutputNode.vue'      // 颜色输出
-import ObcanvasNode from './CustomNode/ObcanvasNode.vue'            // ob canvas 节点
-import ComfyUINode from './CustomNode/ComfyUINode.vue'              // comfyui 节点
-import ComfyUINodeGroup from './CustomNode/ComfyUINodeGroup.vue'    // 
-import CommonNode from './CustomNode/CommonNode.vue'                // 通用节点
+import ObcanvasNode from '../node/ObcanvasNode.vue'            // ob canvas 节点
+import ComfyUINode from '../node/ComfyUINode.vue'              // comfyui 节点
+import ComfyUINodeGroup from '../node/ComfyUINodeGroup.vue'    // 节点组
+import CommonNode from '../node/CommonNode.vue'                // 通用节点
+import ItemNode from '../node/ItemNode.vue'                    // 项节点
 
 // 组件 - 其他
-import InteractionControls from './utils/InteractionControls.vue'   // 控制画布控制的操作开关
+import InteractionControls from '../utils/InteractionControls.vue'   // 控制画布控制的操作开关
 import { Background } from '@vue-flow/background'                   // 背景控制
 
 // 组件 - VueFlow，并准备节点数据 (解析JSON数据，在外面已经校验过一次了，这里大概率不会有问题)
@@ -83,9 +75,9 @@ let edges = ref<Edge[]>([]);
   }
 }
 
-// 功能 - 自动顺序模块
+// 功能 - 自动布局模块
 import { nextTick } from 'vue'
-import { useLayout } from './utils/useLayout'
+import { useLayout } from '../../utils/layout/useLayout'
 const { layout } = useLayout()
 /// 封装: 调整节点位置 + 刷新视图
 /// 注意：首次调用必须在节点初始化以后，否则虽然能自动布局，但后续均无法获取节点大小

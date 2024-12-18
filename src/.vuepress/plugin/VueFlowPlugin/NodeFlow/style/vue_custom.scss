@@ -38,109 +38,116 @@
  *     ...
  */
 
-.common-id {
-  position: absolute;
-  height: 0;
-  line-height: 20px;
-  font-size: 12px;
-  width: 100%;
-  div {
-    position: relative;
-    bottom: 22px;
-    right: 4px;
-    height: 20px;
-    line-height: 20px;
-    float: right;
-    padding: 0 6px;
-    background-color: #0f1f0f;
-    border-radius: 6px;
-  }
-}
 // 节点部分
+//   CommonNode.vue (Scope)  --------------------------------------------------------------------------------
 .common-node {
-  height: 100%;
-  width: 100%;
-  border-radius:8px;
-  box-shadow: 3px 3px 10px 2px #111;
-
-  // 自动换行
-  span {
-    white-space: break-spaces; // 自动换行
-    overflow-wrap: break-word; // 单词中换行
-    code {white-space: pre;}   // 一个用于手动控制不换行的方式
+  >.node-id {
+    position: absolute;
+    height: 0;
+    line-height: 20px;
+    font-size: 12px;
+    width: 100%;
+    div {
+      position: relative;
+      bottom: 22px;
+      right: 4px;
+      height: 20px;
+      line-height: 20px;
+      float: right;
+      padding: 0 6px;
+      background-color: #0f1f0f;
+      border-radius: 6px;
+    }
   }
+  >.node-main {
+    height: 100%;
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 3px 3px 10px 2px #111;
 
-  >.node-title {
-    height: 30px;
-    line-height: 30px;
-    font-size: 14px;
-    padding: 0 12px;
-
-    border-radius: 8px 8px 0 0;
-    color: #999999;
-    background-color: rgba($color: #2e4656, $alpha: 0.875);
-  }
-
-  >.node-content {
-    height: calc(100% - 30px);
-    padding: 0 24px;
-    padding-bottom: 16px;
-
-    border-radius: 0 0 8px 8px;
-    color: #aaaaaa;
-    background-color: rgba($color: #353535, $alpha: 0.875);
-
-    >.node-content-handle {
-      display: flex;
-      justify-content: space-between;
-      .line { // h:24
-        line-height: 24px;
-        min-height: 24px;
-        height: auto;
-        font-size: 12px;
-        >.item-sub { min-height: 16px; }
-        >.item-name {}
-        >.item-value { // h: 20
-          line-height: 20px;
-          height: auto;
-          margin: 1px 8px 1px;
-
-          border-radius: 10px;
-          padding: 0px 8px;
-          border: solid 1px #616161;
-          background-color: #222222;
-        }
-      }
-
-      >.left { text-align: left; padding-right: 4px; }
-      >.right { text-align: right; padding-left: 4px; }
-      >.left>.line>.item-sub { float: left; }
-      >.right>.line>.item-sub { float: right; }
+    // 自动换行
+    span {
+      white-space: break-spaces; // 自动换行
+      overflow-wrap: break-word; // 单词中换行
+      code {white-space: pre;}   // 一个用于手动控制不换行的方式
     }
 
-    >.node-content-self {
-      >.line { // h:24+4
-        box-sizing: border-box;
-        min-height: 24px;
-        height: auto;
-        margin-bottom: 4px;
-  
-        padding: 1px 28px;
-        border: solid 1px #616161;
-        background-color: #222222;
-        border-radius: 13px;
-  
-        >.item-sub {
-          line-height: 20px;
-          min-height: 20px;
+    >.node-title {
+      height: 30px;
+      line-height: 30px;
+      font-size: 14px;
+      padding: 0 12px;
+
+      border-radius: 8px 8px 0 0;
+      color: #999999;
+      background-color: rgba($color: #2e4656, $alpha: 0.875);
+    }
+
+    >.node-content {
+      height: calc(100% - 30px);
+      padding: 0 24px;
+      padding-bottom: 16px;
+
+      border-radius: 0 0 8px 8px;
+      color: #aaaaaa;
+      background-color: rgba($color: #353535, $alpha: 0.875);
+
+      >.node-content-handle, >.node-content-lr {
+        display: flex;
+        justify-content: space-between;
+        .line { // h:24
+          line-height: 24px;
+          min-height: 24px;
           height: auto;
           font-size: 12px;
+          >.item-sub { min-height: 16px; }
+          >.item-name {}
+          >.item-value { // h: 20
+            line-height: 20px;
+            height: auto;
+            margin: 1px 8px 1px;
 
-          >.item-name { float: left; padding-right: 4px; }
-          >.item-value { float: right; padding-left: 4px; }
+            border-radius: 10px;
+            padding: 0px 8px;
+            border: solid 1px #616161;
+            background-color: #222222;
+          }
+        }
+
+        >.left, >.node-content-l {
+          text-align: left; padding-right: 4px;
+          &>.line>.item-sub { float: left; }
+        }
+        >.right, >.node-content-r {
+          text-align: right; padding-left: 4px;
+          &>.line>.item-sub { float: right; }
         }
       }
-    }    
+
+      >.node-content-self {
+        >.line { // h:24+4
+          box-sizing: border-box;
+          min-height: 24px;
+          height: auto;
+          margin-bottom: 4px;
+    
+          padding: 1px 28px;
+          border: solid 1px #616161;
+          background-color: #222222;
+          border-radius: 13px;
+    
+          >.item-sub {
+            line-height: 20px;
+            min-height: 20px;
+            height: auto;
+            font-size: 12px;
+
+            >.item-name { float: left; padding-right: 4px; }
+            >.item-value { float: right; padding-left: 4px; }
+          }
+        }
+      }    
+    }
   
     // .item {
     //   line-height: 24px;
@@ -184,31 +191,237 @@
     background-color: rgba($color: #2e4656, $alpha: 0.25);
   }
 }
+
+//   ComfyUINode.vue (Scope) --------------------------------------------------------------------------------
 .comfyui-node {
-  &[aria-label="Note"] .comfyui-node-title { background-color: rgba($color: #443322, $alpha: 0.9375); }
-  &[aria-label="Note"] .comfyui-node-content { background-color: rgba($color: #665533, $alpha: 0.9375); }
-  &[aria-label*="Sampler"] .comfyui-node-title { background-color: rgba($color: #223333, $alpha: 0.9375); }
-  &[aria-label*="Sampler"] .comfyui-node-content { background-color: rgba($color: #335555, $alpha: 0.9375); }
-  &[aria-label^="Group"] {
-    min-width: 200px;
-    height: 200px;
-    z-index: -1,
+  /**
+   * 结构一：scoped外的部分
+   *
+   * .vue-flow.nf-node-flow
+   *   .vue-flow__viewport vue-flow__container
+   *     .vue-flow__pane vue-flow__container draggable
+   *       .vue-flow__transformationpane.vue-flow__container
+   *         svg
+   *         svg
+   *         .vue-flow__edge-labels               线所在区域
+   *         .vue-flow__nodes.vue-flow__container 节点所在区域
+   * 
+   * 结构二：scoped内的部分
+   *
+   * .vue-flow__nodes vue-flow__container
+   *   .vue-flow__node.vue-flow__node-comfyui 
+   *     div.comfyui-node                         // 从这里开始进入scrop选择范围
+   *       div.node-id
+   *       div.node-title   h:30
+   *       div.node-content
+   *         .node-handle-name
+   *         .node-self-attr
+   *       div.vue-flow__handle
+   *     ...
+   */
+  >.node-id {
+    position: absolute;
+    height: 0;
+    line-height: 20px;
+    font-size: 12px;
+    width: 100%;
+    >div {
+      position: relative;
+      bottom: 22px;
+      right: 4px;
+      height: 20px;
+      line-height: 20px;
+      float: right;
+      padding: 0 6px;
+      background-color: #0f1f0f;
+      border-radius: 6px;
+    }
   }
-  &[aria-label^="Group"] .comfyui-node-content {
-    background-color: rgba($color: #2e4656, $alpha: 0.25);
+  >.node-main {
+    height: 100%;
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 3px 3px 10px 2px #111;
+    .node-title {
+      height: 30px;
+      line-height: 30px;
+      font-size: 14px;
+      padding: 0 12px;
+    
+      border-radius: 8px 8px 0 0;
+      color: #999999;
+      background-color: rgba($color: #2e4656, $alpha: 0.875);
+    }
+
+    .node-content {
+      height: calc(100% - 30px);
+      padding: 0 24px;
+      padding-bottom: 16px;
+    
+      border-radius: 0 0 8px 8px;
+      color: #aaaaaa;
+      background-color: rgba($color: #353535, $alpha: 0.875);
+
+      .item {
+        line-height: 24px;
+        min-height: 24px;
+        height: auto;
+        font-size: 12px;
+      }
+
+      .item-c {
+        box-sizing: border-box;
+        min-height: 24px;
+        height: auto;
+        margin-bottom: 4px;
+      
+        padding: 1px 12px;
+        border: solid 1px #616161;
+        background-color: #222222;
+        border-radius: 13px;
+
+        .item {
+          line-height: 20px;
+          min-height: 20px;
+          height: auto;
+          font-size: 12px;
+        
+          white-space: break-spaces;
+          overflow-wrap: break-word;
+        }
+      }
+
+      .node-handle-name {
+        display: flex;
+        justify-content: space-between;
+        >.left { text-align: left; }
+        >.right { text-align: right; }
+      }
+    }
+
+    &[aria-label="Note"] .node-title { background-color: rgba($color: #443322, $alpha: 0.9375); }
+    &[aria-label="Note"] .node-content { background-color: rgba($color: #665533, $alpha: 0.9375); }
+    &[aria-label*="Sampler"] .node-title { background-color: rgba($color: #223333, $alpha: 0.9375); }
+    &[aria-label*="Sampler"] .node-content { background-color: rgba($color: #335555, $alpha: 0.9375); }
+    &[aria-label^="Group"] {
+      min-width: 200px;
+      height: 200px;
+      z-index: -1,
+    }
+    &[aria-label^="Group"] .node-content {
+      background-color: rgba($color: #2e4656, $alpha: 0.25);
+    }
   }
 }
+
+//   ItemNode.vue (Scope) -------------------------------------------------------------------------------------
+.item-node {
+  >.node-id {
+    position: absolute;
+    height: 0;
+    line-height: 20px;
+    font-size: 12px;
+    width: 100%;
+    div {
+      position: relative;
+      bottom: 22px;
+      right: 4px;
+      height: 20px;
+      line-height: 20px;
+      float: right;
+      padding: 0 6px;
+      background-color: #0f1f0f;
+      border-radius: 6px;
+    }
+  }
+  >.node-main {
+    height: 100%;
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 3px 3px 10px 2px #111;
+    >.node-title {
+      height: 30px;
+      line-height: 30px;
+      font-size: 14px;
+      padding: 0 12px;
+
+      border-radius: 8px 8px 0 0;
+      color: #999999;
+      background-color: rgba($color: #2e4656, $alpha: 0.875);
+    }
+    >.node-content {
+      height: calc(100% - 30px);
+      padding: 0 24px;
+      padding-bottom: 16px;
+      padding-top: 2px;
+
+      border-radius: 0 0 8px 8px;
+      color: #aaaaaa;
+      background-color: rgba($color: #353535, $alpha: 0.875);
+
+      // 项
+      >.line.node-item {
+        position: relative;
+        font-size: 12px;
+        min-height: 24px; // 可以是 content20 + padding2 + border2 + margin4 或其他
+        margin-bottom: 4px;
+
+        // handle
+        .vue-flow__handle.node-item-handle {
+          // layout
+          border: none;
+          box-sizing: border-box;
+          width: 8px;
+          height: 8px;
+          position: absolute;
+          top: 7px;
+          transform: none;
+    
+          &.target {
+            float: left;
+            left: -15px;
+          }
+          &.source {
+            float: right;
+            right: -15px;
+            // border: solid 2px #211820;
+          }
+        }
+
+        >.node-item-slot {
+          width: 100%;
+          
+          // &.input, &.i 或默认
+          .node-item-name { float: left; }
+          .node-item-value { float: right; }
+          &.output, &.o {
+            .node-item-name { float: right; }
+            .node-item-value { float: left; }
+          }
+
+          // .node-item-name { font-weight: bolder; }
+          // .node-item-value { font-weight: lighter; }
+        }
+      }
+    }
+  }
+}
+
+//   Node (No Scope) -----------------------------------------------------------------------------
 .vue-flow__node-comfyui-group.selected .comfyui-group {
   box-shadow: 0 0 8px 3px #ec4899;
 }
-.vue-flow__node-comfyui.selected .comfyui-node{
+.vue-flow__node-comfyui.selected .comfyui-node .node-main {
   box-shadow: 0 0 8px 3px #ec4899;
 }
-.vue-flow__node-common.selected .common-node{
+.vue-flow__node-common.selected .common-node .node-main {
+  box-shadow: 0 0 8px 3px #ec4899;
+}
+.vue-flow__node-item.selected>.item-node>.node-main { // 用`>`防止被嵌套的作为socket的nodeitem也被应用
   box-shadow: 0 0 8px 3px #ec4899;
 }
 
-// 节点socket
+// socket (No Scope) -----------------------------------------------------------------------------
 .vue-flow__handle {
   &.custom {
     border: none;
@@ -245,74 +458,74 @@
     &[indexAttr="17"] { top:calc(30px + 17.5 * 24px) }
     &[indexAttr="18"] { top:calc(30px + 18.5 * 24px) }
     &[indexAttr="19"] { top:calc(30px + 19.5 * 24px) }
-
-    /**
-     * Handle着色 (按首字母映射，且习惯将白色填第一)
-     * 
-     * 颜色来源：HSL(0步进18~360, 100%, 50%), 共得到20种颜色
-     * 16进制根据在vscode环境下css文件打hsl，然后屏幕取色得到
-     * hsl(0, 100, 50)     #ff0000
-     * hsl(18, 100, 50)    #ff4d00
-     * hsl(36, 100, 50)    #ff9900
-     * hsl(54, 100, 50)    #ffe600
-     * hsl(72, 100, 50)    #ccff00
-     * hsl(90, 100, 50)    #80ff00
-     * hsl(108, 100, 50)   #33ff00
-     * hsl(126, 100, 50)   #00ff1a
-     * hsl(144, 100, 50)   #00ff66
-     * hsl(162, 100, 50)   #00ffb3
-     * hsl(180, 100, 50)   #00ffff
-     * hsl(198, 100, 50)   #00b3ff
-     * hsl(216, 100, 50)   #0066ff
-     * hsl(234, 100, 50)   #001aff
-     * hsl(252, 100, 50)   #3300ff
-     * hsl(270, 100, 50)   #8000ff
-     * hsl(288, 100, 50)   #cc00ff
-     * hsl(306, 100, 50)   #ff00e6
-     * hsl(324, 100, 50)   #ff0099
-     * hsl(342, 100, 50)   #ff004c
-     * 
-     * 可选 - 使用颜色优化排序 (使必要时能指定颜色)
-     * 0            8
-     * red          14
-     * orange       11
-     * yellow       1
-     * green        3
-     * cyam         19
-     * blue         18
-     * purple/pink  12
-     */
-    background-color: #a598dd;
-    &[nameMapAttr="0"]  { background-color: #ff0000; }
-    &[nameMapAttr="1"]  { background-color: #ff4d00; }
-    &[nameMapAttr="2"]  { background-color: #ff9900; }
-    &[nameMapAttr="3"]  { background-color: #ffe600; }
-    &[nameMapAttr="4"]  { background-color: #ccff00; }
-    &[nameMapAttr="5"]  { background-color: #80ff00; }
-    &[nameMapAttr="6"]  { background-color: #33ff00; }
-    &[nameMapAttr="7"]  { background-color: #00ff1a; }
-    &[nameMapAttr="8"]  { background-color: #00ff66; }
-    &[nameMapAttr="9"]  { background-color: #00ffb3; }
-    &[nameMapAttr="10"] { background-color: #00ffff; }
-    &[nameMapAttr="11"] { background-color: #00b3ff; }
-    &[nameMapAttr="12"] { background-color: #0066ff; }
-    &[nameMapAttr="13"] { background-color: #001aff; }
-    &[nameMapAttr="14"] { background-color: #3300ff; }
-    &[nameMapAttr="15"] { background-color: #8000ff; }
-    &[nameMapAttr="16"] { background-color: #cc00ff; }
-    &[nameMapAttr="17"] { background-color: #ff00e6; }
-    &[nameMapAttr="18"] { background-color: #ff0099; }
-    &[nameMapAttr="19"] { background-color: #ff004c; }
   }
 
   &.default {
     /* background-color: red !important; */
-    background: none;
+    background: none !important;
     border: none;
   }
+
+  /**
+   * Handle着色 (按首字母映射，且习惯将白色填第一)
+   * 
+   * 颜色来源：HSL(0步进18~360, 100%, 50%), 共得到20种颜色
+   * 16进制根据在vscode环境下css文件打hsl，然后屏幕取色得到
+   * hsl(0, 100, 50)     #ff0000
+   * hsl(18, 100, 50)    #ff4d00
+   * hsl(36, 100, 50)    #ff9900
+   * hsl(54, 100, 50)    #ffe600
+   * hsl(72, 100, 50)    #ccff00
+   * hsl(90, 100, 50)    #80ff00
+   * hsl(108, 100, 50)   #33ff00
+   * hsl(126, 100, 50)   #00ff1a
+   * hsl(144, 100, 50)   #00ff66
+   * hsl(162, 100, 50)   #00ffb3
+   * hsl(180, 100, 50)   #00ffff
+   * hsl(198, 100, 50)   #00b3ff
+   * hsl(216, 100, 50)   #0066ff
+   * hsl(234, 100, 50)   #001aff
+   * hsl(252, 100, 50)   #3300ff
+   * hsl(270, 100, 50)   #8000ff
+   * hsl(288, 100, 50)   #cc00ff
+   * hsl(306, 100, 50)   #ff00e6
+   * hsl(324, 100, 50)   #ff0099
+   * hsl(342, 100, 50)   #ff004c
+   * 
+   * 可选 - 使用颜色优化排序 (使必要时能指定颜色)
+   * 0            8
+   * red          14
+   * orange       11
+   * yellow       1
+   * green        3
+   * cyam         19
+   * blue         18
+   * purple/pink  12
+   */
+  background-color: #a598dd;
+  &[nameMapAttr="0"]  { background-color: #ff0000; }
+  &[nameMapAttr="1"]  { background-color: #ff4d00; }
+  &[nameMapAttr="2"]  { background-color: #ff9900; }
+  &[nameMapAttr="3"]  { background-color: #ffe600; }
+  &[nameMapAttr="4"]  { background-color: #ccff00; }
+  &[nameMapAttr="5"]  { background-color: #80ff00; }
+  &[nameMapAttr="6"]  { background-color: #33ff00; }
+  &[nameMapAttr="7"]  { background-color: #00ff1a; }
+  &[nameMapAttr="8"]  { background-color: #00ff66; }
+  &[nameMapAttr="9"]  { background-color: #00ffb3; }
+  &[nameMapAttr="10"] { background-color: #00ffff; }
+  &[nameMapAttr="11"] { background-color: #00b3ff; }
+  &[nameMapAttr="12"] { background-color: #0066ff; }
+  &[nameMapAttr="13"] { background-color: #001aff; }
+  &[nameMapAttr="14"] { background-color: #3300ff; }
+  &[nameMapAttr="15"] { background-color: #8000ff; }
+  &[nameMapAttr="16"] { background-color: #cc00ff; }
+  &[nameMapAttr="17"] { background-color: #ff00e6; }
+  &[nameMapAttr="18"] { background-color: #ff0099; }
+  &[nameMapAttr="19"] { background-color: #ff004c; }
 }
 
-// 线
+// 线 (No Scope) -----------------------------------------------------------------------------
 .vue-flow__edge {
   .vue-flow__edge-path{
     stroke-width: 2;
@@ -323,6 +536,8 @@
   }
 }
 
+// --------------------------------------------------------------------------------------------
+
 // 用于 `exLock` 按钮锁定外部滚动
 .nf-style-overflow-hidden { overflow: hidden !important; }
 
@@ -332,4 +547,52 @@
 // 用于独立显示模式 (期望匹配 `.json` 独立文件) (仅vuepress使用)
 .theme-hope-content>div:first-child>.normal-size:first-child>.nf-shell-mini {
   height: 900px;
+}
+
+// dropdownButton.vue
+.dd-button {
+  --dd-button-height: 24px;
+  height: var(--dd-button-height);
+
+  position: relative;
+  display: inline-block;
+
+  >button {
+    height: 100%;
+  }
+  >button.dd-button-main {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  >button.dd-button-dropdown {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding-left: 0;
+    padding-right: 0;
+    width: 14px;
+  }
+
+  >.dd-button-menu {
+    position: absolute;
+    bottom: 100%; // 由于 cm 的 contain: paint !important; 样式，无法 overflow，只能颠倒方向
+    left: 0;
+    z-index: 1000;
+    list-style: none;
+    padding: 0;
+    margin: 2px 0 0;
+    min-width: 100%;
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    >button {
+      height: var(--dd-button-height);
+      margin-bottom: 4px;
+    }
+  }
+
+  // 淡入淡出相关
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .2s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+  }
 }

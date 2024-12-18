@@ -8,83 +8,83 @@
     <div v-show="!isFold" class="fold-content">
       <div>
         <label class="label" for="draggable">
-          nodesDraggable
+          Nodes draggable
           <input id="draggable" v-model="nodesDraggable" type="checkbox" class="vue-flow__draggable" />
         </label>
       </div>
       <div>
         <label class="label" for="connectable">
-          nodesConnectable
+          Nodes connectable
           <input id="connectable" v-model="nodesConnectable" type="checkbox" class="vue-flow__connectable" />
         </label>
       </div>
       <div>
         <label class="label" for="selectable">
-          elementsSelectable
+          Elements selectable
           <input id="selectable" v-model="elementsSelectable" type="checkbox" class="vue-flow__selectable" />
         </label>
       </div>
       <div>
         <label class="label" for="zoomonscroll">
-          zoomOnScroll
+          Zoom on scroll
           <input id="zoomonscroll" v-model="zoomOnScroll" type="checkbox" class="vue-flow__zoomonscroll" />
         </label>
       </div>
       <div>
         <label class="label" for="zoomonpinch">
-          zoomOnPinch
+          Zoom on pinch
           <input id="zoomonpinch" v-model="zoomOnPinch" type="checkbox" class="vue-flow__zoomonpinch" />
         </label>
       </div>
       <div>
         <label class="label" for="panonscroll">
-          panOnScroll
+          Pan on scroll
           <input id="panonscroll" v-model="panOnScroll" type="checkbox" class="vue-flow__panonscroll" />
         </label>
       </div>
       <div>
         <label class="label">
-          panOnScrollMode
+          Pan on scroll mode
           <select id="panonscrollmode" v-model="panOnScrollMode" class="vue-flow__panonscrollmode">
-            <option value="free">free</option>
-            <option value="horizontal">horizontal</option>
-            <option value="vertical">vertical</option>
+            <option value="free">Free</option>
+            <option value="horizontal">Horizontal</option>
+            <option value="vertical">Vertical</option>
           </select>
         </label>
       </div>
       <div>
         <label class="label" for="zoomondbl">
-          zoomOnDoubleClick
+          Zoom on double click
           <input id="zoomondbl" v-model="zoomOnDoubleClick" type="checkbox" class="vue-flow__zoomondbl" />
         </label>
       </div>
       <div>
         <label class="label" for="panemoveable">
-          paneMovable
+          Pane movable
           <input id="panemoveable" v-model="panOnDrag" type="checkbox" class="vue-flow__panemoveable" />
         </label>
       </div>
       <div>
         <label class="label" for="capturezoompaneclick">
-          capture onPaneClick
+          Capture on pane click
           <input id="capturezoompaneclick" v-model="captureZoomClick" type="checkbox" class="vue-flow__capturezoompaneclick" />
         </label>
       </div>
       <div>
         <label class="label" for="capturezoompanescroll">
-          capture onPaneScroll
+          Capture on pane scroll
           <input id="capturezoompanescroll" v-model="captureZoomScroll" type="checkbox" class="vue-flow__capturezoompanescroll" />
         </label>
       </div>
       <div>
         <label class="label">
-          zoom in
+          Zoom in
           <button id="zoomin" :onclick="onZoomIn" class="vue-flow__capturezoompanescroll">+</button>
         </label>
       </div>
       <div>
         <label class="label">
-          zoom out
+          Zoom out
           <button id="zoomout" :onclick="onZoomOut" class="vue-flow__capturezoompanescroll">-</button>
         </label>
       </div>
@@ -96,6 +96,7 @@
 <script setup lang="ts">
 import { Panel, useVueFlow } from '@vue-flow/core'
 import { ref } from 'vue'
+import { nfSetting } from '../../utils/main/setting'
 
 const {
   nodesDraggable,
@@ -130,12 +131,14 @@ const captureZoomClick = ref(false)
 const captureZoomScroll = ref(false)
 
 onConnect((params) => addEdges(params))
-onNodeDragStart((e) => console.log('drag start', e))
-onNodeDragStop((e) => console.log('drag stop', e))
-onPaneClick((event) => captureZoomClick.value && console.log('pane click', event))
-onPaneScroll((event) => captureZoomScroll.value && console.log('pane scroll', event))
-onPaneContextMenu((event) => captureZoomClick.value && console.log('pane ctx menu', event))
-onMoveEnd((flowTransform) => console.log('move end', flowTransform))
+
+// 都是打印
+onNodeDragStart((e) => nfSetting.isDebug && console.log('Drag start', e))
+onNodeDragStop((e) => nfSetting.isDebug && console.log('Drag stop', e))
+onPaneClick((event) => nfSetting.isDebug && captureZoomClick.value && console.log('Pane click', event))
+onPaneScroll((event) => nfSetting.isDebug && captureZoomScroll.value && console.log('Pane scroll', event))
+onPaneContextMenu((event) => nfSetting.isDebug && captureZoomClick.value && console.log('Pane ctx menu', event))
+onMoveEnd((flowTransform) => nfSetting.isDebug && console.log('Move end', flowTransform))
 </script>
 
 <style scoped>
@@ -166,5 +169,9 @@ onMoveEnd((flowTransform) => console.log('move end', flowTransform))
 }
 .vue-flow__panel .fold-title button {
   width: 100%;
+}
+
+.fold-content>div {
+  height: 24px;
 }
 </style>
