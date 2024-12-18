@@ -1,8 +1,6 @@
 import MarkdownIt from "markdown-it";
-import { nfSetting } from "./NodeFlow/index"
 
 function nfRender_fence(md: MarkdownIt, options?: any): void {
-  nfSetting.md = md
   const oldFence = md.renderer.rules.fence || function(tokens, idx, options, env, self) {
     return self.renderToken(tokens, idx, options);
   };
