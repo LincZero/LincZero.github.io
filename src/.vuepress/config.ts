@@ -1,6 +1,6 @@
 /// VuePress 相关的设置
 
-import { App, createPage, defineUserConfig } from "vuepress"; // vuepress
+import { App, createPage, defineUserConfig, type UserConfig } from "vuepress"; // vuepress
 
 import theme from "./theme.ts";                               // hope主题 - 默认部分
 import alias from "./config_alias.ts";                        // hope主题 - 别名扩展
@@ -10,15 +10,16 @@ import plugins from "./config_plugins.ts";                    // hope主题 - �
 import * as fs from 'fs';                                     // 用于public静态资源扩展
 import * as path from 'path';
 
-export default defineUserConfig({
-  
+import { userConfig2 } from './config_cover.ts'
+
+const userConfig: UserConfig = {
   // ------------------ 导航类 ------------------
   base: "/",
   locales: {
     "/": {
       lang: "zh-CN",
-      title: "Linc 的小站",
-      description: "Linc 的个人小站",
+      title: "个人知识库",
+      description: "这仅仅是一个个人知识库",
     },
   },
   markdown: {
@@ -124,4 +125,23 @@ export default defineUserConfig({
   // ------------------ 其他 ---------------------
   // 使网页成为PWA
   // shouldPrefetch: false, // 是否预获取
-});
+}
+
+// 深拷贝合并两个object
+// deepMerge(userConfig, userConfig2) 代替 {...userConfig, ...userConfig2} 的语法，扩展运算符只能浅拷贝
+// function deepMerge(target, ...sources) {
+//   if (!sources.length) return target;
+//   const result = { ...target };
+//   sources.forEach(source => {
+//     for (const key in source) {
+//       if (source[key] instanceof Object) {
+//         result[key] = deepMerge(result[key] || {}, source[key]);
+//       } else {
+//         result[key] = source[key];
+//       }
+//     }
+//   });
+//   return result;
+// }
+
+export default defineUserConfig({...userConfig, ...userConfig2});
