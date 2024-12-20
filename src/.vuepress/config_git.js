@@ -1,5 +1,5 @@
 export const userConfig3 = {
-  "base": "/Pkmer-Math/",
+  "base": "/",
   "locales": {
     "/": {
       "lang": "zh-CN",
