@@ -43,7 +43,7 @@ async function generate_config() {
   let theme_git_obj = {}
   if (gitInfoObj) {
     config_git_obj = {
-      base: gitInfoObj["CALC_REPO_NAME"] ? `"/${gitInfoObj["CALC_REPO_NAME"]}/"` : "/", // 在组织中部署非常重要
+      base: gitInfoObj["CALC_REPO_NAME"] ? `/${gitInfoObj["CALC_REPO_NAME"]}/` : "/", // 在组织中部署非常重要
       locales: {
         "/": {
           lang: "zh-CN",
