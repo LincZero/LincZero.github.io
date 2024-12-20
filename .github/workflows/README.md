@@ -47,7 +47,7 @@ jobs:
       # TODO：若 “仓库无前缀名” 是.github.io结尾，则设置为"/"
       - name: 配置 - 获取仓库配置
         id: config1 # 用于给其他步骤引用
-        working-directory: ./src/scripts/
+        working-directory: ./scripts/
         run: |
           echo "{" >> git_config.json
           echo "  \"GITHUB_WORKSPACE\": \"${GITHUB_WORKSPACE}\"," >> git_config.json                  # 工作路径
@@ -68,8 +68,8 @@ jobs:
         run: |
           # sed -i 's/base: \"\/\"/base: \"\/${{steps.config1.outputs.REPO_NAME}}\/\"/g' ./src/.vuepress/config.ts
           cat ./scripts/git_config.json
-          rm ./src/.vuepress/config_conver.ts
-          rm ./src/.vuepress/theme_conver.ts
+          rm -f ./src/.vuepress/config_cover.js
+          rm -f ./src/.vuepress/theme_cover.js
           pnpm run gen-config
 
       # 文档的克隆、构建、部署。注意 `clone --depth 1` 只拉最近一次提交，减少时间
