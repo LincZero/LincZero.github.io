@@ -4,7 +4,7 @@
 // 3. 可手写也可被自动生成。通常由不依赖底层的描述+适配器生成
 // 使用时需要注意浅拷贝问题
 
-export const userConfig2: any = {
+export const userConfig2 = {
   locales: {
     "/": {
       lang: "zh-CN",

@@ -1,11 +1,12 @@
 /// hope主题相关的设置
 
 import { hopeTheme, type ThemeOptions } from "vuepress-theme-hope";
-import { themeOptions2 } from "./theme_cover"
+import { themeOptions2 } from "./theme_cover.js"
+import { themeOptions3 } from "./theme_git.js"
 
 export const themeOptions: ThemeOptions = {
   // 信息类
-  // hostname: "http://192.168.0.101:8080/",
+  hostname: "LincZero.github.io",
   author: {
     name: "LincZero",
     url: "https://github.com/LincZero/",
@@ -102,6 +103,6 @@ export const themeOptions: ThemeOptions = {
 }
 
 export default hopeTheme(
-  { ...themeOptions, ...themeOptions2 },
+  { ...themeOptions, ...(themeOptions3 as any), ...(themeOptions2 as any) },
   { custom: true }
 );

@@ -10,7 +10,8 @@ import plugins from "./config_plugins.ts";                    // hope主题 - �
 import * as fs from 'fs';                                     // 用于public静态资源扩展
 import * as path from 'path';
 
-import { userConfig2 } from './config_cover.ts'
+import { userConfig2 } from './config_cover.js'
+import { userConfig3 } from './config_git.js'
 
 const userConfig: UserConfig = {
   // ------------------ 导航类 ------------------
@@ -144,4 +145,4 @@ const userConfig: UserConfig = {
 //   return result;
 // }
 
-export default defineUserConfig({...userConfig, ...userConfig2});
+export default defineUserConfig({...userConfig, ...userConfig3, ...userConfig2});

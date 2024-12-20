@@ -9,7 +9,8 @@
     "docs:clean-dev": "vuepress-vite dev src --clean-cache",
     "docs:dev": "vuepress-vite dev src",
     "docs:update-package": "pnpm dlx vp-update",
-    "check-mem": "node --max-old-space-size=10240 -e 'console.log(v8.getHeapStatistics())'"
+    "check-mem": "node --max-old-space-size=10240 -e 'console.log(v8.getHeapStatistics())'",
+    "gen-config": "node ./scripts/generate_config.cjs"
   },
   "devDependencies": {
     "@nolebase/markdown-it-bi-directional-links": "^2.11.1",

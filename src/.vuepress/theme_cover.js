@@ -7,9 +7,9 @@
 import { navbarConfig } from "./theme_navbar";
 import { sidebarConfig } from "./theme_sidebar";
 
-export const themeOptions2: any = {
+export const themeOptions2 = {
   // 信息类
-  // hostname: "http://192.168.0.101:8080/",
+  hostname: "LincZero.github.io",
   author: {
     name: "LincZero",
     url: "https://github.com/LincZero/",

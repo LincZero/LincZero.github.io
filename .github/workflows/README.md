@@ -28,7 +28,7 @@ jobs:
         with:
           fetch-depth: 0
           repository: LincZero/LincZero.github.io
-          ref: 'raw' # 分支
+          ref: 'main' # 分支，旧raw
           
       - name: 环境 - 安装 pnpm
         uses: pnpm/action-setup@v2
@@ -47,7 +47,7 @@ jobs:
       # TODO：若 “仓库无前缀名” 是.github.io结尾，则设置为"/"
       - name: 配置 - 获取仓库配置
         id: config1 # 用于给其他步骤引用
-        working-directory: ./src
+        working-directory: ./src/scripts/
         run: |
           echo "{" >> git_config.json
           echo "  \"GITHUB_WORKSPACE\": \"${GITHUB_WORKSPACE}\"," >> git_config.json                  # 工作路径
@@ -56,7 +56,7 @@ jobs:
           echo "  \"GITHUB_REPOSITORY_OWNER\": \"${GITHUB_REPOSITORY_OWNER}\"," >> git_config.json    # 仓库所属(格式: 可以是组织)
           echo "  \"GITHUB_ACTOR\": \"${GITHUB_ACTOR}\"," >> git_config.json                          # 仓库作者(格式: 不会是组织)
           echo "  \"GITHUB_REPOSITORY\": \"${GITHUB_REPOSITORY}\"," >> git_config.json                # 仓库标识(格式: 个人或组织/仓库名)
-          echo "  \"CALC_URL\": \"${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}\"," >> git_config.json    # 仓库url
+          echo "  \"CALC_URL\": \"${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/\"," >> git_config.json    # 仓库url
           REPO_NAME=$(echo "${GITHUB_REPOSITORY}" | cut -d"/" -f2)
           echo "  \"CALC_REPO_NAME\": \"${REPO_NAME}\"" >> git_config.json                            # 仓库无前缀名
           echo "}" >> git_config.json
@@ -64,10 +64,13 @@ jobs:
 
       # [!code] 根据实际情况修改
       - name: 配置 - 设置
-        working-directory: ./src
+        working-directory: ./
         run: |
-          sed -i 's/base: \"\/\"/base: \"\/${{steps.config1.outputs.REPO_NAME}}\/\"/g' ./.vuepress/config.ts
-          cat ./git_config.json
+          # sed -i 's/base: \"\/\"/base: \"\/${{steps.config1.outputs.REPO_NAME}}\/\"/g' ./src/.vuepress/config.ts
+          cat ./scripts/git_config.json
+          rm ./src/.vuepress/config_conver.ts
+          rm ./src/.vuepress/theme_conver.ts
+          pnpm run gen-config
 
       # 文档的克隆、构建、部署。注意 `clone --depth 1` 只拉最近一次提交，减少时间
       - name: 文档 - 文档库克隆
