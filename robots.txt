@@ -2,4 +2,4 @@
 User-agent:*
 Disallow:
 
-Sitemap: http://192.168.0.101:8080/sitemap.xml
+Sitemap: https://LincZero.github.io/sitemap.xml
