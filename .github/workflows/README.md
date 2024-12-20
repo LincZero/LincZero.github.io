@@ -49,6 +49,7 @@ jobs:
         id: config1 # 用于给其他步骤引用
         working-directory: ./scripts/
         run: |
+          > git_config.json                                                                           # 先清空
           echo "{" >> git_config.json
           echo "  \"GITHUB_WORKSPACE\": \"${GITHUB_WORKSPACE}\"," >> git_config.json                  # 工作路径
           echo "  \"GITHUB_ACTION_PATH\": \"${GITHUB_ACTION_PATH}\"," >> git_config.json              # action路径

@@ -145,4 +145,8 @@ const userConfig: UserConfig = {
 //   return result;
 // }
 
-export default defineUserConfig({...userConfig, ...userConfig3, ...userConfig2});
+export default defineUserConfig({
+  ...(userConfig as any),
+  ...(userConfig3 as any),
+  ...(userConfig2 as any)
+});
