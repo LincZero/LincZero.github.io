@@ -7,9 +7,6 @@ import alias from "./config_alias.ts";                        // hope主题 - �
 import extendsMarkdown from "./config_extendsMarkdown.ts";    // hope主题 - mdit扩展
 import plugins from "./config_plugins.ts";                    // hope主题 - 插件扩展
 
-import * as fs from 'fs';                                     // 用于public静态资源扩展
-import * as path from 'path';
-
 import { userConfig2 } from './config_cover.js'
 import { userConfig3 } from './config_git.js'
 
@@ -36,7 +33,7 @@ const userConfig: UserConfig = {
 
   // ------------------ 扩展类 ------------------
   theme,
-  alias,
+  // alias,
   extendsMarkdown,
   plugins,
 

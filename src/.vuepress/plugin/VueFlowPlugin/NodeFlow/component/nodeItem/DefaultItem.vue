@@ -28,7 +28,7 @@ function handleInput(e:any) {
 }
 /// 自动调整高度。当大于初始的(rows、cols值)时，才会(出现overflow然后)撑开
 /// 存在问题：只能变大不能变小
-function autoSize(el:HTMLElement) {
+function autoSize(el:HTMLElement|null) {
   if (!el) { return }
   el.style.height = 'auto';
   if (el.scrollHeight) {
