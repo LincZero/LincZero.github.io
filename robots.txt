@@ -2,4 +2,4 @@
 User-agent:*
 Disallow:
 
-Sitemap: https://LincZero.github.io/Pkmer-Math/sitemap.xml
+Sitemap: https://LincZero.github.io/sitemap.xml
