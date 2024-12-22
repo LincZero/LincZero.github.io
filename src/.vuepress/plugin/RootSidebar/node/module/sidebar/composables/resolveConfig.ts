@@ -4,6 +4,8 @@
  * resolveArraySidebarItems 生成侧边栏数据项，每次访问网站仅调用一次
  * 其子函数 resolveArraySidebarItems 负责增加 type 字段、修改 prefix 字段、设置文件夹节点 等
  * 核心数据来源：sidebarData，自定义需要修改node侧代码
+ * 
+ * 该文件在新版本中被移除，新版本对应的是 resolveSidebarItems.ts
  */
 
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
