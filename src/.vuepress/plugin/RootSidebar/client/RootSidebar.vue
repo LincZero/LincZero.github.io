@@ -1,11 +1,19 @@
-<!-- 使用注意：要求一定要在sidebar配置中包含一个："/": "structure" -->
+<!--
+使用注意：要求一定要在sidebar配置中包含一个："/": "structure"
+
+- RootSidebar: 该组件多个侧边栏只会调用一次，数据只在url变化时更新
+- RootSidebarContent: 该组件每个侧边栏会调用一次
+- RootSidebarItem: 该组件每个侧边栏文件夹会调用一次
+-->
+
 <template>
   <div>
-    <div class="debug">targetDeep: {{ targetDeep }}</div>
-    <div class="debug">targetPath: {{ targetPath }}</div>
-    <div class="debug">targetFolder: {{ targetFolder }} ({{ targetData.length }})</div>
-    <div class="debug" ref="Sidebar"></div>
-    <!-- <RootSidebarContent :sidebarData="targetData"></RootSidebarContent> -->
+    <div>
+      <div class="debug">targetDeep: {{ targetDeep }}</div>
+      <div class="debug">targetPath: {{ targetPath }}</div>
+      <div class="debug">targetFolder: {{ targetFolder }} ({{ targetData.length }})</div>
+    </div>
+    <RootSidebarContent :currentUrl="currentUrl" :sidebarData="targetData"></RootSidebarContent>
   </div>
 </template>
 
@@ -13,15 +21,13 @@
 import { sidebarData } from "@temp/theme-hope/sidebar.js"; // 在client端获取侧边栏数据
 import { usePageData, useRoute } from 'vuepress/client'
 import { type ComputedRef, computed, onMounted, ref, Ref, watch } from 'vue';
-import RootSidebarContent from "./RootSidebarContent"
+import RootSidebarContent from "./RootSidebarContent.vue"
 
-const props = defineProps<{
-  root?: string,
-  data: string,
-}>()
-const Sidebar:Ref<HTMLElement|null> = ref(null)         // 侧边栏内容元素
-
-// 类型, 单string表示text
+/**
+ * 侧边栏类型, 单string表示text
+ * 不算太优雅，但我这里在Client端就不再去转化归一化了，避免目录树较大时影响性能
+ * 主要是text这个值是vuepress-theme-hope算的，优先使用h1的值，不是我预期的。我这个组件以文件名为主，不会用到
+ */
 type SidebarType = "string" | {
   children: Array<SidebarType>,
   collapsible: boolean,
@@ -32,13 +38,17 @@ type SidebarType = "string" | {
 // 数据获取
 if (!sidebarData.hasOwnProperty("/")) { console.error(`Error: Must be add a {"/": "structure"} in sidebar config`) }
 const rootData = ref(sidebarData["/"] as SidebarType[]) // 从根部开始的数据 (ATTENTION 要求一定要在sidebar配置中包含一个"/"struct)
+const currentUrl = ref(window.location.href)            // 当前url
 const targetDeep = ref<number>(0)                       // 指定目录深度 (不会超过当前目录的最大深度)
 const targetPath = ref<string>("/")                     // 指定目录路径
 const targetFolder = ref("/")                           // 指定目录名称
-const targetData = ref(rootData.value);                 // 从指定目录开始的数据
+const targetData = ref(rootData.value);                 // 指定目录开始的数据
 
-/// 每次切换url时被调用
+/// 钩子与回调
+/// 每次切换url时被调用 (存在多个侧边栏也只调用一次)
 function onNewUrl() {
+  currentUrl.value = window.location.href
+
   // 更新值 - targetDeep
   // 解析url参数，获取state参数
   function getQueryVariable(variable) {
@@ -98,21 +108,7 @@ function onNewUrl() {
     console.log("targetData:", tmp_arr)
   }
   calc_targetData()
-
-  // 更新 - 元素内容
-  if (!Sidebar.value) return
-  Sidebar.value.innerHTML = "targetData:\n"
-  for(let item of targetData.value) {
-    if (typeof item === 'string') {
-      Sidebar.value.innerHTML += item + "\n"
-      continue 
-    } else {
-      Sidebar.value.innerHTML += item.prefix.slice(0,-1) + ", " + item.children.length + "\n"
-    }
-  }
 }
-
-/// 钩子
 onMounted(() => {
   onNewUrl()
 })
@@ -121,7 +117,8 @@ watch(() => useRoute().value, () => {
 })
 
 // 仅调试
-{
+const isDebug = false
+if (isDebug) {
   // test url: http://localhost:8080/MdNote_Public/Test.html?deep=1&state=s2#h2
   console.log("debug usepagedata ---------------------------------")
   console.log("p1", usePageData())              // Object，一个包含了当前页面数据的对象 {lang, path, forntmatter, ...}
