@@ -13,15 +13,18 @@
       <div class="debug">targetPath: {{ targetPath }}</div>
       <div class="debug">targetFolder: {{ targetFolder }} ({{ targetData.length }})</div>
     </div>
-    <RootSidebarContent :currentUrl="currentUrl" :sidebarData="targetData"></RootSidebarContent>
+    <RootSidebarItem
+      :deep="0"
+      :sidebarData="targetData"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { sidebarData } from "@temp/theme-hope/sidebar.js"; // 在client端获取侧边栏数据
 import { usePageData, useRoute } from 'vuepress/client'
-import { type ComputedRef, computed, onMounted, ref, Ref, watch } from 'vue';
-import RootSidebarContent from "./RootSidebarContent.vue"
+import { type ComputedRef, type Ref, computed, onMounted, ref, watch } from 'vue';
+import RootSidebarItem from "./RootSidebarItem.vue"
 
 /**
  * 侧边栏类型, 单string表示text
