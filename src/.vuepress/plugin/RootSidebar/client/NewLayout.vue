@@ -12,6 +12,11 @@ import NormalPage from "vuepress-theme-hope/client/components/NormalPage.js";
 import SkipLink from "vuepress-theme-hope/client/components/SkipLink.js";
 import FadeSlideY from "vuepress-theme-hope/client/components/transitions/FadeSlideY.js";
 
+// import Sidebar from "vuepress-theme-hope/client/modules/sidebar/components/Sidebar.js";
+// import { useSidebarItems } from "vuepress-theme-hope/client/modules/sidebar/composables/index";
+// import SidebarLinks from "vuepress-theme-hope/client/modules/sidebar/components/SidebarLinks.js";
+// const sidebarItems = useSidebarItems()
+
 import RootSidebar from "./RootSidebar.vue"
 </script>
 
@@ -28,10 +33,14 @@ import RootSidebar from "./RootSidebar.vue"
       <RootSidebar />
     </template>
     <!-- <template #sidebar>
-      <RootSidebar />
+      <SidebarLinks :config="sidebarItems.value" />
     </template> -->
   </CommonWrapper>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
+#sidebar {
+  // padding-left: 28px;
+  // overflow-x: hidden;
+}
 </style>

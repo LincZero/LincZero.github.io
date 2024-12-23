@@ -75,6 +75,9 @@ importers:
       vue:
         specifier: ^3.4.21
         version: 3.4.21
+      vue-router:
+        specifier: ^4.5.0
+        version: 4.5.0(vue@3.4.21)
       vuepress:
         specifier: 2.0.0-rc.8
         version: 2.0.0-rc.8(@vuepress/bundler-vite@2.0.0-rc.8(@types/node@20.11.28)(sass@1.72.0))(vue@3.4.21)
@@ -869,6 +872,9 @@ packages:
 
   '@vue/devtools-api@6.6.1':
     resolution: {integrity: sha512-LgPscpE3Vs0x96PzSSB4IGVSZXZBZHpfxs+ZA1d+VEPwHdOXowy/Y2CsvCAIFrf+ssVU1pD1jidj505EpUnfbA==}
+
+  '@vue/devtools-api@6.6.4':
+    resolution: {integrity: sha512-sGhTPMuXqZ1rVOk32RylztWkfXTRhuS7vgAKv0zjqk8gbsHkJ7xfFf+jbySxt7tWObEJwyKaHMikV/WGDiQm8g==}
 
   '@vue/reactivity@3.4.21':
     resolution: {integrity: sha512-UhenImdc0L0/4ahGCyEzc/pZNwVgcglGy9HVzJ1Bq2Mm9qXOpP8RyNTjookw/gOCUlXSEtuZ2fUg5nrHcoqJcw==}
@@ -2294,8 +2300,8 @@ packages:
       '@vue/composition-api':
         optional: true
 
-  vue-router@4.3.0:
-    resolution: {integrity: sha512-dqUcs8tUeG+ssgWhcPbjHvazML16Oga5w34uCUmsk7i0BcnskoLGwjpa15fqMr2Fa5JgVBrdL2MEgqz6XZ/6IQ==}
+  vue-router@4.5.0:
+    resolution: {integrity: sha512-HDuk+PuH5monfNuY+ct49mNmkCRK4xJAV9Ts4z9UFc4rzdDnxQLyCMGGc8pKhZhHTVzfanpNwB/lwqevcBwI4w==}
     peerDependencies:
       vue: ^3.2.0
 
@@ -3267,6 +3273,8 @@ snapshots:
 
   '@vue/devtools-api@6.6.1': {}
 
+  '@vue/devtools-api@6.6.4': {}
+
   '@vue/reactivity@3.4.21':
     dependencies:
       '@vue/shared': 3.4.21
@@ -3304,7 +3312,7 @@ snapshots:
       rollup: 4.13.0
       vite: 5.1.6(@types/node@20.11.28)(sass@1.72.0)
       vue: 3.4.21
-      vue-router: 4.3.0(vue@3.4.21)
+      vue-router: 4.5.0(vue@3.4.21)
     transitivePeerDependencies:
       - '@types/node'
       - jiti
@@ -3335,7 +3343,7 @@ snapshots:
       '@vue/devtools-api': 6.6.1
       '@vuepress/shared': 2.0.0-rc.8
       vue: 3.4.21
-      vue-router: 4.3.0(vue@3.4.21)
+      vue-router: 4.5.0(vue@3.4.21)
     transitivePeerDependencies:
       - typescript
 
@@ -4953,9 +4961,9 @@ snapshots:
     dependencies:
       vue: 3.4.21
 
-  vue-router@4.3.0(vue@3.4.21):
+  vue-router@4.5.0(vue@3.4.21):
     dependencies:
-      '@vue/devtools-api': 6.6.1
+      '@vue/devtools-api': 6.6.4
       vue: 3.4.21
 
   vue@3.4.21:

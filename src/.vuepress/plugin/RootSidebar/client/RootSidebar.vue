@@ -4,57 +4,63 @@
 - RootSidebar: 该组件多个侧边栏只会调用一次，数据只在url变化时更新
 - RootSidebarContent: 该组件每个侧边栏会调用一次 (未支持)
 - RootSidebarItem: 该组件每个侧边栏文件夹会调用一次
+
+术语:
+该树组件的一大特点是，可以将任意一个目标文件夹声明为新的根部
+- 绝对的根部文件夹叫root
+- 指定为根部的目标文件夹叫target
 -->
 
 <template>
-  <div>
-    <div>
-      <div class="breadcrumb">
-        <span class="arrow left" @click="() => { onNewUrl(targetDeep-1) }" :relDeep="-999"><</span>
-        <span class="arrow right" @click="() => { onNewUrl(targetDeep+1) }" :relDeep="-999">></span>
+  <div class="root-sidebar">
+    <div class="root-sidebar-control">
+      <div class="root-sidebar-btn">
+        <button class="arrow" @click="switchOldSidebar()" title="切换新旧侧边栏">old</button>
+        <button class="arrow left" @click="() => { emitNewUrl(targetDeep-1) }" :relDeep="-999"
+          title="显示更多侧边项">{{targetDeep-1>0?targetDeep-1:0}}</button>
+        <button class="arrow right" @click="() => { emitNewUrl(targetDeep+1) }" :relDeep="-999"
+          title="精简更少侧边项">{{targetDeep+1}}</button>
+      </div>
+      <div class="root-sidebar-breadcrumb">
         <!-- TODO: 下拉框，路径下拉表示、排序、固定伪标签页 -->
-        <span v-for="(item,index) in currentPathArr"
-          @click="() => {onNewUrl(index)}" :relDeep="index - targetDeep">
+        <button v-for="(item,index) in currentPathArr"
+          @click="() => { emitNewUrl(index) }" :relDeep="index - targetDeep">
           <span :title="decodeURIComponent(item) + '/'">
             {{ decodeURIComponent(item) + "/" }}
           </span>
-        </span>
+        </button>
       </div>
     </div>
-    <RootSidebarItem
-      :deep="0"
-      :sidebarData="targetData"
-      :prefix="targetFolder+'/'"
-      :currentPath="currentPath"
-    />
+    <div class="root-sidebar-control2">
+      <!-- 固定标签, 伪标签栏  -->
+    </div>
+    <div class="root-sidebar-content">
+      <RootSidebarItem
+        :deep_from_target="0"
+        :prefix_from_root="targetPath"
+        :sidebarData="targetData"
+        :currentPath="currentPath"
+      />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { sidebarData } from "@temp/theme-hope/sidebar.js"; // 在client端获取侧边栏数据
-import { usePageData, useRoute } from 'vuepress/client'
+import { usePageData } from 'vuepress/client'
+import { useRouter, useRoute } from 'vue-router'; // 不 import {useRoute} from vuepress/client 了
 import { type ComputedRef, type Ref, computed, onMounted, ref, watch } from 'vue';
 import RootSidebarItem from "./RootSidebarItem.vue"
-
-/**
- * 侧边栏类型, 单string表示text
- * 不算太优雅，但我这里在Client端就不再去转化归一化了，避免目录树较大时影响性能
- * 主要是text这个值是vuepress-theme-hope算的，优先使用h1的值，不是我预期的。我这个组件以文件名为主，不会用到
- */
-type SidebarType = "string" | {
-  children: Array<SidebarType>,
-  collapsible: boolean,
-  prefix: string, // 仅一层前缀
-  text: string,
-}
+import { SidebarType } from "./index"
 
 // 数据获取
 // current基于完整的url
 // target基于按截取截取后的url
 if (!sidebarData.hasOwnProperty("/")) { console.error(`Error: Must be add a {"/": "structure"} in sidebar config`) }
+let targetDeep_isInit = false                           // 仅触发一次，用于锁定targetDeep
 const rootData = ref(sidebarData["/"] as SidebarType[]) // 从根部开始的数据 (ATTENTION 要求一定要在sidebar配置中包含一个"/"struct)
-const currentPath = ref(window.location.pathname)       // 当前url
-const currentPathArr = ref<string[]>([])                // 当前url数组 (["", "path1", "path2"], 不包含文件名)
+const currentPath = ref(decodeURIComponent(window.location.pathname)) // 当前url.path
+const currentPathArr = ref<string[]>([])                // 当前url.path数组 (["", "path1", "path2"], 不包含文件名)
 const targetDeep = ref<number>(0)                       // 指定目录深度 (不会超过当前目录的最大深度)
 const targetPath = computed(()=>{                       // 指定目录路径
   // deep0: /
@@ -71,7 +77,7 @@ const targetData = ref(rootData.value);                 // 指定目录开始的
 /// 每次切换url时被调用 (存在多个侧边栏也只调用一次)
 function onNewUrl(newDeep?: number) {
   // 更新值 - currentPath, currentPathArr
-  currentPath.value = window.location.pathname
+  currentPath.value = decodeURIComponent(window.location.pathname)
   // http... -> /path1/path2/path3.html -> ["", "path1", "path2", "path3.html"] -> ["", "path1", "path2"]
   // http... -> /path1/path2 -> ["", "path1", "path2"] -> ["", "path1", "path2"]
   // http... -> /path1/path2/ -> ["", "path1", "path2", ""] -> ["", "path1", "path2"]
@@ -91,10 +97,15 @@ function onNewUrl(newDeep?: number) {
     }
     return null;
   }
-  targetDeep.value = (newDeep !== undefined && newDeep >= 0) ? newDeep : parseInt(getQueryVariable("deep") || "0")
+  let tmp2: string | null = getQueryVariable("deep")
+  if (newDeep !== undefined && newDeep >= 0) targetDeep.value = newDeep // 优先级1: 函数传参
+  else if (tmp2) targetDeep.value = parseInt(tmp2)                      // 优先级2: url传参
+  else if (targetDeep_isInit) {}                                        // 优先级3: 保持不变
+  else targetDeep.value = 0                                             // 优先级4: 初始化0
+  targetDeep_isInit = true
   // 限制、校正
   if (targetDeep.value > currentPathArr.value.length-1) {
-    targetDeep.value = currentPathArr.value.length-2
+    targetDeep.value = currentPathArr.value.length-1
     console.warn(`Warning: The deep value is too large, reset deep: ${targetDeep.value}`)
   }
 
@@ -121,12 +132,40 @@ function onNewUrl(newDeep?: number) {
   calc_targetData()
 }
 onMounted(() => {
+  switchOldSidebar(true)
   onNewUrl()
 })
-const route = useRoute()
+const router = useRouter();
+const route = useRoute();
 watch(() => route.fullPath, () => {
   onNewUrl()
 })
+const emitNewUrl = (newDeep: number) => { // 手动触发
+  // if (newDeep < 0) { console.warn("error newDeep2:", newDeep); }
+  const newQuery = { ...route.query, deep: newDeep };
+  router.push({ path: route.path, query: newQuery });
+
+  onNewUrl(newDeep)
+}
+
+function switchOldSidebar(isUseNew?: boolean) {
+  const el_old: HTMLElement|null = document.querySelector("#sidebar>.vp-sidebar-links")
+  const el_new: HTMLElement|null = document.querySelector("#sidebar>.root-sidebar>.root-sidebar-content")
+  // const root-sidebar
+  if (!el_old || !el_new) { console.warn("Warning: can not find sidebar old/new element"); return }
+
+  if (isUseNew !== undefined) {}
+  else if (el_old.style.display === 'none' || el_old.style.display === '') { isUseNew = false }
+  else { isUseNew = true }
+
+  if (isUseNew) {
+    el_old.style.display = 'none';
+    el_new.style.display = 'block';
+  } else {
+    el_new.style.display = 'none';
+    el_old.style.display = 'block';
+  }
+}
 
 // 仅调试
 const isDebug = false
@@ -144,33 +183,53 @@ if (isDebug) {
 </script>
 
 <style scoped lang="scss">
-.debug {
-  border: solid 1px currentColor;
-  padding: 4px;
-  white-space: pre;
-  overflow-x: auto;
+button { // h:(26+4+0)+4
+  box-sizing: border-box;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  background: none;
+  color: currentColor;
+  font-size: 14px;
+  cursor: pointer;
+
+  height: 30px;
+  margin-top: 2px;
+  padding: 2px 2px; border: none;
+  line-height: 26px;
 }
-.breadcrumb {
+
+.root-sidebar {
+  padding-right: 4px;
+}
+.root-sidebar>.root-sidebar-control {
+  height: 44px; // 34+10，10容纳滚动条
   display: flex;
   flex-wrap: nowrap;
-  overflow-x: auto;
-  height: 44px; // 34+10，10容纳滚动条
-  box-sizing: border-box;
 
-  >span {
-    flex: 0 0 auto;
-    display: inline-block;
+  >div {
+    display: flex;
+    flex-wrap: nowrap;
     box-sizing: border-box;
-    height: 30px;
-    margin: 2px 2px 2px 0;
-
-    padding: 2px 2px;
-    // border: solid 1px currentColor;
-    line-height: 26px;
-    cursor: pointer; 
-
-    >span {
-      display: inline-block;
+    >button {
+      flex: 0 0 auto;
+      // border: solid 1px currentColor;
+    }
+  }
+  >div.root-sidebar-btn {
+    >button {
+      border: solid 1px currentColor;
+      margin-right: 2px;
+      line-height: 24px;
+      border-radius: 6px;
+    }
+  }
+  >div.root-sidebar-breadcrumb {
+    overflow-x: auto;
+    >button {
+      padding: 2px 4px;
+    }
+    >button>span {
       max-width: 200px;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -178,12 +237,20 @@ if (isDebug) {
     }
   }
 }
+.root-sidebar>.root-sidebar-content {
+  margin-top: 10px;
+  // overflow-x: auto;
+}
 
-.breadcrumb span {
-  &[relDeep="0"] { border-color: red; }
-  &[relDeep="0"]>span { color: red !important; }
+// 颜色, 配色可以自己通过自定义变量调，不自带配色方案
+.root-sidebar-breadcrumb>button {
+  &[relDeep="0"] { 
+    padding: 2px 2px !important; border: solid 2px var(--theme-color);
+    line-height: 22px;
+    border-radius: 6px;
+  }
+  // &[relDeep="0"]>span { color: red !important; }
 
-  // 这个是我自己的个人样式
   &[relDeep^="-"]>span { color: var(--theme-color-level0); fill: var(--theme-color-level10); }
   &[relDeep="0"]>span { color: var(--theme-color-level0); fill: var(--theme-color-level10); }
   &[relDeep="1"]>span { color: var(--theme-color-level1); fill: var(--theme-color-level10); }
