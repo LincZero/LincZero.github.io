@@ -1,8 +1,7 @@
 <!--
 - RootSidebar: 该组件多个侧边栏只会调用一次，数据只在url变化时更新
-- RootSidebarContent: 该组件每个侧边栏会调用一次
+- RootSidebarContent: 该组件每个侧边栏会调用一次 (未支持)
 - RootSidebarItem: 该组件每个侧边栏文件夹会调用一次
-- (当前后两者是同一个，还没分离)
 -->
 
 <template>
@@ -14,19 +13,34 @@
           <path d="M0 0h24v24H0z" fill="none"/>
           <path d="M12 2C6.48 2 2 6.48 2 12c0 5.52 4.48 10 10 10 5.52 0 10-4.48 10-10 0-5.52-4.48-10-10-10zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-2-9h4v2h-4v-2z"/>
         </svg> -->
-        <div class="sidebar-item-name file" :relDeep="relDeep" :style="'padding-inline-start:'+(relDeep*20+24)+'px'">
-          <a :href="item">{{ getText(item) }},url: {{ deep, currentUrl, item }}</a>
+        <div
+          class="sidebar-item-name file"
+          :relDeep="props.deep+1"
+          :style="'padding-inline-start:'+(props.deep*20+24)+'px'"
+          :isactive="getIsActive(item)"
+        >
+          <!-- router-link代替a，spa路由切换，避免整个页面刷新 -->
+          <!-- <a :href="item">{{ getText(item) }},deep: {{ deep }}, item: {{ item }}</a> -->
+          <router-link :to="getUrl(item)">{{ getText(item) }}</router-link>
         </div>
       </div>
       <!-- 文件夹 -->
       <div v-else class="sidebar-item folder" :unfold="unfold_arr.includes(item.prefix)">
-        <div class="sidebar-item-name folder" :relDeep="relDeep" :style="'padding-inline-start:'+(relDeep*20+24)+'px'" @click="clickItem(item)">
+        <div
+          class="sidebar-item-name folder"
+          :relDeep="props.deep+1"
+          :style="'padding-inline-start:'+(props.deep*20+24)+'px'"
+          :isactive="getIsActive(item.prefix)"
+          @click="clickItem(item)"
+        >
           <a>{{ getText(item) }}</a>
         </div>
         <RootSidebarItem
           v-if="item.hasOwnProperty('children') && (unfold_arr.includes(item.prefix))"
-          :deep="relDeep+1"
+          :deep="props.deep+1"
           :sidebarData="item.children"
+          :currentPath="props.currentPath"
+          :prefix="props.prefix + item.prefix"
         />
       </div>
     </li>
@@ -44,17 +58,21 @@ type SidebarType = "string" | {
   text: string,
 }
 const props = defineProps<{
-  deep?: number,                // 深度 (相对于targetDeep的深度，从0开始)
-  currentUrl?: string,          // 初始url (用于默认展开)
-  sidebarData: SidebarType[],   // 随着传递减少深度
+  deep: number,                 // 当前文件夹层的深度 (随着传递增加，相对于targetDeep的深度，从0开始)
+  sidebarData: SidebarType[],   // 当前文件夹层的数据 (随着传递减少深度)
+  prefix: string,               // 当前文件夹层的前缀
+  currentPath: string,          // 当前url (仅用于初始化时默认展开)
 }>()
-const relDeep = props.deep ?? 0
 
 // 每个目录文件夹组件只管理自己这一层的折叠状态。多个侧边栏可以有不同的折叠状态
+// 内容均以`/`结尾
 const unfold_arr = ref<string[]>([])
-if (props.currentUrl) {
-  let url_arr = props.currentUrl.split("/")
-  console.log("url_arr", url_arr) // TODOOOOOOOOO
+if (props.currentPath) {
+  let dirArr = props.currentPath.split("/")
+  if (props.currentPath.endsWith("/") || dirArr[dirArr.length - 1].includes(".")) dirArr.pop()
+  dirArr.map((item)=>{ // TODO 临时，目录重名时会误展开
+    unfold_arr.value.push(item+"/")
+  })
 }
 
 const getText = (item: SidebarType) => {
@@ -70,6 +88,15 @@ const getText = (item: SidebarType) => {
     return item.prefix.slice(0, -1)
   }
 }
+const getUrl = (item: string) => {
+  if (!item.length) return props.prefix                 // README
+  if (item.startsWith("/")) return item                 // 绝对路径
+  if (item.endsWith("/")) return (props.prefix + item)  // 文件夹 (可传入item.prefix判断)
+  return (props.prefix + item + ".html")                // 文件
+}
+const getIsActive = (item: string): boolean => {
+  return props.currentPath == getUrl(item)
+}
 
 const clickItem = (item: SidebarType) => {
   if (typeof item === 'string') return
@@ -78,7 +105,6 @@ const clickItem = (item: SidebarType) => {
   } else { // 折叠 -> 展开
     unfold_arr.value.push(item.prefix)
   }
-  console.log("unfold_arr.value2", unfold_arr.value)
 }
 </script>
 
@@ -94,6 +120,7 @@ const clickItem = (item: SidebarType) => {
  */
 ul.sidebar-item-children {
   padding: 0;
+  margin: 0;
 }
 // 特点: 满宽度、无缩进、高度可能为多行
 li {
@@ -163,18 +190,24 @@ li {
   }
 }
 
+.sidebar-item-name.file[isactive="true"] {
+  background-color: #f0f0f022 !important;
+}
+
 // 这个是我自己的个人样式
 .sidebar-item-name.folder {
+  &[relDeep="^-"] >a { color: var(--theme-color-level0); fill: var(--theme-color-level10); }
+  &[relDeep="0"] >a { color: var(--theme-color-level0); fill: var(--theme-color-level10); }
+  &[relDeep="1"] >a { color: var(--theme-color-level1); fill: var(--theme-color-level10); }
+  &[relDeep="2"] >a { color: var(--theme-color-level2); fill: var(--theme-color-level10); }
+  &[relDeep="3"] >a { color: var(--theme-color-level3); fill: var(--theme-color-level10); }
+  &[relDeep="4"] >a { color: var(--theme-color-level4); fill: var(--theme-color-level10); }
+  &[relDeep="5"] >a { color: var(--theme-color-level5); fill: var(--theme-color-level10); }
+  &[relDeep="6"] >a { color: var(--theme-color-level6); fill: var(--theme-color-level10); }
+  &[relDeep="7"] >a { color: var(--theme-color-level7); fill: var(--theme-color-level10); }
+  &[relDeep="8"] >a { color: var(--theme-color-level8); fill: var(--theme-color-level10); }
+  &[relDeep="9"] >a { color: var(--theme-color-level9); fill: var(--theme-color-level10); }
+  &[relDeep="10"] >a { color: var(--theme-color-level10); fill: var(--theme-color-level10); }
   >a { color: var(--theme-color-level10); fill: var(--theme-color-level10); }
-  &[relDeep="0"] >a { color: var(--theme-color-level1); fill: var(--theme-color-level10); }
-  &[relDeep="1"] >a { color: var(--theme-color-level2); fill: var(--theme-color-level10); }
-  &[relDeep="2"] >a { color: var(--theme-color-level3); fill: var(--theme-color-level10); }
-  &[relDeep="3"] >a { color: var(--theme-color-level4); fill: var(--theme-color-level10); }
-  &[relDeep="4"] >a { color: var(--theme-color-level5); fill: var(--theme-color-level10); }
-  &[relDeep="5"] >a { color: var(--theme-color-level6); fill: var(--theme-color-level10); }
-  &[relDeep="6"] >a { color: var(--theme-color-level7); fill: var(--theme-color-level10); }
-  &[relDeep="7"] >a { color: var(--theme-color-level8); fill: var(--theme-color-level10); }
-  &[relDeep="8"] >a { color: var(--theme-color-level9); fill: var(--theme-color-level10); }
-  &[relDeep="9"] >a { color: var(--theme-color-level10); fill: var(--theme-color-level10); }
 }
 </style>
