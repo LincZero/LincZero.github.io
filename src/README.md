@@ -20,11 +20,11 @@ actions:
 
   - text: 产品文档
     icon: book
-    link: ./MdNote_Public/ProductDoc/?deep=1
+    link: ./MdNote_Public/ProductDoc/
 
   - text: 导航
     icon: signs-post
-    link: ./MdNote_Public/Guide/
+    link: ./MdNote_Public/Guide/?deep=1
 
   - text: 编程
     icon: code
@@ -145,3 +145,64 @@ highlights:
 copyright: true
 footer: 自用，未经许可禁止转载任何内容 | Copyright © 2015-present LincZero
 ---
+
+<br>
+
+## 访问建议
+
+推荐访问：
+
+- [公开文档](./MdNote_Public/)
+- [产品文档](./MdNote_Public/ProductDoc/)
+- [导航](./MdNote_Public/Guide/?deep=1)
+- [编程](./MdNote_Public/01.%20DesignAndDevelop/Develop/)
+- [3D](./MdNote_Public/01.%20DesignAndDevelop/3D/)
+
+博客类友链：
+
+- https://theme-hope.vuejs.press/
+- nolebase
+  - https://nolebase-integrations.ayaka.io/
+  - https://nolebase.ayaka.io/
+- https://pkm-er.github.io/Pkmer-Math/
+
+## 个人实验场
+
+- [AnyBlock实验场](./MdNote_Public/ProductDoc/AnyBlock/)
+- NodeFlow实验场, 见下
+
+### comfyui
+
+```nodeflow-comfyui
+demo
+```
+
+### obsidian canvas
+
+```nodeflow-obcanvas
+demo
+```
+
+### list
+
+```nodeflow-list
+demo
+```
+
+### vueflow
+
+```nodeflow-vueflow
+demo
+```
+
+### item
+
+```nodeflow-item
+demo
+```
+
+### listitem
+
+```nodeflow-listitem
+demo
+```
