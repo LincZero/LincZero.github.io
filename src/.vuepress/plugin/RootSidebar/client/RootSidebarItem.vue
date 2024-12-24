@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { SidebarType } from "./index"
 
 const props = defineProps<{
@@ -50,16 +50,21 @@ const props = defineProps<{
   currentPath: string,          // 当前url (仅用于初始化时默认展开，url编码)
 }>()
 
+// 展开状态
 // 每个目录文件夹组件只管理自己这一层的折叠状态。多个侧边栏可以有不同的折叠状态
 // 内容均非url编码，以`/`结尾
 const unfold_arr = ref<string[]>([])
-if (props.currentPath) {
+const onUpdateDeep = () => {
   let dirArr = props.currentPath.split("/")
   if (props.currentPath.endsWith("/") || dirArr[dirArr.length - 1].includes(".")) dirArr.pop()
   dirArr.map((item)=>{ // TODO 临时，目录重名时会误展开
     unfold_arr.value.push(item+"/")
   })
 }
+onUpdateDeep()
+watch(() => props.prefix_from_root, () => {
+  onUpdateDeep()
+})
 
 const getText = (item: SidebarType) => { // 返回值可视化高的文本 (非url编码，可能是侧边栏或pin栏上的目录/文件名)
   // 文件
