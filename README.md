@@ -25,7 +25,7 @@
   - NodeFlow (自研, 2024)，用于节点工作流的显示与扩展
   - onInitialized-json (自研)，格式扩展。对NodeFlow的增强，直接识别工作流json文件
   - onInitialized-pdf (自研)，格式扩展。直接识别pdf库
-  - RootSidebar (自研)，侧边栏，带状态，可指定任意层作为树根部
+  - RootSidebar (自研)，侧边栏，带状态，可指定任意层作为树根部。完全舍弃掉theme中的sidebar配置
 - Workflows extension
   - LincDocs/Workflows (自研)
 
