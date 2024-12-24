@@ -5,7 +5,7 @@ const __dirname = getDirname(import.meta.url)
 export default (options, ctx) => {
   return {
     name: 'vuepress-plugin-root-sidebar',
-    // clientConfigFile: path.resolve(__dirname, '../client/clientConfig.ts'),
+    clientConfigFile: path.resolve(__dirname, '../client/clientConfig.ts'),
     alias: {
       // 侧边栏
       "@theme-hope/modules/sidebar/composables/index":

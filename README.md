@@ -13,17 +13,21 @@
 
 该网站并非是普通的 VuePress，我做了许多扩展以及魔改，其中非常多的扩展都是个人开发的：
 
-- 插件主题：VuePress-Theme-Hope
-- 仿文件侧边栏 (自研魔改)，组件替换
-- 高通用扩展（可以在VuePress以外使用）
+- 主题扩展
+  - VuePress-Theme-Hope
+- MarkdownIt扩展
   - AnyBlock (自研, V3 2024)，用于部分md写法与渲染扩展
-  - newPageHook (自研)，对Markdown-it版本的AnyBlock的补充增强
-  - NodeFlow (自研, 2024)，用于节点工作流的显示与扩展
-  - onInitialized-json (自研)，用于对NodeFlow的增强，直接识别工作流json文件
   - markdown-it-obsidian-callout (贡献)，用于obsidian callout语法的渲染，用于代替gfm-alert
   - @nolebase/markdown-it-bi-directional-links (贡献)，用于双链的wiki链接语法的支持
-- onInitialized-pdf (自研)，直接识别pdf库
-- 新的解耦以及工作流 (自研)
+- VuePress扩展（可以在VuePress以外使用）
+  - newPageHook (自研)，对Markdown-it版本的AnyBlock的补充增强
+  - 仿文件侧边栏 (魔改)，组件替换 (后弃用，换用自研侧边栏)
+  - NodeFlow (自研, 2024)，用于节点工作流的显示与扩展
+  - onInitialized-json (自研)，格式扩展。对NodeFlow的增强，直接识别工作流json文件
+  - onInitialized-pdf (自研)，格式扩展。直接识别pdf库
+  - RootSidebar (自研)，侧边栏，带状态，可指定任意层作为树根部
+- 工作流扩展
+  - LincDocs/Workflows (自研)，特点：构建库与文档库分离、完全零配置 开箱即用、单文件构建 & 可选的单文件配置
 
 上面标 “自研” 的部分均使用 “GPLV3” 开源协议
 
