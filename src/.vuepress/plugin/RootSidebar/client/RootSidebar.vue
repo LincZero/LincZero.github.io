@@ -2,24 +2,28 @@
 使用注意：要求一定要在sidebar配置中包含一个："/": "structure"
 
 - RootSidebar: 该组件多个侧边栏只会调用一次，数据只在url变化时更新
-- RootSidebarContent: 该组件每个侧边栏会调用一次 (未支持)
-- RootSidebarItem: 该组件每个侧边栏文件夹会调用一次
+- RootSidebarContent: 该组件每个侧边栏会调用一次 (未支持)。该组件确定target文件夹和深度
+- RootSidebarItem: 该组件每个侧边栏文件夹会调用一次。不关注target文件夹是什么
 
 术语:
 该树组件的一大特点是，可以将任意一个目标文件夹声明为新的根部
 - 绝对的根部文件夹叫root
 - 指定为根部的目标文件夹叫target
+- 固定标签页的根部文件夹叫pin
 -->
 
 <template>
   <div class="root-sidebar">
     <div class="root-sidebar-control">
       <div class="root-sidebar-btn">
-        <button class="arrow" @click="switchOldSidebar()" title="切换新旧侧边栏">old</button>
-        <button class="arrow left" @click="() => { emitNewUrl(targetDeep-1) }" :relDeep="-999"
-          title="显示更多侧边项">{{targetDeep-1>0?targetDeep-1:0}}</button>
-        <button class="arrow right" @click="() => { emitNewUrl(targetDeep+1) }" :relDeep="-999"
-          title="精简更少侧边项">{{targetDeep+1}}</button>
+        <button @click="switchOldSidebar()" title="切换新旧侧边栏">Old</button>
+        <button @click="() => { emitPinTab() }"
+          title="固定当前标签页">Pin</button>
+        <button title="升序/降序排序">Ord</button>
+        <button class="left" @click="() => { emitNewUrl(targetDeep-1) }"
+          title="显示更多侧边项"><</button>
+        <button class="right" @click="() => { emitNewUrl(targetDeep+1) }"
+          title="精简更少侧边项">></button>
       </div>
       <div class="root-sidebar-breadcrumb">
         <!-- TODO: 下拉框，路径下拉表示、排序、固定伪标签页 -->
@@ -33,6 +37,13 @@
     </div>
     <div class="root-sidebar-control2">
       <!-- 固定标签, 伪标签栏  -->
+      <RootSidebarItem
+        :deep_from_target="0"
+        :prefix_from_root="targetPath"
+        :sidebarData="pinData"
+        :currentPath="'/'"
+      />
+      <div v-show="pinData.length>0"><hr></div>
     </div>
     <div class="root-sidebar-content">
       <RootSidebarItem
@@ -51,14 +62,14 @@ import { usePageData } from 'vuepress/client'
 import { useRouter, useRoute } from 'vue-router'; // 不 import {useRoute} from vuepress/client 了
 import { type ComputedRef, type Ref, computed, onMounted, ref, watch } from 'vue';
 import RootSidebarItem from "./RootSidebarItem.vue"
-import { SidebarType } from "./index"
+import type { SidebarType } from "./index"
 
 // 数据获取
 // current基于完整的url
 // target基于按截取截取后的url
 if (!sidebarData.hasOwnProperty("/")) { console.error(`Error: Must be add a {"/": "structure"} in sidebar config`) }
 let targetDeep_isInit = false                           // 仅触发一次，用于锁定targetDeep
-const rootData = ref(sidebarData["/"] as SidebarType[]) // 从根部开始的数据 (ATTENTION 要求一定要在sidebar配置中包含一个"/"struct)
+const rootData = ref<SidebarType[]>(sidebarData["/"])   // 从根部开始的数据 (ATTENTION 要求一定要在sidebar配置中包含一个"/"struct)
 const currentPath = ref(decodeURIComponent(window.location.pathname)) // 当前url.path
 const currentPathArr = ref<string[]>([])                // 当前url.path数组 (["", "path1", "path2"], 不包含文件名)
 const targetDeep = ref<number>(0)                       // 指定目录深度 (不会超过当前目录的最大深度)
@@ -71,7 +82,8 @@ const targetPath = computed(()=>{                       // 指定目录路径
 const targetFolder = computed(()=>{                     // 指定目录名称
   return currentPathArr.value[targetDeep.value]
 })
-const targetData = ref(rootData.value);                 // 指定目录开始的数据
+const targetData = ref<SidebarType[]>(rootData.value);  // 指定目录开始的数据
+const pinData = ref<SidebarType[]>([])
 
 /// 钩子, 与回调进行数据更新
 /// 每次切换url时被调用 (存在多个侧边栏也只调用一次)
@@ -148,6 +160,7 @@ const emitNewUrl = (newDeep: number) => { // 手动触发
   onNewUrl(newDeep)
 }
 
+// 切换新旧侧边栏 (兼容考虑)
 function switchOldSidebar(isUseNew?: boolean) {
   const el_old: HTMLElement|null = document.querySelector("#sidebar>.vp-sidebar-links")
   const el_new: HTMLElement|null = document.querySelector("#sidebar>.root-sidebar>.root-sidebar-content")
@@ -164,6 +177,16 @@ function switchOldSidebar(isUseNew?: boolean) {
   } else {
     el_new.style.display = 'none';
     el_old.style.display = 'block';
+  }
+}
+
+// 固定或取消当前打开项为固定标签
+function emitPinTab() {
+  const s:string = window.location.pathname + window.location.search
+  if (pinData.value.includes(s)) {
+    pinData.value = pinData.value.filter((v) => v !== s)
+  } else {
+    pinData.value.push(window.location.pathname + window.location.search)
   }
 }
 

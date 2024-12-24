@@ -9,7 +9,7 @@
  * 由于不是我定义的，和组件本身不是很吻合。
  * 虽然不算太优雅，但我这里在Client端就不再去转化归一化了，避免目录树较大时影响性能
  */
-export type SidebarType = "string" | {
+export type SidebarType = string | {
   children: Array<SidebarType>,
   collapsible: boolean,
   prefix: string,

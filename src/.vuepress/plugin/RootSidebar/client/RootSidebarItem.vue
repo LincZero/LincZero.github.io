@@ -61,13 +61,18 @@ if (props.currentPath) {
   })
 }
 
-const getText = (item: SidebarType) => { // 返回值非url编码
+const getText = (item: SidebarType) => { // 返回值可视化高的文本 (非url编码，可能是侧边栏或pin栏上的目录/文件名)
   // 文件
   if (typeof item === 'string') {
-    let s:string = decodeURIComponent(item)
     if (!item.length) return "README"
-    if(item.endsWith("/")) s = s.slice(0, -1)
-    return s.split('/').pop() ?? "error: 文件名可能不正常"
+    let s:string = decodeURIComponent(item)           // /MdNote_Other/Pkmer-Math-main/(Home.html or "")?deep=1
+    if(item.endsWith("/")) { s = s.slice(0, -1); }
+    let s_arr = s.split('/')                          // ["", "MdNote_Other", "Pkmer-Math-main", "(Home.html or "")?deep=1"]
+    s = s_arr.pop() ?? "Error: pathname without shape"// (Home.html or "")?deep=1
+    let s_arr2 = s.split('?')
+    if (s_arr2.length>1) s = s_arr2[0]                // (Home.html or "")
+    if (!s.length) return (s_arr.pop()??"/")          // Pkmer-Math-main
+    else return s.replace(/\.html$/, "")              // Home
   }
   // 文件夹
   else {
