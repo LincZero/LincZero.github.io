@@ -27,9 +27,15 @@
   - onInitialized-pdf (自研)，格式扩展。直接识别pdf库
   - RootSidebar (自研)，侧边栏，带状态，可指定任意层作为树根部
 - Workflows extension
-  - LincDocs/Workflows (自研)，特点：构建库与文档库分离、完全零配置 开箱即用、单文件构建 & 可选的单文件配置
+  - LincDocs/Workflows (自研)
 
 上面标 “自研” 的部分均使用 “GPLV3” 开源协议
+
+扩展特点
+
+- 构建库与文档库分离, 多个文档库便捷管理
+- 完全零配置 开箱即用 & 可选的单文件配置
+- 单文件构建
 
 ## 编译相关
 

@@ -18,8 +18,8 @@
       <div class="root-sidebar-btn">
         <button @click="switchOldSidebar()" title="切换新旧侧边栏">Old</button>
         <button @click="() => { emitPinTab() }"
-          title="固定当前标签页">Pin</button>
-        <button title="升序/降序排序">Ord</button>
+          title="固定或删除当前标签页">Pin</button>
+        <!-- <button title="升序/降序排序">Ord</button> -->
         <button class="left" @click="() => { emitNewUrl(targetDeep-1) }"
           title="显示更多侧边项"><</button>
         <button class="right" @click="() => { emitNewUrl(targetDeep+1) }"
