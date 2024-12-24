@@ -110,15 +110,21 @@ function onNewUrl(newDeep?: number) {
     return null;
   }
   let tmp2: string | null = getQueryVariable("deep")
-  if (newDeep !== undefined && newDeep >= 0) targetDeep.value = newDeep // 优先级1: 函数传参
-  else if (tmp2) targetDeep.value = parseInt(tmp2)                      // 优先级2: url传参
+  if (newDeep !== undefined && newDeep >= 0) targetDeep.value = newDeep // 优先级1: 函数传参 (不可负)
+  else if (tmp2) targetDeep.value = parseInt(tmp2)                      // 优先级2: url传参 (可负)
   else if (targetDeep_isInit) {}                                        // 优先级3: 保持不变
-  else targetDeep.value = 0                                             // 优先级4: 初始化0
+  else {                                                                // 优先级4: 初始化为最大深度 (不可负)
+    targetDeep.value = targetDeep.value = currentPathArr.value.length-1
+    if (targetDeep.value < 0) targetDeep.value = 0
+  }
   targetDeep_isInit = true
   // 限制、校正
   if (targetDeep.value > currentPathArr.value.length-1) {
     targetDeep.value = currentPathArr.value.length-1
     console.warn(`Warning: The deep value is too large, reset deep: ${targetDeep.value}`)
+  } else if (targetDeep.value < 0) {
+    if (targetDeep.value == -1) { targetDeep.value = currentPathArr.value.length-1 }
+    else targetDeep.value = 0
   }
 
   // 更新值 - targetData, 校正 targetPath, targetDeep
@@ -142,6 +148,12 @@ function onNewUrl(newDeep?: number) {
     targetData.value = tmp_arr
   }
   calc_targetData()
+
+  // 确保deep信息始终在url上。当deep为最大深度时(默认deep), 无需显示, 保证url的简洁
+  if (targetDeep.value != currentPathArr.value.length-1) {
+    const newQuery = { ...route.query, deep: targetDeep.value };
+    router.push({ path: route.path, query: newQuery });
+  }
 }
 onMounted(() => {
   switchOldSidebar(true)
@@ -153,7 +165,7 @@ watch(() => route.fullPath, () => {
   onNewUrl()
 })
 const emitNewUrl = (newDeep: number) => { // 手动触发
-  // if (newDeep < 0) { console.warn("error newDeep2:", newDeep); }
+  if (newDeep<0) return // 无法指定负数，只允许url为-1
   const newQuery = { ...route.query, deep: newDeep };
   router.push({ path: route.path, query: newQuery });
 

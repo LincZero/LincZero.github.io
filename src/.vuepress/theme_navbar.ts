@@ -9,28 +9,28 @@ export const navbarConfig = navbar([
     //link: "/MdNote_Public/",
     prefix: "/MdNote_Public/",
     children: [
-      { text: "引导", link: "Guide/"},
-      { text: "产品文档", link: "ProductDoc/"},
-      { text: "设计开发与数据生产", link: "01.%20DesignAndDevelop/"},
-      { text: "十二门类与纯粹知识", link: "02.%20SubjectAndKnowledge/"},
-      { text: "生活技能与生活生产", link: "03.%20SkillAndProduction/"},
-      { text: "全部", link: ""},
+      { text: "引导", link: "Guide/?deep=2"},
+      { text: "产品文档", link: "ProductDoc/?deep=2"},
+      { text: "设计开发与数据生产", link: "01.%20DesignAndDevelop/?deep=2"},
+      { text: "十二门类与纯粹知识", link: "02.%20SubjectAndKnowledge/?deep=2"},
+      { text: "生活技能与生活生产", link: "03.%20SkillAndProduction/?deep=2"},
+      { text: "全部", link: "?deep=1"},
     ]
   },
   {
     text: "其他文档库",
-    link: "/MdNote_Other/",
+    link: "/MdNote_Other/?deep=1",
   },
   {
     text: "私有文档",
-    link: "/MdNote_Private/",
+    link: "/MdNote_Private/?deep=1",
   },
   {
     text: "特殊权限 (路径隐藏)",
-    link: "/MdNote_Hide1/",
+    link: "/MdNote_Hide1/?deep=1",
   },
   {
     text: "博客页 (路径隐藏)",
-    link: "/MdNote_Blog1/",
+    link: "/MdNote_Blog1/?deep=1",
   },
 ]);
