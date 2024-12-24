@@ -25,10 +25,12 @@
         <button class="right" @click="() => { emitNewUrl(targetDeep+1) }"
           title="精简更少侧边项">></button>
       </div>
-      <div class="root-sidebar-breadcrumb">
+      <div class="root-sidebar-breadcrumb" ref="Breadcrumb">
         <!-- TODO: 下拉框，路径下拉表示、排序、固定伪标签页 -->
         <button v-for="(item,index) in currentPathArr"
-          @click="() => { emitNewUrl(index) }" :relDeep="index - targetDeep">
+          @click="() => { emitNewUrl(index) }"
+          :relDeep="index - targetDeep"
+        >
           <span :title="decodeURIComponent(item) + '/'">
             {{ decodeURIComponent(item) + "/" }}
           </span>
@@ -60,7 +62,7 @@
 import { sidebarData } from "@temp/theme-hope/sidebar.js"; // 在client端获取侧边栏数据
 import { usePageData } from 'vuepress/client'
 import { useRouter, useRoute } from 'vue-router'; // 不 import {useRoute} from vuepress/client 了
-import { type ComputedRef, type Ref, computed, onMounted, ref, watch } from 'vue';
+import { type ComputedRef, type Ref, computed, onMounted, ref, watch, nextTick } from 'vue';
 import RootSidebarItem from "./RootSidebarItem.vue"
 import type { SidebarType } from "./index"
 
@@ -89,46 +91,50 @@ const pinData = ref<SidebarType[]>([])
 /// 每次切换url时被调用 (存在多个侧边栏也只调用一次)
 function onNewUrl(newDeep?: number) {
   // 更新值 - currentPath, currentPathArr
-  currentPath.value = decodeURIComponent(window.location.pathname)
-  // http... -> /path1/path2/path3.html -> ["", "path1", "path2", "path3.html"] -> ["", "path1", "path2"]
-  // http... -> /path1/path2 -> ["", "path1", "path2"] -> ["", "path1", "path2"]
-  // http... -> /path1/path2/ -> ["", "path1", "path2", ""] -> ["", "path1", "path2"]
-  let dirArr = currentPath.value.split("/")
-  if (currentPath.value.endsWith("/") || dirArr[dirArr.length - 1].includes(".")) dirArr.pop()
-  currentPathArr.value = dirArr
+  {
+    currentPath.value = decodeURIComponent(window.location.pathname)
+    // http... -> /path1/path2/path3.html -> ["", "path1", "path2", "path3.html"] -> ["", "path1", "path2"]
+    // http... -> /path1/path2 -> ["", "path1", "path2"] -> ["", "path1", "path2"]
+    // http... -> /path1/path2/ -> ["", "path1", "path2", ""] -> ["", "path1", "path2"]
+    let dirArr = currentPath.value.split("/")
+    if (currentPath.value.endsWith("/") || dirArr[dirArr.length - 1].includes(".")) dirArr.pop()
+    currentPathArr.value = dirArr
+  }
 
   // 更新值 - targetDeep
-  // 解析url参数，获取state参数
-  function getQueryVariable(variable) {
-    const vars = window.location.search.substring(1).split("&"); // windows.当前链接.查询部分.去掉第一个字符(?).以&分割
-    for (var i = 0; i < vars.length; i++) {
-      var pair = vars[i].split("=");
-      if (pair[0] == variable) {
-        return pair[1];
+  {
+    // 解析url参数，获取state参数
+    function getQueryVariable(variable) {
+      const vars = window.location.search.substring(1).split("&"); // windows.当前链接.查询部分.去掉第一个字符(?).以&分割
+      for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split("=");
+        if (pair[0] == variable) {
+          return pair[1];
+        }
       }
+      return null;
     }
-    return null;
-  }
-  let tmp2: string | null = getQueryVariable("deep")
-  if (newDeep !== undefined && newDeep >= 0) targetDeep.value = newDeep // 优先级1: 函数传参 (不可负)
-  else if (tmp2) targetDeep.value = parseInt(tmp2)                      // 优先级2: url传参 (可负)
-  else if (targetDeep_isInit) {}                                        // 优先级3: 保持不变
-  else {                                                                // 优先级4: 初始化为最大深度 (不可负)
-    targetDeep.value = targetDeep.value = currentPathArr.value.length-1
-    if (targetDeep.value < 0) targetDeep.value = 0
-  }
-  targetDeep_isInit = true
-  // 限制、校正
-  if (targetDeep.value > currentPathArr.value.length-1) {
-    targetDeep.value = currentPathArr.value.length-1
-    console.warn(`Warning: The deep value is too large, reset deep: ${targetDeep.value}`)
-  } else if (targetDeep.value < 0) {
-    if (targetDeep.value == -1) { targetDeep.value = currentPathArr.value.length-1 }
-    else targetDeep.value = 0
+    let tmp2: string | null = getQueryVariable("deep")
+    if (newDeep !== undefined && newDeep >= 0) targetDeep.value = newDeep // 优先级1: 函数传参 (不可负)
+    else if (tmp2) targetDeep.value = parseInt(tmp2)                      // 优先级2: url传参 (可负)
+    else if (targetDeep_isInit) {}                                        // 优先级3: 保持不变
+    else {                                                                // 优先级4: 初始化为最大深度 (不可负)
+      targetDeep.value = targetDeep.value = currentPathArr.value.length-1
+      if (targetDeep.value < 0) targetDeep.value = 0
+    }
+    targetDeep_isInit = true
+    // 限制、校正
+    if (targetDeep.value > currentPathArr.value.length-1) {
+      targetDeep.value = currentPathArr.value.length-1
+      console.warn(`Warning: The deep value is too large, reset deep: ${targetDeep.value}`)
+    } else if (targetDeep.value < 0) {
+      if (targetDeep.value == -1) { targetDeep.value = currentPathArr.value.length-1 }
+      else targetDeep.value = 0
+    }
   }
 
   // 更新值 - targetData, 校正 targetPath, targetDeep
-  const calc_targetData = () => {
+  ;(() => {                                                 // calc_targetData
     let tmp_arr = rootData.value
     for (let deep = 1; deep < targetDeep.value+1; deep++) { // 遍历url。从1找起是因为rootData一开始就已经被提取过"/"层了
       for (let j = 0; j < tmp_arr.length; j++) {            // 遍历children中是否有对应的prefix
@@ -146,8 +152,7 @@ function onNewUrl(newDeep?: number) {
       }
     }
     targetData.value = tmp_arr
-  }
-  calc_targetData()
+  })();
 
   // 确保deep信息始终在url上。当deep为最大深度时(默认deep), 无需显示, 保证url的简洁
   if (targetDeep.value != currentPathArr.value.length-1) {
@@ -158,6 +163,7 @@ function onNewUrl(newDeep?: number) {
 onMounted(() => {
   switchOldSidebar(true)
   onNewUrl()
+  emitScrollBreadcrumb()
 })
 const router = useRouter();
 const route = useRoute();
@@ -170,9 +176,10 @@ const emitNewUrl = (newDeep: number) => { // 手动触发
   router.push({ path: route.path, query: newQuery });
 
   onNewUrl(newDeep)
+  emitScrollBreadcrumb()
 }
 
-// 切换新旧侧边栏 (兼容考虑)
+/// 切换新旧侧边栏 (兼容考虑)
 function switchOldSidebar(isUseNew?: boolean) {
   const el_old: HTMLElement|null = document.querySelector("#sidebar>.vp-sidebar-links")
   const el_new: HTMLElement|null = document.querySelector("#sidebar>.root-sidebar>.root-sidebar-content")
@@ -192,7 +199,7 @@ function switchOldSidebar(isUseNew?: boolean) {
   }
 }
 
-// 固定或取消当前打开项为固定标签
+/// 固定或取消当前打开项为固定标签
 function emitPinTab() {
   const s:string = window.location.pathname + window.location.search
   if (pinData.value.includes(s)) {
@@ -201,6 +208,20 @@ function emitPinTab() {
     pinData.value.push(window.location.pathname + window.location.search)
   }
 }
+
+/// 面包屑激活项自动滚动 (仅手动切换deep时触发)
+async function emitScrollBreadcrumb () {
+  await nextTick(); // 需要await nextTick();确保元素先更新，元素上的relDeep是正确的
+  if (!Breadcrumb.value)  return
+  const el = Breadcrumb.value.querySelector(":scope>button[relDeep='0']")
+  if (!el) return
+  el.scrollIntoView({
+    behavior: 'smooth', // 平滑
+    block: 'nearest', // "center" | "end" | "nearest" | "start";
+    inline: 'start',
+  });
+}
+const Breadcrumb = ref<HTMLElement|null>(null);
 
 // 仅调试
 const isDebug = false
@@ -261,6 +282,7 @@ button { // h:(26+4+0)+4
   }
   >div.root-sidebar-breadcrumb {
     overflow-x: auto;
+    padding-right: 30px;
     >button {
       padding: 2px 4px;
     }
