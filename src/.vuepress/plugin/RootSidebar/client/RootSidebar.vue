@@ -72,7 +72,7 @@ import type { SidebarType } from "./index"
 if (!sidebarData.hasOwnProperty("/")) { console.error(`Error: Must be add a {"/": "structure"} in sidebar config`) }
 let targetDeep_isInit = false                           // 仅触发一次，用于锁定targetDeep
 const rootData = ref<SidebarType[]>(sidebarData["/"])   // 从根部开始的数据 (ATTENTION 要求一定要在sidebar配置中包含一个"/"struct)
-const currentPath = ref("") // 当前url.path
+const currentPath = ref("")                             // 当前url.path (特别注意的是，这里不纳入base(组织名)前面的path部分)
 const currentPathArr = ref<string[]>([])                // 当前url.path数组 (["", "path1", "path2"], 不包含文件名)
 const targetDeep = ref<number>(0)                       // 指定目录深度 (不会超过当前目录的最大深度)
 const targetPath = computed(()=>{                       // 指定目录路径
@@ -177,11 +177,11 @@ function onNewUrl(newDeep?: number) {
 onMounted(() => {
   onNewUrl()
 })
-const router = useRouter();
-const route = useRoute();
 watch(() => route.fullPath, () => {
   onNewUrl()
 })
+const router = useRouter();
+const route = useRoute();
 const emitNewUrl = (newDeep: number) => { // 手动触发
   if (newDeep<0) return // 无法指定负数，只允许url为-1
   const newQuery = { ...route.query, deep: newDeep };
@@ -219,7 +219,7 @@ onMounted(() => {
 const pinData = ref<string[]>([])
 onMounted(()=>{
   // 获取缓存
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
     const pinDataString = localStorage.getItem('pinnedTabs');
     if (pinDataString) {
       pinData.value = JSON.parse(pinDataString);
@@ -228,14 +228,14 @@ onMounted(()=>{
 })
 // 固定标签页变动
 function emitPinTab() {
-  const s:string = window.location.pathname + window.location.search + window.location.hash
+  const s:string = currentPath.value + window.location.search + window.location.hash
   if (pinData.value.includes(s)) {
     pinData.value = pinData.value.filter((v) => v !== s)
   } else {
     pinData.value.push(s)
   }
   // 设置缓存
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
     const pinDataString = JSON.stringify(pinData.value);
     localStorage.setItem('pinnedTabs', pinDataString);
   }
@@ -258,7 +258,7 @@ onMounted(() => {
   emitScrollBreadcrumb()
 })
 
-// 仅调试
+/// 调试输出
 const debug = () => {
   // test url: http://localhost:8080/MdNote_Public/Test.html?deep=1&state=s2#h2
   console.log("debug start ---------------------------------------")
