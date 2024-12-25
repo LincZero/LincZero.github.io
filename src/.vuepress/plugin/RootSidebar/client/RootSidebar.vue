@@ -175,9 +175,7 @@ function onNewUrl(newDeep?: number) {
   }
 }
 onMounted(() => {
-  switchOldSidebar(true)
   onNewUrl()
-  emitScrollBreadcrumb()
 })
 const router = useRouter();
 const route = useRoute();
@@ -213,16 +211,21 @@ function switchOldSidebar(isUseNew?: boolean) {
     debug()
   }
 }
+onMounted(() => {
+  switchOldSidebar(true)
+})
 
 /// 固定或取消当前打开项为固定标签
 const pinData = ref<string[]>([])
-// 获取缓存
-if (typeof window !== 'undefined') {
-  const pinDataString = localStorage.getItem('pinnedTabs');
-  if (pinDataString) {
-    pinData.value = JSON.parse(pinDataString);
+onMounted(()=>{
+  // 获取缓存
+  if (typeof window !== 'undefined') {
+    const pinDataString = localStorage.getItem('pinnedTabs');
+    if (pinDataString) {
+      pinData.value = JSON.parse(pinDataString);
+    }
   }
-}
+})
 // 固定标签页变动
 function emitPinTab() {
   const s:string = window.location.pathname + window.location.search + window.location.hash
@@ -251,6 +254,9 @@ async function emitScrollBreadcrumb () {
   });
 }
 const Breadcrumb = ref<HTMLElement|null>(null);
+onMounted(() => {
+  emitScrollBreadcrumb()
+})
 
 // 仅调试
 const debug = () => {
