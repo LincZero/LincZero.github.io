@@ -72,7 +72,7 @@ import type { SidebarType } from "./index"
 if (!sidebarData.hasOwnProperty("/")) { console.error(`Error: Must be add a {"/": "structure"} in sidebar config`) }
 let targetDeep_isInit = false                           // 仅触发一次，用于锁定targetDeep
 const rootData = ref<SidebarType[]>(sidebarData["/"])   // 从根部开始的数据 (ATTENTION 要求一定要在sidebar配置中包含一个"/"struct)
-const currentPath = ref(decodeURIComponent(window.location.pathname)) // 当前url.path
+const currentPath = ref("") // 当前url.path
 const currentPathArr = ref<string[]>([])                // 当前url.path数组 (["", "path1", "path2"], 不包含文件名)
 const targetDeep = ref<number>(0)                       // 指定目录深度 (不会超过当前目录的最大深度)
 const targetPath = computed(()=>{                       // 指定目录路径
@@ -87,28 +87,27 @@ const targetFolder = computed(()=>{                     // 指定目录名称
 const targetData = ref<SidebarType[]>(rootData.value);  // 指定目录开始的数据
 const pinData = ref<SidebarType[]>([])
 
-/// 组织部署的特殊处理。如果是组织 (config base != `/`)，那么rootData层次和url层次会出现不一致
-/// 处理方法：以url为准，修改rootData。deep也以url为准
+/**
+ * 组织部署的特殊处理。如果是组织 (config base != `/`)，那么rootData层次和url层次会出现不一致
+ * - 处理方法1：(弃用) 以url为准，修改rootData。deep也以url为准。但绝对路径的链接会有问题! `/xxx` 会指向 `/orgName/xxx`
+ * - 处理方法2: (选用) pathname省略org name，即 ["", "orgname", "path2"] -> ["", "path2"]。`https://域名/orgname/` 视为一个整体
+ */
 let orgName:string = useSiteData().value.base
-if (orgName.length > 1) { // 不是`/`
+if (orgName != "/") { // 不是`/`
   if (orgName.startsWith("/")) orgName = orgName.slice(1,)
   if (orgName.endsWith("/")) orgName = orgName.slice(0,-1)
-  rootData.value = [
-    {
-      text: orgName,
-      prefix: orgName + "/",
-      collapsible: true,
-      children: rootData.value,
-    }
-  ]
 }
 
 /// 钩子, 与回调进行数据更新
-/// 每次切换url时被调用 (存在多个侧边栏也只调用一次)
+/// 每次url与deep变动时更新 (前者存在多个侧边栏也只调用一次，后者每个侧边栏调用一次)
 function onNewUrl(newDeep?: number) {
   // 更新值 - currentPath, currentPathArr
   {
-    currentPath.value = decodeURIComponent(window.location.pathname)
+    if (orgName == "/") {
+      currentPath.value = decodeURIComponent(window.location.pathname)
+    } else {
+      currentPath.value = decodeURIComponent(window.location.pathname).replace(/^\/orgName\//, "/")
+    }
     // http... -> /path1/path2/path3.html -> ["", "path1", "path2", "path3.html"] -> ["", "path1", "path2"]
     // http... -> /path1/path2 -> ["", "path1", "path2"] -> ["", "path1", "path2"]
     // http... -> /path1/path2/ -> ["", "path1", "path2", ""] -> ["", "path1", "path2"]
@@ -226,7 +225,7 @@ function emitPinTab() {
   }
 }
 
-/// 面包屑激活项自动滚动 (仅手动切换deep时触发)
+/// 面包屑激活项自动滚动 (仅初始化、手动切换deep时触发，SPA切换url时不触发)
 async function emitScrollBreadcrumb () {
   await nextTick(); // 需要await nextTick();确保元素先更新，元素上的relDeep是正确的
   if (!Breadcrumb.value)  return
@@ -249,7 +248,8 @@ const debug = () => {
   console.log("comp2", targetPath)
   console.log("comp4", currentPath)
   console.log("route1", window.location)        // Location {hash, host, hostname, href, origin, pathname, port, protocol, search}
-  console.log("route2", useRoute().value)       // 
+  console.log("route2", route)                  // 
+  console.log("route3", router)                 // 
   console.log("p1", usePageData())              // Object，一个包含了当前页面数据的对象 {lang, path, forntmatter, ...}
   console.log("p2", usePageData().value.router) // undefined
   console.log("p3", usePageData().value.path)   // /MdNote_Public/Test.html
