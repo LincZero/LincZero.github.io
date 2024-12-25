@@ -244,15 +244,15 @@ const Breadcrumb = ref<HTMLElement|null>(null);
 const debug = () => {
   // test url: http://localhost:8080/MdNote_Public/Test.html?deep=1&state=s2#h2
   console.log("debug start ---------------------------------------")
-  console.log("p1", usePageData())              // Object，一个包含了当前页面数据的对象 {lang, path, forntmatter, ...}
-  console.log("p2", usePageData().value.router) // undefined
-  console.log("p3", usePageData().value.path)   // /MdNote_Public/Test.html
-  console.log("route1", useRoute().value)       // 
-  console.log("route2", window.location)        // Location {hash, host, hostname, href, origin, pathname, port, protocol, search}
   console.log("dataR", rootData)                // Object, 一个纯侧边栏数据对象，[ self-childern结构 ]
   console.log("dataT", targetData)              // ^
   console.log("comp2", targetPath)
   console.log("comp4", currentPath)
+  console.log("route1", window.location)        // Location {hash, host, hostname, href, origin, pathname, port, protocol, search}
+  console.log("route2", useRoute().value)       // 
+  console.log("p1", usePageData())              // Object，一个包含了当前页面数据的对象 {lang, path, forntmatter, ...}
+  console.log("p2", usePageData().value.router) // undefined
+  console.log("p3", usePageData().value.path)   // /MdNote_Public/Test.html
   console.log("debug end -----------------------------------------")
 }
 const isDebug = false
