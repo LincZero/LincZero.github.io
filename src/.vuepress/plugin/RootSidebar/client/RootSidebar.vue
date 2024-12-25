@@ -171,7 +171,7 @@ function onNewUrl(newDeep?: number) {
   // 确保deep信息始终在url上。当deep为最大深度时(默认deep), 无需显示, 保证url的简洁
   if (targetDeep.value != currentPathArr.value.length-1) {
     const newQuery = { ...route.query, deep: targetDeep.value };
-    router.push({ path: route.path, query: newQuery });
+    router.push({ path: route.path, query: newQuery, hash: route.hash });
   }
 }
 onMounted(() => {
@@ -187,7 +187,7 @@ watch(() => route.fullPath, () => {
 const emitNewUrl = (newDeep: number) => { // 手动触发
   if (newDeep<0) return // 无法指定负数，只允许url为-1
   const newQuery = { ...route.query, deep: newDeep };
-  router.push({ path: route.path, query: newQuery });
+  router.push({ path: route.path, query: newQuery, hash: route.hash });
 
   onNewUrl(newDeep)
   emitScrollBreadcrumb()
