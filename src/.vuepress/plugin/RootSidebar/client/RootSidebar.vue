@@ -106,7 +106,7 @@ function onNewUrl(newDeep?: number) {
     if (orgName == "/") {
       currentPath.value = decodeURIComponent(window.location.pathname)
     } else {
-      currentPath.value = decodeURIComponent(window.location.pathname).replace(/^\/orgName\//, "/")
+      currentPath.value = decodeURIComponent(window.location.pathname).replace(new RegExp(`^/${orgName}/`), "/")
     }
     // http... -> /path1/path2/path3.html -> ["", "path1", "path2", "path3.html"] -> ["", "path1", "path2"]
     // http... -> /path1/path2 -> ["", "path1", "path2"] -> ["", "path1", "path2"]

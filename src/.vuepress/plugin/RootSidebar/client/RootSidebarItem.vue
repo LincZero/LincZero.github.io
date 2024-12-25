@@ -14,7 +14,7 @@
         >
           <!-- router-link代替a，spa路由切换，避免整个页面刷新 -->
           <!-- <a :href="item">{{ getText(item) }},deep: {{ deep }}, item: {{ item }}</a> -->
-          <router-link :to="getUrl(item)">{{ getText(item) }}</router-link>
+          <router-link :to="getUrl(item)" :title="getUrl(item)">{{ getText(item) }}</router-link>
         </div>
       </div>
       <!-- 文件夹 -->
@@ -25,7 +25,7 @@
           :style="'padding-inline-start:'+(props.deep_from_target*20+24)+'px'"
           @click="clickItem(item)"
         >
-          <a :title="getText(item)">{{ getText(item) }}</a>
+          <a :title="getUrl(item.prefix)">{{ getText(item) }}</a>
         </div>
         <RootSidebarItem
           v-if="item.hasOwnProperty('children') && (unfold_arr.includes(item.prefix))"
