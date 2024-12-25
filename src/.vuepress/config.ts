@@ -42,6 +42,7 @@ const userConfig: UserConfig = {
   // shouldPrefetch: false, // 是否预获取
 }
 
+// 其实不应该直接深拷贝/浅拷贝合并，特别是对于sidebar和navbar配置来说，覆盖才是对的。条件合并又会导致复杂性过高
 // 深拷贝合并两个object
 // deepMerge(userConfig, userConfig2) 代替 {...userConfig, ...userConfig2} 的语法，扩展运算符只能浅拷贝
 // function deepMerge(target, ...sources) {

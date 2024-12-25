@@ -85,7 +85,6 @@ const targetFolder = computed(()=>{                     // 指定目录名称
   return currentPathArr.value[targetDeep.value]
 })
 const targetData = ref<SidebarType[]>(rootData.value);  // 指定目录开始的数据
-const pinData = ref<SidebarType[]>([])
 
 /**
  * 组织部署的特殊处理。如果是组织 (config base != `/`)，那么rootData层次和url层次会出现不一致
@@ -216,13 +215,25 @@ function switchOldSidebar(isUseNew?: boolean) {
 }
 
 /// 固定或取消当前打开项为固定标签
+const pinData = ref<string[]>([])
+// 获取缓存
+{
+  const pinDataString = localStorage.getItem('pinnedTabs');
+  if (pinDataString) {
+    pinData.value = JSON.parse(pinDataString);
+  }
+}
+// 固定标签页变动
 function emitPinTab() {
-  const s:string = window.location.pathname + window.location.search
+  const s:string = window.location.pathname + window.location.search + window.location.hash
   if (pinData.value.includes(s)) {
     pinData.value = pinData.value.filter((v) => v !== s)
   } else {
-    pinData.value.push(window.location.pathname + window.location.search)
+    pinData.value.push(s)
   }
+  // 设置缓存
+  const pinDataString = JSON.stringify(pinData.value);
+  localStorage.setItem('pinnedTabs', pinDataString);
 }
 
 /// 面包屑激活项自动滚动 (仅初始化、手动切换deep时触发，SPA切换url时不触发)
