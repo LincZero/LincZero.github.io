@@ -88,12 +88,14 @@ const targetData = ref<SidebarType[]>(rootData.value);  // 指定目录开始的
 const pinData = ref<SidebarType[]>([])
 
 /// 组织部署的特殊处理。如果是组织 (config base != `/`)，那么rootData层次和url层次会出现不一致
-const orgName:string = useSiteData().value.base
+let orgName:string = useSiteData().value.base
 if (orgName.length > 1) { // 不是`/`
+  if (orgName.startsWith("/")) orgName = orgName.slice(1,)
+  if (orgName.endsWith("/")) orgName = orgName.slice(0,-1)
   rootData.value = [
     {
       text: orgName,
-      prefix: orgName.endsWith("/") ? orgName : orgName + "/",
+      prefix: orgName + "/",
       collapsible: true,
       children: rootData.value,
     }
