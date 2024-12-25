@@ -145,7 +145,7 @@ function onNewUrl(newDeep?: number) {
           break
         }
         if (j === tmp_arr.length-1) {                       // url和侧边栏数据不匹配
-          console.warn(`Warning: Can't find the deep ${deep} in ${currentPath.value}, reset deep: ${(deep-1)>0 ? (deep-1) : 0}`)
+          console.error(`Error: Can't find the deep ${deep} in ${currentPath.value}, reset deep: ${(deep-1)>0 ? (deep-1) : 0}`)
           targetDeep.value = (deep-1)>0 ? (deep-1) : 0
           return
         }
