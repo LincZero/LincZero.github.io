@@ -28,7 +28,7 @@ const userConfig: UserConfig = {
   pagePatterns: [
     "**/*.md", "!**/*.snippet.md",
     "**/*.json", // "**/*.pdf"
-    "!.vuepress", "!node_modules", "!**/.obsidian",
+    "!.vuepress", "!node_modules", "!**/.obsidian", "!**/.github",
   ],
 
   // ------------------ 扩展类 ------------------

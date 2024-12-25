@@ -174,12 +174,6 @@ function onNewUrl(newDeep?: number) {
     router.push({ path: route.path, query: newQuery, hash: route.hash });
   }
 }
-onMounted(() => {
-  onNewUrl()
-})
-watch(() => route.fullPath, () => {
-  onNewUrl()
-})
 const router = useRouter();
 const route = useRoute();
 const emitNewUrl = (newDeep: number) => { // 手动触发
@@ -190,6 +184,12 @@ const emitNewUrl = (newDeep: number) => { // 手动触发
   onNewUrl(newDeep)
   emitScrollBreadcrumb()
 }
+onMounted(() => {
+  onNewUrl()
+})
+watch(() => route.fullPath, () => {
+  onNewUrl()
+})
 
 /// 切换新旧侧边栏 (兼容考虑)
 function switchOldSidebar(isUseNew?: boolean) {
