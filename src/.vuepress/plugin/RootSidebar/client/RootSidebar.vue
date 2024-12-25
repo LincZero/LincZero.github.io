@@ -217,7 +217,7 @@ function switchOldSidebar(isUseNew?: boolean) {
 /// 固定或取消当前打开项为固定标签
 const pinData = ref<string[]>([])
 // 获取缓存
-{
+if (typeof window !== 'undefined') {
   const pinDataString = localStorage.getItem('pinnedTabs');
   if (pinDataString) {
     pinData.value = JSON.parse(pinDataString);
@@ -232,8 +232,10 @@ function emitPinTab() {
     pinData.value.push(s)
   }
   // 设置缓存
-  const pinDataString = JSON.stringify(pinData.value);
-  localStorage.setItem('pinnedTabs', pinDataString);
+  if (typeof window !== 'undefined') {
+    const pinDataString = JSON.stringify(pinData.value);
+    localStorage.setItem('pinnedTabs', pinDataString);
+  }
 }
 
 /// 面包屑激活项自动滚动 (仅初始化、手动切换deep时触发，SPA切换url时不触发)
