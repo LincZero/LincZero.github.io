@@ -88,6 +88,7 @@ const targetData = ref<SidebarType[]>(rootData.value);  // 指定目录开始的
 const pinData = ref<SidebarType[]>([])
 
 /// 组织部署的特殊处理。如果是组织 (config base != `/`)，那么rootData层次和url层次会出现不一致
+/// 处理方法：以url为准，修改rootData。deep也以url为准
 let orgName:string = useSiteData().value.base
 if (orgName.length > 1) { // 不是`/`
   if (orgName.startsWith("/")) orgName = orgName.slice(1,)
@@ -211,7 +212,7 @@ function switchOldSidebar(isUseNew?: boolean) {
   } else {
     el_new.style.display = 'none';
     el_old.style.display = 'block';
-    console.log("new sidebar debug:", rootData)
+    debug()
   }
 }
 
@@ -240,18 +241,22 @@ async function emitScrollBreadcrumb () {
 const Breadcrumb = ref<HTMLElement|null>(null);
 
 // 仅调试
-const isDebug = false
-if (isDebug) {
+const debug = () => {
   // test url: http://localhost:8080/MdNote_Public/Test.html?deep=1&state=s2#h2
-  console.log("debug usepagedata ---------------------------------")
+  console.log("debug start ---------------------------------------")
   console.log("p1", usePageData())              // Object，一个包含了当前页面数据的对象 {lang, path, forntmatter, ...}
   console.log("p2", usePageData().value.router) // undefined
   console.log("p3", usePageData().value.path)   // /MdNote_Public/Test.html
-  console.log("r1", useRoute().value)           // undefined
-  console.log("s1", sidebarData)                // Object, 一个纯侧边栏数据对象，[ self-childern结构 ]
-  console.log("w1", window.location)            // Location {hash, host, hostname, href, origin, pathname, port, protocol, search}
-  console.log("w2", window.location.href)       // http://localhost:8080/MdNote_Public/Test.html?state=s1&state2=s2#h2
+  console.log("route1", useRoute().value)       // 
+  console.log("route2", window.location)        // Location {hash, host, hostname, href, origin, pathname, port, protocol, search}
+  console.log("dataR", rootData)                // Object, 一个纯侧边栏数据对象，[ self-childern结构 ]
+  console.log("dataT", targetData)              // ^
+  console.log("comp2", targetPath)
+  console.log("comp4", currentPath)
+  console.log("debug end -----------------------------------------")
 }
+const isDebug = false
+if (isDebug) { debug() }
 </script>
 
 <style scoped lang="scss">
