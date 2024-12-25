@@ -5,6 +5,7 @@
 // 使用时需要注意浅拷贝问题
 
 export const userConfig2 = {
+  // base: "/MdNote_Other/", // 仅用于测试组织部署的情况
   locales: {
     "/": {
       lang: "zh-CN",

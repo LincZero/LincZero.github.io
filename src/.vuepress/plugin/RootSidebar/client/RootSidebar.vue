@@ -60,7 +60,7 @@
 
 <script setup lang="ts">
 import { sidebarData } from "@temp/theme-hope/sidebar.js"; // 在client端获取侧边栏数据
-import { usePageData } from 'vuepress/client'
+import { usePageData, useSiteData } from 'vuepress/client'
 import { useRouter, useRoute } from 'vue-router'; // 不 import {useRoute} from vuepress/client 了
 import { type ComputedRef, type Ref, computed, onMounted, ref, watch, nextTick } from 'vue';
 import RootSidebarItem from "./RootSidebarItem.vue"
@@ -86,6 +86,19 @@ const targetFolder = computed(()=>{                     // 指定目录名称
 })
 const targetData = ref<SidebarType[]>(rootData.value);  // 指定目录开始的数据
 const pinData = ref<SidebarType[]>([])
+
+/// 组织部署的特殊处理。如果是组织 (config base != `/`)，那么rootData层次和url层次会出现不一致
+const orgName:string = useSiteData().value.base
+if (orgName.length > 1) { // 不是`/`
+  rootData.value = [
+    {
+      text: orgName,
+      prefix: orgName.endsWith("/") ? orgName : orgName + "/",
+      collapsible: true,
+      children: rootData.value,
+    }
+  ]
+}
 
 /// 钩子, 与回调进行数据更新
 /// 每次切换url时被调用 (存在多个侧边栏也只调用一次)
@@ -196,6 +209,7 @@ function switchOldSidebar(isUseNew?: boolean) {
   } else {
     el_new.style.display = 'none';
     el_old.style.display = 'block';
+    console.log("new sidebar debug:", rootData)
   }
 }
 
