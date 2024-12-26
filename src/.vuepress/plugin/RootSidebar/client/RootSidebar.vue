@@ -16,14 +16,23 @@
   <div class="root-sidebar">
     <div class="root-sidebar-control">
       <div class="root-sidebar-btn">
-        <button @click="switchOldSidebar()" title="切换新旧侧边栏">Old</button>
-        <button @click="() => { emitPinTab() }"
-          title="固定或删除当前标签页">Pin</button>
         <!-- <button title="升序/降序排序">Ord</button> -->
-        <button class="left" @click="() => { emitNewUrl(targetDeep-1) }"
-          title="显示更多侧边项"><</button>
-        <button class="right" @click="() => { emitNewUrl(targetDeep+1) }"
-          title="精简更少侧边项">></button>
+        <button @click="switchOldSidebar()"
+          title="切换新旧侧边栏">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-up"><path d="m3 16 4 4 4-4"/><path d="M7 20V4"/><path d="m21 8-4-4-4 4"/><path d="M17 4v16"/></svg>
+        </button>
+        <button @click="() => { emitPinTab() }"
+          title="固定或删除当前标签页">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="26" viewBox="-1 -1 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pin"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>
+        </button>
+        <button @click="() => { emitNewUrl(targetDeep-1) }"
+          title="显示更多侧边项">
+          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="26" viewBox="5 5 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <button @click="() => { emitNewUrl(targetDeep+1) }"
+          title="精简更少侧边项">
+          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="26" viewBox="5 5 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
       </div>
       <div class="root-sidebar-breadcrumb" ref="Breadcrumb">
         <!-- TODO: 下拉框，路径下拉表示、排序、固定伪标签页 -->
@@ -299,7 +308,7 @@ button { // h:(26+4+0)+4
   padding-right: 4px;
 }
 .root-sidebar>.root-sidebar-control {
-  height: 44px; // 34+10，10容纳滚动条
+  height: 44px; // 子元素34+10，10容纳滚动条。子元素34 = (26+4)+4 = (24+2+4)+4
   display: flex;
   flex-wrap: nowrap;
 
@@ -314,9 +323,10 @@ button { // h:(26+4+0)+4
   }
   >div.root-sidebar-btn {
     >button {
-      border: solid 1px currentColor;
+      // border: solid 1px currentColor;
+      // line-height: 24px;
+      line-height: 26px;
       margin-right: 2px;
-      line-height: 24px;
       border-radius: 6px;
     }
   }
@@ -339,7 +349,7 @@ button { // h:(26+4+0)+4
   // overflow-x: auto;
 }
 
-// 颜色, 配色可以自己通过自定义变量调，不自带配色方案
+// (附加) 颜色, 配色可以自己通过自定义变量调，不自带配色方案
 .root-sidebar-breadcrumb>button {
   &[relDeep="0"] { 
     padding: 2px 2px !important; border: solid 2px var(--theme-color);
