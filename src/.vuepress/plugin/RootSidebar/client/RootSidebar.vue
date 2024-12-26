@@ -46,7 +46,7 @@
         </button>
       </div>
     </div>
-    <div class="root-sidebar-control2">
+    <div class="root-sidebar-content2">
       <!-- 固定标签, 伪标签栏  -->
       <RootSidebarItem
         :deep_from_target="0"
@@ -204,8 +204,9 @@ watch(() => route.fullPath, () => {
 function switchOldSidebar(isUseNew?: boolean) {
   const el_old: HTMLElement|null = document.querySelector("#sidebar>.vp-sidebar-links")
   const el_new: HTMLElement|null = document.querySelector("#sidebar>.root-sidebar>.root-sidebar-content")
+  const el_new2: HTMLElement|null = document.querySelector("#sidebar>.root-sidebar>.root-sidebar-content2")
   // const root-sidebar
-  if (!el_old || !el_new) { console.warn("Warning: can not find sidebar old/new element"); return }
+  if (!el_old || !el_new || !el_new2) { console.warn("Warning: can not find sidebar old/new element"); return }
 
   if (isUseNew !== undefined) {}
   else if (el_old.style.display === 'none' || el_old.style.display === '') { isUseNew = false }
@@ -214,8 +215,10 @@ function switchOldSidebar(isUseNew?: boolean) {
   if (isUseNew) {
     el_old.style.display = 'none';
     el_new.style.display = 'block';
+    el_new2.style.display = 'block';
   } else {
     el_new.style.display = 'none';
+    el_new2.style.display = 'none';
     el_old.style.display = 'block';
     debug()
   }
@@ -347,6 +350,18 @@ button { // h:(26+4+0)+4
 .root-sidebar>.root-sidebar-content {
   margin-top: 10px;
   // overflow-x: auto;
+}
+
+// (附加) 横向滚动优化。要点：不能影响到控制栏的位置 (不然不好连续按`>/<`键)，扩大可用区域
+.root-sidebar {
+  >.root-sidebar-content {
+    overflow-x: auto;
+    transform: scaleY(-1); // 让滚动条置于上方
+    padding-bottom: 10px;
+    >.sidebar-item-children {
+      transform: scaleY(-1);
+    }
+  }
 }
 
 // (附加) 颜色, 配色可以自己通过自定义变量调，不自带配色方案
