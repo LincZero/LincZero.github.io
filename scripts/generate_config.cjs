@@ -26,8 +26,8 @@
 const fs = require('fs');
 const path = require('path');
 
-// 将工作流生成的配置文件，合并到默认配置文件中
-async function generate_config() {
+// 配置处理 git版。将工作流生成文件的文件，转换为vuepress配置文件
+async function generate_config_by_git() {
   // 1. 读取配置 - 工作流生成的
   let gitInfoObj = {}
   const gitInfoPath = path.join(__dirname, '../scripts/git_config.json');
@@ -78,9 +78,9 @@ async function generate_config() {
 
   console.log('Successfully generate file.');
 }
-generate_config()
+generate_config_by_git()
 
-// 如果文件不存在，则创建并填充默认内容
+// 配置处理 user cover版。如果文件不存在，则创建并填充默认内容
 function createFileIfNotExist(filePath, content) {
   if (!fs.existsSync(filePath)) {
     fs.writeFileSync(filePath, content, 'utf8');
@@ -88,6 +88,47 @@ function createFileIfNotExist(filePath, content) {
 }
 createFileIfNotExist(path.join(__dirname, '../src/.vuepress/config_cover.js'), 'export const userConfig2 = {}')
 createFileIfNotExist(path.join(__dirname, '../src/.vuepress/theme_cover.js'), 'export const themeOptions2 = {}')
+
+// 配置处理 .obsidian版。
+function generate_config_by_obConfig() {
+  /**
+   * 1. 读取配置
+   * ob配置文件说明：
+   * .obsidian/
+   * - plugins/
+   * - snippets/
+   * - themes/
+   * - app.json               |  | 自定义设置：编辑器、文件与链接的设置项
+   * - appearance.json        | x| 自定义设置：启用(未启用不算)的css片段、主题、颜色、字体
+   * - bookmarks.json
+   * - community-plugins.json | x| 自定义设置: 启用(未启用不算)的社区插件
+   * - core-plugins.json      | x| 自定义设置: 启用(未启用不算)的核心插件
+   * - ...
+   * 
+   * 这里主要使用那些打叉的部分
+   */
+
+  let fileObj = {}
+  let filePath = path.join(__dirname, '../src/.obsidian/core-plugins.json');
+  try {
+    const fileContent = fs.readFileSync(filePath, 'utf8');
+    fileObj = JSON.parse(fileContent)
+    if (fileObj.hasOwnProperty("graph") && fileObj["graph"] == true) { console.log("ObConfig: 开启了图谱核心插件")}
+    if (fileObj.hasOwnProperty("canvas") && fileObj["canvas"] == true) { console.log("ObConfig: 开启了画布核心插件")}
+  } catch (error) {
+    console.error('Failed to read file: ', filePath , 'error: ', error);
+  }
+  filePath = path.join(__dirname, '../src/.obsidian/community-plugins.json');
+  try {
+    const fileContent = fs.readFileSync(filePath, 'utf8');
+    fileObj = JSON.parse(fileContent)
+    if (fileObj.includes("any-block")||fileObj.includes("obsidian-any-block")) { console.log("ObConfig: 开启了AnyBlock社区插件")}
+    if (fileObj.includes("node-flow")) { console.log("ObConfig: 开启了NodeFlow社区插件")}
+  } catch (error) {
+    console.error('Failed to read file: ', filePath , 'error: ', error);
+  }
+}
+generate_config_by_obConfig()
 
 /// 旧，弃用
 /// @deprecated
