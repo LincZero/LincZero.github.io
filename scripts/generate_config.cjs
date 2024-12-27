@@ -72,11 +72,10 @@ async function generate_config_by_git() {
     fs.writeFileSync(theme_git_path, theme_git_text, 'utf8');
   }
   catch (error) {
-    console.error('Failed to generate file. error: ', error);
+    console.error('Failed to generate file: .vuepress/xxx_git.js. error: ', error);
     return
   }
-
-  console.log('Successfully generate file.');
+  console.log('Successfully generate file: .vuepress/xxx_git.js.');
 }
 generate_config_by_git()
 
@@ -93,6 +92,7 @@ createFileIfNotExist(path.join(__dirname, '../src/.vuepress/theme_cover.js'), 'e
 function generate_config_by_obConfig() {
   /**
    * 1. 读取配置
+   * 
    * ob配置文件说明：
    * .obsidian/
    * - plugins/
@@ -104,10 +104,14 @@ function generate_config_by_obConfig() {
    * - community-plugins.json | x| 自定义设置: 启用(未启用不算)的社区插件
    * - core-plugins.json      | x| 自定义设置: 启用(未启用不算)的核心插件
    * - ...
-   * 
    * 这里主要使用那些打叉的部分
+   * 
+   * 除配置文件外还可以检查plugins文件夹
+   *   但这里还有一个问题：
+   *   上传仓库有时是不传 app.json 等文件的，对示例库来说是都传。
+   *   如果仓库有部分插件是必须的，还有另外一些插件只是自己用，而非必须的。
+   *   有时是通过.gitignore+反向排除，只同步特定的插件。这样可以做到部分配置的共享
    */
-
   let fileObj = {}
   let filePath = path.join(__dirname, '../src/.obsidian/core-plugins.json');
   try {
@@ -127,6 +131,7 @@ function generate_config_by_obConfig() {
   } catch (error) {
     console.error('Failed to read file: ', filePath , 'error: ', error);
   }
+  console.log('Successfully open file: .obsidian/xxx.');
 }
 generate_config_by_obConfig()
 

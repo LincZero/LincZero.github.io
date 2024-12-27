@@ -3,7 +3,7 @@
 import { App, createPage, defineUserConfig, type UserConfig } from "vuepress"; // vuepress
 
 import theme from "./theme.ts";                               // hope主题 - 默认部分
-import alias from "./config_alias.ts";                        // hope主题 - 别名扩展
+// import alias from "./config_alias.ts";                     // hope主题 - 别名扩展
 import extendsMarkdown from "./config_extendsMarkdown.ts";    // hope主题 - mdit扩展
 import plugins from "./config_plugins.ts";                    // hope主题 - 插件扩展
 

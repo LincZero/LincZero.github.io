@@ -63,16 +63,6 @@ jobs:
           echo "}" >> git_config.json
           echo "::set-output name=REPO_NAME::$REPO_NAME"
 
-      # [!code] 根据实际情况修改
-      - name: 配置 - 设置
-        working-directory: ./
-        run: |
-          # sed -i 's/base: \"\/\"/base: \"\/${{steps.config1.outputs.REPO_NAME}}\/\"/g' ./src/.vuepress/config.ts
-          cat ./scripts/git_config.json
-          rm -f ./src/.vuepress/config_cover.js
-          rm -f ./src/.vuepress/theme_cover.js
-          pnpm run gen-config
-
       # 文档的克隆、构建、部署。注意 `clone --depth 1` 只拉最近一次提交，减少时间
       - name: 文档 - 文档库克隆
         working-directory: ./src/
@@ -81,6 +71,16 @@ jobs:
           rsync -a temp_repo/ .
           rm -rf temp_repo
           # git clone --depth 1 https://github.com/${GITHUB_REPOSITORY}.git # 如果有多个clone项则替换成这个，避免冲突
+
+      # [!code] 根据实际情况修改 (需要在仓库配置写入以及和文档仓库clone这两个步骤的后面)
+      - name: 配置 - 设置
+        working-directory: ./
+        run: |
+          # sed -i 's/base: \"\/\"/base: \"\/${{steps.config1.outputs.REPO_NAME}}\/\"/g' ./src/.vuepress/config.ts
+          cat ./scripts/git_config.json
+          rm -f ./src/.vuepress/config_cover.js
+          rm -f ./src/.vuepress/theme_cover.js
+          pnpm run gen-config
 
       - name: 文档 - 构建
         env:
