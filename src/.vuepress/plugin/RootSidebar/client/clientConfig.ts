@@ -3,6 +3,7 @@ import { nextTick, watch } from 'vue'
 
 import SlotDemo from "./SlotDemo.vue"
 import NewLayout from "./NewLayout.vue"
+import {Layout} from "vuepress-theme-hope/client/export.js";
 
 export default defineClientConfig({
   setup() { // ({app})
@@ -12,6 +13,7 @@ export default defineClientConfig({
     // app.component("RootSidebar", RootSidebar);
   },
   layouts: {
+    OldLayout: Layout, // 允许手动使用回旧布局
     Layout: NewLayout,
     // Layout: RootSidebar,
   },

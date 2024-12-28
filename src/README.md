@@ -1,7 +1,9 @@
 ---
+# 声明这是主页
+layout: OldLayout
+home: true
 # 主导航
 containerClass: home
-home: true
 icon: home
 title: Home
 bgImage: /svg_bg/07.svg
