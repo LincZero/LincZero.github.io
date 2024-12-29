@@ -119,7 +119,7 @@ watch(
 );
 
 const handleNodeClick = (path: string) => {
-  router.push(withBase(path));
+  router.push(`/${path}`);
   showGlobalGraph.value = false;
 };
 </script>

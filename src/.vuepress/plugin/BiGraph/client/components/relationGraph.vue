@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import * as d3 from "d3";
-import {computed, onMounted, onUnmounted, ref, watch} from "vue";
-import type {CanvasSize, Link, MapNodeLink, MousePosition, Node,} from "../../types";
+import { computed, onMounted, onUnmounted, ref, watch, nextTick } from "vue";
+import type {
+  CanvasSize,
+  Link,
+  MapNodeLink,
+  MousePosition,
+  Node,
+} from "../../types";
 
 // 定义 emit 事件
 const emit = defineEmits<{
@@ -15,9 +21,9 @@ let simulation: d3.Simulation<Node, Link> | null = null;
 const restartSimulation = (): void => {
   if (simulation) {
     simulation
-        .alpha(FORCE_CONFIG.simulation.restart.alpha)
-        .alphaTarget(FORCE_CONFIG.simulation.restart.alphaTarget)
-        .restart();
+      .alpha(FORCE_CONFIG.simulation.restart.alpha)
+      .alphaTarget(FORCE_CONFIG.simulation.restart.alphaTarget)
+      .restart();
   }
 };
 
@@ -40,19 +46,19 @@ const CANVAS_CONFIG = {
 // 力导向图配置
 const FORCE_CONFIG = {
   link: d3
-      .forceLink<Node, Link>()
-      .id((d: Node) => d.id)
-      .distance(100) // 调整连接线的距离
-      .strength(0.8), // 调整连接线的强度
+    .forceLink<Node, Link>()
+    .id((d: Node) => d.id)
+    .distance(100) // 调整连接线的距离
+    .strength(0.8), // 调整连接线的强度
   charge: d3
-      .forceManyBody<Node>()
-      .strength((d: Node) => -100) // 调整电荷力，减少排斥力
-      .distanceMin(50) // 最小距离
-      .distanceMax(300), // 最大距离
+    .forceManyBody<Node>()
+    .strength((d: Node) => -100) // 调整电荷力，减少排斥力
+    .distanceMin(50) // 最小距离
+    .distanceMax(300), // 最大距离
   collision: d3
-      .forceCollide<Node>()
-      .radius(30) // 调整碰撞半径
-      .strength(0.7), // 调整碰撞力的强度
+    .forceCollide<Node>()
+    .radius(30) // 调整碰撞半径
+    .strength(0.7), // 调整碰撞力的强度
   x: d3.forceX<Node>().strength((d: Node) => (d.isIsolated ? 0.02 : 0.1)), // 减小孤立节点的X轴中心力
   y: d3.forceY<Node>().strength((d: Node) => (d.isIsolated ? 0.02 : 0.1)), // 减小孤立节点的Y轴中心力
   simulation: {
@@ -115,6 +121,67 @@ const props = defineProps<{
   canvasHeight: number;
 }>();
 
+// 将map_data改为响应式数据
+const map_data = ref<MapNodeLink>({
+  nodes: [],
+  links: [],
+});
+
+// 添加初始化数据的函数
+function initializeMapData(data: MapNodeLink, currentPath?: string): void {
+  // 深拷贝数据以避免直接修改props
+  const newNodes = JSON.parse(JSON.stringify(data.nodes));
+  const newLinks = JSON.parse(JSON.stringify(data.links));
+
+  // 标记孤立节点并设置初始位置
+  newNodes.forEach((node) => {
+    // 重置节点状态
+    node.isCurrent = false;
+    node.fx = null;
+    node.fy = null;
+
+    node.isIsolated = !newLinks.some(
+      (link) =>
+        (typeof link.source === "string"
+          ? link.source === node.id
+          : link.source.id === node.id) ||
+        (typeof link.target === "string"
+          ? link.target === node.id
+          : link.target.id === node.id)
+    );
+
+    // 设置节点的初始位置在画布中心
+    node.x = canvasSize.value.width / 2;
+    node.y = canvasSize.value.height / 2;
+  });
+
+  // 设置当前节点
+  if (currentPath) {
+    const currentNode = newNodes.find((node) =>
+      isPathMatch(currentPath, node.value.path)
+    );
+    if (currentNode) {
+      currentNode.isCurrent = true;
+      // 将当前节点固定在画布中心
+      currentNode.fx = canvasSize.value.width / 2;
+      currentNode.fy = canvasSize.value.height / 2;
+      // 1秒后释放固定位置
+      setTimeout(() => {
+        if (currentNode) {
+          currentNode.fx = null;
+          currentNode.fy = null;
+        }
+      }, 1000);
+    }
+  }
+
+  // 更新响应式数据
+  map_data.value = {
+    nodes: newNodes,
+    links: newLinks,
+  };
+}
+
 const canvasSize = computed<CanvasSize>(() => ({
   width: props.canvasWidth,
   height: props.canvasHeight,
@@ -126,7 +193,6 @@ const mouseDownPosition = ref<MousePosition>({
   x: 0,
   y: 0,
 });
-const map_data = props.data;
 
 // 添加颜色存储
 const themeColors = ref({
@@ -172,6 +238,9 @@ onMounted(() => {
   // 初始化颜色
   initThemeColors();
 
+  // 初始化数据
+  initializeMapData(props.data, props.currentPath);
+
   // 设置 MutationObserver 监听样式变化
   const styleObserver = new MutationObserver(() => {
     const root = getComputedStyle(document.documentElement);
@@ -179,8 +248,8 @@ onMounted(() => {
     // 只检查实际使用的CSS变量
     if (themeColors.value.cssVariableName.accent) {
       const newAccent = root
-          .getPropertyValue(themeColors.value.cssVariableName.accent)
-          .trim();
+        .getPropertyValue(themeColors.value.cssVariableName.accent)
+        .trim();
       if (newAccent !== themeColors.value.accent) {
         shouldUpdate = true;
       }
@@ -188,8 +257,8 @@ onMounted(() => {
 
     if (themeColors.value.cssVariableName.text) {
       const newText = root
-          .getPropertyValue(themeColors.value.cssVariableName.text)
-          .trim();
+        .getPropertyValue(themeColors.value.cssVariableName.text)
+        .trim();
       if (newText !== themeColors.value.text) {
         shouldUpdate = true;
       }
@@ -214,7 +283,7 @@ onMounted(() => {
     styleObserver.disconnect();
   });
 
-  if (!map_data) {
+  if (!map_data.value) {
     return;
   }
   // 初始化变量
@@ -229,14 +298,14 @@ onMounted(() => {
   // 事件监听器设置
   function setupEventListeners(): void {
     const zoom = d3
-        .zoom<HTMLCanvasElement, unknown>()
-        .scaleExtent(CANVAS_CONFIG.zoomExtent as [number, number])
-        .filter((event) => filterZoomEvent(event))
-        .touchable(true)
-        .on("zoom", (event: d3.D3ZoomEvent<HTMLCanvasElement, unknown>) => {
-          transform = event.transform;
-          ticked();
-        });
+      .zoom<HTMLCanvasElement, unknown>()
+      .scaleExtent(CANVAS_CONFIG.zoomExtent as [number, number])
+      .filter((event) => filterZoomEvent(event))
+      .touchable(true)
+      .on("zoom", (event: d3.D3ZoomEvent<HTMLCanvasElement, unknown>) => {
+        transform = event.transform;
+        ticked();
+      });
 
     const touchOptions: AddEventListenerOptions = {
       passive: true,
@@ -244,8 +313,8 @@ onMounted(() => {
     };
 
     d3.select<HTMLCanvasElement, unknown>(canvas)
-        .on("touchstart touchmove", null)
-        .call(zoom);
+      .on("touchstart touchmove", null)
+      .call(zoom);
 
     canvas.addEventListener("mousedown", onMouseDown);
     canvas.addEventListener("touchstart", onMouseDown, touchOptions);
@@ -293,25 +362,6 @@ onMounted(() => {
   // 在组件卸载时调用清理函数
   onUnmounted(cleanup);
 
-  // 找到当前节点
-  let currentNode: Node | undefined;
-  if (props.currentPath) {
-    currentNode = map_data.nodes.find((node) =>
-        isPathMatch(props.currentPath!, node.value.path)
-    );
-    if (currentNode) {
-      currentNode.isCurrent = true;
-      currentNode.fx = canvasSize.value.width / 2;
-      currentNode.fy = canvasSize.value.height / 2;
-      setTimeout(() => {
-        if (currentNode) {
-          currentNode.fx = null;
-          currentNode.fy = null;
-        }
-      }, 1000);
-    }
-  }
-
   // 初始化力导向图
   simulation = initializeSimulation();
   // 设置事件监听
@@ -320,15 +370,15 @@ onMounted(() => {
   // 力导图初始化
   function initializeSimulation(): d3.Simulation<Node, Link> {
     // 标记孤立节点
-    map_data.nodes.forEach((node) => {
-      node.isIsolated = !map_data.links.some(
-          (link) =>
-              (typeof link.source === "string"
-                  ? link.source === node.id
-                  : link.source === node) ||
-              (typeof link.target === "string"
-                  ? link.target === node.id
-                  : link.target === node)
+    map_data.value.nodes.forEach((node) => {
+      node.isIsolated = !map_data.value.links.some(
+        (link) =>
+          (typeof link.source === "string"
+            ? link.source === node.id
+            : link.source === node) ||
+          (typeof link.target === "string"
+            ? link.target === node.id
+            : link.target === node)
       );
 
       // 设置节点的初始位置在画布中心
@@ -338,33 +388,33 @@ onMounted(() => {
 
     // 创建一个 center force
     const centerForce = d3
-        .forceCenter<Node>(
-            canvasSize.value.width / 2,
-            canvasSize.value.height / 2
-        )
-        .strength(0.002);
+      .forceCenter<Node>(
+        canvasSize.value.width / 2,
+        canvasSize.value.height / 2
+      )
+      .strength(0.002);
 
     window.simulation = d3
-        .forceSimulation<Node>(map_data.nodes)
-        .force("link", FORCE_CONFIG.link.links(map_data.links))
-        .force("charge", FORCE_CONFIG.charge)
-        .force("collision", FORCE_CONFIG.collision)
-        .force("center", centerForce)
-        .force("x", FORCE_CONFIG.x.x(canvasSize.value.width / 2))
-        .force("y", FORCE_CONFIG.y.y(canvasSize.value.height / 2))
-        .alphaDecay(FORCE_CONFIG.simulation.alphaDecay)
-        .alphaMin(FORCE_CONFIG.simulation.alphaMin)
-        .velocityDecay(FORCE_CONFIG.simulation.velocityDecay)
-        .on("tick", () => {
-          ticked();
-        });
+      .forceSimulation<Node>(map_data.value.nodes)
+      .force("link", FORCE_CONFIG.link.links(map_data.value.links))
+      .force("charge", FORCE_CONFIG.charge)
+      .force("collision", FORCE_CONFIG.collision)
+      .force("center", centerForce)
+      .force("x", FORCE_CONFIG.x.x(canvasSize.value.width / 2))
+      .force("y", FORCE_CONFIG.y.y(canvasSize.value.height / 2))
+      .alphaDecay(FORCE_CONFIG.simulation.alphaDecay)
+      .alphaMin(FORCE_CONFIG.simulation.alphaMin)
+      .velocityDecay(FORCE_CONFIG.simulation.velocityDecay)
+      .on("tick", () => {
+        ticked();
+      });
 
     return window.simulation;
   }
 
   // 事件处理数
   function filterZoomEvent(
-      event: d3.D3ZoomEvent<HTMLCanvasElement, unknown>
+    event: d3.D3ZoomEvent<HTMLCanvasElement, unknown>
   ): boolean {
     // 获取原始事件
     const sourceEvent = event.sourceEvent || event;
@@ -392,8 +442,8 @@ onMounted(() => {
     }
 
     const point = (event as TouchEvent).touches
-        ? (event as TouchEvent).touches[0]
-        : (event as MouseEvent);
+      ? (event as TouchEvent).touches[0]
+      : (event as MouseEvent);
     const [x, y] = transform.invert(d3.pointer(point, canvas));
     draggingNode = simulation.find(x, y, CANVAS_CONFIG.nodeClickRadius);
 
@@ -413,8 +463,8 @@ onMounted(() => {
       draggingNode.fx = x;
       draggingNode.fy = y;
       simulation
-          .alphaTarget(FORCE_CONFIG.simulation.restart.alphaTarget)
-          .restart();
+        .alphaTarget(FORCE_CONFIG.simulation.restart.alphaTarget)
+        .restart();
 
       const touchOptions: AddEventListenerOptions = {
         passive: false,
@@ -438,7 +488,7 @@ onMounted(() => {
       const point = event.touches ? event.touches[0] : event;
       // 计算移动距离
       const moveDistance = Math.sqrt(
-          Math.pow(point.clientX - mouseDownPosition.value.x, 2) +
+        Math.pow(point.clientX - mouseDownPosition.value.x, 2) +
           Math.pow(point.clientY - mouseDownPosition.value.y, 2)
       );
 
@@ -470,8 +520,8 @@ onMounted(() => {
       hoveredNode = null;
       draggingNode = null;
       simulation
-          .alphaTarget(FORCE_CONFIG.simulation.restart.dragEndAlphaTarget)
-          .alpha(FORCE_CONFIG.simulation.restart.dragEndAlpha);
+        .alphaTarget(FORCE_CONFIG.simulation.restart.dragEndAlphaTarget)
+        .alpha(FORCE_CONFIG.simulation.restart.dragEndAlpha);
 
       // 根据事件类型移除对应的事件监听器
       if (event.type === "touchend") {
@@ -497,18 +547,18 @@ onMounted(() => {
     // 返回限在边界内的坐标
     return {
       x: Math.max(
-          bounds.left + CANVAS_CONFIG.nodePadding,
-          Math.min(bounds.right - CANVAS_CONFIG.nodePadding, x)
+        bounds.left + CANVAS_CONFIG.nodePadding,
+        Math.min(bounds.right - CANVAS_CONFIG.nodePadding, x)
       ),
       y: Math.max(
-          bounds.top + CANVAS_CONFIG.nodePadding,
-          Math.min(bounds.bottom - CANVAS_CONFIG.nodePadding, y)
+        bounds.top + CANVAS_CONFIG.nodePadding,
+        Math.min(bounds.bottom - CANVAS_CONFIG.nodePadding, y)
       ),
     };
   }
 
   // 更新拖拽节点的位置
-  function updateDraggingNodePosition({x, y}) {
+  function updateDraggingNodePosition({ x, y }) {
     draggingNode.x = x;
     draggingNode.y = y;
     draggingNode.fx = x;
@@ -547,7 +597,7 @@ onMounted(() => {
 
   // 检查鼠标是否在节点上
   function isMouseOverNode(x, y) {
-    return map_data.nodes.some((node) => {
+    return map_data.value.nodes.some((node) => {
       const dx = node.x - x;
       const dy = node.y - y;
       return Math.sqrt(dx * dx + dy * dy) < CANVAS_CONFIG.nodeClickRadius;
@@ -562,7 +612,7 @@ onMounted(() => {
     // 计算点击持续时间和移动距离
     const clickDuration = Date.now() - mouseDownTime.value;
     const moveDistance = Math.sqrt(
-        Math.pow(point.clientX - mouseDownPosition.value.x, 2) +
+      Math.pow(point.clientX - mouseDownPosition.value.x, 2) +
         Math.pow(point.clientY - mouseDownPosition.value.y, 2)
     );
 
@@ -590,8 +640,8 @@ onMounted(() => {
     }
 
     const point = (event as TouchEvent).touches
-        ? (event as TouchEvent).touches[0]
-        : (event as MouseEvent);
+      ? (event as TouchEvent).touches[0]
+      : (event as MouseEvent);
     const rect = canvas.getBoundingClientRect();
     const x = (point.clientX - rect.left - transform.x) / transform.k;
     const y = (point.clientY - rect.top - transform.y) / transform.k;
@@ -612,23 +662,23 @@ onMounted(() => {
 
   // 修改 drawLinks 函数
   function drawLinks(): void {
-    const {accent} = themeColors.value;
+    const { accent } = themeColors.value;
 
-    map_data.links.forEach((link) => {
+    map_data.value.links.forEach((link) => {
       context.beginPath();
       drawLink(link);
 
       if (
-          hoveredNode &&
-          (link.source === hoveredNode || link.target === hoveredNode)
+        hoveredNode &&
+        (link.source === hoveredNode || link.target === hoveredNode)
       ) {
         context.strokeStyle = accent;
         context.globalAlpha = STYLE_CONFIG.link.highlightOpacity;
       } else {
         context.strokeStyle = STYLE_CONFIG.link.color;
         context.globalAlpha = hoveredNode
-            ? STYLE_CONFIG.link.normalOpacity
-            : STYLE_CONFIG.link.highlightOpacity;
+          ? STYLE_CONFIG.link.normalOpacity
+          : STYLE_CONFIG.link.highlightOpacity;
       }
 
       context.stroke();
@@ -638,12 +688,12 @@ onMounted(() => {
 
   // 修改 drawNodes 函数
   function drawNodes(): void {
-    const {accent, text} = themeColors.value;
+    const { accent, text } = themeColors.value;
 
     // 获与悬停点相连的点
     const connectedNodes = new Set<Node>();
     if (hoveredNode) {
-      map_data.links.forEach((link) => {
+      map_data.value.links.forEach((link) => {
         if (link.source === hoveredNode) {
           connectedNodes.add(link.target as Node);
         }
@@ -655,15 +705,15 @@ onMounted(() => {
 
     // 先绘制所有普通节点（包括孤立节点）
     context.beginPath();
-    map_data.nodes
-        .filter((d) => !d.isCurrent && d !== hoveredNode)
-        .forEach((d) => {
-          drawNode(d, CANVAS_CONFIG.nodeRadius);
-        });
+    map_data.value.nodes
+      .filter((d) => !d.isCurrent && d !== hoveredNode)
+      .forEach((d) => {
+        drawNode(d, CANVAS_CONFIG.nodeRadius);
+      });
     context.fillStyle = text;
     context.globalAlpha = hoveredNode
-        ? STYLE_CONFIG.node.normalOpacity
-        : STYLE_CONFIG.node.highlightOpacity;
+      ? STYLE_CONFIG.node.normalOpacity
+      : STYLE_CONFIG.node.highlightOpacity;
     context.fill();
 
     // 如果有悬停节点，绘制与其相连的节点
@@ -689,22 +739,22 @@ onMounted(() => {
     }
 
     // 绘制当前节点
-    const currentNode = map_data.nodes.find((d) => d.isCurrent);
+    const currentNode = map_data.value.nodes.find((d) => d.isCurrent);
     if (currentNode) {
       context.beginPath();
       drawNode(
-          currentNode,
-          currentNode === hoveredNode
-              ? CANVAS_CONFIG.hoverNodeRadius
-              : CANVAS_CONFIG.nodeRadius
+        currentNode,
+        currentNode === hoveredNode
+          ? CANVAS_CONFIG.hoverNodeRadius
+          : CANVAS_CONFIG.nodeRadius
       );
       context.fillStyle = accent;
       context.globalAlpha =
-          hoveredNode &&
-          currentNode !== hoveredNode &&
-          !connectedNodes.has(currentNode)
-              ? STYLE_CONFIG.node.normalOpacity
-              : STYLE_CONFIG.node.highlightOpacity;
+        hoveredNode &&
+        currentNode !== hoveredNode &&
+        !connectedNodes.has(currentNode)
+          ? STYLE_CONFIG.node.normalOpacity
+          : STYLE_CONFIG.node.highlightOpacity;
       context.fill();
     }
 
@@ -715,12 +765,12 @@ onMounted(() => {
   // 修改 drawLabels 函数
   function drawLabels(): void {
     context.font = STYLE_CONFIG.text.font;
-    const {text} = themeColors.value;
+    const { text } = themeColors.value;
 
     // 获取与悬停节点相连的节点集合
     const connectedNodes = new Set<Node>();
     if (hoveredNode) {
-      map_data.links.forEach((link) => {
+      map_data.value.links.forEach((link) => {
         if (link.source === hoveredNode) {
           connectedNodes.add(link.target as Node);
         }
@@ -730,16 +780,16 @@ onMounted(() => {
       });
     }
 
-    map_data.nodes.forEach((node) => {
+    map_data.value.nodes.forEach((node) => {
       let shouldDrawText = false;
       let opacity = 1;
 
       if (transform.k > STYLE_CONFIG.text.minScale) {
         shouldDrawText = true;
         opacity = Math.min(
-            (transform.k - STYLE_CONFIG.text.minScale) /
+          (transform.k - STYLE_CONFIG.text.minScale) /
             (STYLE_CONFIG.text.maxScale - STYLE_CONFIG.text.minScale),
-            1
+          1
         );
 
         // 如果有悬停节点，调整透明度
@@ -756,14 +806,31 @@ onMounted(() => {
         context.fillStyle = text;
         context.globalAlpha = opacity;
         context.fillText(
-            node.value.title,
-            node.x - textWidth / 2,
-            node.y + STYLE_CONFIG.text.offset
+          node.value.title,
+          node.x - textWidth / 2,
+          node.y + STYLE_CONFIG.text.offset
         );
         context.globalAlpha = 1; // 恢复默认透明度
       }
     });
   }
+
+  // 模拟一次拖拽过程
+  nextTick(() => {
+    if (simulation) {
+      // 模拟拖拽开始
+      simulation
+        .alphaTarget(FORCE_CONFIG.simulation.restart.alphaTarget)
+        .restart();
+
+      // 延迟一小段时间后模拟拖拽结束
+      setTimeout(() => {
+        simulation
+          .alphaTarget(FORCE_CONFIG.simulation.restart.dragEndAlphaTarget)
+          .alpha(FORCE_CONFIG.simulation.restart.dragEndAlpha);
+      }, 100); // 100ms 后执行拖拽结束
+    }
+  });
 });
 declare global {
   // @ts-ignore
@@ -772,24 +839,24 @@ declare global {
   }
 }
 watch(
-    () => canvasSize.value,
-    (): void => {
-      if (window.simulation) {
-        const centerForce = d3
-            .forceCenter<Node>(
-                canvasSize.value.width / 2,
-                canvasSize.value.height / 2
-            )
-            .strength(0.002);
-        window.simulation
-            .force("center", centerForce)
-            .force("x", FORCE_CONFIG.x.x(canvasSize.value.width / 2))
-            .force("y", FORCE_CONFIG.y.y(canvasSize.value.height / 2));
-        window.simulation
-            .alpha(FORCE_CONFIG.simulation.restart.watchAlpha)
-            .restart();
-      }
+  () => canvasSize.value,
+  (): void => {
+    if (window.simulation) {
+      const centerForce = d3
+        .forceCenter<Node>(
+          canvasSize.value.width / 2,
+          canvasSize.value.height / 2
+        )
+        .strength(0.002);
+      window.simulation
+        .force("center", centerForce)
+        .force("x", FORCE_CONFIG.x.x(canvasSize.value.width / 2))
+        .force("y", FORCE_CONFIG.y.y(canvasSize.value.height / 2));
+      window.simulation
+        .alpha(FORCE_CONFIG.simulation.restart.watchAlpha)
+        .restart();
     }
+  }
 );
 
 // 添加组件卸载时的清理
@@ -799,28 +866,32 @@ onUnmounted((): void => {
   }
 });
 
-// 添加 watch 监听 data 变化
+// 合并 data 和 currentPath 的监听
 watch(
-    () => props.data,
-    (newData) => {
-      if (!newData || !simulation) return;
+  () => [props.data, props.currentPath],
+  ([newData, newPath]: [MapNodeLink, string | undefined]) => {
+    if (!newData || !simulation) return;
 
-      // 更新节点和连接
-      simulation
-          .nodes(newData.nodes)
-          .force("link", FORCE_CONFIG.link.links(newData.links));
-      // 重启模拟
-      simulation.alpha(FORCE_CONFIG.simulation.restart.dataChangeAlpha).restart();
-    }
+    // 初始化新数据
+    initializeMapData(newData, newPath);
+
+    // 更新模拟器的节点和连接
+    simulation
+      .nodes(map_data.value.nodes)
+      .force("link", FORCE_CONFIG.link.links(map_data.value.links));
+
+    // 重启模拟
+    simulation.alpha(FORCE_CONFIG.simulation.restart.dataChangeAlpha).restart();
+  }
 );
 </script>
 
 <template>
   <canvas
-      ref="canvasRef"
-      :width="canvasSize.width"
-      :height="canvasSize.height"
-      :style="{
+    ref="canvasRef"
+    :width="canvasSize.width"
+    :height="canvasSize.height"
+    :style="{
       width: canvasSize.width + 'px',
       height: canvasSize.height + 'px',
     }"

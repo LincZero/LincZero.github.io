@@ -93,7 +93,7 @@ function generate_config_by_obConfig() {
   /**
    * 1. 读取配置
    * 
-   * ob配置文件说明：
+   * ob配置文件说明：(这里主要使用那些打叉的部分)
    * .obsidian/
    * - plugins/
    * - snippets/
@@ -104,13 +104,12 @@ function generate_config_by_obConfig() {
    * - community-plugins.json | x| 自定义设置: 启用(未启用不算)的社区插件
    * - core-plugins.json      | x| 自定义设置: 启用(未启用不算)的核心插件
    * - ...
-   * 这里主要使用那些打叉的部分
    * 
    * 除配置文件外还可以检查plugins文件夹
-   *   但这里还有一个问题：
    *   上传仓库有时是不传 app.json 等文件的，对示例库来说是都传。
    *   如果仓库有部分插件是必须的，还有另外一些插件只是自己用，而非必须的。
    *   有时是通过.gitignore+反向排除，只同步特定的插件。这样可以做到部分配置的共享
+   *   (需要注意：这种方式只能判断社区插件，无法判断核心插件，也无法判断插件是否开启 (但一般选择同步插件而没有排除，应该都是要用的))
    */
   let fileObj = {}
   let filePath = path.join(__dirname, '../src/.obsidian/core-plugins.json');

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {computed, nextTick, onMounted, onUnmounted, ref, watch} from "vue";
-import {usePageData, useRouter, withBase} from "vuepress/client";
+import {usePageData, useRouter} from "vuepress/client";
 import RelationGraph from "./relationGraph.vue";
 import type {CanvasSize, MapNodeLink} from "../../types";
 import {showGlobalGraph} from "../useGlobalGraph.js";
@@ -12,8 +12,10 @@ declare const __RELATIONAL_GRAPH_MAX_WIDTH: number;
 declare const __RELATIONAL_GRAPH_ENABLE_GLOBAL_GRAPH: boolean;
 // 基础数据设置
 const data = usePageData();
-// @ts-ignore
-const map_data = data.value?.bioChainData?.localMap as MapNodeLink | undefined;
+const map_data = computed(() => {
+  const bioChainData = (data.value as any)?.bioChainData;
+  return bioChainData?.localMap as MapNodeLink | undefined;
+});
 const router = useRouter();
 const graphRef = ref<InstanceType<typeof RelationGraph> | null>(null);
 const fullscreenGraphRef = ref<InstanceType<typeof RelationGraph> | null>(null);
@@ -32,12 +34,12 @@ const options = computed(() => {
 
 const shouldFoldEmptyGraph = computed(() => {
   if (!options.value.foldEmptyGraph) return true;
-  return map_data?.nodes.length > 1;
+  return map_data.value?.nodes.length > 1;
 });
 
 // 处理节点点击事件
 const handleNodeClick = (path: string) => {
-  router.push(withBase(path));
+  router.push(`/${path}`);
 };
 
 const containerRef = ref<HTMLElement | null>(null);
