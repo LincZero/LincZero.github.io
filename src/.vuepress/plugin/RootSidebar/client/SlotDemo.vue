@@ -15,7 +15,6 @@ import FadeSlideY from "vuepress-theme-hope/client/components/transitions/FadeSl
       <NormalPage>
         <template #contentBefore>
           <div class="slot-demo-block">contentBefore Slot</div>
-          123456
         </template>
 
         <template #contentAfter>

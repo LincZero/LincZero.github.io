@@ -178,10 +178,11 @@ function onNewUrl(newDeep?: number) {
   })();
 
   // 确保deep信息始终在url上。当deep为最大深度时(默认deep), 无需显示, 保证url的简洁
-  if (targetDeep.value != currentPathArr.value.length-1) {
-    const newQuery = { ...route.query, deep: targetDeep.value };
-    router.push({ path: route.path, query: newQuery, hash: route.hash });
-  }
+  // TODO: 有bug，暂时注释，可能让回退功能失效
+  // if (targetDeep.value != currentPathArr.value.length-1) {
+  //   const newQuery = { ...route.query, deep: targetDeep.value };
+  //   router.push({ path: route.path, query: newQuery, hash: route.hash });
+  // }
 }
 const router = useRouter();
 const route = useRoute();
