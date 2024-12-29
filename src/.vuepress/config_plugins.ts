@@ -3,6 +3,7 @@ import vueflowPlugin from "./plugin/VueFlowPlugin"
 import exFormat from "./plugin/ExFormat/node"
 import rootSidebar from "./plugin/RootSidebar/node"
 import relational_graph from "./plugin/BiGraph/node"
+import myLayout from "./plugin/MyLayout/node" // 非通用的自定义布局，必须最后加载，便于覆盖其他插件的自定义布局行为
 type PluginConfig = any;
 
 const plugins: PluginConfig = [
@@ -19,6 +20,7 @@ const plugins: PluginConfig = [
     }
   }),
   rootSidebar,
+  myLayout, // 非通用的自定义布局，必须最后加载，便于覆盖其他插件的自定义布局行为
 ]
 
 export default plugins
