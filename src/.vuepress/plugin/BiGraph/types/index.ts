@@ -29,6 +29,8 @@ export interface Node {
     isIsolated?: boolean;
     isCurrent?: boolean;
     isVirtual?: boolean;
+    linkCount?: number;
+    color?: string;
 }
 
 export interface NodeValue {

@@ -447,13 +447,13 @@ watch(isLocalGraphFullScreen, (value) => {
 .relationship-map-fullscreen__container {
   position: fixed;
   z-index: 1001;
-  top: 10%;
-  left: 10%;
+  top: calc(0px + 60px);
+  left: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 80%;
-  height: 80%;
+  width: calc(100% - 40px);
+  height: calc(100% - 80px);
   border-radius: 8px;
   background-color: var(--vp-c-bg);
 }
