@@ -19,7 +19,7 @@ const plugins: PluginConfig = [
       const title_arr = (page.filePathRelative as string).split('/')
       let title = title_arr.pop()?.replace(/\.md$/, '')
       if (!title) return "undefined"
-      if (title == "README" && title_arr.length>1) { title = title_arr[-2] + "/" }
+      if (title == "README" && title_arr.length>1) { title = title_arr[title_arr.length-2] + "/" }
       return title
     }
   }),
