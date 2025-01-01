@@ -16,7 +16,11 @@ const plugins: PluginConfig = [
     graphMaxWidth: 300,
     graphHeight: 300,
     titleGetter: (page: any) => {
-      return (page.filePathRelative as string).split('/').pop()?.replace(/\.md$/, '') ?? "undefined"
+      const title_arr = (page.filePathRelative as string).split('/')
+      let title = title_arr.pop()?.replace(/\.md$/, '')
+      if (!title) return "undefined"
+      if (title == "README" && title_arr.length>1) { title = title_arr[-2] + "/" }
+      return title
     }
   }),
   rootSidebar,

@@ -40,13 +40,7 @@
 
 如果使用了自定义布局，会产生冲突（后加载的插件的自定义布局会覆盖前加载的插件的自定义布局），所以可能需要另一个不使用自定义布局的插件的使用方式
 
-(3.1) 将 `./client/config.ts` 的自定义布局行为注释掉
-
-```ts
-layouts: {
-  // Layout,
-},
-```
+(3.1) 确保BiGraph插件在你的自定义布局插件之前被加载，这样后加载的自定义布局会覆盖该插件的自定义布局
 
 (3.2) 在你自己的自定义布局中使用插件中的组件
 
@@ -81,4 +75,37 @@ import LocalRelationshipMap from "../../BiGraph/client/components/localRelations
     </template>
   </CommonWrapper>
 </template>
+```
+
+## FAQ (常见问题)
+
+### 双链的识别范围，为什么我的本地链接没有被识别？
+
+正常的 `[xxx](xxx.md)` 语法，以及借助其他插件实现的双链 `[[xxx]]` 转换来的连接基本都能识别。如果转换后的链接的pathname部分 (排除query和hash字段) 是以 `.html` 结尾，那么应该都能识别
+
+但是有一种写法不行：如果转换后的链接的pathname部分不以 `.html` 结尾，哪怕指向页面，无法被vuepress识别。
+例如md链接的写法 `[aaa](bbb)` 时，如果bbb不加 `.md` 扩展名，在大多数md软件是正常的，在vuepress中也能正常转化为能被跳转的链接，但无法被该插件识别。
+
+临时提供解决方案：可以使用markdown-it插件检查这种链接（如果你想，也可以顺便进行转化。以下代码示例仅进行检查）
+
+```js
+// only check，[filename](./filename) -> [filename](./filename.md)
+// 使用：markdown-it扩展里加上：md.use(selector_mdLink)
+function selector_mdLink(md: MarkdownIt, options?: Partial<Options>): void {
+  md.inline.ruler.before('link', 'BiGraphLink', function (state, silent) {
+    // 匹配本地链接
+    let text: string
+    const pos = state.pos                 // 这行字符的初始位置
+    const max = state.posMax              // 这行字符的结束位置
+    text = state.src.substring(pos, max)  // 这一行的内容
+
+    // 非本地md链接 (`[...]((.|/)...)`)
+    if (!/\!?\[(.*?)\]\((\.|\/)(.*?)\)/.test(text)) return false 
+    // TODO，这里还可以检查和处理包含空格需要转义为 `%20` 的情况
+    // 链接尾合法 (为目录或带扩展名)
+    if (/(\/|\.md|\.json|\.pdf|\.jpg|\.png|\.gif)\)$/.test(text)) return false
+    console.log("[!link check]", state.env.filePathRelative||state.env.relativePath ,state.pos, state.posMax, text)
+    return false
+  })
+}
 ```
