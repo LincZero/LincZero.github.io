@@ -92,7 +92,7 @@ const abc_info = ABConvert.factory({
 })
 
 const abc_info_alias = ABConvert.factory({
-  id: "alias",
+  id: "info_alias",
   name: "INFO_Alias",
   match: "info_alias",
   process_param: ABConvert_IOEnum.text,

@@ -14,7 +14,13 @@ import {ABReg} from "../ABReg"
 // mermaid相关 - 要在这里自己渲才需要
 import mermaid from "mermaid"
 import mindmap from '@mermaid-js/mermaid-mindmap';
-const initialize = mermaid.registerExternalDiagrams([mindmap]);
+const initialize = mermaid.registerExternalDiagrams([mindmap]); // 扩展mindmap功能
+// 这是obsidian环境检查主题，如果是mdit环境他会用vuepress的mermaid插件，这里也不会影响到
+const isDarkTheme = document.body.classList.contains('theme-dark');
+const theme = isDarkTheme ? 'dark' : 'light';
+mermaid.initialize({
+  theme: theme
+});
 export const mermaid_init = async () => {
   await initialize;
 };

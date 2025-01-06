@@ -9,11 +9,11 @@
  *
  * 换行问题：AnyBlock的块宽度很多都是不满100%的，在窄区域中显示多文本时经常需要使用换行
  * - 不换行时
- *   - white-space: pre (有换行符要换)
+ *   - white-space: pre;          // 有换行符要换
  * - 换行时
- *   - white-space: normal
- *   - overflow-wrap: break-word (单词换行)
- *   - code {white-space: pre;} (一个用于手动控制不换行的方式)
+ *   - white-space: break-spaces; // 自动换行 ~normal~~
+ *   - overflow-wrap: break-word; // 单词中换行
+ *   - code {white-space: pre;}   // 一个用于手动控制不换行的方式
  */
 /**
  * 颜色相关
@@ -96,7 +96,16 @@ html[data-theme="dark"] #app {
   margin-bottom: 0;
 }
 
+.app-container .markdown-source-view .markdown-preview-view .ab-replace {
+  margin-top: 0;
+  margin-bottom: 22px;
+}
+
 .print .ab-replace > .ab-button {
+  display: none;
+}
+
+.print .ab-replaceEl > button {
   display: none;
 }
 
@@ -182,6 +191,7 @@ html[data-theme="dark"] #app {
   color: var(--ab-tab-root-tx-color);
   border-bottom: none;
   border-radius: 10px 10px 0 0;
+  padding-right: 60px;
 }
 
 .ab-note .ab-tab-root .ab-tab-nav .ab-tab-nav-item {
@@ -223,7 +233,7 @@ html[data-theme="dark"] #app {
 .ab-note .ab-list-table-witharrow > div > p:first-child,
 .ab-note .ab-nodes-content > div > p:first-child,
 .ab-note .ab-items-item > div > div > p:first-child, .ab-note .ab-items-item > div > div > ul:first-child {
-  margin-top: 0;
+  margin-top: 2px;
 }
 
 .ab-note td > p:last-child, .ab-note th > p:last-child,
@@ -236,7 +246,7 @@ html[data-theme="dark"] #app {
 .ab-note .ab-list-table-witharrow > div > p:last-child,
 .ab-note .ab-nodes-content > div > p:last-child,
 .ab-note .ab-items-item > div > div > p:last-child, .ab-note .ab-items-item > div > div > ul:last-child {
-  margin-bottom: 0;
+  margin-bottom: 2px;
 }
 
 .ab-note table.ab-table {
@@ -434,10 +444,15 @@ html[data-theme="dark"] #app {
 
 .ab-note table.ab-list-table.ab-table-folder .ab-foldable-tr > td > div {
   display: inline-block;
+  vertical-align: top;
 }
 
 .ab-note table.ab-list-table.ab-table-folder .ab-foldable-tr > td > div.ab-list-table-witharrow {
   padding-left: 6px;
+}
+
+.ab-note table.ab-list-table.ab-table-folder .ab-foldable-tr .ab-list-table-svg {
+  padding-top: 4px;
 }
 
 .ab-note table.ab-list-table.ab-table-folder .ab-foldable-tr .ab-list-table-svg svg {
@@ -454,6 +469,12 @@ html[data-theme="dark"] #app {
   border-left: none;
   border-right: none;
   border-bottom: none;
+}
+
+.ab-note table.ab-list-table .ab-table-fold {
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 
 .ab-note table.ab-table-timeline td {
@@ -544,11 +565,11 @@ html[data-theme="dark"] #app {
 }
 
 .ab-note .ab-deco-fold .ab-deco-fold-button {
-  background-color: var(--ab-bright-color);
+  color: var(--ab-bright-color);
+  border-bottom: 1px solid var(--ab-bright-color);
   height: 30px;
   line-height: 30px;
   padding-left: 6px;
-  border-radius: 5px;
   width: 100%;
 }
 
@@ -654,7 +675,7 @@ html[data-theme="dark"] #app {
 .ab-note .ab-items.ab-col {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0rem;
 }
 
 .ab-note .ab-items.ab-col .ab-items-item {
@@ -898,6 +919,26 @@ html[data-theme="dark"] #app {
   background-color: var(--node-color);
 }
 
+.ab-note .ab-nodes.scroll {
+  overflow-x: auto;
+}
+
+.ab-note .ab-nodes.scroll .ab-nodes-content {
+  white-space: nowrap;
+  max-width: 300px;
+  overflow-x: auto;
+}
+
+.ab-note table.scroll {
+  overflow-x: auto;
+}
+
+.ab-note table.scroll td {
+  white-space: nowrap;
+  max-width: 300px;
+  overflow-x: auto;
+}
+
 div.md-table-fig1 {
   overflow-x: scroll;
   transform: scaleY(-1);
@@ -1093,6 +1134,6 @@ table.ab-table-fc td[col_index="0"] {
 }
 
 /**************** 兼容性补充 ******************/
-.ab-note :is(.markdown-preview-view, .markdown-rendered).is-readable-line-width:not(.matrix) :is(.markdown-rendered) {
-  width: auto;
+:is(.markdown-preview-view, .markdown-rendered).is-readable-line-width:not(.matrix) .ab-note :is(.markdown-rendered) {
+  width: auto !important;
 }

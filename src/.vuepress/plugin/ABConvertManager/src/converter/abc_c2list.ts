@@ -218,7 +218,7 @@ export class C2ListProcess{
           if (inlines.length > 1) {
             const second_part = content.indexOf(inlines[1])
             current_content += content.slice(second_part) + "\n"
-            current_content_prefix = "  " // 内换行前缀必是双空格
+            current_content_prefix = "  " // (TODO风险) 通过内换行符，则新的行前缀为双空格 (用户可能用tab的1和四空格的4，但不影响)
             content = inlines[0]
           }
         }
@@ -229,10 +229,11 @@ export class C2ListProcess{
         })
       } else { // b2. 子内容
         if (current_content.trim()=="") { // 第一行的子内容前缀提取
-          if (match_list && match_list[1]) current_content_prefix = match_list[1]
-          else current_content_prefix = ""
+          if (match_list && match_list[1]) current_content_prefix = match_list[1] // 有 `- `，则为 `- ` 前的字符数
+          else current_content_prefix = "  " // (TODO风险) 无 `- `，则设前缀字符数为2 (用户可能用tab的1和四空格的4，但少消除2个一般不会影响，主要避免前缀4空格自动转化为缩进代码块)
         }
-        if (line.startsWith(current_content_prefix)) { // 子内容前缀去除
+        if (line.startsWith("\t")) line = line.substring(1);
+        else if (line.startsWith(current_content_prefix)) { // 子内容前缀去除
           line = line.substring(current_content_prefix.length);
         }
         current_content += line+"\n" // 子内容拼接

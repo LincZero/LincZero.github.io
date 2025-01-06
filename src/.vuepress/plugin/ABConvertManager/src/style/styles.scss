@@ -8,11 +8,11 @@
  *
  * 换行问题：AnyBlock的块宽度很多都是不满100%的，在窄区域中显示多文本时经常需要使用换行
  * - 不换行时
- *   - white-space: pre (有换行符要换)
+ *   - white-space: pre;          // 有换行符要换
  * - 换行时
- *   - white-space: normal
- *   - overflow-wrap: break-word (单词换行)
- *   - code {white-space: pre;} (一个用于手动控制不换行的方式)
+ *   - white-space: break-spaces; // 自动换行 ~normal~~
+ *   - overflow-wrap: break-word; // 单词中换行
+ *   - code {white-space: pre;}   // 一个用于手动控制不换行的方式
  */
 
 /**
@@ -104,12 +104,22 @@ html[data-theme="dark"] #app {
       margin-bottom: 0;
     }
   }
+  // 实时模式下的阅读模式（片段引用显示就是这种情况，覆盖掉前面的margin)
+  .markdown-source-view .markdown-preview-view {
+    .ab-replace{
+      margin-top: 0;
+      margin-bottom: 22px;
+    }
+  }
   // 源码模式
   .markdown-source-view.is-live-preview {}
 }
-// 打印模式
+// 打印/pdf模式
 .print{
-  .ab-replace>.ab-button {
+  .ab-replace>.ab-button { // 刷新按钮
+    display: none;
+  }
+  .ab-replaceEl>button { // dir的折叠按钮
     display: none;
   }
 }
@@ -194,6 +204,7 @@ html[data-theme="dark"] #app {
       color: var(--ab-tab-root-tx-color);
       border-bottom: none;
       border-radius: 10px 10px 0 0;
+      padding-right: 60px; // 这个是为了避免与编辑按钮重叠
       .ab-tab-nav-item {
         height: 38px; // 40-2
         box-shadow: none;
@@ -237,7 +248,7 @@ html[data-theme="dark"] #app {
   .ab-nodes-content>div>p:first-child,
   .ab-items-item>div>div>p:first-child, .ab-items-item>div>div>ul:first-child
   {
-    margin-top: 0;
+    margin-top: 2px;
   }
   td>p:last-child, th>p:last-child, // ob x 8
   td>ul:last-child, th>ul:last-child, 
@@ -250,7 +261,7 @@ html[data-theme="dark"] #app {
   .ab-nodes-content>div>p:last-child,
   .ab-items-item>div>div>p:last-child, .ab-items-item>div>div>ul:last-child
   {
-    margin-bottom: 0;
+    margin-bottom: 2px;
   }
 
   // 通用表格
@@ -438,14 +449,18 @@ html[data-theme="dark"] #app {
       &>td>div{
         // float: left; (这个没办法让div下的div2和div3在同一行，用inline-block代替之)
         display: inline-block;
+        vertical-align: top;
         &.ab-list-table-witharrow {
           padding-left: 6px; // old 15
         }
       }
-      .ab-list-table-svg svg{
-        width: 14px;
-        height: 14px;
-        fill: var(--ab-bright-color);
+      .ab-list-table-svg {
+        padding-top: 4px;
+        svg{  
+          width: 14px;
+          height: 14px;
+          fill: var(--ab-bright-color);
+        }
       }
       // 边框处理
       td:first-child {
@@ -456,6 +471,13 @@ html[data-theme="dark"] #app {
         border-right: none;
         border-bottom: none;
       }
+    }
+
+    // 折叠按钮
+    .ab-table-fold {
+      position: absolute;
+      bottom: 0;
+      right: 0;
     }
   }
 
@@ -550,11 +572,12 @@ html[data-theme="dark"] #app {
   // 折叠
   .ab-deco-fold{
     .ab-deco-fold-button{
-      background-color: var(--ab-bright-color);
+      color: var(--ab-bright-color);
+      border-bottom: 1px solid var(--ab-bright-color);
       height: 30px;
       line-height: 30px;
       padding-left: 6px;
-      border-radius: 5px;
+      // border-radius: 5px;
       width: 100%;
     }
   }
@@ -653,7 +676,7 @@ html[data-theme="dark"] #app {
     &.ab-col{
       display: flex; // Flexbox 布局
       flex-wrap: wrap; // 元素换行显示
-      gap: 1rem; // 间隙
+      gap: 0rem; // 间隙
       .ab-items-item {        
         flex: 1 0 calc(33.33% - 1rem); // 每个项目的宽度大约为容器的 33.33%，减去间隙的一半
         box-sizing: border-box; // 确保 padding 和 border 不影响元素的实际大小
@@ -881,6 +904,30 @@ html[data-theme="dark"] #app {
       background-color: var(--node-color);
     }
   }
+
+  // scroll版的node图
+  .ab-nodes.scroll {
+    // 使整个块的宽度能够溢出，而不是文字被挤压换行
+    overflow-x: auto;
+    // 使单个项宽度不多于300px
+    .ab-nodes-content {
+      white-space: nowrap;
+      max-width: 300px;
+      overflow-x: auto;
+    }
+  }
+
+  // scroll版的table
+  table.scroll {
+    // 使整个块的宽度能够溢出，而不是文字被挤压换行
+    overflow-x: auto;
+    // 使单个项宽度不多于300px
+    td {
+      white-space: nowrap;
+      max-width: 300px;
+      overflow-x: auto;
+    }
+  }
 }
 
 // 设置面板中表格的滚动条翻转
@@ -960,6 +1007,6 @@ table.ab-table-fc {
 /**************** 兼容性补充 ******************/
 
 // BT主题在阅读模式下会干扰表格高度 (不确定有无其他误影响)
-.ab-note :is(.markdown-preview-view,.markdown-rendered).is-readable-line-width:not(.matrix) :is(.markdown-rendered) {
-  width: auto;
+:is(.markdown-preview-view,.markdown-rendered).is-readable-line-width:not(.matrix) .ab-note :is(.markdown-rendered) {
+  width: auto !important;
 }

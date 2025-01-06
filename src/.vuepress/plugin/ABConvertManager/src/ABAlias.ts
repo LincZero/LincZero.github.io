@@ -79,6 +79,11 @@ export function autoABAlias (header:string, selectorName:string, content:string)
   for (const item of ABAlias_json) {
     header = header.replace(item.regex, item.replacement)
   }
+  for (const item of ABAlias_json_withSub) { // 特别组，被替换为带子串表示的结果
+    header = header.replace(item.regex, (match, ...groups) => {
+      return item.replacement.replace(/\$(\d+)/g, (_, number) => groups[number - 1]); // 根据捕获组替换
+    });
+  }
   for (const item of ABAlias_json_end) { // 保证ABAlias_json内容被扩展后，该部分的替换规则仍处于最后
     header = header.replace(item.regex, item.replacement)
   }
@@ -91,12 +96,17 @@ interface ABAlias_json_item {
   replacement: string
 }
 
+// 允许带参数的部分 (这部分的遍历会更耗时间。为了性能考虑，单独拿出来)
+const ABAlias_json_withSub: ABAlias_json_item[] = [
+  { regex: /\|::: 140lne\|(info|note|warn|warning|error)\s?(.*?)\|/, replacement: "|add([!$1] $2)|quote|" },
+]
+
 // mdit块
 const ABAlias_json_mdit: ABAlias_json_item[] = [
-  {regex: "|::: 140lne|info|", replacement: "|add([!info])|quote|"},
-  {regex: "|::: 140lne|note|", replacement: "|add([!note])|quote|"},
-  {regex: /\|::: 140lne\|(warn|warning)\|/, replacement: "|add([!warning])|quote|"},
-  {regex: "|::: 140lne|error|", replacement: "|add([!error])|quote|"},
+  // {regex: "|::: 140lne|info|", replacement: "|add([!info])|quote|"},
+  // {regex: "|::: 140lne|note|", replacement: "|add([!note])|quote|"},
+  // {regex: /\|::: 140lne\|(warn|warning)\|/, replacement: "|add([!warning])|quote|"},
+  // {regex: "|::: 140lne|error|", replacement: "|add([!error])|quote|"},
   {regex: /\|::: 140lne\|(2?tabs?|标签页?)\|/, replacement: "|mditTabs|"},
   {regex: "|::: 140lne|demo|", replacement: "|mditDemo|"},
   {regex: "|::: 140lne|abDemo|", replacement: "|mditABDemo|"},
@@ -178,6 +188,8 @@ const ABAlias_json_general: ABAlias_json_item[] = [
   {regex: "|折叠|", replacement: "|fold|"},
   {regex: "|滚动|", replacement: "|scroll|"},
   {regex: "|超出折叠|", replacement: "|overfold|"},
+  {regex: "|转置|", replacement: "|transpose|"},
+  {regex: "|trs|", replacement: "|trs|"},
   // 便捷样式
   {regex: "|红字|", replacement: "|addClass(ab-custom-text-red)|"},
   {regex: "|橙字|", replacement: "|addClass(ab-custom-text-orange)|"},
