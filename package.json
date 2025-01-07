@@ -13,7 +13,7 @@
     "gen-config": "node ./scripts/generate_config.cjs"
   },
   "devDependencies": {
-    "@nolebase/markdown-it-bi-directional-links": "^2.11.1",
+    "@nolebase/markdown-it-bi-directional-links": "^2.12.0",
     "@vuepress/bundler-vite": "2.0.0-rc.8",
     "@vuepress/plugin-docsearch": "2.0.0-rc.21",
     "@vuepress/utils": "2.0.0-rc.2",
