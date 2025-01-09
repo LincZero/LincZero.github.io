@@ -37,7 +37,7 @@ export default  (md: markdownit) => {
   md.use(BiDirectionalLinks({
     dir: "./src/",
     // baseDir: "/src2/",
-    noNoMatchedFileWarning: true, // 找不到对应链接时忽略
+    noNoMatchedFileWarning: true, // 找不到对应链接时忽略 (控制台不打印信息)
     isRelativePath: true,         // 强行使用相对路径 (双链引用图片在vuepress如果用绝对路径要加@source前缀)
   })) 
 }
