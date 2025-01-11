@@ -23,11 +23,11 @@
         </button>
         <button @click="() => { emitPinTab() }"
           title="固定或删除当前标签页">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="26" viewBox="-1 -1 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pin"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="26" viewBox="0 -1 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pin"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>
         </button>
         <button @click="() => { emitNewUrl(targetDeep-1) }"
           title="显示更多侧边项">
-          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="26" viewBox="5 5 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="26" viewBox="6 5 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
         </button>
         <button @click="() => { emitNewUrl(targetDeep+1) }"
           title="精简更少侧边项">
@@ -304,8 +304,17 @@ button { // h:(26+4+0)+4
 
   height: 30px;
   margin-top: 2px;
-  padding: 2px 2px; border: none;
   line-height: 26px;
+  border-radius: 6px;
+  padding: 2px 3px; border: none;
+
+  &:hover {
+    padding: 0px 1px !important; border: solid 2px currentColor; // 各让2px padding给border
+    // line-height: 22px;
+    // background-color: #f0f0f011;
+    background-color: var(--theme-color-mask);
+    // 或使用 var(--theme-color-mask); // 一种更浅的 --theme-color
+  }
 }
 
 .root-sidebar {
@@ -326,20 +335,12 @@ button { // h:(26+4+0)+4
     }
   }
   >div.root-sidebar-btn {
-    >button {
-      // border: solid 1px currentColor;
-      // line-height: 24px;
-      line-height: 26px;
-      margin-right: 2px;
-      border-radius: 6px;
-    }
+    >button {}
   }
   >div.root-sidebar-breadcrumb {
     overflow-x: auto;
     padding-right: 30px;
-    >button {
-      padding: 2px 4px;
-    }
+    >button {}
     >button>span {
       max-width: 200px;
       white-space: nowrap;
@@ -368,7 +369,7 @@ button { // h:(26+4+0)+4
 // (附加) 颜色, 配色可以自己通过自定义变量调，不自带配色方案
 .root-sidebar-breadcrumb>button {
   &[relDeep="0"] { 
-    padding: 2px 2px !important; border: solid 2px var(--theme-color);
+    padding: 0px 1px !important; border: solid 2px var(--theme-color); // 各让1px padding给border
     line-height: 22px;
     border-radius: 6px;
   }
