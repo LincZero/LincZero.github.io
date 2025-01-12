@@ -5,6 +5,18 @@
 @import '../plugin/callout/index.scss';
 //@import 'linc_wide.scss';
 
+/**
+ * 加宽
+ *
+ * 一些常见宽度： (前面是能显示文字的范围，后面是加上padding。一般我们只看前者)
+ * ob默认700，我修改成了830
+ * github默认 readme 830~894, issue 806~838, discussions 870~904
+ * vp默认764~844 (左右padding各40)，调整后 820~900
+ */
+:root {
+  --content-width: calc(820px + 16px); // 默认是 764+16=780
+}
+
 // 首页首banner加高
 #main-content > header.vp-hero-info-wrapper {
   // height: 700px !important; // calc(100vh - 60px)
