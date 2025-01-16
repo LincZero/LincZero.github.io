@@ -38,6 +38,7 @@ export default  (md: markdownit) => {
     dir: "./src/",
     // baseDir: "/src2/",
     noNoMatchedFileWarning: true, // 找不到对应链接时忽略 (控制台不打印信息)
-    isRelativePath: true,         // 强行使用相对路径 (双链引用图片在vuepress如果用绝对路径要加@source前缀)
+    // TODO 下面这个选项有一个bug: 其 `<a class="route-link" href=...>` 标签中的href没有转义，route-linke会导致404，要重新刷新一下才正常
+    // isRelativePath: true,      // 强行使用相对路径 (双链引用图片在vuepress如果用绝对路径要加@source前缀)
   })) 
 }
