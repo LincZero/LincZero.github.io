@@ -80,7 +80,9 @@ async function generate_config_by_git() {
     console.error('Failed to generate file: .vuepress/xxx_git.js. error: ', error);
     return
   }
-  console.log('Successfully generate file: .vuepress/xxx_git.js.');
+  console.log('Successfully generate file: .vuepress/xxx_git.js.')
+  console.log(JSON.stringify(config_git_obj, null, 2))
+  console.log(JSON.stringify(theme_git_obj, null, 2))
 }
 generate_config_by_git()
 
