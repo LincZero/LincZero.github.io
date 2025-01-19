@@ -41,7 +41,7 @@ async function generate_config_by_git() {
   // 2. 处理内容
   let config_git_obj = {}
   let theme_git_obj = {}
-  if (gitInfoObj) {
+  if (gitInfoObj && gitInfoObj["CALC_REPO_NAME"]) { // gitInfoObj["CALC_REPO_NAME"] 可能是未定义
     let calc_base = "/" // 在组织中部署非常重要，只要不满足 `xxx/xxx.github.io` 的形式，base都不为 `/`
     if (gitInfoObj["CALC_REPO_NAME"] != `${gitInfoObj["GITHUB_REPOSITORY_OWNER"]}.github.io`) {
       calc_base = `/${gitInfoObj["CALC_REPO_NAME"]}/`
