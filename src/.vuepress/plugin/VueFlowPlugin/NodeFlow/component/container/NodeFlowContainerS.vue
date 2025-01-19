@@ -34,6 +34,7 @@
 const props = defineProps<{
   rawData?: string, // 仅打印用
   mdData?: string,  // 仅打印用
+  jsonType?: string,// 仅打印、序列化用
   jsonData: any,
   isMini: boolean,
   fn_newView?: () => Promise<void>,

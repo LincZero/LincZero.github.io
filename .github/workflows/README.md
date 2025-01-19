@@ -1,6 +1,13 @@
 # 更通用的工作流文件
 
+## Obsidian/纯文档仓库/非纯文档仓库
+
 workflows下的工作流是个人的，这里提供一个更通用的工作流文件以便其他人部署：
+
+工作流的部署会根据仓库的特点而定，有以下几种可能：
+
+1. 如果根目录下有 `.htaccess` 是代理仓库。则使用代理文件中的git链接进行clone。否则则使用本文档链接
+2. 如果根目录下有 `docs` 文件夹 (如果是代理仓库有也算)。自动识别为非纯文档仓库，部署时也只会解析docs部分。否则整个仓库都视为文档
 
 ```yml
 name: 部署文档
@@ -26,7 +33,7 @@ jobs:
       - name: 环境 - 构建库
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
           repository: LincZero/LincZero.github.io
           ref: 'main' # 分支，旧raw
           
@@ -63,14 +70,38 @@ jobs:
           echo "}" >> git_config.json
           echo "::set-output name=REPO_NAME::$REPO_NAME"
 
-      # 文档的克隆、构建、部署。注意 `clone --depth 1` 只拉最近一次提交，减少时间
       - name: 文档 - 文档库克隆
         working-directory: ./src/
         run: |
-          git clone --depth 1 https://github.com/${GITHUB_REPOSITORY}.git temp_repo 
-          rsync -a temp_repo/ .
-          rm -rf temp_repo
+          rm README.md
+          
+          # 文档的克隆、构建、部署。注意 `clone --depth 1` 只拉最近一次提交，减少时间
           # git clone --depth 1 https://github.com/${GITHUB_REPOSITORY}.git # 如果有多个clone项则替换成这个，避免冲突
+          git clone --depth 1 https://github.com/${GITHUB_REPOSITORY}.git temp_repo 
+
+          # 该仓库为代理仓库，使用链接仓库而非此仓库
+          if [ -f temp_repo/agency ]; then
+            GIT_LINK=$(head -n 1 temp_repo/agency)
+            rm -rf temp_repo
+            git clone --depth 1 $GIT_LINK temp_repo
+            echo "with agency"
+          else
+            echo "without agency"
+          fi
+
+      - name: 文档 - 文档库docs文件夹的处理
+        working-directory: ./src/
+        run: |
+          if [ -d temp_repo/docs ]; then
+            find temp_repo/* -maxdepth 0 -name docs -prune -o -exec rm -rf {} \;
+            mv temp_repo/docs/* .
+            rm -rf temp_repo
+            echo "with docs"
+          else
+            rsync -a temp_repo/ .
+            rm -rf temp_repo
+            echo "without docs"
+          fi
 
       # [!code] 根据实际情况修改 (需要在仓库配置写入以及和文档仓库clone这两个步骤的后面)
       - name: 配置 - 设置

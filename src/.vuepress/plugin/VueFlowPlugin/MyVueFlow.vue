@@ -1,7 +1,7 @@
 
 <template>
   <div>
-    <NodeFlowContainer v-if="result.code==0" :jsonData="jsonData" :isMini="true" :rawData="data"/>
+    <NodeFlowContainer v-if="result.code==0" :jsonData="jsonData" :jsonType="props.type" :isMini="true" :rawData="data"/>
   </div>
   <div v-if="result.code!=0">
     {{ result.msg }}
