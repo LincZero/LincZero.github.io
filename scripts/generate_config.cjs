@@ -42,8 +42,14 @@ async function generate_config_by_git() {
   let config_git_obj = {}
   let theme_git_obj = {}
   if (gitInfoObj) {
+    let calc_base = "/" // 在组织中部署非常重要，只要不满足 `xxx/xxx.github.io` 的形式，base都不为 `/`
+    if (!gitInfoObj["CALC_REPO_NAME"] || !gitInfoObj["GITHUB_REPOSITORY"]) return
+    if (gitInfoObj["GITHUB_REPOSITORY"] != `${gitInfoObj["CALC_REPO_NAME"]}/${gitInfoObj["CALC_REPO_NAME"]}.github.io`) {
+      calc_base = `/${gitInfoObj["CALC_REPO_NAME"]}/`
+    }
+    
     config_git_obj = {
-      base: gitInfoObj["CALC_REPO_NAME"] ? `/${gitInfoObj["CALC_REPO_NAME"]}/` : "/", // 在组织中部署非常重要
+      base: calc_base,
       locales: {
         "/": {
           lang: "zh-CN",
