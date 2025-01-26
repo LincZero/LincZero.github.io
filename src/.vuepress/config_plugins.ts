@@ -21,7 +21,8 @@ const plugins: PluginConfig = [
       if (!title) return "undefined"
       if (title == "README" && title_arr.length>1) { title = title_arr[title_arr.length-2] + "/" }
       return title
-    }
+    },
+    // enableGlobalGraph: true,
   }),
   rootSidebar,
   myLayout, // 非通用的自定义布局，必须最后加载，便于覆盖其他插件的自定义布局行为

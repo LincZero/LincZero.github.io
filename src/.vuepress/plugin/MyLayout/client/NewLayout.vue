@@ -21,16 +21,16 @@ import RootSidebar from "../../RootSidebar/client/RootSidebar.vue"
 
 import Backlink from "../../BiGraph/client/components/backlink.vue";
 import LocalRelationshipMap from "../../BiGraph/client/components/localRelationshipMap.vue";
-// import GlobalGraph from "../../BiGraph/client/components/globalGraph.vue";
+import GlobalGraph from "../../BiGraph/client/components/globalGraph.vue";
 </script>
 
 <template>
+  <global-graph></global-graph>
   <SkipLink />
 
   <CommonWrapper>
     <FadeSlideY>
       <NormalPage>
-        <!-- <global-graph></global-graph> -->
         <template #contentAfter>
           <backlink></backlink>
         </template>
