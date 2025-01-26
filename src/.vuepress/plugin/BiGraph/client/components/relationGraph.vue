@@ -52,9 +52,9 @@ const FORCE_CONFIG = {
     .strength(0.8), // 调整连接线的强度
   charge: d3
     .forceManyBody<Node>()
-    .strength((d: Node) => { return -50 - 250 * ((d.linkCount||1)-1) }) // 根据连接数调整电荷力
+    .strength((d: Node) => { return -50 - 250 * (Math.min(d.linkCount,10)-1 || 0) }) // 根据连接数调整电荷力
     .distanceMin(10) // 最小距离
-    .distanceMax(1000), // 最大距离
+    .distanceMax(400), // 最大距离
   collision: d3
     .forceCollide<Node>()
     .radius(30) // 调整碰撞半径
@@ -133,9 +133,8 @@ function initializeMapData(data: MapNodeLink, currentPath?: string): void {
   const newNodes = JSON.parse(JSON.stringify(data.nodes));
   const newLinks = JSON.parse(JSON.stringify(data.links));
 
-  // 一些节点计算
+  // 计算每个节点的连接数
   newNodes.forEach((node) => {
-    // 计算每个节点的连接数
     node.linkCount = newLinks.reduce((count, link) => {
       if (
         (typeof link.source === "string" ? link.source : link.source.id) ===
@@ -147,23 +146,6 @@ function initializeMapData(data: MapNodeLink, currentPath?: string): void {
       }
       return count;
     }, 0);
-    // 计算节点链接的首目录hash对应的颜色
-    const directoryNameD3 = node.value.path.split('/')[2] || '';
-    const hash = hashString(directoryNameD3);
-    // node.color = hashToColor(hash);
-    function hashString(str: string): number {
-      let hash = 0;
-      for (let i = 0; i < str.length; i++) {
-        const char = str.charCodeAt(i);
-        hash = (hash << 5) - hash + char;
-        hash |= 0; // 转换为32位整数
-      }
-      return hash;
-    }
-    function hashToColor(hash: number): string {
-      const hue = hash % 360; // 使用散列生成0到360之间的色相值
-      return `hsl(${hue}, 100%, 80%)`; // 固定的饱和度和亮度的能见度 (最后一项亮度，暗黑模式推荐80，明亮模式推荐20)
-    }
   });
 
   // 标记孤立节点并设置初始位置
@@ -205,25 +187,6 @@ function initializeMapData(data: MapNodeLink, currentPath?: string): void {
           currentNode.fy = null;
         }
       }, 1000);
-    
-      // currentNode.isCurrent = true;
-
-      // // 获取当前节点的坐标
-      // const nodeX = currentNode.x;
-      // const nodeY = currentNode.y;
-
-      // // 计算平移量，使当前节点位于画布中心
-      // const translateX = canvasSize.value.width / 2 - nodeX;
-      // const translateY = canvasSize.value.height / 2 - nodeY;
-
-      // // 设置画布的平移和缩放
-      // d3.select('svg')
-      //   .transition()
-      //   .duration(1000) // 动画持续时间
-      //   .call(
-      //     d3.zoom().transform,
-      //     d3.zoomIdentity.translate(translateX, translateY)
-      //   );
     }
   }
 
@@ -642,13 +605,10 @@ onMounted(() => {
   }
 
   // 绘制节点
-  function drawNode(d, baseRadius, color) {
-    context.beginPath()
-    const radius = baseRadius + ((d.linkCount||1)-1) * 0.4; // 基础半径加上点连接数的倍数
+  function drawNode(d, baseRadius) {
+    const radius = baseRadius + (d.linkCount-1 || 0) * 0.4; // 基础半径加上点连接数的倍数
     context.moveTo(d.x + radius, d.y);
     context.arc(d.x, d.y, radius, 0, 2 * Math.PI);
-    context.fillStyle = color
-    context.fill();
   }
 
   // 检查鼠标是否在节点上
@@ -764,9 +724,9 @@ onMounted(() => {
     map_data.value.nodes
       .filter((d) => !d.isCurrent && d !== hoveredNode)
       .forEach((d) => {
-        drawNode(d, CANVAS_CONFIG.nodeRadius, d.color||text);
+        drawNode(d, CANVAS_CONFIG.nodeRadius);
       });
-    // context.fillStyle = text;
+    context.fillStyle = text;
     context.globalAlpha = hoveredNode
       ? STYLE_CONFIG.node.normalOpacity
       : STYLE_CONFIG.node.highlightOpacity;
@@ -777,10 +737,10 @@ onMounted(() => {
       context.beginPath();
       Array.from(connectedNodes).forEach((d) => {
         if (!d.isCurrent) {
-          drawNode(d, CANVAS_CONFIG.nodeRadius, d.color||text);
+          drawNode(d, CANVAS_CONFIG.nodeRadius);
         }
       });
-      // context.fillStyle = text;
+      context.fillStyle = text;
       context.globalAlpha = STYLE_CONFIG.node.highlightOpacity;
       context.fill();
     }
@@ -788,8 +748,8 @@ onMounted(() => {
     // 绘制悬停节点
     if (hoveredNode && !hoveredNode.isCurrent) {
       context.beginPath();
-      drawNode(hoveredNode, CANVAS_CONFIG.hoverNodeRadius, accent);
-      // context.fillStyle = accent;
+      drawNode(hoveredNode, CANVAS_CONFIG.hoverNodeRadius);
+      context.fillStyle = accent;
       context.globalAlpha = STYLE_CONFIG.node.highlightOpacity;
       context.fill();
     }
@@ -802,10 +762,9 @@ onMounted(() => {
         currentNode,
         currentNode === hoveredNode
           ? CANVAS_CONFIG.hoverNodeRadius
-          : CANVAS_CONFIG.nodeRadius,
-          accent
+          : CANVAS_CONFIG.nodeRadius
       );
-      // context.fillStyle = accent;
+      context.fillStyle = accent;
       context.globalAlpha =
         hoveredNode &&
         currentNode !== hoveredNode &&
@@ -860,8 +819,8 @@ onMounted(() => {
 
       if (shouldDrawText) {
         const textWidth = context.measureText(node.value.title).width;
-        context.fillStyle = node.color||text;
-        context.globalAlpha = 1-(1-opacity*4);
+        context.fillStyle = text;
+        context.globalAlpha = opacity;
         context.fillText(
           node.value.title,
           node.x - textWidth / 2,

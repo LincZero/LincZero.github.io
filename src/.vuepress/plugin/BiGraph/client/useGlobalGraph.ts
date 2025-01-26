@@ -19,13 +19,12 @@ export async function getGlobalGraph(
 ): Promise<MapNodeLink | null> {
     try {
         if (isDev) {
-            const module = await import(/* @vite-ignore */ `/${graphPath.target}`);
+            const module = await import(/* @vite-ignore */ `/${graphPath.target}`); // build环境使用
+            // const module = await import(/* @vite-ignore */ `../../../.temp/globalRelationalGraph.json`); // dev环境使用
             return module?.default || null;
         } else {
 
-            const response = await fetch(withBaseFunc(`${graphDataName}`), {
-                cache: "no-cache"
-            });
+            const response = await fetch(withBaseFunc(`${graphDataName}`));
             if (!response.ok) {
                 return null;
             }
