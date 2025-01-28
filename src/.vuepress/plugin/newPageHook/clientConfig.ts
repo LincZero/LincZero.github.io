@@ -2,9 +2,10 @@ import { defineClientConfig } from 'vuepress/client'
 
 import { nextTick, watch } from 'vue'
 import { usePageData } from 'vuepress/client'
-import { wait } from '@vuepress/helper/client'
 
 import { abConvertEvent } from '../ABConvertManager/src/ABConvertEvent'
+
+const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 export default defineClientConfig({
   setup() { // ({app})
