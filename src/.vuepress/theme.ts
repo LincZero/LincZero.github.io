@@ -1,108 +1,196 @@
-/// hope主题相关的设置
+import { hopeTheme } from "vuepress-theme-hope";
 
-import { hopeTheme, type ThemeOptions } from "vuepress-theme-hope";
-import { themeOptions2 } from "./theme_cover.js"
-import { themeOptions3 } from "./theme_git.js"
+import navbar from "./navbar.js";
+import sidebar from "./sidebar.js";
 
-export const themeOptions: ThemeOptions = {
-  // 信息类
-  hostname: "LincZero.github.io",
+export default hopeTheme({
+  hostname: "https://vuepress-theme-hope-docs-demo.netlify.app",
+
   author: {
-    name: "LincZero",
-    url: "https://github.com/LincZero/",
+    name: "Mr.Hope",
+    url: "https://mister-hope.com",
   },
-  repo: "LincZero/LincZero.github.io",
-  iconAssets: "fontawesome-with-brands",
-  logo: "/logo.svg",
 
-  // 导航类
+  logo: "https://theme-hope-assets.vuejs.press/logo.svg",
+
+  repo: "vuepress-theme-hope/vuepress-theme-hope",
+
   docsDir: "src",
-  locales: {
-    "/": {
-      navbar: [ {text: "/", link: "/"} ],
-      sidebar: { "/": "structure" },
-      metaLocales: {
-        editLink: "在 GitHub 上编辑此页",
+
+  // 导航栏
+  navbar,
+
+  // 侧边栏
+  sidebar,
+
+  // 页脚
+  footer: "默认页脚",
+  displayFooter: true,
+
+  // 加密配置
+  encrypt: {
+    config: {
+      "/demo/encrypt.html": {
+        hint: "Password: 1234",
+        password: "1234",
       },
     },
   },
-  toc: true,
-  headerDepth: 6,
-  sidebarSorter: ["readme", "order", "filename"],
 
-  // 插件类
+  // 多语言配置
+  metaLocales: {
+    editLink: "在 GitHub 上编辑此页",
+  },
+
+  // 如果想要实时查看任何改变，启用它。注: 这对更新性能有很大负面影响
+  // hotReload: true,
+
+  // 此处开启了很多功能用于演示，你应仅保留用到的功能。
+  markdown: {
+    align: true,
+    attrs: true,
+    codeTabs: true,
+    component: true,
+    demo: true,
+    figure: true,
+    gfm: true,
+    imgLazyload: true,
+    imgSize: true,
+    include: true,
+    mark: true,
+    plantuml: true,
+    spoiler: true,
+    stylize: [
+      {
+        matcher: "Recommended",
+        replacer: ({ tag }) => {
+          if (tag === "em")
+            return {
+              tag: "Badge",
+              attrs: { type: "tip" },
+              content: "Recommended",
+            };
+        },
+      },
+    ],
+    sub: true,
+    sup: true,
+    tabs: true,
+    tasklist: true,
+    vPre: true,
+
+    // 取消注释它们如果你需要 TeX 支持
+    // markdownMath: {
+    //   // 启用前安装 katex
+    //   type: "katex",
+    //   // 或者安装 mathjax-full
+    //   type: "mathjax",
+    // },
+
+    // 如果你需要幻灯片，安装 @vuepress/plugin-revealjs 并取消下方注释
+    // revealjs: {
+    //   plugins: ["highlight", "math", "search", "notes", "zoom"],
+    // },
+
+    // 在启用之前安装 chart.js
+    // chartjs: true,
+
+    // insert component easily
+
+    // 在启用之前安装 echarts
+    // echarts: true,
+
+    // 在启用之前安装 flowchart.ts
+    // flowchart: true,
+
+    // 在启用之前安装 mermaid
+    // mermaid: true,
+
+    // playground: {
+    //   presets: ["ts", "vue"],
+    // },
+
+    // 在启用之前安装 @vue/repl
+    // vuePlayground: true,
+
+    // 在启用之前安装 sandpack-vue3
+    // sandpack: true,
+  },
+
+  // 在这里配置主题提供的插件
   plugins: {
-    seo: true,            // 搜索引擎优化
-    docsearch: {          // 文档搜索插件
-      appId: "247IUCFQ4Q",
-      apiKey: "b8883b05027bfa9fc73f21286ed7395e", // 707332eeb6a1daf0e6ecfbb63e27afbc
-      indexName: "linczeroio"
+    // 注意: 仅用于测试! 你必须自行生成并在生产环境中使用自己的评论服务
+    comment: {
+      provider: "Giscus",
+      repo: "vuepress-theme-hope/giscus-discussions",
+      repoId: "R_kgDOG_Pt2A",
+      category: "Announcements",
+      categoryId: "DIC_kwDOG_Pt2M4COD69",
     },
-    blog: {               // 博客系统
-      article: "/MdNote_BlogHide/",
+
+    components: {
+      components: ["Badge", "VPCard"],
     },
-    components: {         // 内置组件 (有很多类型，这里就不加不使用的类型了)
-      components: ["PDF"]
+
+    icon: {
+      prefix: "fa6-solid:",
     },
-    // comment: {},       // 评论系统的配置
-    mdEnhance: {          // 扩展 Markdown 的功能 (通常是markdown-it插件)
-      // mdit - 容器语法
-      // alert: true,     // 被 obsidain callout 代替
-      align: true,        // mdit容器 - 对齐
-      attrs: true,        // mdit容器 - 属性
-      demo: true,         // mdit容器 - 代码演示 // 注意变更: https://plugin-md-enhance.vuejs.press/zh/migration.html#%E5%8F%98%E6%9B%B4
-      tabs: true,         // mdit容器 - 标签
-      codetabs: true,     // mdit容器 - 代码块分组
 
-      // mdit - 内联语法
-      mark: true,         // ==高亮==
-      sub: true,          // _子项_
-      sup: true,          // ^上标^
-      imgLazyload: true,  // 懒加载图片
-      // imgSize: true,   // 图片大小, ![Alt](/example.bmp =x300)
-      // include: true,   // 导入其他文件，`<!-- @include: filename -->`，@WARN 版本较低时，启用的话会和mdit插件那边的 `md.render()` 冲突
-
-      // mdit - 文生图类
-      katex: true,        // TeX数学公式渲染工具 (二选一，katex), install katex before enabling it
-      // mathjax: true,   // TeX数学公式渲染工具 (二选一，mathjax), mathjax-full before enabling it
-      mermaid: true,      // Mermaid 图表工具, install mermaid before enabling it
-      markmap: true,      // 思维导图，pnpm add -D markmap-lib markmap-toolbar markmap-view
-      // plantuml: true,  // Plantuml 图表工具
-      // chart: true,     // 图表 install chart.js before enabling it
-      // echarts: true,   // Echarts 图表工具，install echarts before enabling it
-      // flowchart: true, // 流程图，install flowchart.ts before enabling it
-      // figure: true,    // Figure 图表工具
-
-      // 其他
-      // component: true, // insert component easily
-      // gfm: true,       // Github风格的md，是CommonMark的超集，GitHub Flavored Markdown，见 https://github.github.com/gfm/
-      // playground: {    // 在线代码演示设置
-      //   presets: ["ts", "vue"], // 预设
-      // },
-      // vuePlayground: true, // Vue 实验场, install @vue/repl before enabling it
-      // revealJs: {      // install reveal.js before enabling it
-      //   plugins: ["highlight", "math", "search", "notes", "zoom"],
-      // },
-      // stylize: [       // 样式化工具
-      //   {              // 匹配器
-      //     matcher: "Recommended",
-      //                  // 替换器，这里判断如果标签为 "em" 就替换成 "Badge" 标签，并设置相关的属性和内容
-      //     replacer: ({ tag }) => {
-      //       if (tag === "em")
-      //         return {
-      //           tag: "Badge",
-      //           attrs: { type: "tip" },
-      //           content: "Recommended",
-      //         };
-      //     },
-      //   },
-      // ],
-      // vPre: true,      // Vue 预处理，Mustache 语法
-    },
-  }
-}
-
-export default hopeTheme(
-  { ...themeOptions, ...(themeOptions3 as any), ...(themeOptions2 as any) },
-  { custom: true }
-);
+    // 如果你需要 PWA。安装 @vuepress/plugin-pwa 并取消下方注释
+    // pwa: {
+    //   favicon: "/favicon.ico",
+    //   cacheHTML: true,
+    //   cacheImage: true,
+    //   appendBase: true,
+    //   apple: {
+    //     icon: "/assets/icon/apple-icon-152.png",
+    //     statusBarColor: "black",
+    //   },
+    //   msTile: {
+    //     image: "/assets/icon/ms-icon-144.png",
+    //     color: "#ffffff",
+    //   },
+    //   manifest: {
+    //     icons: [
+    //       {
+    //         src: "/assets/icon/chrome-mask-512.png",
+    //         sizes: "512x512",
+    //         purpose: "maskable",
+    //         type: "image/png",
+    //       },
+    //       {
+    //         src: "/assets/icon/chrome-mask-192.png",
+    //         sizes: "192x192",
+    //         purpose: "maskable",
+    //         type: "image/png",
+    //       },
+    //       {
+    //         src: "/assets/icon/chrome-512.png",
+    //         sizes: "512x512",
+    //         type: "image/png",
+    //       },
+    //       {
+    //         src: "/assets/icon/chrome-192.png",
+    //         sizes: "192x192",
+    //         type: "image/png",
+    //       },
+    //     ],
+    //     shortcuts: [
+    //       {
+    //         name: "Demo",
+    //         short_name: "Demo",
+    //         url: "/demo/",
+    //         icons: [
+    //           {
+    //             src: "/assets/icon/guide-maskable.png",
+    //             sizes: "192x192",
+    //             purpose: "maskable",
+    //             type: "image/png",
+    //           },
+    //         ],
+    //       },
+    //     ],
+    //   },
+    // },
+  },
+});

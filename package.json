@@ -1,45 +1,20 @@
 {
   "name": "linczero-vuepress",
-  "version": "1.0.0",
   "description": "Linc's WebSite",
+  "version": "1.0.0",
   "license": "GPLv3",
   "type": "module",
   "scripts": {
-    "docs:build": "pnpm check-mem && vuepress-vite build src",
+    "docs:build": "vuepress-vite build src",
     "docs:clean-dev": "vuepress-vite dev src --clean-cache",
     "docs:dev": "vuepress-vite dev src",
-    "docs:update-package": "pnpm dlx vp-update",
-    "check-mem": "node --max-old-space-size=10240 -e 'console.log(v8.getHeapStatistics())'",
-    "gen-config": "node ./scripts/generate_config.cjs"
+    "docs:update-package": "pnpm dlx vp-update"
   },
   "devDependencies": {
-    "@nolebase/markdown-it-bi-directional-links": "^2.12.0",
-    "@vuepress/bundler-vite": "2.0.0-rc.8",
-    "@vuepress/plugin-docsearch": "2.0.0-rc.21",
-    "@vuepress/utils": "2.0.0-rc.2",
-    "@vueuse/core": "^10.9.0",
-    "any-block-converter-markdown-it": "3.1.3-beta11",
-    "jsdom": "^24.1.1",
-    "markdown-it": "^14.1.0",
-    "markdown-it-container": "^4.0.0",
-    "markdown-it-obsidian-callouts": "^0.2.6",
-    "markmap-lib": "^0.18.5",
-    "markmap-toolbar": "^0.18.5",
-    "markmap-view": "^0.18.5",
-    "plantuml-encoder": "^1.4.0",
-    "vue": "^3.4.21",
-    "vue-router": "^4.5.0",
-    "vuepress": "2.0.0-rc.8",
-    "vuepress-theme-hope": "2.0.0-rc.31"
-  },
-  "dependencies": {
-    "@dagrejs/dagre": "^1.1.4",
-    "@mermaid-js/mermaid-mindmap": "^9.3.0",
-    "@vue-flow/background": "^1.3.0",
-    "@vue-flow/core": "^1.41.2",
-    "@vuepress/helper": "2.0.0-rc.19",
-    "d3": "^7.9.0",
-    "katex": "^0.16.9",
-    "mermaid": "^10.9.1"
+    "@vuepress/bundler-vite": "2.0.0-rc.19",
+    "sass-embedded": "^1.83.0",
+    "vue": "^3.5.13",
+    "vuepress": "2.0.0-rc.19",
+    "vuepress-theme-hope": "2.0.0-rc.71"
   }
 }
