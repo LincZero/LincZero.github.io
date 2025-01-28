@@ -41,7 +41,7 @@ async function onInitialized2(app: App) {
       newPath = ((page: string) => {
         const title_arr = page.split('/')
         let title = title_arr.pop()?.replace(/\.md$/, '').replace(/\.html$/, '')
-        if (!title) return "undefined"
+        if (!title) return "/" // root
         if (title == "README" && title_arr.length>1) { title = title_arr[title_arr.length-2] + "/" }
         return decodeURIComponent(title)
       })(newPath);
