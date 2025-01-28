@@ -356,6 +356,7 @@ button { // h:(26+4+0)+4
 
 // (附加) 横向滚动优化。要点：不能影响到控制栏的位置 (不然不好连续按`>/<`键)，扩大可用区域
 .root-sidebar {
+  margin-top: 8px;
   >.root-sidebar-content {
     overflow-x: auto;
     transform: scaleY(-1); // 让滚动条置于上方

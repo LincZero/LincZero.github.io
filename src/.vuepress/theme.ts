@@ -65,12 +65,13 @@ export const themeOptions: ThemeOptions = {
     // flowchart: true,   // 在启用之前安装 flowchart.ts
     // chartjs: true,     // 在启用之前安装 chart.js
     // figure: true,      // Figure 图表工具
-    markdownMath: {
-      // 启用前安装 katex
-      type: "katex",
-      // 或者安装 mathjax-full
-      // type: "mathjax",
-    },
+    math: true,           // 数学公式
+    // markdownMath: {    // (这个疑似有bug)
+    //   // 启用前安装 katex
+    //   type: "katex",
+    //   // 或者安装 mathjax-full
+    //   // type: "mathjax",
+    // },
 
     // 其他
     tasklist: true,       // 任务列表

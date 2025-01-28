@@ -31,6 +31,33 @@ export default (options, ctx) => {
  * }
  */
 async function onInitialized2(app: App) {
+  // 无h1可能会存在的问题:
+  // 1. data.title, 会在正文顶部显示 (默认front>h1>空，视觉影响不大。但title可能会影响seo)
+  // 2. shortTitle，会影响原侧边栏和翻页显示的文本 (默认h1>fullpath with encode, 后者极度丑陋)
+  // 这里尽量填充一下这些问题
+  for (let i = 0; i<app.pages.length; i++) {
+    if (app.pages[i].data.title.length == 0) {
+      let newPath = app.pages[i].data.path;
+      newPath = ((page: string) => {
+        const title_arr = page.split('/')
+        let title = title_arr.pop()?.replace(/\.md$/, '').replace(/\.html$/, '')
+        if (!title) return "undefined"
+        if (title == "README" && title_arr.length>1) { title = title_arr[title_arr.length-2] + "/" }
+        return decodeURIComponent(title)
+      })(newPath);
+      app.pages[i].data.title = newPath
+
+      // app.pages[i].data.frontmatter.title = newPath
+      // app.pages[i].frontmatter.title = newPath
+      // app.pages[i].data.shortTitle = newPath
+      // app.pages[i].shortTitle = newPath
+      // app.pages[i].data.frontmatter.shortTitle = newPath
+      // app.pages[i].frontmatter.shortTitle = newPath
+      // app.pages[i].routeMeta.title = newPath
+      app.pages[i].routeMeta.s = newPath // 有毒，这个才是真 "shortTitle"
+    }
+  }
+
   /**
    * 对.json后缀进行处理 (需要先设置pagePatterns允许解析json，否则这里遍历不到json文件)
    * 这里编辑对应的page信息，视情况甚至可以createPage替换、新增、去除
