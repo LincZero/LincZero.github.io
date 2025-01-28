@@ -52,7 +52,8 @@ html[data-theme="dark"] #app{
   --ab-tab-root-bd-color: var(--border-color); // --code-border-color
   --ab-tab-root-tx-color: var(--text-color);   // --code-color
 
-  --ab-bright-color: var(--theme-color);
+  // --ab-bright-color: var(--theme-color);    // 旧版vuepress
+  --ab-bright-color: var(--vp-c-accent);       // 新版vuepress
   --pre-background-color: var(--code-bg-color);
 }
 html[data-theme="light"] #app {
