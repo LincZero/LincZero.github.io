@@ -333,9 +333,9 @@ function abRender_fence(md: MarkdownIt, options?: Partial<Options>): void {
         return `<img src="${absoluteUrl}"`;
       })
       // link
-      ret = ret.replace(/<routelink to="(\.[^"]+)">([^<]*)<\/routelink>/g, (match, relativePath, linkContent) => {
+      ret = ret.replace(/<routelink to="([^"]+)">([^<]*)<\/routelink>/g, (match, relativePath, linkContent) => {
         const absoluteUrl:string = "/" + rootPath + relativePath;
-        return `<a href="${absoluteUrl}">${linkContent}</a>`;
+        return `<a class="route-link" href="${absoluteUrl}">${linkContent}</a>`;
       })
     }
 
