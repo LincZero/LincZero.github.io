@@ -734,7 +734,6 @@ html[data-theme="dark"] #app {
 }
 
 .ab-note .ab-items.ab-card .ab-items-item .ab-items-title {
-  color: var(--ab-bright-color);
   border-bottom: 1px solid var(--ab-bright-color);
 }
 
