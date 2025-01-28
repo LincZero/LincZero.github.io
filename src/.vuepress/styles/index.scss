@@ -1,1 +1,97 @@
 // place your custom styles here
+@import 'linc_rainbow.scss';
+@import '../plugin/ABConvertManager/src/style/styles.scss';
+@import '../plugin/VueFlowPlugin/NodeFlow/style/vue_custom.scss';
+@import '../plugin/callout/index.scss';
+//@import 'linc_wide.scss';
+
+/**
+ * 加宽
+ *
+ * 一些常见宽度： (前面是能显示文字的范围，后面是加上padding。一般我们只看前者)
+ * ob默认700，我修改成了830
+ * github默认 readme 830~894, issue 806~838, discussions 870~904
+ * vp默认764~844 (左右padding各40)，调整后 820~900
+ */
+:root {
+  --content-width: calc(820px + 16px); // 默认是 764+16=780
+}
+
+// 首页首banner加高
+#main-content > header.vp-hero-info-wrapper {
+  // height: 700px !important; // calc(100vh - 60px)
+  height: calc(100vh - 60px);
+}
+#main-content > div.vp-feature-wrapper {
+  height: calc(50vh - 30px);
+}
+
+// 目录树项不换行
+#sidebar {
+  overflow-x: auto;
+  >ul.vp-sidebar-links {
+    min-width: max-content; 
+  }
+}
+
+// 滑动条
+.vp-sidebar {
+  scrollbar-color: initial;
+}
+
+// 代码块制表制表符。可以用 .language-c 为不同语言设置
+pre code {
+  tab-size: 4;
+}
+
+// 列表 (fix: Chrome默认的点消失了)
+li {
+  list-style-type: disc;
+}
+li li {
+  list-style-type: circle;
+}
+li li li {
+  list-style-type: square;
+}
+
+// 内联样式
+html[data-theme="dark"] {
+  // 加粗
+  strong {
+    color: #f56c6c;
+  }
+  // 斜体
+  em {
+    color: #ffff88;
+  }
+}
+
+// 背景色
+html[data-theme="dark"] {
+  --bg-color: #1f1f1f; // 由深到浅：原 #0d1117、vsc #1f1f1f、ob #242424
+  --bg-color-secondary: #181818; // 由深到浅：原 #161b22、vsc #181818、ob #1b1b1b
+}
+
+.theme-hope-content:not(.custom)>p {
+  text-align: inherit;  // 主题这里默认是justify，很奇怪
+}
+
+// ------------------------ 特殊 -------------------------------
+/**
+ * 如果您使用的不是vuepress-hope-theme或不是最新版本，请在任意样式文件添加仿照下述代码补全css变量
+ */
+html {
+  /* 文字色 */
+  --vp-c-text-1: var(--text-color);
+  --vp-c-text: var(--text-color);
+  /* 激活色 */
+  --vp-c-accent: var(--theme-color);
+  /* 边框色 */
+  --vp-c-divider: var(--border-color);
+  --vp-c-brand: var(--border-color);
+  /* 背景色 */
+  --vp-c-bg: var(--bg-color);
+  --vp-c-bg-mute: var(--bg-color);
+  --vp-c-bg-soft: var(--bg-color);
+}

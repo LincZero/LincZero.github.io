@@ -15,7 +15,7 @@ export const themeOptions2 = {
     url: "https://github.com/LincZero/",
   },
   repo: "LincZero/LincZero.github.io",
-  iconAssets: "fontawesome-with-brands",
+  // iconAssets: "fontawesome-with-brands", // @deprecated
   logo: "/logo.svg",
 
   // 导航类
@@ -29,6 +29,7 @@ export const themeOptions2 = {
       },
     },
   },
+  // displayFooter: true, footer: "自用，未经许可禁止转载任何内容 | Copyright © 2015-present LincZero",
   encrypt: {
     config: {
       "/MdNote_Private/": ["dfajiohjffolwseinf"],
