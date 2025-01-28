@@ -69,6 +69,9 @@ importers:
       vue:
         specifier: ^3.5.13
         version: 3.5.13
+      vue-router:
+        specifier: ^4.5.0
+        version: 4.5.0(vue@3.5.13)
       vuepress:
         specifier: 2.0.0-rc.19
         version: 2.0.0-rc.19(@vuepress/bundler-vite@2.0.0-rc.19(@types/node@22.12.0)(sass-embedded@1.83.4)(yaml@2.7.0))(vue@3.5.13)
