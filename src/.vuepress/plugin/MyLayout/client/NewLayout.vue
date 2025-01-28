@@ -10,7 +10,7 @@
 import CommonWrapper from "vuepress-theme-hope/client/components/CommonWrapper.js";
 import NormalPage from "vuepress-theme-hope/client/components/NormalPage.js";
 import SkipLink from "vuepress-theme-hope/client/components/SkipLink.js";
-import FadeSlideY from "vuepress-theme-hope/client/components/transitions/FadeSlideY.js";
+import { FadeSlideY } from "vuepress-theme-hope/client/components/transitions/FadeSlideY.js";
 
 // import Sidebar from "vuepress-theme-hope/client/modules/sidebar/components/Sidebar.js";
 // import { useSidebarItems } from "vuepress-theme-hope/client/modules/sidebar/composables/index";

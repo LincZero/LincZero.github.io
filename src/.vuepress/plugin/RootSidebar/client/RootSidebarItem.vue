@@ -192,7 +192,7 @@ li {
 
 // 悬浮、被选中
 .sidebar-item-name.file.active {
-  background-color: var(--theme-color-mask);
+  background-color: var(--vp-c-accent-soft);
   border-radius: 8px;
 }
 .sidebar-item-name:hover{
@@ -200,7 +200,7 @@ li {
   border-radius: 8px;
 }
 .router-link-active {
-  color: var(--theme-color);
+  color: var(--vp-c-accent);
 }
 
 // 这个是我自己的个人样式

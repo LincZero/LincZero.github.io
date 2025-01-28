@@ -312,7 +312,7 @@ button { // h:(26+4+0)+4
     padding: 0px 1px !important; border: solid 2px currentColor; // 各让2px padding给border
     // line-height: 22px;
     // background-color: #f0f0f011;
-    background-color: var(--theme-color-mask);
+    background-color: var(--vp-c-accent-soft);
     // 或使用 var(--theme-color-mask); // 一种更浅的 --theme-color
   }
 }
@@ -369,7 +369,7 @@ button { // h:(26+4+0)+4
 // (附加) 颜色, 配色可以自己通过自定义变量调，不自带配色方案
 .root-sidebar-breadcrumb>button {
   &[relDeep="0"] { 
-    padding: 0px 1px !important; border: solid 2px var(--theme-color); // 各让1px padding给border
+    padding: 0px 1px !important; border: solid 2px var(--vp-c-accent); // 各让1px padding给border
     line-height: 22px;
     border-radius: 6px;
   }

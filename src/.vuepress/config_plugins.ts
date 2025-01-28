@@ -10,22 +10,22 @@ const plugins: PluginConfig = [
   newPageHook,
   vueflowPlugin,
   exFormat,
-  // relational_graph({
-  //   localGraphDeep: 1, // 最大深度，默认20
-  //   foldEmptyGraph: true,
-  //   graphMaxWidth: 300,
-  //   graphHeight: 300,
-  //   titleGetter: (page: any) => {
-  //     const title_arr = (page.filePathRelative as string).split('/')
-  //     let title = title_arr.pop()?.replace(/\.md$/, '')
-  //     if (!title) return "undefined"
-  //     if (title == "README" && title_arr.length>1) { title = title_arr[title_arr.length-2] + "/" }
-  //     return title
-  //   },
-  //   // enableGlobalGraph: true,
-  // }),
-  // rootSidebar,
-  // myLayout, // 非通用的自定义布局，必须最后加载，便于覆盖其他插件的自定义布局行为
+  relational_graph({
+    localGraphDeep: 1, // 最大深度，默认20
+    foldEmptyGraph: true,
+    graphMaxWidth: 300,
+    graphHeight: 300,
+    titleGetter: (page: any) => {
+      const title_arr = (page.filePathRelative as string).split('/')
+      let title = title_arr.pop()?.replace(/\.md$/, '')
+      if (!title) return "undefined"
+      if (title == "README" && title_arr.length>1) { title = title_arr[title_arr.length-2] + "/" }
+      return title
+    },
+    // enableGlobalGraph: true,
+  }),
+  rootSidebar,
+  myLayout, // 非通用的自定义布局，必须最后加载，便于覆盖其他插件的自定义布局行为
 ]
 
 export default plugins
