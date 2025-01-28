@@ -80,6 +80,7 @@ jobs:
           git clone --depth 1 https://github.com/${GITHUB_REPOSITORY}.git temp_repo 
 
           # 该仓库为代理仓库，使用链接仓库而非此仓库
+          # TODO 支持agency多个仓库。如果想更通用，干脆支持直接运行agency里的命令组
           if [ -f temp_repo/agency ]; then
             GIT_LINK=$(head -n 1 temp_repo/agency)
             rm -rf temp_repo
