@@ -12,7 +12,6 @@ export const themeOptions: ThemeOptions = {
     url: "https://github.com/LincZero/",
   },
   repo: "LincZero/LincZero.github.io",
-  // iconAssets: "fontawesome-with-brands", // @deprecated
   logo: "/logo.svg",
 
   // 导航类
@@ -115,9 +114,9 @@ export const themeOptions: ThemeOptions = {
     components: {         // 内置组件
       components: ["PDF"], // "Badge", "VPCard"
     },
-    // icon: {
-    //   prefix: "fa6-solid:",
-    // },
+    icon: {               // icon组件
+      prefix: "fa6-solid:",
+    },
     docsearch: {          // 文档搜索插件
       appId: "247IUCFQ4Q",
       apiKey: "b8883b05027bfa9fc73f21286ed7395e", // 707332eeb6a1daf0e6ecfbb63e27afbc
