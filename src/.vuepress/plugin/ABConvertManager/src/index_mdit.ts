@@ -334,7 +334,9 @@ function abRender_fence(md: MarkdownIt, options?: Partial<Options>): void {
       })
       // link
       ret = ret.replace(/<routelink to="([^"]+)">([^<]*)<\/routelink>/g, (match, relativePath, linkContent) => {
-        const absoluteUrl:string = "/" + rootPath + relativePath;
+        let absoluteUrl:string = ""
+        if ((relativePath as string).startsWith("/")) absoluteUrl = relativePath
+        else absoluteUrl = "/" + rootPath + relativePath;
         return `<a class="route-link" href="${absoluteUrl}">${linkContent}</a>`;
       })
     }
