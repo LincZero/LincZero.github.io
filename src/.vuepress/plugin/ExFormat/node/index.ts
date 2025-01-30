@@ -64,9 +64,17 @@ async function onInitialized2(app: App) {
    */
   for (let i = 0; i<app.pages.length; i++) {
     const page = app.pages[i]
-    if (page.path.endsWith(".json")) {
-      // console.log("旧页面信息---\n", page)
-      // console.log("新页面信息---\n", newPage)
+    // {
+    //   const page2 = JSON.parse(JSON.stringify(page))
+    //   if (page2.data.excerpt) delete page2.data.excerpt
+    //   if (page2.content) delete page2.content
+    //   if (page2.contentRendered) delete page2.contentRendered
+    //   if (page2.routeMeta.e) delete page2.routeMeta.e
+    //   if (page2.sfcBlocks) delete page2.sfcBlocks
+    //   console.log("page---\n", page2)
+    // }
+    if (page.path.endsWith(".json") || page.path.endsWith(".json.html")) { // vuepress旧版本.json结尾，新版本.json.html结尾
+      // console.log("json类型---\n")
       page.path = page.path+"/"
       page.frontmatter.layout = 'Layout'
       page.content = "```nodeflow-comfyui\n" + page.content + "\n```"
