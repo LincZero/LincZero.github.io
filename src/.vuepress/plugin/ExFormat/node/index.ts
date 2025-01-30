@@ -1,11 +1,14 @@
 import { App, createPage, defineUserConfig, type UserConfig } from "vuepress";
+import { getDirname, path } from "@vuepress/utils"
 
 import * as fs from 'fs';                                     // 用于public静态资源扩展
-import * as path from 'path';
+
+const __dirname = getDirname(import.meta.url)
 
 export default (options, ctx) => {
   return {
-    name: 'vuepress-plugin-pdf',
+    name: 'vuepress-plugin-exFormat',
+    // clientConfigFile: path.resolve(__dirname, '../client/clientConfig.ts'),
     onInitialized: onInitialized2
   }
 }
@@ -75,13 +78,13 @@ async function onInitialized2(app: App) {
     // }
     if (page.path.endsWith(".json") || page.path.endsWith(".json.html")) { // vuepress旧版本.json结尾，新版本.json.html结尾
       // console.log("json类型---\n")
-      page.path = page.path+"/"
+      page.path = page.path // vuepress旧版本要 +"/" 才能成功
       page.frontmatter.layout = 'Layout'
       page.content = "```nodeflow-comfyui\n" + page.content + "\n```"
       if(page.sfcBlocks.template?.contentStripped) page.sfcBlocks.template.contentStripped = // HTML内容以这个为准
         app.markdown.render(page.content) // 重新渲染该页 (好像删了某些东西就会自动重新渲染，不需要手动这一步？)
     }
-    else if (page.path.endsWith(".pdf")) {}
+    else if (page.path.endsWith(".pdf") || page.path.endsWith(".pdf.html")) {}
   }
 
   /**
@@ -92,6 +95,8 @@ async function onInitialized2(app: App) {
    * async function traverseDirectory(directory: string) {
    *   await fsPromise.readdir(directory, { withFileTypes: true }, async (err, files) => {})
    * await traverseDirectory("./src/.vuepress/public/docs");
+   * 
+   * 话说新版本vuepress在dev环境下，pdf页失效。在build环境才正常回来
    */
   {
     // 创建虚拟页
@@ -100,7 +105,7 @@ async function onInitialized2(app: App) {
       const newPage = await createPage(app, {
         path: (`/MdNote_Other/docs/${path}/`), // TODO TMP
         frontmatter: { layout: 'Layout', },
-        content: `# PUBLICDOCS/${path}\n<PDF url="/docs/${path}" height="1000px" zoom="auto" noFullscreen="false"/>`,
+        content: `# PUBLICDOCS/${path}\n<!--path:/docs/${path}-->\n<PDF url="/docs/${path}" height="1000px" zoom="auto" noFullscreen="false"/>`,
       })
       newPage.filePathRelative = `MdNote_Other/docs/${path}` // 侧边栏显示的关键
       app.pages.push(newPage)

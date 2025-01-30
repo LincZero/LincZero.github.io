@@ -55,7 +55,7 @@ import GlobalGraph from "../../BiGraph/client/components/globalGraph.vue";
  * 
  * 如果您使用的不是vuepress-hope-theme或不是最新版本，请在任意样式文件添加仿照下述代码补全css变量
  */
- html {
+html {
   /* 文字色 */
   --vp-c-text-1: var(--text-color);
   --vp-c-text: var(--text-color);
