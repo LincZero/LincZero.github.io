@@ -7,8 +7,6 @@
  * 这些操作统一注册在此处
  */
 
-import { MarkdownEditView } from "obsidian";
-
 /**
  * 一些AB块的后触发事件 - css加载完触发
  * 
@@ -40,7 +38,7 @@ export function abConvertEvent(d: Element|Document) {
   if (d.querySelector('.ab-nodes-node')) {
     const els_min = document.querySelectorAll(".ab-nodes.min .ab-nodes-node");
     const list_children = d.querySelectorAll(".ab-nodes-node")
-    for (let children of list_children) {
+    for (const children of list_children) {
       // 元素准备
       const el_content = children.querySelector(".ab-nodes-content") as HTMLElement; if (!el_content) continue
       const el_child = children.querySelector(".ab-nodes-children") as HTMLElement; if (!el_child) continue
@@ -168,10 +166,14 @@ export function abConvertEvent(d: Element|Document) {
     }
   }
 
-  // list2card，瀑布流卡片顺序重调事件
-  if (d.querySelector('.ab-items.ab-card:not(.js-waterfall)')) {
-    const root_el_list = d.querySelectorAll(".ab-items.ab-card:not(.js-waterfall)")
-    for (let root_el of root_el_list) {
+  // tips: 这里说一下items布局的问题，TODO 是有计划将布局方式分开成一个独立的处理器，而部分布局需要js
+  // 普通纵向瀑布流: 纯css、有序纵向瀑布流: js
+  // 横向瀑布流: 纯css、高精度横向瀑布流: 未实现js
+
+  // list2card，纵向瀑布流 (等宽瀑布流) 顺序重调事件
+  if (d.querySelector('.ab-items.ab-lay-vfall:not(.js-waterfall):not(.ab-hfall)')) {
+    const root_el_list = d.querySelectorAll(".ab-items.ab-lay-vfall:not(.js-waterfall):not(.ab-hfall)")
+    for (const root_el of root_el_list) {
       // 1. 准备原元素
       root_el.classList.add("js-waterfall") // 避免：触发两次时，第二次触发会以第一次触发的顺序为基准，再进行调整
       const list_children = root_el.querySelectorAll(".ab-items-item")
@@ -191,15 +193,15 @@ export function abConvertEvent(d: Element|Document) {
       // const columnWidth = root_el.clientWidth / columnCount;
 
       // 2. 准备高度缓存、元素缓存
-      let height_cache:number[] = []; // 缓存每列的当前高度，每次将新元素添加到高度最底的列中
-      let el_cache:HTMLElement[][] = [];
+      const height_cache:number[] = []; // 缓存每列的当前高度，每次将新元素添加到高度最底的列中
+      const el_cache:HTMLElement[][] = [];
       for (let i = 0; i < columnCount; i++) {
         height_cache.push(0);
         el_cache.push([])
       }
 
       // 3. 得到顺序数组
-      for (let children of list_children) {
+      for (const children of list_children) {
         const minValue: number =  Math.min.apply(null, height_cache);
         const minIndex: number =  height_cache.indexOf(minValue)
         const heightTmp = parseInt(window.getComputedStyle(children).getPropertyValue("height"))
@@ -224,7 +226,7 @@ export function abConvertEvent(d: Element|Document) {
       // 4. 按顺序重新填入元素
       root_el.innerHTML = ""
       for (let i=0; i<columnCount; i++) {
-        for (let j of el_cache[i]) {
+        for (const j of el_cache[i]) {
           root_el.appendChild(j)
         }
       }

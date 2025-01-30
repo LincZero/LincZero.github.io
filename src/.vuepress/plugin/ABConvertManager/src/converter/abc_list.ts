@@ -523,7 +523,7 @@ export const abc_list2listdata = ABConvert.factory({
   id: "list2listdata",
   name: "列表到listdata",
   process_param: ABConvert_IOEnum.text,
-  process_return: ABConvert_IOEnum.list_strem,
+  process_return: ABConvert_IOEnum.list_stream,
   detail: "列表到listdata",
   process: (el, header, content: string): List_ListItem=>{
     return ListProcess.list2data(content) as List_ListItem
@@ -534,7 +534,7 @@ export const abc_title2listdata = ABConvert.factory({
   id: "title2listdata",
   name: "标题到listdata",
   process_param: ABConvert_IOEnum.text,
-  process_return: ABConvert_IOEnum.list_strem,
+  process_return: ABConvert_IOEnum.list_stream,
   detail: "标题到listdata",
   process: (el, header, content: string): List_ListItem=>{
     return ListProcess.title2data(content) as List_ListItem
@@ -544,7 +544,7 @@ export const abc_title2listdata = ABConvert.factory({
 const abc_listdata2list = ABConvert.factory({
   id: "listdata2list",
   name: "listdata到列表",
-  process_param: ABConvert_IOEnum.list_strem,
+  process_param: ABConvert_IOEnum.list_stream,
   process_return: ABConvert_IOEnum.text,
   detail: "listdata到列表",
   process: (el, header, content: List_ListItem): string=>{
@@ -554,10 +554,10 @@ const abc_listdata2list = ABConvert.factory({
 
 const abc_listdata2nodes = ABConvert.factory({
   id: "listdata2nodes",
-  name: "listdata到节点",
-  process_param: ABConvert_IOEnum.list_strem,
+  name: "listdata到节点图",
+  process_param: ABConvert_IOEnum.list_stream,
   process_return: ABConvert_IOEnum.el,
-  detail: "listdata到节点",
+  detail: "listdata到节点图",
   process: (el, header, content: List_ListItem): HTMLElement=>{
     return ListProcess.data2nodes(content, el) as HTMLElement
   }
@@ -566,8 +566,9 @@ const abc_listdata2nodes = ABConvert.factory({
 const abc_listdata2strict = ABConvert.factory({
   id: "listdata2strict",
   name: "listdata严格化",
-  process_param: ABConvert_IOEnum.list_strem,
-  process_return: ABConvert_IOEnum.list_strem,
+  process_param: ABConvert_IOEnum.list_stream,
+  process_return: ABConvert_IOEnum.list_stream,
+  detail: "将列表数据转化为更规范的列表数据。统一缩进符(2空格 4空格 tab混用)、禁止跳等级(h1直接就到h3)",
   process: (el, header, content: List_ListItem): List_ListItem=>{
     return ListProcess.data2strict(content)
   }

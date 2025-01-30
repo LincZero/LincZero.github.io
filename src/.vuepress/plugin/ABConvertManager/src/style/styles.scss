@@ -52,8 +52,8 @@ html[data-theme="dark"] #app{
   --ab-tab-root-bd-color: var(--border-color); // --code-border-color
   --ab-tab-root-tx-color: var(--text-color);   // --code-color
 
-  // --ab-bright-color: var(--theme-color);    // 旧版vuepress
-  --ab-bright-color: var(--vp-c-accent);       // 新版vuepress
+  // --ab-bright-color: var(--theme-color); // vuepress old version
+  --ab-bright-color: var(--vp-c-accent);
   --pre-background-color: var(--code-bg-color);
 }
 html[data-theme="light"] #app {
@@ -154,6 +154,31 @@ html[data-theme="dark"] #app {
     }
     &.ab-button-3 {
       right: 76px;
+    }
+    &.ab-button-select {
+      >* {
+        padding: 0 10px;
+        width: 24px;
+        height: 24px;
+        box-sizing: border-box;
+      }
+      >button {
+        padding: 0;
+        position: absolute;
+        pointer-events: none; // 点击穿透
+        z-index: 2;
+        text-align: center;
+        border: none;
+        box-shadow: none;
+        background: none;
+      }
+      >select {
+        z-index: 1;
+        opacity: 0; // select透明不影响option
+      }
+      option {
+        padding: 0 10px;
+      }
     }
   }
 
@@ -686,7 +711,7 @@ html[data-theme="dark"] #app {
     }
 
     // 卡片
-    &.ab-card{
+    &.ab-card {
       // 布局无关部分
       .ab-items-item {
         box-sizing: border-box; // 确保 padding 和 border 不影响元素的实际大小
@@ -699,8 +724,8 @@ html[data-theme="dark"] #app {
         padding: 5px 10px;
 
         &>div {
-          padding-top: 5px;
-          padding-bottom: 5px;
+          padding-top: 2px;
+          padding-bottom: 2px;
         }
 
         .ab-items-title {
@@ -712,53 +737,144 @@ html[data-theme="dark"] #app {
         }
       }
 
-      // 方式一，对齐, flex布局
-      /*display: flex; // Flexbox 布局
-      flex-wrap: wrap; // 元素换行显示
-      gap: 1rem; // 间隙
-      .ab-items-item {
-        flex: 1 0 calc(25% - 1rem); // 每个项目的宽度大约为容器的 33.33%，减去间隙的一半
-      }*/
+      // 布局1，纵向瀑布流 (有js)
+      &.ab-lay-vfall:not(.ab-hfall) {
+        // 方式一，对齐, flex布局
+        /*display: flex; // Flexbox 布局
+        flex-wrap: wrap; // 元素换行显示
+        gap: 1rem; // 间隙
+        .ab-items-item {
+          flex: 1 0 calc(25% - 1rem); // 每个项目的宽度大约为容器的 33.33%，减去间隙的一半
+        }*/
 
-      // 方式二，瀑布流, column-count方式
-      // 列数。其中ob默认700px宽，我定义的小宽度是800，大宽度是1100。假设一列加边框200px较好
-      column-count: 4; // css不支持查询ab.card的宽度，只能查屏幕，这个得让js来
-      // @media (max-width: 1400px) { column-count: 6; }
-      // @media (max-width: 1200px) { column-count: 5; }
-      // @media (max-width: 1000px) { column-count: 4; }
-      // @media (max-width: 800px) { column-count: 3; }
-      // @media (max-width: 600px) { column-count: 2; }
-      // @media (max-width: 400px) { column-count: 1; }
-      column-gap: 10px; // 列间距
-      .ab-items-item {
-        break-inside: avoid-column; // 防止单个元素被拆分到多列
+        // 方式二，瀑布流, column-count方式
+        // 列数。其中ob默认700px宽，我定义的小宽度是800，大宽度是1100。假设一列加边框200px较好
+        column-count: 4; // css不支持查询ab.card的宽度，只能查屏幕，这个得让js来
+        // @media (max-width: 1400px) { column-count: 6; }
+        // @media (max-width: 1200px) { column-count: 5; }
+        // @media (max-width: 1000px) { column-count: 4; }
+        // @media (max-width: 800px) { column-count: 3; }
+        // @media (max-width: 600px) { column-count: 2; }
+        // @media (max-width: 400px) { column-count: 1; }
+        column-gap: 10px; // 列间距
+        .ab-items-item {
+          break-inside: avoid-column; // 防止单个元素被拆分到多列
+        }
+
+        // 方式三，瀑布流, grid网格顺序，但兼容性有问题
+        /*display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 1rem; // 间隙
+        grid-template-rows: masonry; // 兼容有问题，只有火狐支持，还tm的要开选项
+        .ab-items-item {
+          width: 100%;
+          display: block;
+        }*/
+
+        // 方式四，瀑布流, flex布局，一定程度的排序 (非绝对)，但需要给一个合适的高度
+        /*display: flex;          // Flexbox 布局
+        flex-wrap: wrap; // 元素换行显示
+        // gap: 1rem;           // 间隙
+        flex-direction: column; // 按列填充
+        .ab-items-item {
+          position: relative;
+          width: calc(100% / 4);
+          padding: 5px;
+          box-sizing: border-box;
+          &:nth-child(4n+1){ order: 1; }
+          &:nth-child(4n+2){ order: 2; }
+          &:nth-child(4n+3){ order: 3; }
+          &:nth-child(4n+0){ order: 4; }
+        }*/
       }
 
-      // 方式三，瀑布流, grid网格顺序，但兼容性有问题
-      /*display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-gap: 1rem; // 间隙
-      grid-template-rows: masonry; // 兼容有问题，只有火狐支持，还tm的要开选项
-      .ab-items-item {
-        width: 100%;
-        display: block;
-      }*/
+      // 布局2，横向瀑布流
+      &.ab-lay-hfall {
+        // 布局无关
+        .ab-items-item .ab-items-title {
+          color: currentColor;
+          border-bottom: none;
+        }
 
-      // 方式四，瀑布流, flex布局，一定程度的排序 (非绝对)，但需要给一个合适的高度
-      /*display: flex;          // Flexbox 布局
-      flex-wrap: wrap; // 元素换行显示
-      // gap: 1rem;           // 间隙
-      flex-direction: column; // 按列填充
-      .ab-items-item {
-        position: relative;
-        width: calc(100% / 4);
-        padding: 5px;
-        box-sizing: border-box;
-        &:nth-child(4n+1){ order: 1; }
-        &:nth-child(4n+2){ order: 2; }
-        &:nth-child(4n+3){ order: 3; }
-        &:nth-child(4n+0){ order: 4; }
-      }*/
+        // flex方案 (但是文字会把卡片撑到100%，仅图片并且最好是做成background的形式，那就不错)
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        &::after { // 如果最后一行不够填满整行，则使用这个
+          content: "";
+          flex-grow: 99999;
+        }
+        >.ab-items-item {
+          flex-grow: 1;
+          margin: 5px;
+          padding: 0 10px;
+          position: relative;
+          overflow: hidden;
+          // 限制图片高度
+          img {
+            max-width: 100%;
+            min-width: 100%;
+            height: 200px;
+            margin: 0; // 这种布局下，默认认为最多只有一张图片，且该图片在title的位置
+            object-fit: cover; // 被裁减
+            vertical-align: bottom;
+          }
+          // 限制文字宽度 (否则文字稍长会导致一个卡片占一行)
+          p {
+            max-width: 300px;
+            margin: 0; // 这种布局下，默认认为最多只有一行文字
+          }
+          &>.ab-items-content {
+            height: 100%;
+            min-width: 100%;
+          }
+        }
+      }
+
+      // 布局3，网格整齐排列 (内容特别整齐时可用) (此处代码有点乱)
+      &.ab-lay-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 0px !important;
+        margin: 0 auto;
+        &::after {
+          content: "";
+          flex-grow: 99999;
+        }
+        >.ab-items-item {
+          position: relative;
+          overflow: hidden;
+          margin: 5px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center; /* 确保文字居中 */
+
+          img {
+            max-width: 200px;
+            max-height: 200px;
+            width: 100%; /* 确保图片宽度为100%，适应网格布局 */
+            height: auto;
+            margin: 0;
+          }
+          &>.ab-items-content {
+            width: 100%;
+            padding: 0;
+          }
+        }
+      }
+
+      // 布局4，横向滚动 (非循环)
+      &.ab-deco-scroll-x {
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        .ab-items-item {
+          flex: 0 0 auto;
+          width: 170px;
+        }
+      }
     }
 
     // 补充结合样式

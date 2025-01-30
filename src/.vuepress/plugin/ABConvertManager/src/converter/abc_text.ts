@@ -17,6 +17,7 @@ import {ABReg} from "../ABReg"
 const abc_quote = ABConvert.factory({
   id: "quote",
   name: "增加引用块",
+  detail: "在文本的每行前面加上 `> `",
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.text,
   process: (el, header, content: string): string=>{
@@ -29,7 +30,7 @@ const abc_code = ABConvert.factory({
   name: "增加代码块",
   match: /^code(\((.*)\))?$/,
   default: "code()",
-  detail: "不加`()`表示用原文本的第一行作为代码类型，括号类型为空表示代码类型为空",
+  detail: "在文本的前后均加上一行代码块围栏。不加`()`表示用原文本的第一行作为代码类型，括号类型为空表示代码类型为空",
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.text,
   process: (el, header, content: string): string=>{
@@ -43,6 +44,7 @@ const abc_code = ABConvert.factory({
 const abc_Xquote = ABConvert.factory({
   id: "Xquote",
   name: "去除引用块",
+  detail: "在文本的每行前面删除 `> `",
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.text,
   process: (el, header, content: string): string=>{
@@ -198,6 +200,7 @@ const abc_listroot = ABConvert.factory({
   name: "增加列表根",
   match: /^listroot\((.*)\)$/,
   default: "listroot(root)",
+  detail: "每行前面加两空格，并在首行插入 `- ` 开头的根列表项",
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.text,
   process: (el, header, content: string): string=>{
@@ -215,7 +218,7 @@ const abc_callout = ABConvert.factory({
   name: "callout语法糖",
   match: /^\!/,
   default: "!note",
-  detail: "需要obsidian 0.14版本以上来支持callout语法",
+  detail: "在首行插入`[!note]`等，并在每行前面加入 `> `。需要obsidian 0.14版本以上来支持callout语法",
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.text,
   process: (el, header, content: string): string=>{

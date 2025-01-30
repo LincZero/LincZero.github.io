@@ -145,6 +145,33 @@ html[data-theme="dark"] #app {
   right: 76px;
 }
 
+.ab-replace > .ab-button.ab-button-select > * {
+  padding: 0 10px;
+  width: 24px;
+  height: 24px;
+  box-sizing: border-box;
+}
+
+.ab-replace > .ab-button.ab-button-select > button {
+  padding: 0;
+  position: absolute;
+  pointer-events: none;
+  z-index: 2;
+  text-align: center;
+  border: none;
+  box-shadow: none;
+  background: none;
+}
+
+.ab-replace > .ab-button.ab-button-select > select {
+  z-index: 1;
+  opacity: 0;
+}
+
+.ab-replace > .ab-button.ab-button-select option {
+  padding: 0 10px;
+}
+
 .ab-replace img.cm-widgetBuffer {
   height: 2px;
 }
@@ -684,39 +711,6 @@ html[data-theme="dark"] #app {
   padding: 10px;
 }
 
-.ab-note .ab-items.ab-card {
-  /*display: flex; // Flexbox 布局
-      flex-wrap: wrap; // 元素换行显示
-      gap: 1rem; // 间隙
-      .ab-items-item {
-        flex: 1 0 calc(25% - 1rem); // 每个项目的宽度大约为容器的 33.33%，减去间隙的一半
-      }*/
-  column-count: 4;
-  column-gap: 10px;
-  /*display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-gap: 1rem; // 间隙
-      grid-template-rows: masonry; // 兼容有问题，只有火狐支持，还tm的要开选项
-      .ab-items-item {
-        width: 100%;
-        display: block;
-      }*/
-  /*display: flex;          // Flexbox 布局
-      flex-wrap: wrap; // 元素换行显示
-      // gap: 1rem;           // 间隙
-      flex-direction: column; // 按列填充
-      .ab-items-item {
-        position: relative;
-        width: calc(100% / 4);
-        padding: 5px;
-        box-sizing: border-box;
-        &:nth-child(4n+1){ order: 1; }
-        &:nth-child(4n+2){ order: 2; }
-        &:nth-child(4n+3){ order: 3; }
-        &:nth-child(4n+0){ order: 4; }
-      }*/
-}
-
 .ab-note .ab-items.ab-card .ab-items-item {
   box-sizing: border-box;
   color: var(--ab-tab-root-tx-color);
@@ -729,16 +723,141 @@ html[data-theme="dark"] #app {
 }
 
 .ab-note .ab-items.ab-card .ab-items-item > div {
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 .ab-note .ab-items.ab-card .ab-items-item .ab-items-title {
   border-bottom: 1px solid var(--ab-bright-color);
 }
 
-.ab-note .ab-items.ab-card .ab-items-item {
+.ab-note .ab-items.ab-card.ab-lay-vfall:not(.ab-hfall) {
+  /*display: flex; // Flexbox 布局
+        flex-wrap: wrap; // 元素换行显示
+        gap: 1rem; // 间隙
+        .ab-items-item {
+          flex: 1 0 calc(25% - 1rem); // 每个项目的宽度大约为容器的 33.33%，减去间隙的一半
+        }*/
+  column-count: 4;
+  column-gap: 10px;
+  /*display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 1rem; // 间隙
+        grid-template-rows: masonry; // 兼容有问题，只有火狐支持，还tm的要开选项
+        .ab-items-item {
+          width: 100%;
+          display: block;
+        }*/
+  /*display: flex;          // Flexbox 布局
+        flex-wrap: wrap; // 元素换行显示
+        // gap: 1rem;           // 间隙
+        flex-direction: column; // 按列填充
+        .ab-items-item {
+          position: relative;
+          width: calc(100% / 4);
+          padding: 5px;
+          box-sizing: border-box;
+          &:nth-child(4n+1){ order: 1; }
+          &:nth-child(4n+2){ order: 2; }
+          &:nth-child(4n+3){ order: 3; }
+          &:nth-child(4n+0){ order: 4; }
+        }*/
+}
+
+.ab-note .ab-items.ab-card.ab-lay-vfall:not(.ab-hfall) .ab-items-item {
   break-inside: avoid-column;
+}
+
+.ab-note .ab-items.ab-card.ab-lay-hfall {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.ab-note .ab-items.ab-card.ab-lay-hfall .ab-items-item .ab-items-title {
+  color: currentColor;
+  border-bottom: none;
+}
+
+.ab-note .ab-items.ab-card.ab-lay-hfall::after {
+  content: "";
+  flex-grow: 99999;
+}
+
+.ab-note .ab-items.ab-card.ab-lay-hfall > .ab-items-item {
+  flex-grow: 1;
+  margin: 5px;
+  padding: 0 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ab-note .ab-items.ab-card.ab-lay-hfall > .ab-items-item img {
+  max-width: 100%;
+  min-width: 100%;
+  height: 200px;
+  margin: 0;
+  object-fit: cover;
+  vertical-align: bottom;
+}
+
+.ab-note .ab-items.ab-card.ab-lay-hfall > .ab-items-item p {
+  max-width: 300px;
+  margin: 0;
+}
+
+.ab-note .ab-items.ab-card.ab-lay-hfall > .ab-items-item > .ab-items-content {
+  height: 100%;
+  min-width: 100%;
+}
+
+.ab-note .ab-items.ab-card.ab-lay-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0px !important;
+  margin: 0 auto;
+}
+
+.ab-note .ab-items.ab-card.ab-lay-grid::after {
+  content: "";
+  flex-grow: 99999;
+}
+
+.ab-note .ab-items.ab-card.ab-lay-grid > .ab-items-item {
+  position: relative;
+  overflow: hidden;
+  margin: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  /* 确保文字居中 */
+}
+
+.ab-note .ab-items.ab-card.ab-lay-grid > .ab-items-item img {
+  max-width: 200px;
+  max-height: 200px;
+  width: 100%;
+  /* 确保图片宽度为100%，适应网格布局 */
+  height: auto;
+  margin: 0;
+}
+
+.ab-note .ab-items.ab-card.ab-lay-grid > .ab-items-item > .ab-items-content {
+  width: 100%;
+  padding: 0;
+}
+
+.ab-note .ab-items.ab-card.ab-deco-scroll-x {
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.ab-note .ab-items.ab-card.ab-deco-scroll-x .ab-items-item {
+  flex: 0 0 auto;
+  width: 170px;
 }
 
 .ab-note .ab-items.ab-col1 {

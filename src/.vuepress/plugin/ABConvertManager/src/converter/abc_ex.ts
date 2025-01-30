@@ -12,6 +12,7 @@ const abc_faq = ABConvert.factory({
   id: "faq",
   name: "FAQ",
   match: "FAQ",
+  detail: "渲染常见问题/对话。每个项需以 `/^([a-zA-Z])(: |：)(.*)/` 开头",
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.el,
   process: (el, header, content: string): HTMLElement=>{
@@ -53,6 +54,7 @@ const abc_info = ABConvert.factory({
   id: "info",
   name: "INFO",
   match: "info",
+  detail: "查看当前软件版本下的注册处理器表",
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.el,
   process: (el, header, content: string): HTMLElement=>{
@@ -95,6 +97,7 @@ const abc_info_alias = ABConvert.factory({
   id: "info_alias",
   name: "INFO_Alias",
   match: "info_alias",
+  detail: "查看当前软件版本下的注册别名表",
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.json,
   process: (el, header, content: string): string=>{

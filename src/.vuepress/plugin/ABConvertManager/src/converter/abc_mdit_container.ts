@@ -9,11 +9,11 @@ import {ABReg} from "../ABReg"
 
 /// 按mdit-tabs的标准转化为二列列表数据
 function mditTabs2listdata(content:string, reg: RegExp): List_C2ListItem {
-  let list_line = content.split("\n")
+  const list_line = content.split("\n")
   let content_item: string = ""
-  let list_c2listItem: List_C2ListItem = []
+  const list_c2listItem: List_C2ListItem = []
   for (let line_index=0; line_index<list_line.length; line_index++) {
-    let line_content = list_line[line_index]
+    const line_content = list_line[line_index]
     const line_match = line_content.match(reg)
     if (line_match) {
       add_current_content()
@@ -47,7 +47,7 @@ const abc_mditTabs = ABConvert.factory({
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.el,
   process: (el, header, content: string): HTMLElement=>{
-    let c2listdata: List_C2ListItem = mditTabs2listdata(content, /^@tab(.*)$/)
+    const c2listdata: List_C2ListItem = mditTabs2listdata(content, /^@tab(.*)$/)
     C2ListProcess.c2data2tab(c2listdata, el, false)
     return el
   }
@@ -88,7 +88,7 @@ const abc_midt_co = ABConvert.factory({
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.el,
   process: (el, header, content: string): HTMLElement=>{
-    let c2listdata: List_C2ListItem = mditTabs2listdata(content, /^@col(.*)$/) // /^@[a-zA-Z]* (.*)$/
+    const c2listdata: List_C2ListItem = mditTabs2listdata(content, /^@col(.*)$/) // /^@[a-zA-Z]* (.*)$/
     C2ListProcess.c2data2items(c2listdata, el)
     el.querySelector("div")?.classList.add("ab-col")
     return el
@@ -101,9 +101,10 @@ const abc_midt_card = ABConvert.factory({
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.el,
   process: (el, header, content: string): HTMLElement=>{
-    let c2listdata: List_C2ListItem = mditTabs2listdata(content, /^@card(.*)$/) // /^@[a-zA-Z]* (.*)$/
+    const c2listdata: List_C2ListItem = mditTabs2listdata(content, /^@card(.*)$/) // /^@[a-zA-Z]* (.*)$/
     C2ListProcess.c2data2items(c2listdata, el)
     el.querySelector("div")?.classList.add("ab-card")
+    el.querySelector("div")?.classList.add("ab-lay-vfall")
     return el
   }
 })

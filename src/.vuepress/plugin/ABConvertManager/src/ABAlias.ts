@@ -103,10 +103,6 @@ const ABAlias_json_withSub: ABAlias_json_item[] = [
 
 // mdit块
 const ABAlias_json_mdit: ABAlias_json_item[] = [
-  // {regex: "|::: 140lne|info|", replacement: "|add([!info])|quote|"},
-  // {regex: "|::: 140lne|note|", replacement: "|add([!note])|quote|"},
-  // {regex: /\|::: 140lne\|(warn|warning)\|/, replacement: "|add([!warning])|quote|"},
-  // {regex: "|::: 140lne|error|", replacement: "|add([!error])|quote|"},
   {regex: /\|::: 140lne\|(2?tabs?|标签页?)\|/, replacement: "|mditTabs|"},
   {regex: "|::: 140lne|demo|", replacement: "|mditDemo|"},
   {regex: "|::: 140lne|abDemo|", replacement: "|mditABDemo|"},
@@ -122,7 +118,7 @@ const ABAlias_json_title: ABAlias_json_item[] = [
   {regex: /\|heading 140lne\|2?(timeline|时间线)\|/, replacement: "|title2timeline|"},
   {regex: /\|heading 140lne\|2?(tabs?|标签页?)\||\|title2tabs?\|/, replacement: "|title2c2listdata|c2listdata2tab|"},
   {regex: /\|heading 140lne\|2?(col|分栏)\||\|title2col\|/, replacement: "|title2c2listdata|c2listdata2items|addClass(ab-col)|"},
-  {regex: /\|heading 140lne\|2?(card|卡片)\||\|title2card\|/, replacement: "|title2c2listdata|c2listdata2items|addClass(ab-card)|"},
+  {regex: /\|heading 140lne\|2?(card|卡片)\||\|title2card\|/, replacement: "|title2c2listdata|c2listdata2items|addClass(ab-card)|addClass(ab-lay-vfall)|"},
   {regex: /\|heading 140lne\|2?(nodes?|节点)\||\|(title2node|title2abMindmap)\|/, replacement: "|title2listdata|listdata2strict|listdata2nodes|"},
 
   // list  - 多叉多层树
@@ -149,7 +145,7 @@ const ABAlias_json_list: ABAlias_json_item[] = [
   {regex: /\|list 140lne\|2?(timeline|时间线)\|/, replacement: "|list2timeline|"},
   {regex: /\|list 140lne\|2?(tabs?|标签页?)\||\|list2tabs?\|/, replacement: "|list2c2listdata|c2listdata2tab|"},
   {regex: /\|list 140lne\|2?(col|分栏)\||\|list2col\|/, replacement: "|list2c2listdata|c2listdata2items|addClass(ab-col)|"},
-  {regex: /\|list 140lne\|2?(card|卡片)\||\|list2card\|/, replacement: "|list2c2listdata|c2listdata2items|addClass(ab-card)|"},
+  {regex: /\|list 140lne\|2?(card|卡片)\||\|list2card\|/, replacement: "|list2c2listdata|c2listdata2items|addClass(ab-card)|addClass(ab-lay-vfall)|"},
   {regex: /\|list 140lne\|2?(nodes?|节点)\||\|(list2node|list2abMindmap)\|/, replacement: "|list2listdata|listdata2strict|listdata2nodes|"},
 
   // list  - 多叉多层树
@@ -189,7 +185,7 @@ const ABAlias_json_general: ABAlias_json_item[] = [
   {regex: "|滚动|", replacement: "|scroll|"},
   {regex: "|超出折叠|", replacement: "|overfold|"},
   {regex: "|转置|", replacement: "|transpose|"},
-  {regex: "|trs|", replacement: "|trs|"},
+  {regex: "|T|", replacement: "|transpose|"},
   // 便捷样式
   {regex: "|红字|", replacement: "|addClass(ab-custom-text-red)|"},
   {regex: "|橙字|", replacement: "|addClass(ab-custom-text-orange)|"},

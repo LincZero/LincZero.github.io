@@ -187,7 +187,7 @@ export class ABConvertManager {
               prev.prev_processor = "md"
             }
             else if (abReplaceProcessor.process_param==ABConvert_IOEnum.text &&
-              (prev.prev_type2==ABConvert_IOEnum.list_strem || prev.prev_type2==ABConvert_IOEnum.c2list_strem)
+              (prev.prev_type2==ABConvert_IOEnum.list_stream || prev.prev_type2==ABConvert_IOEnum.c2list_stream)
             ) { // 需要输入text，实际输入object，则插入一个object->text
               prev.prev_result = JSON.stringify(prev.prev_result, null, 2)
               prev.prev_type = typeof(prev.prev_result)
@@ -249,7 +249,7 @@ export class ABConvertManager {
     }
     // 数组流，用代码块表示
     else if (prev.prev_type == "object" &&
-      (prev.prev_type2 == ABConvert_IOEnum.list_strem || prev.prev_type2 == ABConvert_IOEnum.c2list_strem || prev.prev_type2 == ABConvert_IOEnum.json)
+      (prev.prev_type2 == ABConvert_IOEnum.list_stream || prev.prev_type2 == ABConvert_IOEnum.c2list_stream || prev.prev_type2 == ABConvert_IOEnum.json)
     ) {
       const code_str:string = "```json\n" + JSON.stringify(prev.prev_result, null, 2) + "\n```\n"
       const subEl = document.createElement("div"); el.appendChild(subEl);

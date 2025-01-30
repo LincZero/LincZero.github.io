@@ -17,12 +17,12 @@ import type { List_TableItem } from "./abc_table"
  * TODO 待增加一个list和json专用格式
  */
 export enum ABConvert_IOEnum {
-  text = "string", // string
-  el = "HTMLElement", // HTMLElement
-  // el_text = "string", // string
-  json = "json_string", // string
-  list_strem = "array", // object
-  c2list_strem = "array2", // object  
+  text = "string",          // string
+  el = "HTMLElement",       // HTMLElement
+  // el_text = "string",    // string
+  json = "json_string",     // string
+  list_stream = "array",    // object
+  c2list_stream = "array2", // object  
 }
 export type ABConvert_IOType =
   string|           // text/el_text
