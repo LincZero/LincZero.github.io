@@ -37,4 +37,35 @@ export const themeOptions2 = {
       "/MdNote_Public/03.%20SkillAndProduction": ["789456123"],
     },
   },
+
+  // 插件类 - 非md
+  plugins: {
+    components: {         // 内置组件
+      components: ["PDF"], // "Badge", "VPCard"
+    },
+    icon: {               // icon组件
+      prefix: "fa6-solid:",
+    },
+    blog: {               // 博客系统
+      article: "/MdNote_BlogHide/",
+    },
+
+    // 一些外部服务
+    seo: true,            // 搜索引擎优化
+    // 除了主文档用aligo的搜索服务外，其余快捷文档使用slimsearch
+    // slimsearch: {
+    //   // indexContent: true,
+    //   // indexOptions: {
+    //   //   // import { cut } from 'nodejs-jieba' // 注意：这个npm install时需要本地有: 有环境变量的python3.8+
+    //   //   // 使用 nodejs-jieba 进行分词 (仅中文)
+    //   //   tokenize: (text, fieldName) =>
+    //   //     fieldName === 'id' ? [text] : cut(text, true),
+    //   // },
+    // },
+    docsearch: {          // 文档搜索插件
+      appId: "247IUCFQ4Q",
+      apiKey: "b8883b05027bfa9fc73f21286ed7395e", // 707332eeb6a1daf0e6ecfbb63e27afbc
+      indexName: "linczeroio"
+    },
+  },
 }

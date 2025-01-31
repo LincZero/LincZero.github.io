@@ -103,6 +103,17 @@ export const themeOptions: ThemeOptions = {
 
   // 插件类 - 非md
   plugins: {
+    components: {         // 内置组件
+      components: ["PDF"], // "Badge", "VPCard"
+    },
+    icon: {               // icon组件
+      prefix: "fa6-solid:",
+    },
+    blog: {               // 博客系统
+      article: "/Blog/",
+    },
+
+    // 一些外部服务
     seo: true,            // 搜索引擎优化
     // comment: {         // 评论插件
     //   provider: "Giscus",
@@ -111,20 +122,7 @@ export const themeOptions: ThemeOptions = {
     //   category: "Announcements",
     //   categoryId: "DIC_kwDOG_Pt2M4COD69",
     // },
-    components: {         // 内置组件
-      components: ["PDF"], // "Badge", "VPCard"
-    },
-    icon: {               // icon组件
-      prefix: "fa6-solid:",
-    },
-    docsearch: {          // 文档搜索插件
-      appId: "247IUCFQ4Q",
-      apiKey: "b8883b05027bfa9fc73f21286ed7395e", // 707332eeb6a1daf0e6ecfbb63e27afbc
-      indexName: "linczeroio"
-    },
-    blog: {               // 博客系统
-      article: "/MdNote_BlogHide/",
-    },
+    slimsearch: true,
     // 如果你需要 PWA。安装 @vuepress/plugin-pwa 并取消下方注释
     // pwa: {
     //   favicon: "/favicon.ico",

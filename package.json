@@ -16,6 +16,7 @@
     "@nolebase/markdown-it-bi-directional-links": "^2.12.1",
     "@vuepress/bundler-vite": "2.0.0-rc.19",
     "@vuepress/plugin-docsearch": "2.0.0-rc.74",
+    "@vuepress/plugin-slimsearch": "2.0.0-rc.74",
     "@vuepress/utils": "2.0.0-rc.2",
     "jsdom": "^26.0.0",
     "markdown-it": "^14.1.0",
