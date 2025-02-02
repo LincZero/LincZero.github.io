@@ -12,12 +12,7 @@ import NormalPage from "vuepress-theme-hope/client/components/NormalPage.js";
 import SkipLink from "vuepress-theme-hope/client/components/SkipLink.js";
 import { FadeSlideY } from "vuepress-theme-hope/client/components/transitions/FadeSlideY.js";
 
-// import Sidebar from "vuepress-theme-hope/client/modules/sidebar/components/Sidebar.js";
-// import { useSidebarItems } from "vuepress-theme-hope/client/modules/sidebar/composables/index";
-// import SidebarLinks from "vuepress-theme-hope/client/modules/sidebar/components/SidebarLinks.js";
-// const sidebarItems = useSidebarItems()
-
-import RootSidebar from "../../RootSidebar/client/RootSidebar.vue"
+// import RootSidebar from "../../RootSidebar/client/RootSidebar.vue"
 
 import Backlink from "../../BiGraph/client/components/backlink.vue";
 import LocalRelationshipMap from "../../BiGraph/client/components/localRelationshipMap.vue";
