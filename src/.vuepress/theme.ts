@@ -34,6 +34,13 @@ export const themeOptions: ThemeOptions = {
   headerDepth: 6,
   sidebarSorter: ["readme", "order", "filename"],
 
+  // 导航类 - 布局
+  navbarLayout: {
+    start: ["Brand"],
+    center: ["Links"],
+    end: ["Language", "Repo", "Outlook", "Search", "ReadEnhance"],
+  },
+
   // 开发类
   // 如果想要实时查看任何改变，启用它。注: 这对更新性能有很大负面影响
   // hotReload: true,

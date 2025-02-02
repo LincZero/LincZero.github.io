@@ -33,6 +33,10 @@
  *       div.vue-flow__handle
  *     ...
  */
+:root {
+  --nf-min-height: 900px;
+}
+
 .common-node > .node-id {
   position: absolute;
   height: 0;
@@ -683,7 +687,7 @@
 }
 
 .theme-hope-content > div:first-child > .normal-size:first-child > .nf-shell-mini {
-  height: 900px;
+  height: var(--nf-min-height);
 }
 
 .dd-button {

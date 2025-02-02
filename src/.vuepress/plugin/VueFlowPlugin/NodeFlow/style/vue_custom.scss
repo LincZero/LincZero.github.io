@@ -38,6 +38,10 @@
  *     ...
  */
 
+:root {
+  --nf-min-height: 900px;
+}
+
 // 节点部分
 //   CommonNode.vue (Scope)  --------------------------------------------------------------------------------
 .common-node {
@@ -551,7 +555,7 @@
 
 // 用于独立显示模式 (期望匹配 `.json` 独立文件) (仅vuepress使用)
 .theme-hope-content>div:first-child>.normal-size:first-child>.nf-shell-mini {
-  height: 900px;
+  height: var(--nf-min-height);
 }
 
 // dropdownButton.vue
