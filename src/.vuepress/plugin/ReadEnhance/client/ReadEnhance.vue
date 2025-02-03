@@ -12,13 +12,16 @@
         布局切换
       </div>
       <div>
-        <button @click="fn_mode('1')" :class="{'is-activate': mode == '1'}" title="窄栏模式">
+        <button @click="fn_mode('narrow')" :class="{'is-activate': mode == 'narrow'}" title="窄栏模式">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shrink"><path d="m15 15 6 6m-6-6v4.8m0-4.8h4.8"/><path d="M9 19.8V15m0 0H4.2M9 15l-6 6"/><path d="M15 4.2V9m0 0h4.8M15 9l6-6"/><path d="M9 4.2V9m0 0H4.2M9 9 3 3"/></svg>
         </button>
-        <button  @click="fn_mode('2')" :class="{'is-activate': mode == '2'}" title="宽屏模式">
+        <button  @click="fn_mode('side')" :class="{'is-activate': mode == 'side'}" title="两侧模式">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-maximize-2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" x2="14" y1="3" y2="10"/><line x1="3" x2="10" y1="21" y2="14"/></svg>
+        </button>
+        <button  @click="fn_mode('wide')" :class="{'is-activate': mode == 'wide'}" title="宽屏模式">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-expand"><path d="m15 15 6 6"/><path d="m15 9 6-6"/><path d="M21 16.2V21h-4.8"/><path d="M21 7.8V3h-4.8"/><path d="M3 16.2V21h4.8"/><path d="m3 21 6-6"/><path d="M3 7.8V3h4.8"/><path d="M9 9 3 3"/></svg>
         </button>
-        <button  @click="fn_mode('3')" :class="{'is-activate': mode == '3'}" title="超宽屏模式">
+        <button  @click="fn_mode('super-wide')" :class="{'is-activate': mode == 'super-wide'}" title="超宽屏模式">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-maximize"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
         </button>
       </div>
@@ -33,7 +36,7 @@ const props = {}
 const isShowContent = ref(false)
 
 // 布局模式
-const mode = ref('1')
+const mode = ref('narrow')
 onMounted(()=>{
   // 获取 浏览器缓存
   if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
@@ -53,8 +56,26 @@ function fn_mode(n: string) {
   const el_sidebar: HTMLElement = document.querySelector("#sidebar")
   const el_mainContent: HTMLElement = document.querySelector("#main-content")
 
+  // 两侧模式
+  if (mode.value == 'side') {
+    if (el_toc) el_toc.style.display = "block";
+    if (el_start1) el_start1.style.display = "block";
+    if (el_end1) el_end1.style.display = "block";
+    if (el_end2) el_end2.style.display = "block";
+    if (el_end3) el_end3.style.display = "flex";
+
+    if (el_sidebar) el_sidebar.style.paddingInlineStart = "1rem";
+    if (el_mainContent) {
+      el_mainContent.style.paddingInlineStart = "calc(var(--sidebar-width) + 2rem)";
+      el_mainContent.style.paddingInlineEnd = "calc(var(--sidebar-width) + 2rem)";
+    }
+    if (el_root) {
+      el_root.style.setProperty('--content-width', 'calc(820px + 16px)');
+      el_root.style.setProperty('--nf-min-height', '900px');
+    }
+  }
   // 宽屏模式
-  if (mode.value == '2') {
+  else if (mode.value == 'wide') {
     if (el_toc) el_toc.style.display = "block";
     if (el_start1) el_start1.style.display = "block";
     if (el_end1) el_end1.style.display = "block";
@@ -72,7 +93,7 @@ function fn_mode(n: string) {
     }
   }
   // 超宽屏模式 (很多东西都省略显示，一般用于非md页)
-  else if (mode.value == '3') {
+  else if (mode.value == 'super-wide') {
     if (el_toc) el_toc.style.display = "none";
     if (el_start1) el_start1.style.display = "none";
     if (el_end1) el_end1.style.display = "none";
@@ -89,7 +110,7 @@ function fn_mode(n: string) {
       el_root.style.setProperty('--nf-min-height', 'calc(100vh - var(--navbar-height) - 140px)'); // my plugin
     }
   }
-  // 窄栏模式 (默认)
+  // 窄栏模式 (narrow, 默认)
   else {
     if (el_toc) el_toc.style.display = "block";
     if (el_start1) el_start1.style.display = "block";
@@ -143,7 +164,7 @@ function fn_mode(n: string) {
       margin-bottom: 8px;
     }
     button {
-      width: calc(33.33% - 7px);
+      width: calc(25% - 7px);
       height: 32px; // (20+8+4)
       padding: 4px;
       margin: 0 4px;
