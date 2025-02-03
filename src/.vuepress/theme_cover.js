@@ -38,6 +38,13 @@ export const themeOptions2 = {
     },
   },
 
+  // 导航类 - 布局
+  navbarLayout: {
+    start: ["Brand"],
+    center: ["Links"],
+    end: ["Language", "Repo", "Outlook", "Search", "ReadEnhance"],
+  },
+
   // 插件类 - 非md
   plugins: {
     components: {         // 内置组件

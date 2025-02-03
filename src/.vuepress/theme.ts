@@ -32,13 +32,13 @@ export const themeOptions: ThemeOptions = {
   // },
   toc: true,
   headerDepth: 6,
-  sidebarSorter: ["readme", "order", "filename"],
+  sidebarSorter: ["readme", "order", "filename"], // 话说用title才能解决文件夹和文件顺序的问题，用filename则不行
 
   // 导航类 - 布局
   navbarLayout: {
     start: ["Brand"],
-    center: ["Links"],
-    end: ["Language", "Repo", "Outlook", "Search", "ReadEnhance"],
+    center: [],
+    end: ["Links", "Language", "Repo", "Outlook", "Search", "ReadEnhance"],
   },
 
   // 开发类

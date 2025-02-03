@@ -15,6 +15,9 @@ name: 部署文档
 on:
   push:
     branches: ["main"] # 确保这是你正在使用的分支名称
+  schedule:
+    # 定时任务。建议多个仓库错开，避免多个仓库同一时间一起坏掉。我个人用键盘阵列映射周1~5。特别是代理仓库比较需要这个
+    - cron:  '30 10 * * 1' # 每周一10:30触发工作流
   workflow_dispatch:
 
 permissions:
