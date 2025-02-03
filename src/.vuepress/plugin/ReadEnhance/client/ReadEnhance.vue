@@ -36,7 +36,7 @@ const props = {}
 const isShowContent = ref(false)
 
 // 布局模式
-const mode = ref('narrow')
+const mode = ref('')
 onMounted(()=>{
   // 获取 浏览器缓存
   if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
@@ -45,7 +45,9 @@ onMounted(()=>{
   }
 })
 function fn_mode(n: string) {
-  mode.value = n
+  if (mode.value == n) { mode.value = "" } // 允许为空 (防止出bug的一种手段。毕竟有可能框架会更新，也有可能在其他平台如android上样式会不一样)
+  else { mode.value = n }
+  
   const el_root = document.documentElement;
   const el_toc: HTMLElement = document.querySelector("#toc")
   const el_start1: HTMLElement = document.querySelector(".vp-page-title")
@@ -110,8 +112,8 @@ function fn_mode(n: string) {
       el_root.style.setProperty('--nf-min-height', 'calc(100vh - var(--navbar-height) - 140px)'); // my plugin
     }
   }
-  // 窄栏模式 (narrow, 默认)
-  else {
+  // 窄栏模式 (narrow, 近似默认)
+  else if (mode.value == 'super-wide') {
     if (el_toc) el_toc.style.display = "block";
     if (el_start1) el_start1.style.display = "block";
     if (el_end1) el_end1.style.display = "block";
@@ -128,6 +130,8 @@ function fn_mode(n: string) {
       el_root.style.setProperty('--nf-min-height', '900px');
     }
   }
+  // 默认模式，需刷新起效
+  else {}
 
   // 存储 浏览器缓存
   if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
