@@ -32,7 +32,8 @@ const tot_link = computed(() => {
 
 <style scoped>
 .backlink-container {
-  margin: 20px 50px;
+  max-width: var(--content-width, 740px);
+  margin-inline: auto;
   padding: 10px;
   border-top: 1px solid #ddd;
 }
