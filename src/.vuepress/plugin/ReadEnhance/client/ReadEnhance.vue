@@ -12,13 +12,13 @@
         布局切换
       </div>
       <div>
-        <button @click="fn_mode(1)" :class="{'is-activate': mode == 1}">
+        <button @click="fn_mode('1')" :class="{'is-activate': mode == '1'}" title="窄栏模式">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shrink"><path d="m15 15 6 6m-6-6v4.8m0-4.8h4.8"/><path d="M9 19.8V15m0 0H4.2M9 15l-6 6"/><path d="M15 4.2V9m0 0h4.8M15 9l6-6"/><path d="M9 4.2V9m0 0H4.2M9 9 3 3"/></svg>
         </button>
-        <button  @click="fn_mode(2)" :class="{'is-activate': mode == 2}">
+        <button  @click="fn_mode('2')" :class="{'is-activate': mode == '2'}" title="宽屏模式">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-expand"><path d="m15 15 6 6"/><path d="m15 9 6-6"/><path d="M21 16.2V21h-4.8"/><path d="M21 7.8V3h-4.8"/><path d="M3 16.2V21h4.8"/><path d="m3 21 6-6"/><path d="M3 7.8V3h4.8"/><path d="M9 9 3 3"/></svg>
         </button>
-        <button  @click="fn_mode(3)" :class="{'is-activate': mode == 3}">
+        <button  @click="fn_mode('3')" :class="{'is-activate': mode == '3'}" title="超宽屏模式">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-maximize"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
         </button>
       </div>
@@ -27,13 +27,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 const props = {}
 
 const isShowContent = ref(false)
-const mode = ref(1)
 
-function fn_mode(n: number) {
+// 布局模式
+const mode = ref('1')
+onMounted(()=>{
+  // 获取 浏览器缓存
+  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+    const mode2 = localStorage.getItem('ReadEnahnce_mode');
+    if (mode2) fn_mode(mode2)
+  }
+})
+function fn_mode(n: string) {
   mode.value = n
   const el_root = document.documentElement;
   const el_toc: HTMLElement = document.querySelector("#toc")
@@ -46,7 +54,7 @@ function fn_mode(n: number) {
   const el_mainContent: HTMLElement = document.querySelector("#main-content")
 
   // 宽屏模式
-  if (mode.value == 2) {
+  if (mode.value == '2') {
     if (el_toc) el_toc.style.display = "block";
     if (el_start1) el_start1.style.display = "block";
     if (el_end1) el_end1.style.display = "block";
@@ -64,7 +72,7 @@ function fn_mode(n: number) {
     }
   }
   // 超宽屏模式 (很多东西都省略显示，一般用于非md页)
-  else if (mode.value == 3) {
+  else if (mode.value == '3') {
     if (el_toc) el_toc.style.display = "none";
     if (el_start1) el_start1.style.display = "none";
     if (el_end1) el_end1.style.display = "none";
@@ -81,7 +89,7 @@ function fn_mode(n: number) {
       el_root.style.setProperty('--nf-min-height', 'calc(100vh - var(--navbar-height) - 140px)'); // my plugin
     }
   }
-  // 默认
+  // 窄栏模式 (默认)
   else {
     if (el_toc) el_toc.style.display = "block";
     if (el_start1) el_start1.style.display = "block";
@@ -98,6 +106,11 @@ function fn_mode(n: number) {
       el_root.style.setProperty('--content-width', 'calc(820px + 16px)');
       el_root.style.setProperty('--nf-min-height', '900px');
     }
+  }
+
+  // 存储 浏览器缓存
+  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+    localStorage.setItem('ReadEnahnce_mode', mode.value);
   }
 }
 </script>
