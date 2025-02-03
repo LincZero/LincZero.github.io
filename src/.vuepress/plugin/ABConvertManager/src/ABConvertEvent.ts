@@ -171,8 +171,8 @@ export function abConvertEvent(d: Element|Document) {
   // 横向瀑布流: 纯css、高精度横向瀑布流: 未实现js
 
   // list2card，纵向瀑布流 (等宽瀑布流) 顺序重调事件
-  if (d.querySelector('.ab-items.ab-lay-vfall:not(.js-waterfall):not(.ab-hfall)')) {
-    const root_el_list = d.querySelectorAll(".ab-items.ab-lay-vfall:not(.js-waterfall):not(.ab-hfall)")
+  if (d.querySelector('.ab-items.ab-lay-vfall:not(.js-waterfall):not(.ab-lay-hfall):not(.ab-lay-grid)')) {
+    const root_el_list = d.querySelectorAll(".ab-items.ab-lay-vfall:not(.js-waterfall):not(.ab-lay-hfall):not(.ab-lay-grid)")
     for (const root_el of root_el_list) {
       // 1. 准备原元素
       root_el.classList.add("js-waterfall") // 避免：触发两次时，第二次触发会以第一次触发的顺序为基准，再进行调整
