@@ -43,9 +43,9 @@
 
 html[data-theme="light"] #app,
 html[data-theme="dark"] #app {
-  --ab-tab-root-bg-color: var(--bg-color);
-  --ab-tab-root-bd-color: var(--border-color);
-  --ab-tab-root-tx-color: var(--text-color);
+  --ab-tab-root-bg-color: var(--vp-c-bg);
+  --ab-tab-root-bd-color: var(--vp-c-border);
+  --ab-tab-root-tx-color: var(--vp-c-text);
   --ab-bright-color: var(--vp-c-accent);
   --pre-background-color: var(--code-bg-color);
 }

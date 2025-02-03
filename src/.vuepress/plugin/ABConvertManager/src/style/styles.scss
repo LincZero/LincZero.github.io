@@ -48,12 +48,11 @@
 // 获取VuePress的默认颜色并覆盖默认颜色
 html[data-theme="light"] #app,
 html[data-theme="dark"] #app{
-  --ab-tab-root-bg-color: var(--bg-color);     // --code-bg-color
-  --ab-tab-root-bd-color: var(--border-color); // --code-border-color
-  --ab-tab-root-tx-color: var(--text-color);   // --code-color
+  --ab-tab-root-bg-color: var(--vp-c-bg);     // --code-bg-color, old version vp: --bg-color
+  --ab-tab-root-bd-color: var(--vp-c-border); // --code-border-color, old version vp: --border-color
+  --ab-tab-root-tx-color: var(--vp-c-text);   // --code-color, old version vp: --text-color
 
-  // --ab-bright-color: var(--theme-color); // vuepress old version
-  --ab-bright-color: var(--vp-c-accent);
+  --ab-bright-color: var(--vp-c-accent);      // old version vp:--theme-color
   --pre-background-color: var(--code-bg-color);
 }
 html[data-theme="light"] #app {
