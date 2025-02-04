@@ -44,12 +44,12 @@ jobs:
         uses: pnpm/action-setup@v2
         with:
           run_install: true
-          version: 8
+          version: 9
 
       - name: 环境 - 设置 Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 21
           cache: pnpm
 
       # 获取仓库的相关配置
