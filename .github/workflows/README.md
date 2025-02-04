@@ -41,7 +41,7 @@ jobs:
           ref: 'main' # 分支，旧raw
           
       - name: 环境 - 安装 pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         with:
           run_install: true
           version: 9
@@ -49,7 +49,7 @@ jobs:
       - name: 环境 - 设置 Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 21
+          node-version: 22
           cache: pnpm
 
       # 获取仓库的相关配置

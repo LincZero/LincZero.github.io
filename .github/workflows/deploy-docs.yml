@@ -47,16 +47,16 @@ jobs:
           git clone --depth 1 https://github.com/LincDocs/ComfyUI-Workflows-Linc.git
         # git clone --depth 1 https://github.com/LincDocs/Pkmer-Math.git
 
-      - name: 安装 pnpm
-        uses: pnpm/action-setup@v2
+      - name: 环境 - 安装 pnpm
+        uses: pnpm/action-setup@v4
         with:
           run_install: true
           version: 9
 
-      - name: 设置 Node.js
+      - name: 环境 - 设置 Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 21
+          node-version: 22
           cache: pnpm
 
       - name: 构建文档
