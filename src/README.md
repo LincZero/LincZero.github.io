@@ -152,7 +152,7 @@ footer: 自用，未经许可禁止转载任何内容 | Copyright © 2015-presen
 
 ## 访问建议
 
-推荐访问：
+本站推荐访问：(主站点，及主要导航)
 
 - [公开文档](./MdNote_Public/)
 - [产品文档](./MdNote_Public/ProductDoc/)
@@ -160,17 +160,23 @@ footer: 自用，未经许可禁止转载任何内容 | Copyright © 2015-presen
 - [编程](./MdNote_Public/01.%20DesignAndDevelop/Develop/)
 - [3D](./MdNote_Public/01.%20DesignAndDevelop/3D/)
 
-博客类友链：
+自链：(个人的其他站点、以及个人参与过代码贡献的站点)
 
-- https://theme-hope.vuejs.press/
-- nolebase
-  - https://nolebase-integrations.ayaka.io/
-  - https://nolebase.ayaka.io/
-- https://pkm-er.github.io/Pkmer-Math/
+- [LincDocs](https://lincdocs.github.io/)
+  - [MdNote_Public](https://lincdocs.github.io/MdNote_Public/)
+  - [obsidian-api-request (Agency)](https://lincdocs.github.io/obsidian-api-request/)
+  - [Pkmer-Math (Agency)](https://lincdocs.github.io/Pkmer-Math/)
+  - [Workflow (Comfyui)](https://lincdocs.github.io/Workflow/)
+  - [AnyBlock](https://lincdocs.github.io/AnyBlock/)
+  - [ComfyUI-Workflows-Linc](https://lincdocs.github.io/ComfyUI-Workflows-Linc/)
+- Other Contribution
+  - [Pkmer-Math](https://pkm-er.github.io/Pkmer-Math/)
+  - [nolebase-integrations](https://nolebase-integrations.ayaka.io/)
+  - [erduotong](https://blog.erduotong.com/)
 
 ## 个人实验场
 
-- [AnyBlock实验场](./MdNote_Public/ProductDoc/AnyBlock/)
+- [AnyBlock实验场](https://lincdocs.github.io/AnyBlock/README.show.html)
 - NodeFlow实验场, 见下
 
 ### comfyui
