@@ -170,9 +170,10 @@ footer: 自用，未经许可禁止转载任何内容 | Copyright © 2015-presen
   - [AnyBlock](https://lincdocs.github.io/AnyBlock/)
   - [ComfyUI-Workflows-Linc](https://lincdocs.github.io/ComfyUI-Workflows-Linc/)
 - Other Contribution
+  - [VuePress Theme Hope](https://theme-hope.vuejs.press/)
+  - [Nolebase Integrations](https://nolebase-integrations.ayaka.io/)
   - [Pkmer-Math](https://pkm-er.github.io/Pkmer-Math/)
-  - [nolebase-integrations](https://nolebase-integrations.ayaka.io/)
-  - [erduotong](https://blog.erduotong.com/)
+  - [Erduotong](https://blog.erduotong.com/)
 
 ## 个人实验场
 

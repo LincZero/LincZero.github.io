@@ -77,7 +77,7 @@ html[data-theme="dark"] {
   text-align: inherit;  // 主题这里默认是justify，很奇怪
 }
 
-// ------------------------ 特殊 -------------------------------
+// ------------------------ 特殊 (或插件补充) -------------------------------
 /**
  * 如果您使用的不是vuepress-hope-theme或不是最新版本，请在任意样式文件添加仿照下述代码补全css变量
  */
@@ -94,4 +94,8 @@ html {
   --vp-c-bg: var(--bg-color);
   --vp-c-bg-mute: var(--bg-color);
   --vp-c-bg-soft: var(--bg-color);
+}
+
+a.nolebase-route-link-invalid {
+  color: red; opacity: 0.6;
 }
