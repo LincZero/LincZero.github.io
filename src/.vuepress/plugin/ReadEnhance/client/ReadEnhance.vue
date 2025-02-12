@@ -113,7 +113,7 @@ function fn_mode(n: string) {
     }
   }
   // 窄栏模式 (narrow, 近似默认)
-  else if (mode.value == 'super-wide') {
+  else if (mode.value == 'narrow') {
     if (el_toc) el_toc.style.display = "block";
     if (el_start1) el_start1.style.display = "block";
     if (el_end1) el_end1.style.display = "block";
