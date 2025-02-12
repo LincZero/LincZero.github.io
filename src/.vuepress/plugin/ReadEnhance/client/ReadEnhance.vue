@@ -29,16 +29,29 @@
         背景颜色
       </div>
       <div>
-        <button @click="fn_color('#f8f8f4')" :class="{'is-activate': bgColor == '#f8f8f4'}" title="黄色护眼"
-          style="background-color: #f8f8f4;">
-        </button>
         <button @click="fn_color('#ffffff')" :class="{'is-activate': bgColor == '#ffffff'}" title="明亮"
           style="background-color: #ffffff;">
         </button>
-        <button @click="fn_color('#c6e1ca')" :class="{'is-activate': bgColor == '#c6e1ca'}" title="绿色护眼"
-          style="background-color: #c6e1ca;">
+        <button @click="fn_color('#f8f8f2')" :class="{'is-activate': bgColor == '#f8f8f2'}" title="非饱和白"
+          style="background-color: #f8f8f2;">
         </button>
-        <button @click="fn_color('#1f1f1f')" :class="{'is-activate': bgColor == '#1f1f1f'}" title="黑暗护眼"
+        <button @click="fn_color('#faf8df')" :class="{'is-activate': bgColor == '#faf8df'}" title="杏仁黄"
+          style="background-color: #faf8df;">
+        </button>
+        <button @click="fn_color('#cce8cf')" :class="{'is-activate': bgColor == '#cce8cf'}" title="豆沙绿"
+          style="background-color: #cce8cf;">
+        </button>
+        <br>
+        <button @click="fn_color('#e3edcd')" :class="{'is-activate': bgColor == '#e3edcd'}" title="青草绿"
+          style="background-color: #e3edcd;">
+        </button>
+        <button @click="fn_color('#e9ecff')" :class="{'is-activate': bgColor == '#e9ecff'}" title="葛巾紫"
+          style="background-color: #e9ecff;">
+        </button>
+        <button @click="fn_color('#eaeaef')" :class="{'is-activate': bgColor == '#eaeaef'}" title="极光灰"
+          style="background-color: #eaeaef;">
+        </button>
+        <button @click="fn_color('#1f1f1f')" :class="{'is-activate': bgColor == '#1f1f1f'}" title="非饱和黑"
           style="background-color: #1f1f1f;">
         </button>
       </div>
@@ -218,7 +231,7 @@ function fn_color(n: string) {
       width: calc(25% - 7px);
       height: 32px; // (20+8+4)
       padding: 4px;
-      margin: 0 4px;
+      margin: 0 4px 4px;
       box-shadow: none;
       border-radius: 8px;
       border: none;
