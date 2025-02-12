@@ -25,6 +25,26 @@
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-maximize"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
         </button>
       </div>
+      <div>
+        背景颜色
+      </div>
+      <div>
+        <button @click="fn_color('#f8f8f4')" :class="{'is-activate': bgColor == '#f8f8f4'}" title="黄色护眼"
+          style="background-color: #f8f8f4;">
+        </button>
+        <button @click="fn_color('#ffffff')" :class="{'is-activate': bgColor == '#ffffff'}" title="明亮"
+          style="background-color: #ffffff;">
+        </button>
+        <button @click="fn_color('#c6e1ca')" :class="{'is-activate': bgColor == '#c6e1ca'}" title="绿色护眼"
+          style="background-color: #c6e1ca;">
+        </button>
+        <button @click="fn_color('#1f1f1f')" :class="{'is-activate': bgColor == '#1f1f1f'}" title="黑暗护眼"
+          style="background-color: #1f1f1f;">
+        </button>
+      </div>
+      <div>
+        tips: 如遇兼容问题，切换明暗模式，<br>或可重复选择取选并刷新页面
+      </div>
     </div>
   </div>
 </template>
@@ -37,8 +57,7 @@ const isShowContent = ref(false)
 
 // 布局模式
 const mode = ref('')
-onMounted(()=>{
-  // 获取 浏览器缓存
+onMounted(()=>{ // 获取 浏览器缓存
   if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
     const mode2 = localStorage.getItem('ReadEnahnce_mode');
     if (mode2) fn_mode(mode2)
@@ -136,6 +155,34 @@ function fn_mode(n: string) {
   // 存储 浏览器缓存
   if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
     localStorage.setItem('ReadEnahnce_mode', mode.value);
+  }
+}
+
+// 配色相关
+const bgColor = ref('')
+onMounted(()=>{ // 获取 浏览器缓存
+  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+    const bgColor2 = localStorage.getItem('ReadEnahnce_color');
+    if (bgColor2) fn_mode(bgColor2)
+  }
+})
+function fn_color(n: string) {
+  if (bgColor.value == n) { bgColor.value = "" }
+  else { bgColor.value = n }
+
+  const el_root = document.documentElement;
+
+  if (bgColor.value.startsWith('#')) {
+    el_root.style.setProperty('--vp-c-bg', bgColor.value);
+    el_root.style.setProperty('--vp-c-bg-soft', `($color: ${bgColor.value}, $alpha: 1.0)`);
+    el_root.style.setProperty('--vp-c-bg-elv-soft', `($color: ${bgColor.value}, $alpha: 1.0)`);
+  }
+  // 默认模式，需刷新起效
+  else {}
+
+  // 存储 浏览器缓存
+  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+    localStorage.setItem('ReadEnahnce_color', bgColor.value);
   }
 }
 </script>
