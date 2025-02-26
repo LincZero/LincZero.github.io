@@ -207,6 +207,11 @@ export class Chat {
 
 // Webvtt 格式
 export class Chat_webvtt extends Chat {
+  // override config method
+  config(){}
+
+  // override render method
+  render(){}
 }
 
 // 原版 Chat 格式
