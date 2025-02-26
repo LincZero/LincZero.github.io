@@ -34,7 +34,7 @@ function render_fence(md: MarkdownIt, options?: Partial<Options>): void {
     else if (codeBlockType == 'chat-tg') { new Chat_telegram(token.content, el, null, this).render() }
     else { console.error('error: 不可能到达此处') }
 
-    // url修正
+    // url修正 (不修正的话，嵌套相对链接会导致编译报错)
     // 原来的正常流程：img在 mdit img parse 阶段，路径替换就已经完成了
     // 现在的流程补充：现在局部的img实际上走的是 md.render()，虽然应该也是走parse-render流程，但可能是由于缺少env? 反之没有路径调整这部分的处理，这里补上
     // demo: src="./assets/abc.png" -> src="@source/MdNote_Public/Guide/assets/abc.png"

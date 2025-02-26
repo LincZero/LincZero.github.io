@@ -27,6 +27,13 @@
   height: calc(50vh - 30px);
 }
 
+// navbar下框框的列表圆点
+.vp-dropdown-title {
+  ul, li {
+    list-style-type: none;
+  }
+}
+
 // 目录树项不换行
 #sidebar {
   overflow-x: auto;

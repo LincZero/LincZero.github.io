@@ -33,4 +33,19 @@ export const navbarConfig = navbar([
     text: "博客页 (路径隐藏)",
     link: "/MdNote_Blog1/",
   },
+  {
+    text: "我的其他网站",
+    children: [
+      // { text: "公开笔记", link: "https://lincdocs.github.io/MdNote_Public/" }, // 内容重复
+      { text: "数学库", link: "https://pkm-er.github.io/Pkmer-Math/" },
+      { text: "AnyBlock 在线", link: "https://any-block.github.io/obsidian-any-block/" },
+      { text: "AnyBlock 文档", link: "https://lincdocs.github.io/AnyBlock/" },
+      { text: "NodeFlow 在线", link: "https://any-block.github.io/obsidian-any-block/" },
+      { text: "NodeFlow 文档", link: "https://linczero.github.io/MdNote_Public/ProductDoc/Plugin/NodeFlow/docs/zh/" },
+      { text: "ChatView 在线", link: "https://linczero.github.io/obsidian-chat-view-qq/" },
+      { text: "ChatView 文档", link: "https://linczero.github.io/MdNote_Public/ProductDoc/Plugin/Obsidian-Chat-View-QQ/" },
+      // { text: "ComfyUI", link: "https://lincdocs.github.io/ComfyUI-Workflows-Linc/" }, // 内容重复
+      // { text: "ComfyUI2", link: "https://lincdocs.github.io/Workflow/" }, // 内容重复
+    ]
+  }
 ]);

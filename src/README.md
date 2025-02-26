@@ -165,7 +165,7 @@ footer: 自用，未经许可禁止转载任何内容 | Copyright © 2015-presen
 - [LincDocs](https://lincdocs.github.io/)
   - [MdNote_Public](https://lincdocs.github.io/MdNote_Public/)
   - [obsidian-api-request (Agency)](https://lincdocs.github.io/obsidian-api-request/)
-  - [Pkmer-Math (Agency)](https://lincdocs.github.io/Pkmer-Math/)
+  - [Pkmer-Math](https://pkm-er.github.io/Pkmer-Math/) [(Agency)](https://lincdocs.github.io/Pkmer-Math/)
   - [Workflow (Comfyui)](https://lincdocs.github.io/Workflow/)
   - [AnyBlock](https://lincdocs.github.io/AnyBlock/)
   - [ComfyUI-Workflows-Linc](https://lincdocs.github.io/ComfyUI-Workflows-Linc/)
