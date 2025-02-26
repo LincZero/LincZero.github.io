@@ -1,7 +1,6 @@
 import { MsgItem, render_setting } from "./render"
 import { ChatPluginSettings } from "../Obsidian/settings"
 
-import * as webvtt from "node-webvtt";
 import { MarkdownPostProcessorContext } from 'obsidian';
 
 // 通用 Chat 基类
@@ -208,86 +207,6 @@ export class Chat {
 
 // Webvtt 格式
 export class Chat_webvtt extends Chat {
-
-  // override config method
-  config(){}
-
-  // override render method
-  render(){
-    this.from = this.from ? this.from : "webvtt"
-    this.style = this.style ? this.style : "default"
-
-    interface Message {
-      readonly header: string;
-      readonly body: string;
-      readonly subtext: string;
-    }
-    const COLORS = [
-      "red", "orange", "yellow", "green", "blue", "purple", "grey", "brown", "indigo", "teal", "pink", "slate", "wood"
-    ];
-    const CONFIGS: Record<string, string[]> = {
-      "header": ["h2", "h3", "h4", "h5", "h6"],
-      "mw": ["50", "55", "60", "65", "70", "75", "80", "85", "90"],
-      "mode": ["default", "minimal"],
-    };
-
-    const vtt = webvtt.parse(this.source, {meta: true});    // 他这个是用第三方解析器
-    const messages: Message[] = [];
-    const self = vtt.meta && "Self" in vtt.meta ? vtt.meta.Self as string : undefined;
-    const selves = self ? self.split(",").map((val) => val.trim()) : undefined;
-
-    // 配置this.formatConfig
-    this.formatConfigs = new Map<string, string>();
-    const maxWidth = vtt.meta && "MaxWidth" in vtt.meta ? vtt.meta.MaxWidth : undefined;
-    const headerConfig = vtt.meta && "Header" in vtt.meta ? vtt.meta.Header : undefined;
-    const modeConfig = vtt.meta && "Mode" in vtt.meta ? vtt.meta.Mode : undefined;
-    if (CONFIGS["mw"].contains(maxWidth)) this.formatConfigs.set("mw", maxWidth);
-    if (CONFIGS["header"].contains(headerConfig)) this.formatConfigs.set("header", headerConfig);
-    if (CONFIGS["mode"].contains(modeConfig)) this.formatConfigs.set("mode", modeConfig);
-    console.log(this.formatConfigs);
-
-    // 填充message
-    for (let index = 0; index < vtt.cues.length; index++) {
-      const cue = vtt.cues[index];
-      // const start = moment(Math.round(cue.start * 1000)).format("HH:mm:ss.SSS");
-      // const end = moment(Math.round(cue.end * 1000)).format("HH:mm:ss.SSS");
-      // 去除moment库依赖
-      const start_date = new Date(Math.round(cue.start * 1000))
-      const start = `${String(start_date.getHours()).padStart(2, '0')}:${String(start_date.getMinutes()).padStart(2, '0')}:${String(start_date.getSeconds()).padStart(2, '0')}.${String(start_date.getMilliseconds()).padStart(3, '0')}`;
-      const end_date = new Date(Math.round(cue.end * 1000))
-      const end = `${String(end_date.getHours()).padStart(2, '0')}:${String(end_date.getMinutes()).padStart(2, '0')}:${String(end_date.getSeconds()).padStart(2, '0')}.${String(end_date.getMilliseconds()).padStart(3, '0')}`;
-      if (/<v\s+([^>]+)>([^<]+)<\/v>/.test(cue.text)) {
-        const matches = (cue.text as string).match(/<v\s+([^>]+)>([^<]+)<\/v>/);
-        messages.push(<Message>{header: matches[1], body: matches[2], subtext: `${start} to ${end}`});
-      } else {
-        messages.push(<Message>{header: "", body: cue.text, subtext: `${start} to ${end}`});
-      }
-    }
-
-    const headers = messages.map((message) => message.header);
-    const uniqueHeaders = new Set<string>(headers);
-    uniqueHeaders.delete("");
-    console.log(messages);
-    console.log(uniqueHeaders);
-
-    // 随机分配颜色
-    const colorConfigs = new Map<string, string>();
-    Array.from(uniqueHeaders).forEach((h, i) => colorConfigs.set(h, COLORS[i % COLORS.length]));
-    console.log(colorConfigs);
-
-    messages.forEach((message, index, arr) => {
-      let msgItem = new MsgItem(this)
-      const prevHeader = index > 0 ? arr[index - 1].header : "";
-      msgItem.isContinued = message.header === prevHeader;
-      msgItem.sender = msgItem.isContinued ? "" : message.header
-      msgItem.content.push(message.body)
-      msgItem.dateTime = message.subtext
-      msgItem.isSelf = selves && selves.contains(message.header);
-
-      msgItem.render()
-    });
-    render_setting.registerContextMenu(this)
-  }
 }
 
 // 原版 Chat 格式

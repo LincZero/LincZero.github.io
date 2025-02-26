@@ -26,9 +26,6 @@ importers:
       mermaid:
         specifier: ^11.4.1
         version: 11.4.1
-      node-webvtt:
-        specifier: ^1.9.4
-        version: 1.9.4
     devDependencies:
       '@nolebase/markdown-it-bi-directional-links':
         specifier: ^2.13.2
@@ -2309,11 +2306,6 @@ packages:
 
   node-releases@2.0.19:
     resolution: {integrity: sha512-xxOWJsBKtzAq7DY0J+DTzuz58K8e7sJbdgwkbMWQe8UYB6ekmsQ45q0M/tJDsGaZmbC+l7n57UV8Hl5tHxO9uw==}
-
-  node-webvtt@1.9.4:
-    resolution: {integrity: sha512-EjrJdKdxSyd8j4LMLW6s2Ah4yNoeVXp18Ob04CQl1In18xcUmKzEE8pcsxxnFVqanTyjbGYph2VnvtwIXR4EjA==}
-    engines: {node: '>= 8.16.0'}
-    hasBin: true
 
   normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
@@ -5690,10 +5682,6 @@ snapshots:
   nanoid@5.0.9: {}
 
   node-releases@2.0.19: {}
-
-  node-webvtt@1.9.4:
-    dependencies:
-      commander: 7.2.0
 
   normalize-path@3.0.0: {}
 
