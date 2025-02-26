@@ -10,6 +10,8 @@ workflows下的工作流是个人的，这里提供一个更通用的工作流�
 2. 如果根目录下有 `docs` 文件夹 (如果是代理仓库有也算)。自动识别为非纯文档仓库，部署时也只会解析docs部分。否则整个仓库都视为文档
 
 ```yml
+# take from https://github.com/LincDocs/Workflow
+
 name: 部署文档
 
 on:
