@@ -9,3 +9,4 @@ src/.vuepress/dist/
 src/.vuepress/public/docs/
 
 tmp_docs/
+*.css.map

@@ -39,6 +39,7 @@ sub.chat-view-subtext {
 }
 
 .chat-view-comment {
+  width: -moz-fit-content;
   width: fit-content;
   max-width: 90%;
   margin: 24px auto;
@@ -135,6 +136,7 @@ div.chat-view-align-center {
 }
 
 div.delimiter {
+  width: -moz-fit-content;
   width: fit-content;
   margin: 24px auto;
 }
@@ -207,40 +209,39 @@ div.chat-view-wood .chat-view-header {
   --qq-max-height: 1100px;
   --qq-msg-max-width: calc(var(--qq-width) - var(--qq-width-icon) - var(--qq-width-icon));
   --qq-width-icon: 80px;
-  --qq-font-size: 16px;
-  /* --front-text-size --code-size or 16px */
+  --qq-font-size: 16px; /* --front-text-size --code-size or 16px */
 }
 
 :root.theme-dark {
-  --qq-text-color: #5e5e5e;
-  --qq-msg-bg-color: #232323;
-  --qq-msg-color: #fdfdfd;
-  --qq-bg-color: #010101;
+  --qq-text-color: rgb(94, 94, 94);
+  --qq-msg-bg-color: rgb(35, 35, 35);
+  --qq-msg-color: rgb(253, 253, 253);
+  --qq-bg-color: rgb(1, 1, 1);
 }
 
 :root,
 :root.theme-light {
   --qq-text-color: #333;
-  --qq-msg-bg-color: #eef3f8;
+  --qq-msg-bg-color: rgb(238, 243, 248);
   --qq-msg-color: black;
   --qq-bg-color: #ffffff;
 }
 
-html[data-theme="dark"] {
-  --qq-text-color: #5e5e5e;
-  --qq-msg-bg-color: #232323;
-  --qq-msg-color: #fdfdfd;
-  --qq-bg-color: #010101;
+html[data-theme=dark] {
+  --qq-text-color: rgb(94, 94, 94);
+  --qq-msg-bg-color: rgb(35, 35, 35);
+  --qq-msg-color: rgb(253, 253, 253);
+  --qq-bg-color: rgb(1, 1, 1);
 }
 
-html[data-theme="light"] {
+html[data-theme=light] {
   --qq-text-color: #333;
-  --qq-msg-bg-color: #eef3f8;
+  --qq-msg-bg-color: rgb(238, 243, 248);
   --qq-msg-color: black;
   --qq-bg-color: #ffffff;
 }
 
-.pc-chat .cv-note .chat-view-qq-message-all, .pc-chat .block-language-chat-qq .chat-view-qq-message-all, .pc-chat .block-language-chat-wechat .chat-view-qq-message-all, html[data-theme="light"] .cv-note .chat-view-qq-message-all, html[data-theme="light"] .block-language-chat-qq .chat-view-qq-message-all, html[data-theme="light"] .block-language-chat-wechat .chat-view-qq-message-all, html[data-theme="dark"] .cv-note .chat-view-qq-message-all, html[data-theme="dark"] .block-language-chat-qq .chat-view-qq-message-all, html[data-theme="dark"] .block-language-chat-wechat .chat-view-qq-message-all {
+.pc-chat .cv-note .chat-view-qq-message-all, .pc-chat .block-language-chat-qq .chat-view-qq-message-all, .pc-chat .block-language-chat-wechat .chat-view-qq-message-all, html[data-theme=light] .cv-note .chat-view-qq-message-all, html[data-theme=light] .block-language-chat-qq .chat-view-qq-message-all, html[data-theme=light] .block-language-chat-wechat .chat-view-qq-message-all, html[data-theme=dark] .cv-note .chat-view-qq-message-all, html[data-theme=dark] .block-language-chat-qq .chat-view-qq-message-all, html[data-theme=dark] .block-language-chat-wechat .chat-view-qq-message-all {
   font-size: var(--qq-font-size);
 }
 
@@ -263,11 +264,9 @@ div.cv-note, div.block-language-chat-qq, div.block-language-chat-wechat {
   font-family: "Microsoft YaHei", "MSYH", Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, å¾®è½¯é›…é»‘, Arial, sans-serif;
   background-color: var(--qq-bg-color);
 }
-
 div.cv-note .chat-view-qq-message-all p:first-child, div.block-language-chat-qq .chat-view-qq-message-all p:first-child, div.block-language-chat-wechat .chat-view-qq-message-all p:first-child {
   margin-top: 0;
 }
-
 div.cv-note .chat-view-qq-message-all p:last-child, div.block-language-chat-qq .chat-view-qq-message-all p:last-child, div.block-language-chat-wechat .chat-view-qq-message-all p:last-child {
   margin-bottom: 0;
 }
@@ -304,8 +303,7 @@ div.cv-note .chat-view-qq-message-all p:last-child, div.block-language-chat-qq .
 }
 
 .chat-view-qq-icon img {
-  background-color: #eee;
-  /* 默认图标以明亮模式获取 (避免带alpha) */
+  background-color: #eee; /* 默认图标以明亮模式获取 (避免带alpha) */
   width: 55px;
   height: 55px;
   border-radius: 50%;
@@ -335,12 +333,12 @@ div.cv-note .chat-view-qq-message-all p:last-child, div.block-language-chat-qq .
   background-color: #a8b0c5;
 }
 
-.chat-view-qq-title .chat-view-qq-groupTitle[title$="管理员"] {
-  background-color: #3de2d4;
+.chat-view-qq-title .chat-view-qq-groupTitle[title$=管理员] {
+  background-color: rgb(61, 226, 212);
 }
 
-.chat-view-qq-title .chat-view-qq-groupTitle[title$="群主"] {
-  background-color: #ffd539;
+.chat-view-qq-title .chat-view-qq-groupTitle[title$=群主] {
+  background-color: rgb(255, 213, 57);
 }
 
 .chat-view-qq-title .chat-view-qq-sender {
@@ -426,8 +424,7 @@ div.cv-note .chat-view-qq-message-all p:last-child, div.block-language-chat-qq .
 
 .chat-view-qq-message-all {
   box-sizing: border-box;
-  display: inline-block;
-  /*inline-block*/
+  display: inline-block; /*inline-block*/
   margin-bottom: 5px;
   word-wrap: break-word;
   color: var(--qq-msg-color);
@@ -473,4 +470,4 @@ div.cv-note .chat-view-qq-message-all p:last-child, div.block-language-chat-qq .
 
 /* .chat-view-bubble-mode-qq {
 	border: none;
-} */
+} *//*# sourceMappingURL=styles.css.map */
