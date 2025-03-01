@@ -43,6 +43,23 @@ export default (options, ctx) => {
  */
 async function onInitialized2(app: App) {
   /**
+   * 调试专用打印 app.pages 的工具
+   * 
+   * 会去除掉关于md内容的部分再打印，避免由于md内容过长而看不到其他信息的问题
+   */
+  // for (let i = 0; i<app.pages.length; i++) {
+  //   const page = app.pages[i]
+  //   const page2 = JSON.parse(JSON.stringify(page))
+  //   if (page2.data.excerpt) delete page2.data.excerpt
+  //   if (page2.content) delete page2.content
+  //   if (page2.contentRendered) delete page2.contentRendered
+  //   if (page2.routeMeta.e) delete page2.routeMeta.e
+  //   if (page2.routeMeta.excerpt) delete page2.routeMeta.excerpt // .json才有
+  //   if (page2.sfcBlocks) delete page2.sfcBlocks
+  //   console.log("page---\n", page2)
+  // }
+
+  /**
    * 处理无h1的问题
    * 
    * 无h1可能会存在的问题:
@@ -81,15 +98,6 @@ async function onInitialized2(app: App) {
    */
   for (let i = 0; i<app.pages.length; i++) {
     const page = app.pages[i]
-    // {
-    //   const page2 = JSON.parse(JSON.stringify(page))
-    //   if (page2.data.excerpt) delete page2.data.excerpt
-    //   if (page2.content) delete page2.content
-    //   if (page2.contentRendered) delete page2.contentRendered
-    //   if (page2.routeMeta.e) delete page2.routeMeta.e
-    //   if (page2.sfcBlocks) delete page2.sfcBlocks
-    //   console.log("page---\n", page2)
-    // }
     // vuepress旧版本 `page.path` 是 `.json.md` 和 `.json` 分别 `.json.html` 和 `.json` 结尾
     // 而新版本的 `.json.md` 和 `.json` 都是 `.json.html` 结尾，这可能导致bug
     // 所以这里修正为用 `page.filePath` 补充判断 (无对应文件的虚拟页没有该字段)
@@ -120,15 +128,46 @@ async function onInitialized2(app: App) {
    * 话说新版本vuepress在dev环境下，pdf页失效。在build环境才正常回来
    */
   {
+    // 创建虚拟目录
+    // 
+    // 因为如果后面创建虚拟页时将 `<path_target>` 修改成其他不存在的路径会有问题。即这里需要挂载在一个真实路径上!
+    // 因为这时你访问 `/<path_target>/` 时，这个页面没有任何内容
+    // 
+    // 所以这里要加虚拟目录和虚拟 README.md
+    // 
+    // TODO: 这里仅构造了根的虚拟目录，还需要递归构造里面的虚拟目录
+    const path_target = 'pdf_docs/' // TODO TMP
+    {
+      const newPage = await createPage(app, {
+        path: (`/${path_target}`),
+        content: `# Pdf Pages\n\nThis is a pdf page.`, // necessary
+      })
+      newPage.filePathRelative = null // show it's a virtual dir
+      app.pages.push(newPage)
+
+      // newPage.data.path = `/${path_target}`
+      // newPage.data.filePathRelative = null
+      // newPage.data.excerpt = ''
+
+      // newPage.data.frontmatter.article = false
+      // newPage.data.frontmatter.feed = false
+      // newPage.data.frontmatter.sitemap = false
+      // newPage.frontmatter.article = false
+      // newPage.frontmatter.feed = false
+      // newPage.frontmatter.sitemap = false
+
+      // newPage.filePath = null
+      // newPage.filePathRelative = `${path_target}`
+    }
+
     // 创建虚拟页
-    // 注意：话说我将 `MdNote_Other` 修改成其他不存在的路径会有问题。即这里需要挂载在一个真实路径上! (TODO 也许是个bug，有空再修)
     async function fn_newPage(path: string) {
       const newPage = await createPage(app, {
-        path: (`/MdNote_Other/docs/${path}/`), // TODO TMP
+        path: (`/${path_target}${path}/`), // 核心1: 访问URL
         frontmatter: { layout: 'Layout', },
         content: `# PUBLICDOCS/${path}\n<!--path:/docs/${path}-->\n<PDF url="/docs/${path}" height="1000px" zoom="auto" noFullscreen="false"/>`,
       })
-      newPage.filePathRelative = `MdNote_Other/docs/${path}` // 侧边栏显示的关键
+      newPage.filePathRelative = `${path_target}${path}` // 核心2: 侧边栏显示的关键、是否文件夹
       app.pages.push(newPage)
     }
 
