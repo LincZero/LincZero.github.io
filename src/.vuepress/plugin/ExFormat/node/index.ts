@@ -1,3 +1,11 @@
+/// 需要注意，默认情况下不在 `public` 中的 `.json、.pdf` 等扩展名不会被识别
+/// 需要在 `/src/.vuepress/config.ts` 中允许匹配。例如我的设置：
+/// pagePatterns: [
+///   "**/*.md", "!**/*.snippet.md",
+///   "**/*.json", // "**/*.pdf", (pdf不要加进去，不需要解析里面的内容)
+///   "!.vuepress", "!node_modules", "!**/.obsidian", "!**/.github",
+/// ],
+
 import { App, createPage, defineUserConfig, type UserConfig } from "vuepress";
 import { getDirname, path } from "@vuepress/utils"
 
@@ -34,10 +42,14 @@ export default (options, ctx) => {
  * }
  */
 async function onInitialized2(app: App) {
-  // 无h1可能会存在的问题:
-  // 1. data.title, 会在正文顶部显示 (默认front>h1>空，视觉影响不大。但title可能会影响seo)
-  // 2. shortTitle，会影响原侧边栏和翻页显示的文本 (默认h1>fullpath with encode, 后者极度丑陋)
-  // 这里尽量填充一下这些问题
+  /**
+   * 处理无h1的问题
+   * 
+   * 无h1可能会存在的问题:
+   * 1. data.title, 会在正文顶部显示 (默认front>h1>空，视觉影响不大。但title可能会影响seo)
+   * 2. shortTitle，会影响原侧边栏和翻页显示的文本 (默认h1>fullpath with encode, 后者极度丑陋)
+   * 这里填充以尽量修复一下这些问题
+   */
   for (let i = 0; i<app.pages.length; i++) {
     if (app.pages[i].data.title.length == 0) {
       let newPath = app.pages[i].data.path;
@@ -62,7 +74,9 @@ async function onInitialized2(app: App) {
   }
 
   /**
-   * 对.json后缀进行处理 (需要先设置pagePatterns允许解析json，否则这里遍历不到json文件)
+   * 处理 `.json` 扩展名
+   * 
+   * 对 .json` 扩展名进行处理 (需要先设置pagePatterns允许解析json，否则这里遍历不到json文件)
    * 这里编辑对应的page信息，视情况甚至可以createPage替换、新增、去除
    */
   for (let i = 0; i<app.pages.length; i++) {
@@ -78,7 +92,7 @@ async function onInitialized2(app: App) {
     // }
     // vuepress旧版本 `page.path` 是 `.json.md` 和 `.json` 分别 `.json.html` 和 `.json` 结尾
     // 而新版本的 `.json.md` 和 `.json` 都是 `.json.html` 结尾，这可能导致bug
-    // 所以这里修正为用 `page.filePath` 判断
+    // 所以这里修正为用 `page.filePath` 补充判断 (无对应文件的虚拟页没有该字段)
     if ((page.path.endsWith(".json") || page.path.endsWith(".json.html"))
       && (page.filePath as string)?.endsWith('.json')
     ) {
@@ -93,7 +107,9 @@ async function onInitialized2(app: App) {
   }
 
   /**
-   * 遍历public静态资源，并将部分映射到虚拟页中
+   * 处理public静态资源
+   * 
+   * 遍历public静态资源，并将部分映射到虚拟页中。包括 pdf
    * 
    * (注意这里必须要使用同步方法，不能用异步的!!! 否则可能在读完文件之前就开始其他步骤的解析了)
    * 旧版实验：
@@ -119,7 +135,7 @@ async function onInitialized2(app: App) {
     // 读取public静态资源
     let files;
     try {
-      files = await fs.readdirSync("./src/.vuepress/public/docs/", { withFileTypes: true, recursive: true })
+      files = await fs.readdirSync("./src/.vuepress/public/docs/", { withFileTypes: true, recursive: true }) // 这里开的递归模式
     } catch {
       console.warn("without dir: ./src/.vuepress/public/docs/")
       files = []
@@ -137,4 +153,12 @@ async function onInitialized2(app: App) {
       await fn_newPage(fullname)
     }
   }
+
+  /**
+   * 遍历src里的.pdf文件 (非.public)
+   * 
+   * 算了，感觉还是不妥当。pdf和md分开放会好一些，他们在性能和内存上存在较大区别
+   * 
+   * 所以没实现。不过 github 仓库倒是放一起的
+   */
 }
