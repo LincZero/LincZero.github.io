@@ -76,8 +76,13 @@ async function onInitialized2(app: App) {
     //   if (page2.sfcBlocks) delete page2.sfcBlocks
     //   console.log("page---\n", page2)
     // }
-    if (page.path.endsWith(".json") || page.path.endsWith(".json.html")) { // vuepress旧版本.json结尾，新版本.json.html结尾
-      // console.log("json类型---\n")
+    // vuepress旧版本 `page.path` 是 `.json.md` 和 `.json` 分别 `.json.html` 和 `.json` 结尾
+    // 而新版本的 `.json.md` 和 `.json` 都是 `.json.html` 结尾，这可能导致bug
+    // 所以这里修正为用 `page.filePath` 判断
+    if ((page.path.endsWith(".json") || page.path.endsWith(".json.html"))
+      && (page.filePath as string)?.endsWith('.json')
+    ) {
+      // console.log("json类型---\n", page.path, page.filePath)
       page.path = page.path // vuepress旧版本要 +"/" 才能成功
       page.frontmatter.layout = 'Layout'
       page.content = "```nodeflow-comfyui\n" + page.content + "\n```"
