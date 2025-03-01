@@ -54,6 +54,10 @@ const props = defineProps<{
 // 每个目录文件夹组件只管理自己这一层的折叠状态。多个侧边栏可以有不同的折叠状态
 // 内容均非url编码，以`/`结尾
 const unfold_arr = ref<string[]>([])
+// 设计上需要同时展开多个同级文件夹
+// 所以 `深度/url` 形式的变动导致的展开状态刷新，不会取消展开，而只会增加展开
+// 即：展开是自动的，取消展开必须手动折叠回去
+// @parem allowFold false时只允许自动展开而不允许自动折叠，true时允许后者
 const onUpdateDeep = () => {
   let dirArr = props.currentPath.split("/")
   if (props.currentPath.endsWith("/") || dirArr[dirArr.length - 1].includes(".")) dirArr.pop()
@@ -63,6 +67,9 @@ const onUpdateDeep = () => {
 }
 onUpdateDeep()
 watch(() => props.prefix_from_root, () => {
+  onUpdateDeep()
+})
+watch(() => props.currentPath, () => {
   onUpdateDeep()
 })
 
