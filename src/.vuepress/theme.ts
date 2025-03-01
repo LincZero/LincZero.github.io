@@ -47,6 +47,8 @@ export const themeOptions: ThemeOptions = {
 
   // 插件类 - md // 与旧api不同
   markdown: {
+    breaks: true,         // 将 `\n` 转换为 `<br>` (单换行不合并为同一行，对应 `markdown-it.(config).breaks`)
+  
     // mdit - 容器语法
     // alert: true,       // 被 obsidain callout 代替
     align: true,          // mdit容器 - 对齐
