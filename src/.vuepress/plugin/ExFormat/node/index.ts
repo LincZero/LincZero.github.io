@@ -128,6 +128,8 @@ async function onInitialized2(app: App) {
    * 话说新版本vuepress在dev环境下，pdf页失效。在build环境才正常回来
    */
   {
+    const path_target = 'public_docs/' // [!code] 根据你要挂载的目录进行命名
+
     // 创建虚拟目录
     // 
     // 因为如果后面创建虚拟页时将 `<path_target>` 修改成其他不存在的路径会有问题。即这里需要挂载在一个真实路径上!
@@ -135,11 +137,10 @@ async function onInitialized2(app: App) {
     // 
     // 所以这里要加虚拟目录和虚拟 README.md
     // 
-    // TODO: 这里仅构造了根的虚拟目录，还需要递归构造里面的虚拟目录
-    const path_target = 'pdf_docs/' // TODO TMP
-    {
+    // 对于相当于pdf挂载目录的跟目录。path空或以 `/` 结尾
+    async function fn_newDir(path: string) {
       const newPage = await createPage(app, {
-        path: (`/${path_target}`),
+        path: (`/${path_target}${path}`),
         content: `# Pdf Pages\n\nThis is a pdf page.`, // necessary
       })
       newPage.filePathRelative = null // show it's a virtual dir
@@ -160,7 +161,7 @@ async function onInitialized2(app: App) {
       // newPage.filePathRelative = `${path_target}`
     }
 
-    // 创建虚拟页
+    // 创建虚拟页。。path不以 `/` 结尾
     async function fn_newPage(path: string) {
       const newPage = await createPage(app, {
         path: (`/${path_target}${path}/`), // 核心1: 访问URL
@@ -179,17 +180,28 @@ async function onInitialized2(app: App) {
       console.warn("without dir: ./src/.vuepress/public/docs/")
       files = []
     }
+    fn_newDir('')
     for (const file of files) {
-      // 跳过非pdf
-      if (!file.name.endsWith(".pdf")) continue
-      // 跳过目录 (无需手动递归)
-      if (file.isDirectory()) { continue } // 由于前面开了递归模式，这里就不手动递归了
+      // 如果目录，添加对应的虚拟目录。由于前面开了递归模式，这里就不手动递归了
+      if (file.isDirectory()) {
+        let fullname = file.path.replace("src\\.vuepress\\public\\docs\\", "") // 这个fullname的路径构造很奇怪。根据是否有父目录，两种情况都会出现。可能和 `recursive: true` 和windows路径有关
+        if (fullname != file.path) { fullname = fullname.replace(/\\/g, "/") + "/" } // 有父路径
+        else fullname = fullname.replace("./src/.vuepress/public/docs/", "") // 无父路径
+        fullname += file.name
+        await fn_newDir(fullname + '/')
+        continue
+      }
+      // 如果文件，跳过非pdf
+      else if (!file.name.endsWith(".pdf")) continue
       // 如果是文件，添加对应的虚拟页
-      let fullname = file.path.replace("src\\.vuepress\\public\\docs\\", "") // 这个fullname的路径构造很奇怪。根据是否有父目录，两种情况都会出现。可能和 `recursive: true` 和windows路径有关
-      if (fullname != file.path) { fullname = fullname.replace(/\\/g, "/") + "/" } // 有父路径
-      else fullname = fullname.replace("./src/.vuepress/public/docs/", "") // 无父路径
-      fullname += file.name
-      await fn_newPage(fullname)
+      else {
+        let fullname = file.path.replace("src\\.vuepress\\public\\docs\\", "") // 这个fullname的路径构造很奇怪。根据是否有父目录，两种情况都会出现。可能和 `recursive: true` 和windows路径有关
+        if (fullname != file.path) { fullname = fullname.replace(/\\/g, "/") + "/" } // 有父路径
+        else fullname = fullname.replace("./src/.vuepress/public/docs/", "") // 无父路径
+        fullname += file.name
+        await fn_newPage(fullname)
+        continue
+      }
     }
   }
 
