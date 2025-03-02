@@ -137,7 +137,7 @@ async function onInitialized2(app: App) {
     // 
     // 所以这里要加虚拟目录和虚拟 README.md
     // 
-    // 对于相当于pdf挂载目录的跟目录。path空或以 `/` 结尾
+    // 对于相当于pdf挂载目录的跟目录。path前无`/`后有`/`
     async function fn_newDir(path: string) {
       const newPage = await createPage(app, {
         path: (`/${path_target}${path}`),
@@ -161,7 +161,7 @@ async function onInitialized2(app: App) {
       // newPage.filePathRelative = `${path_target}`
     }
 
-    // 创建虚拟页。。path不以 `/` 结尾
+    // 创建虚拟页。path前后无 `/`
     async function fn_newPage(path: string) {
       const newPage = await createPage(app, {
         path: (`/${path_target}${path}/`), // 核心1: 访问URL
@@ -184,10 +184,16 @@ async function onInitialized2(app: App) {
     for (const file of files) {
       // 如果目录，添加对应的虚拟目录。由于前面开了递归模式，这里就不手动递归了
       if (file.isDirectory()) {
-        let fullname = file.path.replace("src\\.vuepress\\public\\docs\\", "") // 这个fullname的路径构造很奇怪。根据是否有父目录，两种情况都会出现。可能和 `recursive: true` 和windows路径有关
-        if (fullname != file.path) { fullname = fullname.replace(/\\/g, "/") + "/" } // 有父路径
-        else fullname = fullname.replace("./src/.vuepress/public/docs/", "") // 无父路径
-        fullname += file.name
+        // 去除前缀路径
+        // 这个file.path的路径很奇怪，格式不统一。根据是否有父目录、windows/linux、头尾的情况不同
+        let fullname: string = file.path.replace(/\\/g, "/")          // 统一windows、linux
+        fullname = fullname.replace(/^\.\//, "")                      // 统一头
+        fullname = fullname.replace("src/.vuepress/public/docs/", "") // 去除路径
+        fullname = fullname.replace(/\/$/, "")                        // 统一尾
+        if (fullname == '') fullname = ''                             // ^
+        else fullname += '/'                                          // ^
+
+        fullname += '/' + file.name
         await fn_newDir(fullname + '/')
         continue
       }
@@ -195,9 +201,15 @@ async function onInitialized2(app: App) {
       else if (!file.name.endsWith(".pdf")) continue
       // 如果是文件，添加对应的虚拟页
       else {
-        let fullname = file.path.replace("src\\.vuepress\\public\\docs\\", "") // 这个fullname的路径构造很奇怪。根据是否有父目录，两种情况都会出现。可能和 `recursive: true` 和windows路径有关
-        if (fullname != file.path) { fullname = fullname.replace(/\\/g, "/") + "/" } // 有父路径
-        else fullname = fullname.replace("./src/.vuepress/public/docs/", "") // 无父路径
+        // 去除前缀路径
+        // 这个file.path的路径很奇怪，格式不统一。根据是否有父目录、windows/linux、头尾的情况不同
+        let fullname: string = file.path.replace(/\\/g, "/")          // 统一windows、linux
+        fullname = fullname.replace(/^\.\//, "")                      // 统一头
+        fullname = fullname.replace("src/.vuepress/public/docs/", "") // 去除路径
+        fullname = fullname.replace(/\/$/, "")                        // 统一尾
+        if (fullname == '') fullname = ''                             // ^
+        else fullname += '/'                                          // ^
+        
         fullname += file.name
         await fn_newPage(fullname)
         continue
