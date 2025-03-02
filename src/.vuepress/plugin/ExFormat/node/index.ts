@@ -166,7 +166,10 @@ async function onInitialized2(app: App) {
       const newPage = await createPage(app, {
         path: (`/${path_target}${path}/`), // 核心1: 访问URL
         frontmatter: { layout: 'Layout', },
-        content: `# PUBLICDOCS/${path}\n<!--path:/docs/${path}-->\n<PDF url="/docs/${path}" height="1000px" zoom="auto" noFullscreen="false"/>`,
+        content: `# ${path.replace(/^.*\//, '')}
+
+<!--path:/docs/${path}-->
+<PDF url="/docs/${path}" height="1000px" zoom="auto" noFullscreen="false"/>`,
       })
       newPage.filePathRelative = `${path_target}${path}` // 核心2: 侧边栏显示的关键、是否文件夹
       app.pages.push(newPage)
