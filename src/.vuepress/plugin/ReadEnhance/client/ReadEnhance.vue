@@ -1,3 +1,5 @@
+<!-- TODO 有比较大的优化空间，特别是撤销修改方面 -->
+
 <template>
   <!-- 如果要调试就将第二个改成true -->
   <div class="read-enhance vp-nav-item"
@@ -56,7 +58,7 @@
         </button>
       </div>
       <div>
-        tips: 如遇兼容问题，切换明暗模式，<br>或可重复选择取选并刷新页面
+        tips: 如遇兼容问题，切换明暗模式，<br>或可重复点击取选，并刷新页面
       </div>
     </div>
   </div>
@@ -143,6 +145,13 @@ function fn_mode(n: string) {
       el_root.style.setProperty('--content-width', 'calc(100%)');
       el_root.style.setProperty('--nf-min-height', 'calc(100vh - var(--navbar-height) - 140px)'); // my plugin
     }
+    
+    // 特别地
+    el_mainContent.style.paddingBottom = '0';
+    let el_tmp: HTMLElement = document.querySelector('.theme-hope-content');
+    if (el_tmp) el_tmp.style.paddingBottom = '0';
+    el_tmp = document.querySelector('.pdf-viewer-wrapper');
+    if (el_tmp) el_tmp.style.height = 'calc(100vh - 110px)'
   }
   // 窄栏模式 (narrow, 近似默认)
   else if (mode.value == 'narrow') {
