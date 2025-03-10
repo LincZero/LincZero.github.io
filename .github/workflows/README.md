@@ -75,39 +75,45 @@ jobs:
           echo "}" >> git_config.json
           echo "::set-output name=REPO_NAME::$REPO_NAME"
 
-      - name: 文档 - 文档库克隆
+      - name: 文档 - 文档克隆1 # 文档的克隆、构建、部署。注意 `clone --depth 1` 只拉最近一次提交，减少时间
         working-directory: ./src/
         run: |
           rm README.md
           
-          # 文档的克隆、构建、部署。注意 `clone --depth 1` 只拉最近一次提交，减少时间
           # git clone --depth 1 https://github.com/${GITHUB_REPOSITORY}.git # 如果有多个clone项则替换成这个，避免冲突
           git clone --depth 1 https://github.com/${GITHUB_REPOSITORY}.git temp_repo 
 
-          # 该仓库为代理仓库，使用链接仓库而非此仓库
-          # TODO 支持agency多个仓库。如果想更通用，干脆支持直接运行agency里的命令组
-          if [ -f temp_repo/agency ]; then
-            GIT_LINK=$(head -n 1 temp_repo/agency)
-            rm -rf temp_repo
-            git clone --depth 1 $GIT_LINK temp_repo
-            echo "with agency"
-          else
-            echo "without agency"
-          fi
-
-      - name: 文档 - 文档库docs文件夹的处理
+      - name: 文档 - 文档克隆2, 允许使用代理仓库/指定文件夹
         working-directory: ./src/
         run: |
-          if [ -d temp_repo/docs ]; then
-            find temp_repo/* -maxdepth 0 -name docs -prune -o -exec rm -rf {} \;
-            mv temp_repo/docs/* .
+          # step1. 克隆被代理仓库
+          # 该仓库为代理仓库时，使用链接仓库而非此仓库
+          # TODO 支持agency多个仓库。如果想更通用，干脆支持直接运行agency里的命令组
+          if [ -f temp_repo/agency ]; then
+            echo "with agency"
+            GIT_LINK=$(sed -n '1p' temp_repo/agency)
+            DIR=$(sed -n '2p' temp_repo/agency)
             rm -rf temp_repo
-            echo "with docs"
+            git clone --depth 1 $GIT_LINK temp_repo
           else
+            echo "without agency"
+            DIR="docs/"
+          fi
+
+          # 使用指定文件夹
+          if [ -d "temp_repo/${DIR}" ]; then
+            echo "with docs folder: temp_repo/${DIR}"
+            # find temp_repo/* -maxdepth 0 -name docs -prune -o -exec rm -rf {} \;
+            # ls -l temp_repo/website/docs/ # debug
+            mv "temp_repo/${DIR}"/* .
+            rm -rf temp_repo
+          else
+            echo "without docs folder: temp_repo/${DIR}"
             rsync -a temp_repo/ .
             rm -rf temp_repo
-            echo "without docs"
           fi
+
+          ls
 
       # [!code] 根据实际情况修改 (需要在仓库配置写入以及和文档仓库clone这两个步骤的后面)
       - name: 配置 - 设置
