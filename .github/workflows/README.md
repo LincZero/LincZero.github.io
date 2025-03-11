@@ -91,8 +91,8 @@ jobs:
           # TODO 支持agency多个仓库。如果想更通用，干脆支持直接运行agency里的命令组
           if [ -f temp_repo/agency ]; then
             echo "with agency"
-            GIT_LINK=$(sed -n '1p' temp_repo/agency)
-            DIR=$(sed -n '2p' temp_repo/agency)
+            GIT_LINK=$(sed -n '1p' temp_repo/agency | tr -d '\r')
+            DIR=$(sed -n '2p' temp_repo/agency | tr -d '\r')
             rm -rf temp_repo
             git clone --depth 1 $GIT_LINK temp_repo
           else
@@ -112,7 +112,7 @@ jobs:
             rsync -a temp_repo/ .
             rm -rf temp_repo
           fi
-
+          echo "---"
           ls
 
       # [!code] 根据实际情况修改 (需要在仓库配置写入以及和文档仓库clone这两个步骤的后面)
