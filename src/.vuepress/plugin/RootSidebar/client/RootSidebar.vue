@@ -17,7 +17,13 @@
     <div class="root-sidebar-control">
       <div class="root-sidebar-btn">
         <!-- <button title="升序/降序排序">Ord</button> -->
+        <button @click="()=>{ isH1 = !isH1 }"
+          :class="{'active': isH1}"
+          :title="isH1 ? '切换显示: H1->文件名' : '切换显示: 文件名->H1'">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="1 -4 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heading"><path d="M6 12h12"/><path d="M6 20V4"/><path d="M18 20V4"/></svg>
+        </button>
         <button @click="switchOldSidebar()"
+        :class="{'active': isOldSidebar}"
           title="切换新旧侧边栏">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-up"><path d="m3 16 4 4 4-4"/><path d="M7 20V4"/><path d="m21 8-4-4-4 4"/><path d="M17 4v16"/></svg>
         </button>
@@ -53,6 +59,7 @@
         :prefix_from_root="targetPath"
         :sidebarData="pinData"
         :currentPath="'/'"
+        :isH1="isH1"
       />
       <div v-show="pinData.length>0"><hr></div>
     </div>
@@ -62,6 +69,7 @@
         :prefix_from_root="targetPath"
         :sidebarData="targetData"
         :currentPath="currentPath"
+        :isH1="isH1"
       />
     </div>
   </div>
@@ -216,7 +224,10 @@ watch(() => route.fullPath, () => {
   onNewUrl()
 })
 
+const isH1 = ref<boolean>(false) // 切换显示H1还是文件名
+
 /// 切换新旧侧边栏 (兼容考虑)
+const isOldSidebar = ref<boolean>(false)
 function switchOldSidebar(isUseNew?: boolean) {
   const el_old: HTMLElement|null = document.querySelector("#sidebar>.vp-sidebar-links")
   const el_new: HTMLElement|null = document.querySelector("#sidebar>.root-sidebar>.root-sidebar-content")
@@ -224,9 +235,9 @@ function switchOldSidebar(isUseNew?: boolean) {
   // const root-sidebar
   if (!el_old || !el_new || !el_new2) { console.warn("Warning: can not find sidebar old/new element"); return }
 
-  if (isUseNew !== undefined) {}
-  else if (el_old.style.display === 'none' || el_old.style.display === '') { isUseNew = false }
-  else { isUseNew = true }
+  if (isUseNew !== undefined) {} // TODO
+  else if (el_old.style.display === 'none' || el_old.style.display === '') { isUseNew = false; isOldSidebar.value = true }
+  else { isUseNew = true; isOldSidebar.value = false }
 
   if (isUseNew) {
     el_old.style.display = 'none';
@@ -327,6 +338,7 @@ button { // h:(26+4+0)+4
   line-height: 26px;
   border-radius: 6px;
   padding: 2px 3px; border: none;
+  // padding: 0px 1px !important; border: solid 2px currentColor; // 各让2px padding给border
 
   &:hover {
     padding: 0px 1px !important; border: solid 2px currentColor; // 各让2px padding给border
@@ -334,6 +346,10 @@ button { // h:(26+4+0)+4
     // background-color: #f0f0f011;
     background-color: var(--vp-c-accent-soft);
     // 或使用 var(--theme-color-mask); // 一种更浅的 --theme-color
+  }
+
+  &.active>svg {
+    stroke: var(--vp-c-accent) !important;
   }
 }
 
