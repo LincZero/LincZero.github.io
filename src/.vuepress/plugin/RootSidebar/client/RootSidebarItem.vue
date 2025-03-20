@@ -33,6 +33,7 @@
           :prefix_from_root="props.prefix_from_root + item.prefix"
           :sidebarData="item.children"
           :currentPath="props.currentPath"
+          :is-h1="props.isH1"
         />
       </div>
     </li>
@@ -94,7 +95,7 @@ const getText = (item: SidebarType) => {
     // b1. title/h1名 (如果没有，还是会用回文件名)
     if (props.isH1) {
       const title = resolveRoute(getUrl(item))?.meta?.title // 可能为空或未定义。meta.title -> h1 -> filename
-      if (title && title != '404') return title
+      if (title && title != '404') return title // 路由不存在时返回404
     }
     // b2. 文件夹/文件名
     if (!item.length) return "README"
