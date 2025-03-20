@@ -43,12 +43,15 @@
 import { ref, onMounted, watch } from 'vue';
 import { SidebarType } from "./index"
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   deep_from_target: number,     // 当前文件夹层的深度 (随着传递增加，相对于targetDeep的深度，从0开始)
   prefix_from_root: string,     // 当前文件夹层的前缀
   sidebarData: SidebarType[],   // 当前文件夹层的数据 (随着传递减少深度)
   currentPath: string,          // 当前url (仅用于初始化时默认展开，url编码)
-}>()
+  isH1?: boolean,               // 是否使用h1名，flase则使用文件名
+}>(), {
+  isH1: false
+})
 
 // 展开状态
 // 每个目录文件夹组件只管理自己这一层的折叠状态。多个侧边栏可以有不同的折叠状态
@@ -73,9 +76,27 @@ watch(() => props.currentPath, () => {
   onUpdateDeep()
 })
 
-const getText = (item: SidebarType) => { // 返回值可视化高的文本 (非url编码，可能是侧边栏或pin栏上的目录/文件名)
+/**
+ * 返回高可读的文本 (非url编码)
+ * 用于: 可能是侧边栏或pin栏上的目录/文件名
+ * 值: 有两种情况
+ * - 一是文件夹/文件名 (适合本地md笔记用户)
+ * - 二是h1名 (适合考虑url路径带来影响的网络博客用户)
+ * 
+ * frontmeta的获取: 两种方法:
+ * - useRoutes().value[getUrl(item)] // useRoutes()在setup作用域下调用
+ * - resolveRoute(getUrl(item))
+ */
+import { resolveRoute, useRoutes } from 'vuepress/client'
+const getText = (item: SidebarType) => {
   // 文件
   if (typeof item === 'string') {
+    // b1. title/h1名 (如果没有，还是会用回文件名)
+    if (props.isH1) {
+      const title = resolveRoute(getUrl(item))?.meta?.title // 可能为空或未定义。meta.title -> h1 -> filename
+      if (title && title != '404') return title
+    }
+    // b2. 文件夹/文件名
     if (!item.length) return "README"
     let s:string = decodeURIComponent(item)           // /MdNote_Other/Pkmer-Math-main/(Home.html or "")?deep=1
     if(item.endsWith("/")) { s = s.slice(0, -1); }
@@ -91,7 +112,11 @@ const getText = (item: SidebarType) => { // 返回值可视化高的文本 (非u
     return item.prefix.slice(0, -1)
   }
 }
-const getUrl = (item: string) => { // 返回值非url编码
+
+/**
+ * @return 非url编码
+ */
+const getUrl = (item: string) => {
   if (!item.length) return props.prefix_from_root                 // README
   if (item.startsWith("/")) return item                           // 绝对路径
   if (item.endsWith("/")) return (props.prefix_from_root + item)  // 文件夹 (可传入item.prefix判断)

@@ -27,7 +27,7 @@ const getLastPartOfPath = (path: string) : String => {
 
 /**
  * Resolve AutoLink props from string
- *
+ * https://github.com/vuepress-theme-hope/vuepress-theme-hope/blob/1b543518aea70ee6f500741ab64b833a3e98d8e8/packages/theme/src/client/utils/resolveLinkInfo.ts
  */
 export const resolveLinkInfo = (
   item: string,

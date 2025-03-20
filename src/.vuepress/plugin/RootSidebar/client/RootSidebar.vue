@@ -69,11 +69,26 @@
 
 <script setup lang="ts">
 import { sidebarData } from "@temp/theme-hope/sidebar.js"; // 在client端获取侧边栏数据
-import { usePageData, useSiteData } from 'vuepress/client'
-import { useRouter, useRoute } from 'vue-router'; // 不 import {useRoute} from vuepress/client 了
+import { useSiteData } from 'vuepress/client' // https://vuepress.github.io/zh/reference/client-api.html
+import { useRouter, useRoute } from 'vue-router'
+// import { useRoute } from 'vuepress/client' // 为什么用 vue-router 版而不是 vupress/client 版的原因忘了，好像是有区别的
 import { type ComputedRef, type Ref, computed, onMounted, ref, watch, nextTick } from 'vue';
 import RootSidebarItem from "./RootSidebarItem.vue"
 import type { SidebarType } from "./index"
+
+// import { useSidebarItems } from "vuepress-theme-hope/client/modules/sidebar/composables/index";
+/**
+ * 数据更多的siebarData版本
+ * 
+ * @detail
+ * 被vuepress-theme-hope处理过
+ * 特点: 仅检测并获取当前路径下的子目录/文件。有 h1、icon、collapsible 等处理
+ * 原理: 
+ * 数据来源: inject(sidebarItemsSymbol)
+ * https://github.com/vuepress-theme-hope/vuepress-theme-hope/blob/1b543518aea70ee6f500741ab64b833a3e98d8e8/packages/theme/src/client/modules/sidebar/composables/setupSidebarItems.ts#L61
+ * usePageFrontmatter
+ */
+// const sidebarData2 = useSidebarItems().value
 
 // 数据获取
 // current基于完整的url
@@ -221,7 +236,6 @@ function switchOldSidebar(isUseNew?: boolean) {
     el_new.style.display = 'none';
     el_new2.style.display = 'none';
     el_old.style.display = 'block';
-    debug()
   }
 }
 onMounted(() => {
@@ -272,6 +286,10 @@ onMounted(() => {
 })
 
 /// 调试输出
+import { usePageData, usePageFrontmatter } from 'vuepress/client' // https://vuepress.github.io/zh/reference/client-api.html
+const isDebug = false
+const _usePageData = usePageData()
+const _usePageFrontmatter = usePageFrontmatter()
 const debug = () => {
   // test url: http://localhost:8080/MdNote_Public/Test.html?deep=1&state=s2#h2
   console.log("debug start ---------------------------------------")
@@ -282,13 +300,15 @@ const debug = () => {
   console.log("route1", window.location)        // Location {hash, host, hostname, href, origin, pathname, port, protocol, search}
   console.log("route2", route)                  // 
   console.log("route3", router)                 // 
-  console.log("p1", usePageData())              // Object，一个包含了当前页面数据的对象 {lang, path, forntmatter, ...}
-  console.log("p2", usePageData().value.router) // undefined
-  console.log("p3", usePageData().value.path)   // /MdNote_Public/Test.html
+  console.log("usePageData1", _usePageData.value)        // Object，一个包含了当前页面数据的对象 {lang, path, forntmatter, ...}
+  console.log("usePageData2", _usePageData.value.router) // undefined
+  console.log("usePageData3", _usePageData.value.path)   // /MdNote_Public/Test.html
+  console.log("usePageFrontmatter", _usePageFrontmatter.value)
   console.log("debug end -----------------------------------------")
 }
-const isDebug = false
-if (isDebug) { debug() }
+onMounted(()=>{
+  if (isDebug) { debug() }
+})
 </script>
 
 <style scoped lang="scss">

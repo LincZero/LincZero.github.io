@@ -86,7 +86,8 @@ async function onInitialized2(app: App) {
       // app.pages[i].data.frontmatter.shortTitle = newPath
       // app.pages[i].frontmatter.shortTitle = newPath
       // app.pages[i].routeMeta.title = newPath
-      app.pages[i].routeMeta.s = newPath // 有毒，这个才是真 "shortTitle"
+      // 这个才是真 "shortTitle"。route中的frontmeta才可以在client端通过resolveRoute/useRoutes解析使用
+      app.pages[i].routeMeta.s = newPath
     }
   }
 
