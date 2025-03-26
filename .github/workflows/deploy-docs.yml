@@ -45,6 +45,7 @@ jobs:
           git clone --depth 1 https://github.com/LincDocs/ComfyUI_examples.git
           git clone --depth 1 https://github.com/LincDocs/ComfyUI-Workflows-ZHO.git
           git clone --depth 1 https://github.com/LincDocs/ComfyUI-Workflows-Linc.git
+          git clone --depth 1 https://github.com/LincZero/LincZero.git
         # git clone --depth 1 https://github.com/LincDocs/Pkmer-Math.git
 
       - name: 环境 - 安装 pnpm

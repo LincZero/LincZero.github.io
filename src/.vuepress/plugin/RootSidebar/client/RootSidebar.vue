@@ -224,7 +224,7 @@ watch(() => route.fullPath, () => {
   onNewUrl()
 })
 
-const isH1 = ref<boolean>(false) // 切换显示H1还是文件名
+const isH1 = ref<boolean>(false) // 切换显示H1还是文件名 // TODO 用浏览器存储，允许在插件配置中设置默认值
 
 /// 切换新旧侧边栏 (兼容考虑)
 const isOldSidebar = ref<boolean>(false)
