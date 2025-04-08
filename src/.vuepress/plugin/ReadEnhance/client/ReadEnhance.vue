@@ -28,6 +28,17 @@
         </button>
       </div>
       <div>
+        隐藏侧边栏/TOC
+      </div>
+      <div>
+        <button @click="fn_switchShowSidebar()" title="侧边栏">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-panel-left-dashed-icon lucide-panel-left-dashed"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 14v1"/><path d="M9 19v2"/><path d="M9 3v2"/><path d="M9 9v1"/></svg>
+        </button>
+        <button @click="fn_switchShowToc()" title="TOC">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-panel-right-dashed-icon lucide-panel-right-dashed"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 14v1"/><path d="M15 19v2"/><path d="M15 3v2"/><path d="M15 9v1"/></svg>
+        </button>
+      </div>
+      <div>
         背景颜色
       </div>
       <div>
@@ -70,7 +81,7 @@ const props = {}
 
 const isShowContent = ref(false)
 
-// 布局模式
+// #region 布局模式
 const mode = ref('')
 onMounted(()=>{ // 获取 浏览器缓存
   if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
@@ -92,6 +103,7 @@ function fn_mode(n: string) {
   const el_sidebar: HTMLElement = document.querySelector("#sidebar")
   const el_mainContent: HTMLElement = document.querySelector("#main-content")
 
+  document.documentElement.setAttribute('read-mode', mode.value)
   // 两侧模式
   if (mode.value == 'side') {
     if (el_toc) el_toc.style.display = "block";
@@ -150,6 +162,7 @@ function fn_mode(n: string) {
     el_mainContent.style.paddingBottom = '0';
     let el_tmp: HTMLElement = document.querySelector('.theme-hope-content');
     if (el_tmp) el_tmp.style.paddingBottom = '0';
+    // TODO 切换页面会被重置，得改CSS
     el_tmp = document.querySelector('.pdf-viewer-wrapper');
     if (el_tmp) el_tmp.style.height = 'calc(100vh - 110px)'
   }
@@ -179,8 +192,36 @@ function fn_mode(n: string) {
     localStorage.setItem('ReadEnahnce_mode', mode.value);
   }
 }
+// #endregion
 
-// 配色相关
+// #region 是否显示侧边栏和toc
+function fn_switchShowSidebar(isShow?: boolean) {
+  const el = document.querySelector('#app>div.theme-container')
+  if (!el) { console.warn('没有找到主题主页，无法切换'); return }
+
+  if (isShow == undefined) {
+    const hasSidebar = !el.classList.contains('no-sidebar');
+    isShow = !hasSidebar
+  }
+
+  if (isShow == true) { el.classList.remove('no-sidebar') }
+  else if (isShow == false) { el.classList.add('no-sidebar') }
+}
+function fn_switchShowToc(isShow?: boolean) {
+  const el = document.querySelector('#app>div.theme-container')
+  if (!el) { console.warn('没有找到主题主页，无法切换'); return }
+
+  if (isShow == undefined) {
+    const hasToc = el.classList.contains('has-toc');
+    isShow = !hasToc
+  }
+
+  if (isShow == true) { el.classList.add('has-toc') }
+  else if (isShow == false) { el.classList.remove('has-toc') }
+}
+// #endregion
+
+// #region 配色相关
 const bgColor = ref('')
 onMounted(()=>{ // 获取 浏览器缓存
   if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
@@ -207,9 +248,10 @@ function fn_color(n: string) {
     localStorage.setItem('ReadEnahnce_color', bgColor.value);
   }
 }
+// #endregion
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .read-enhance {
   .read-enhance-icon {
     width: 20px;
