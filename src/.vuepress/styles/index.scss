@@ -1,9 +1,9 @@
 // place your custom styles here
 @import 'linc_rainbow.scss';
-@import '../plugin/ABConvertManager/src/style/styles.scss';
-@import '../plugin/ChatView/styles.scss';
-@import '../plugin/VueFlowPlugin/NodeFlow/style/vue_custom.scss';
-@import '../plugin/callout/index.scss';
+@import '../plugins/ABConvertManager/src/style/styles.scss';
+@import '../plugins/ChatView/styles.scss';
+@import '../plugins/NodeFlow/client/NodeFlow/style/vue_custom.scss';
+@import '../plugins/callout/index.scss';
 //@import 'linc_wide.scss';
 
 /**

@@ -72,7 +72,7 @@ npm install @dagrejs/dagre
 
 ### 开发人员补充
 
-如果你想创建自己的插件，和前面的 `VuePress使用` 步骤相似，只不过复制Vue组件到对应的目录 (例如 `./plugin/VueFlowPlugin/NodeFlow`)
+如果你想创建自己的插件，和前面的 `VuePress使用` 步骤相似，只不过复制Vue组件到对应的目录 (例如 `./plugin/NodeFlow/client/NodeFlow`)
 
 然后并添加一些插件声明的东西。在 `./plugin/VueFlowPlugin` 文件夹下创建 `index.ts` 和 `clientConfig.ts` 文件，并添加内容：
 
