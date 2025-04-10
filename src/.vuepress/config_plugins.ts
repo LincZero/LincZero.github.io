@@ -1,5 +1,5 @@
 import newPageHook from "./plugins/newPageHook"
-import nodeFlow from "./plugins/NodeFLow/node"
+import nodeFlow from "./plugins/NodeFlow/node"
 import exFormat from "./plugins/ExFormat/node"
 import rootSidebar from "./plugins/RootSidebar/node"
 import readEnhance from "./plugins/ReadEnhance/node"
