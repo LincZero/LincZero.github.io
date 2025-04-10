@@ -1,5 +1,6 @@
 import newPageHook from "./plugins/newPageHook"
 import nodeFlow from "./plugins/NodeFlow/node"
+import tikz from "./plugins/Tikz/node"
 import exFormat from "./plugins/ExFormat/node"
 import rootSidebar from "./plugins/RootSidebar/node"
 import readEnhance from "./plugins/ReadEnhance/node"
@@ -10,6 +11,7 @@ type PluginConfig = any;
 const plugins: PluginConfig = [
   newPageHook,
   nodeFlow,
+  tikz,
   exFormat,
   relational_graph({ // 含自定义组件
     localGraphDeep: 1, // 最大深度，默认20
