@@ -1,10 +1,10 @@
-import newPageHook from "./plugin/newPageHook"
-import nodeFlow from "./plugin/NodeFLow/node"
-import exFormat from "./plugin/ExFormat/node"
-import rootSidebar from "./plugin/RootSidebar/node"
-import readEnhance from "./plugin/ReadEnhance/node"
-import relational_graph from "./plugin/BiGraph/node"
-import myLayout from "./plugin/MyLayout/node" // 非通用的自定义布局，必须最后加载，便于覆盖其他插件的自定义布局行为
+import newPageHook from "./plugins/newPageHook"
+import nodeFlow from "./plugins/NodeFLow/node"
+import exFormat from "./plugins/ExFormat/node"
+import rootSidebar from "./plugins/RootSidebar/node"
+import readEnhance from "./plugins/ReadEnhance/node"
+import relational_graph from "./plugins/BiGraph/node"
+import myLayout from "./plugins/MyLayout/node" // 非通用的自定义布局，必须最后加载，便于覆盖其他插件的自定义布局行为
 type PluginConfig = any;
 
 const plugins: PluginConfig = [
