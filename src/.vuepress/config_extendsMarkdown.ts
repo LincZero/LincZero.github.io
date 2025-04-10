@@ -1,7 +1,6 @@
 import callout_mdit from "markdown-it-obsidian-callouts" // https://github.com/ebullient/markdown-it-obsidian-callouts
 import { BiDirectionalLinks } from '@nolebase/markdown-it-bi-directional-links'
 
-import nodeflow_mdit from "./plugin/VueFlowPlugin/index_mdit"
 import chatview_mdit from "./plugin/ChatView/src/MarkdownIt/index_mdit"
 
 // import ab_mdit from "./plugin/ABConvertManager/dist/index_mdit.js"     // 编译版tsc (成功)
@@ -37,7 +36,6 @@ dom.window.scrollTo = ()=>{} // @warn 若缺少该行，编译警告：Error: No
 
 // @ts-ignore 找不到名称“markdownit”
 export default  (md: markdownit) => {
-  md.use(nodeflow_mdit)
   md.use(ab_mdit)
   md.use(chatview_mdit) // 这里要虚拟dom，让前面的ab_mdit模块给解决一下
   md.use(callout_mdit)

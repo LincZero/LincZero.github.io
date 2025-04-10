@@ -1,5 +1,5 @@
 import newPageHook from "./plugin/newPageHook"
-import vueflowPlugin from "./plugin/VueFlowPlugin"
+import nodeFlow from "./plugin/NodeFLow/node"
 import exFormat from "./plugin/ExFormat/node"
 import rootSidebar from "./plugin/RootSidebar/node"
 import readEnhance from "./plugin/ReadEnhance/node"
@@ -9,7 +9,7 @@ type PluginConfig = any;
 
 const plugins: PluginConfig = [
   newPageHook,
-  vueflowPlugin,
+  nodeFlow,
   exFormat,
   relational_graph({ // 含自定义组件
     localGraphDeep: 1, // 最大深度，默认20
