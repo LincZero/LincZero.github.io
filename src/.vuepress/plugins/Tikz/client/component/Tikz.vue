@@ -8,8 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted } from 'vue';
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import { ref } from 'vue';
 
 // import { optimize } from "./svgo.browser"; // 573KB

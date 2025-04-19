@@ -30,6 +30,8 @@ export const themeOptions: ThemeOptions = {
   // metaLocales: {
   //   editLink: "在 GitHub 上编辑此页",
   // },
+  // licensed <a href="https://creativecommons.org/licenses/by-sa/4.0" target="_blank">CC BY-SA 4.0</a>
+  displayFooter: true, copyright: false, footer: 'Powered by <a href="https://github.com/LincDocs/Workflow">LincZero.github.io Workflow</a>',
   toc: true,
   headerDepth: 6,
   sidebarSorter: ["readme", "order", "filename"], // 话说用title才能解决文件夹和文件顺序的问题，用filename则不行
