@@ -67,7 +67,7 @@ const abc_mditDemo = ABConvert.factory({
 
 const abc_mditABDemo = ABConvert.factory({
   id: "mditABDemo",
-  name: "AnyBlock转用展示对比",
+  name: "AnyBlock专用展示对比",
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.el,
   process: (el, header, content: string): HTMLElement=>{
@@ -106,5 +106,29 @@ const abc_midt_card = ABConvert.factory({
     el.querySelector("div")?.classList.add("ab-card")
     el.querySelector("div")?.classList.add("ab-lay-vfall")
     return el
+  }
+})
+
+const abc_midt_chat = ABConvert.factory({
+  id: "mditChat",
+  name: "mdit对话",
+  detail: "显示渲染对话，需要配合 obsidian-view-chat-qq 插件使用",
+  process_param: ABConvert_IOEnum.text,
+  process_return: ABConvert_IOEnum.text,
+  process: (el, header, content: string): string=>{
+    const content_list = content.split('\n')
+    let newContent = ''
+    for(let i=0; i<content_list.length; i++) {
+      const line = content_list[i]
+      if (/^@chat(.*)$/.test(line)) {
+        const match = line.match(/^@chat(.*)$/)
+        if (match && match[1]) {
+          newContent += '\n' + match[1] + ':\n'
+          continue
+        }
+      }
+      newContent += line + '\n'
+    }
+    return newContent
   }
 })

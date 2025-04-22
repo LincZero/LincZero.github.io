@@ -98,7 +98,8 @@ interface ABAlias_json_item {
 
 // 允许带参数的部分 (这部分的遍历会更耗时间。为了性能考虑，单独拿出来)
 const ABAlias_json_withSub: ABAlias_json_item[] = [
-  { regex: /\|::: 140lne\|(info|note|warn|warning|error)\s?(.*?)\|/, replacement: "|add([!$1] $2)|quote|" },
+  { regex: /\|::: 140lne\|(info|note|warning|caution|attention|error|danger|tips|tip|hint|example|abstract|summary|tldr|quote|cite|todo|success|check|done)\s?(.*?)\|/, replacement: "|add([!$1] $2)|quote|" },
+  { regex: /\|\!(\S+)\s?(.*)\|/, replacement: "|add([!$1] $2)|quote|" },
 ]
 
 // mdit块
@@ -108,6 +109,7 @@ const ABAlias_json_mdit: ABAlias_json_item[] = [
   {regex: "|::: 140lne|abDemo|", replacement: "|mditABDemo|"},
   {regex: /\|::: 140lne\|(2?col|分栏)\|/, replacement: "|mditCol|"},
   {regex: /\|::: 140lne\|(2?card|卡片)\|/, replacement: "|mditCard|"},
+  {regex: /\|::: 140lne\|(2?chat|聊天)\|/, replacement: "|mditChat|code(chat)|"},
 ]
 
 // 标题块
@@ -122,8 +124,9 @@ const ABAlias_json_title: ABAlias_json_item[] = [
   {regex: /\|heading 140lne\|2?(nodes?|节点)\||\|(title2node|title2abMindmap)\|/, replacement: "|title2listdata|listdata2strict|listdata2nodes|"},
 
   // list  - 多叉多层树
-  {regex: /\|heading 140lne\|2?(flow|流程图)\|/, replacement: "|title2list" + "|list2mermaid|"},
-  {regex: /\|heading 140lne\|2?(puml)?(mindmap|脑图|思维导图)\|/, replacement: "|title2list" + "|list2pumlMindmap|"},
+  {regex: /\|heading 140lne\|2?(mermaid|flow|流程图)\|/, replacement: "|title2list" + "|list2mermaid|"},
+  {regex: /\|heading 140lne\|2?(mehrmaid|mdmermaid)\|/, replacement: "|title2list" + "|list2mehrmaidText|code(mehrmaid)|"},
+  {regex: /\|heading 140lne\|2?(puml)?(plantuml|mindmap|脑图|思维导图)\|/, replacement: "|title2list" + "|list2pumlMindmap|"},
   {regex: /\|heading 140lne\|2?(markmap|mdMindmap|md脑图|md思维导图)\|/, replacement: "|title2list" + "|list2markmap|"},
   {regex: /\|heading 140lne\|2?(wbs|(工作)?分解(图|结构))\|/, replacement: "|title2list" + "|list2pumlWBS|"},
   {regex: /\|heading 140lne\|2?(table|multiWayTable|multiCrossTable|表格?|多叉表格?|跨行表格?)\|/, replacement: "|title2list" + "|list2table|"},
@@ -149,8 +152,9 @@ const ABAlias_json_list: ABAlias_json_item[] = [
   {regex: /\|list 140lne\|2?(nodes?|节点)\||\|(list2node|list2abMindmap)\|/, replacement: "|list2listdata|listdata2strict|listdata2nodes|"},
 
   // list  - 多叉多层树
-  {regex: /\|list 140lne\|2?(flow|流程图)\|/, replacement: "|list2mermaid|"},
-  {regex: /\|list 140lne\|2?(puml)?(mindmap|脑图|思维导图)\|/, replacement: "|list2pumlMindmap|"},
+  {regex: /\|list 140lne\|2?(mermaid|flow|流程图)\|/, replacement: "|list2mermaid|"},
+  {regex: /\|list 140lne\|2?(mehrmaid|mdmermaid)\|/, replacement: "|list2mehrmaidText|code(mehrmaid)|"},
+  {regex: /\|list 140lne\|2?(puml)?(plantuml|mindmap|脑图|思维导图)\|/, replacement: "|list2pumlMindmap|"},
   {regex: /\|list 140lne\|2?(markmap|mdMindmap|md脑图|md思维导图)\|/, replacement: "|list2markmap|"},
   {regex: /\|list 140lne\|2?(wbs|(工作)?分解(图|结构))\|/, replacement: "|list2pumlWBS|"},
   {regex: /\|list 140lne\|2?(table|multiWayTable|multiCrossTable|表格?|多叉表格?|跨行表格?)\|/, replacement: "|list2table|"},

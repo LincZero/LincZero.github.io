@@ -246,16 +246,38 @@ const abc_overfold = ABConvert.factory({
 const abc_addClass = ABConvert.factory({
   id: "addClass",
   name: "增加class",
-  detail: "给当前块增加一个类名",
+  detail: "给当前块增加一个类名。支持正常使用空格来添加多个class, 不需要加dot符, 就像在class=''里写的那样",
   match: /^addClass\((.*)\)$/,
   process_param: ABConvert_IOEnum.el,
   process_return: ABConvert_IOEnum.el,
   process: (el, header, content: HTMLElement): HTMLElement=>{
     const matchs = header.match(/^addClass\((.*)\)$/)
     if (!matchs || !matchs[1]) return content
-    if(content.children.length!=1) return content
+    if(content.children.length != 1) return content
     const sub_el = content.children[0]
-    sub_el.classList.add(String(matchs[1]))
+
+    const args = matchs[1].split(' ')
+    for (const arg of args) {
+      sub_el.classList.add(arg)
+    }
+    return content
+  }
+})
+
+const abc_addStyle = ABConvert.factory({
+  id: "addStyle",
+  name: "增加style",
+  detail: "给当前块增加一个样式, 注意最外的括号往内要留一个空格, 避免rotate这种用括号时冲突。添加多个则正常使用分号",
+  match: /^addStyle\(\s(.*)\s\)$/, // 中间可能有括号，要加空格保证不误识别
+  process_param: ABConvert_IOEnum.el,
+  process_return: ABConvert_IOEnum.el,
+  process: (el, header, content: HTMLElement): HTMLElement => {
+    const matchs = header.match(/^addStyle\(\s(.*)\s\)$/)
+    if (!matchs || !matchs[1]) return content
+    if (content.children.length != 1) return content
+    const sub_el = content.children[0]
+    // sub_el.setAttribute("style", String(matchs[1])) // setStyle
+    ;(sub_el as HTMLElement).style.cssText += String(matchs[1])
     return content
   }
 })
@@ -270,12 +292,17 @@ const abc_addDiv = ABConvert.factory({
   process: (el, header, content: HTMLElement): HTMLElement=>{
     const matchs = header.match(/^addDiv\((.*)\)$/)
     if (!matchs || !matchs[1]) return content
-    const arg1 = matchs[1]
+    
     // 修改元素
-    if(content.children.length!=1) return content
+    if(content.children.length != 1) return content
     const sub_el = content.children[0]
+
     sub_el.remove()
-    const mid_el = document.createElement("div"); content.appendChild(mid_el); mid_el.classList.add(arg1)
+    const mid_el = document.createElement("div"); content.appendChild(mid_el);
+    const args = matchs[1].split(' ')
+    for (const arg of args) {
+      mid_el.classList.add(arg)
+    }
     mid_el.appendChild(sub_el)
     return content
   }
@@ -484,6 +511,9 @@ const abc_transpose = ABConvert.factory({
           map_table2[j][i] = "<"
         }
         else {
+          let content = origi_cell.html
+          if (content.innerHTML == '<' || content.innerHTML == '&lt;') content.innerHTML = '^'
+          else if (content.innerHTML == '^') content.innerHTML = '<'
           map_table2[j][i] = {
             html: origi_cell.html,
             rowSpan: origi_cell.colSpan || 1,

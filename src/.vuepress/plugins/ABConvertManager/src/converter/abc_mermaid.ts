@@ -11,7 +11,7 @@ import {ABConvertManager} from "../ABConvertManager"
 import {ListProcess, type List_ListItem} from "./abc_list"
 import {ABReg} from "../ABReg"
 
-// 二选一。这里是obsidian版本。mdit环境直接注释掉这部分
+// 二选一。这里是obsidian版本。mdit/min环境直接注释掉这部分
 // 依赖和主题明暗检测也是ob才需要的
 // mermaid相关 - 要在这里自己渲才需要
 // import mermaid from "mermaid"
@@ -64,16 +64,62 @@ const abc_list2mindmap = ABConvert.factory({
 const abc_list2mermaid = ABConvert.factory({
   id: "list2mermaid",
   name: "列表转mermaid流程图",
+  match: /^list2mermaid(\((.*)\))?$/,
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.el,
   process: (el, header, content: string): HTMLElement=>{
-    list2mermaid(content, el)
+    let matchs = header.match(/^list2mermaid(\((.*)\))?$/)
+    if (!matchs) { console.error('no match', matchs); return el }
+    let mermaid_head = "graph LR"
+    if (matchs[2]) mermaid_head = matchs[2]
+
+    const list_itemInfo = ListProcess.list2data(content)
+    const mermaidText = mermaid_head + '\n' + data2mermaidText(list_itemInfo)
+    render_mermaidText(mermaidText, el)
     return el
   }
 })
 
+const abc_list2mermaidText = ABConvert.factory({
+  id: "list2mermaidText",
+  name: "列表转mermaid文本",
+  match: /^list2mermaidText(\((.*)\))?$/,
+  detail: "列表转mermaid文本",
+  process_param: ABConvert_IOEnum.text,
+  process_return: ABConvert_IOEnum.text,
+  process: (el, header, content: string): string=>{
+    let matchs = header.match(/^list2mermaidText(\((.*)\))?$/)
+    if (!matchs) { console.error('no match', matchs); return 'error, no match' }
+    let mermaid_head = "graph LR"
+    if (matchs[2]) mermaid_head = matchs[2]
+
+    const list_itemInfo = ListProcess.list2data(content)
+    const mermaidText = mermaid_head + '\n' + data2mermaidText(list_itemInfo)
+    return mermaidText
+  }
+})
+
+const abc_list2mehrmaid = ABConvert.factory({
+  id: "list2mehrmaidText",
+  name: "列表转mehrmaid文本",
+  match: /^list2mehrmaidText(\((.*)\))?$/,
+  detail: "需要配合mehrmaid插件和code(mehrmaid)使用，或使用别名简化",
+  process_param: ABConvert_IOEnum.text,
+  process_return: ABConvert_IOEnum.text,
+  process: (el, header, content: string): string=>{
+    let matchs = header.match(/^list2mehrmaidText(\((.*)\))?$/)
+    if (!matchs) { console.error('no match', matchs); return 'error, no match' }
+    let mermaid_head = "flowchart LR"
+    if (matchs[2]) mermaid_head = matchs[2]
+
+    const list_itemInfo = ListProcess.list2data(content)
+    const mermaidText = mermaid_head + '\n' + data2mehrmaidText(list_itemInfo)
+    return mermaidText
+  }
+})
+
 const abc_mermaid = ABConvert.factory({
-  id: "mermaid",
+  id: "mermaid-with",
   name: "新mermaid",
   match: /^mermaid(\((.*)\))?$/,
   default: "mermaid(graph TB)",
@@ -81,9 +127,9 @@ const abc_mermaid = ABConvert.factory({
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.el,
   process: async (el, header, content: string): Promise<HTMLElement>=>{
-    let matchs = content.match(/^mermaid(\((.*)\))?$/)
+    let matchs = header.match(/^mermaid(\((.*)\))?$/)
     if (!matchs) return el
-    if (matchs[1]) content = matchs[2]+"\n"+content
+    if (matchs[2]) content = matchs[2] + '\n' + content
     const el2 = render_mermaidText(content, el)
     return el2
   }
@@ -91,23 +137,18 @@ const abc_mermaid = ABConvert.factory({
 
 // ----------- list and mermaid ------------
 
-/** 列表转mermaid流程图 */
-function list2mermaid(text: string, div: HTMLDivElement) {
-  let list_itemInfo = ListProcess.list2data(text)
-  let mermaidText = data2mermaidText(list_itemInfo)
-  return render_mermaidText(mermaidText, div)
-}
-
 /** 列表数据转mermaid流程图
  * ~~@bug 旧版bug（未内置mermaid）会闪一下~~ 
  * 然后注意一下mermaid的(项)不能有空格，或非法字符。空格我处理掉了，字符我先不管。算了，还是不处理空格吧
+ * 
+ * 注意：此处不添加mermaid头，要自己加
  */
 function data2mermaidText(
   list_itemInfo: List_ListItem
 ){
   const html_mode = false    // @todo 暂时没有设置来切换这个开关
 
-  let list_line_content:string[] = ["graph LR"]
+  let list_line_content:string[] = []
   // let list_line_content:string[] = html_mode?['<pre class="mermaid">', "graph LR"]:["```mermaid", "graph LR"]
   let prev_line_content = ""
   let prev_level = 999
@@ -133,6 +174,58 @@ function data2mermaidText(
   // list_line_content.push(html_mode?"</pre>":"```")
 
   let text = list_line_content.join("\n")
+  return text
+}
+
+/** 列表数据转mermaid流程图
+ * ~~@bug 旧版bug（未内置mermaid）会闪一下~~ 
+ * 然后注意一下mermaid的(项)不能有空格，或非法字符。空格我处理掉了，字符我先不管。算了，还是不处理空格吧
+ */
+function data2mehrmaidText(
+  list_itemInfo: List_ListItem
+){
+  // mehrmaid较于mermaid的补充1：映射表。先将内容全部映射成数字（TODO 需要处理重名）
+  const mehrmaidMap = []
+  for (let i=0; i<list_itemInfo.length; i++) {
+    mehrmaidMap[i] = list_itemInfo[i].content
+    list_itemInfo[i].content = i.toString()
+  }
+
+  const html_mode = false    // @todo 暂时没有设置来切换这个开关
+
+  let list_line_content:string[] = []
+  // let list_line_content:string[] = html_mode?['<pre class="mermaid">', "graph LR"]:["```mermaid", "graph LR"]
+  let prev_line_content = ""
+  let prev_level = 999
+  for (let i=0; i<list_itemInfo.length; i++) {
+    if (list_itemInfo[i].level>prev_level){ // 向右正常加箭头
+      prev_line_content = prev_line_content+" --> "+list_itemInfo[i].content//.replace(/ /g, "_")
+    } else {                                // 换行，并……
+      list_line_content.push(prev_line_content)
+      prev_line_content = ""
+
+      for (let j=i; j>=0; j--){             // 回退到上一个比自己大的
+        if(list_itemInfo[j].level<list_itemInfo[i].level) {
+          prev_line_content = list_itemInfo[j].content//.replace(/ /g, "_")
+          break
+        }
+      }
+      if (prev_line_content) prev_line_content=prev_line_content+" --> "  // 如果有比自己大的
+      prev_line_content=prev_line_content+list_itemInfo[i].content//.replace(/ /g, "_")
+    }
+    prev_level = list_itemInfo[i].level
+  }
+  list_line_content.push(prev_line_content)
+  // list_line_content.push(html_mode?"</pre>":"```")
+
+  let text = list_line_content.join("\n")
+
+  // mehrmaid较于mermaid的补充2：映射回来
+  text += '\n\n'
+  for (let i=0; i<mehrmaidMap.length; i++) {
+    text += `${i}(("${mehrmaidMap[i]}"))\n`
+  }
+
   return text
 }
 

@@ -86,8 +86,8 @@ html[data-theme=dark] #app {
   margin-bottom: 22px;
 }
 .app-container .markdown-source-view .ab-replace {
-  margin-top: -18px;
-  margin-bottom: -18px;
+  margin-top: -0.5em;
+  margin-bottom: -0.5em;
 }
 .app-container .markdown-source-view .block-language-anyblock > .ab-replace {
   margin-top: 0;
@@ -519,7 +519,10 @@ html[data-theme=dark] #app {
 }
 .ab-note .ab-deco-scroll.ab-deco-scroll-x {
   overflow-x: auto;
-  white-space: pre;
+  white-space: pre !important;
+}
+.ab-note .ab-deco-scroll.ab-deco-scroll-x th, .ab-note .ab-deco-scroll.ab-deco-scroll-x td {
+  white-space: pre !important;
 }
 .ab-note .ab-deco-overfold {
   overflow-y: hidden;
@@ -566,6 +569,9 @@ html[data-theme=dark] #app {
   line-height: 17px;
   margin: 0;
   margin-bottom: 10px;
+}
+.ab-note .ab-deco-title pre {
+  margin: 0;
 }
 .ab-note .ab-deco-title .ab-deco-title-title {
   height: auto;
@@ -713,7 +719,6 @@ html[data-theme=dark] #app {
 }
 .ab-note .ab-items.ab-card.ab-lay-grid > .ab-items-item {
   position: relative;
-  overflow: hidden;
   margin: 5px;
   display: flex;
   flex-direction: column;
@@ -741,37 +746,48 @@ html[data-theme=dark] #app {
   flex: 0 0 auto;
   width: 170px;
 }
+.ab-note .ab-items > .ab-items-item {
+  overflow-x: auto;
+}
 .ab-note .ab-items.ab-col1 {
   -moz-column-count: 1 !important;
        column-count: 1 !important;
+  grid-template-columns: repeat(1, 1fr) !important;
 }
 .ab-note .ab-items.ab-col2 {
   -moz-column-count: 2 !important;
        column-count: 2 !important;
+  grid-template-columns: repeat(2, 1fr) !important;
 }
 .ab-note .ab-items.ab-col3 {
   -moz-column-count: 3 !important;
        column-count: 3 !important;
+  grid-template-columns: repeat(3, 1fr) !important;
 }
 .ab-note .ab-items.ab-col4 {
   -moz-column-count: 4 !important;
        column-count: 4 !important;
+  grid-template-columns: repeat(4, 1fr) !important;
 }
 .ab-note .ab-items.ab-col5 {
   -moz-column-count: 5 !important;
        column-count: 5 !important;
+  grid-template-columns: repeat(5, 1fr) !important;
 }
 .ab-note .ab-items.ab-col6 {
   -moz-column-count: 6 !important;
        column-count: 6 !important;
+  grid-template-columns: repeat(6, 1fr) !important;
 }
 .ab-note .ab-items.ab-col7 {
   -moz-column-count: 7 !important;
        column-count: 7 !important;
+  grid-template-columns: repeat(7, 1fr) !important;
 }
 .ab-note .ab-items.ab-col8 {
   -moz-column-count: 8 !important;
        column-count: 8 !important;
+  grid-template-columns: repeat(8, 1fr) !important;
 }
 .ab-note .ab-nodes {
   white-space: normal;
@@ -1051,7 +1067,14 @@ div.md-table-fig1 table.ab-setting.md-table-fig2 {
   font-weight: bold !important;
 }
 
-table.ab-table-fc td[col_index="0"] {
+table.ab-table-fc th[col_index="0"], table.ab-table-fc td[col_index="0"] {
+  white-space: pre;
+  font-weight: 500;
+  vertical-align: top;
+  width: 0px;
+}
+
+.ab-table-fc > table th:first-child, .ab-table-fc > table td:first-child {
   white-space: pre;
   font-weight: 500;
   vertical-align: top;
@@ -1103,4 +1126,4 @@ table.ab-table-fc td[col_index="0"] {
 /**************** 兼容性补充 ******************/
 :is(.markdown-preview-view, .markdown-rendered).is-readable-line-width:not(.matrix) .ab-note :is(.markdown-rendered) {
   width: auto !important;
-}/*# sourceMappingURL=styles.css.map */
+}

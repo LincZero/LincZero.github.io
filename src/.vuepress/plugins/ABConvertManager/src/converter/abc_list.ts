@@ -273,7 +273,22 @@ export class ListProcess{
 
     const list_text = text.split("\n")
     let mul_mode:"heading"|"para"|"list"|"" = ""                // 多行模式，标题/正文/列表/空
+    let codeBlockFlag = ''
     for (let line of list_text) {
+      // heading和mdit类型 需要跳过代码块内的结束标志
+      if (codeBlockFlag == '') {
+        const match = line.match(/^((\s|>\s|-\s|\*\s|\+\s)*)(````*|~~~~*)(.*)/)
+        if (match && match[3]) {
+          codeBlockFlag = match[1]+match[3]
+          list_itemInfo[list_itemInfo.length-1].content = list_itemInfo[list_itemInfo.length-1].content+"\n"+line; continue
+        }
+      }
+      else {
+        if (line.indexOf(codeBlockFlag) == 0) codeBlockFlag = ''
+        list_itemInfo[list_itemInfo.length-1].content = list_itemInfo[list_itemInfo.length-1].content+"\n"+line; continue
+      }
+
+      //
       const match_heading = line.match(ABReg.reg_heading_noprefix)
       const match_list = line.match(ABReg.reg_list_noprefix)
       if (match_heading && !match_heading[1]){                // 1. 标题层级（只识别根处）

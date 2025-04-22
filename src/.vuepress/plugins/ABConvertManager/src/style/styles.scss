@@ -96,8 +96,9 @@ html[data-theme="dark"] #app {
   // 源码/实时模式
   .markdown-source-view {
     .ab-replace{
-      margin-top: -18px; // 消除CM自带的间隙
-      margin-bottom: -18px;
+      // 消除cm-widgetBuffer自带的间隙。注意：不能完全消除，否则光标上下移动时会跳过块区域到达另一端
+      margin-top: -0.5em; // -12px;
+      margin-bottom: -0.5em; // -12px;
     }
     .block-language-anyblock>.ab-replace {
       margin-top: 0;
@@ -608,12 +609,15 @@ html[data-theme="dark"] #app {
   }
 
   // 滚动
-  .ab-deco-scroll.ab-deco-scroll-y{
+  .ab-deco-scroll.ab-deco-scroll-y {
     overflow-y:auto;
   }
-  .ab-deco-scroll.ab-deco-scroll-x{
+  .ab-deco-scroll.ab-deco-scroll-x {
     overflow-x:auto;
-    white-space: pre;
+    white-space: pre !important;
+    th, td {
+      white-space: pre !important;
+    }
   }
 
   // 超出折叠
@@ -663,6 +667,9 @@ html[data-theme="dark"] #app {
       line-height: 17px;
       margin: 0;
       margin-bottom: 10px;
+    }
+    pre {
+      margin: 0;
     }
     .ab-deco-title-title{
       height: auto;
@@ -834,6 +841,7 @@ html[data-theme="dark"] #app {
       &.ab-lay-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        // grid-auto-flow: column;
         gap: 0px !important;
         margin: 0 auto;
         &::after {
@@ -842,7 +850,6 @@ html[data-theme="dark"] #app {
         }
         >.ab-items-item {
           position: relative;
-          overflow: hidden;
           margin: 5px;
           display: flex;
           flex-direction: column;
@@ -876,15 +883,18 @@ html[data-theme="dark"] #app {
       }
     }
 
+    > .ab-items-item { overflow-x: auto; }
+
     // 补充结合样式
-    &.ab-col1 { column-count: 1 !important; }
-    &.ab-col2 { column-count: 2 !important; }
-    &.ab-col3 { column-count: 3 !important; }
-    &.ab-col4 { column-count: 4 !important; }
-    &.ab-col5 { column-count: 5 !important; }
-    &.ab-col6 { column-count: 6 !important; }
-    &.ab-col7 { column-count: 7 !important; }
-    &.ab-col8 { column-count: 8 !important; }
+    // 默认 & { column-count: 4 !important; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr) !important; }
+    &.ab-col1 { column-count: 1 !important; grid-template-columns: repeat(1, 1fr) !important; }
+    &.ab-col2 { column-count: 2 !important; grid-template-columns: repeat(2, 1fr) !important; }
+    &.ab-col3 { column-count: 3 !important; grid-template-columns: repeat(3, 1fr) !important; }
+    &.ab-col4 { column-count: 4 !important; grid-template-columns: repeat(4, 1fr) !important; }
+    &.ab-col5 { column-count: 5 !important; grid-template-columns: repeat(5, 1fr) !important; }
+    &.ab-col6 { column-count: 6 !important; grid-template-columns: repeat(6, 1fr) !important; }
+    &.ab-col7 { column-count: 7 !important; grid-template-columns: repeat(7, 1fr) !important; }
+    &.ab-col8 { column-count: 8 !important; grid-template-columns: repeat(8, 1fr) !important; }
   }
 
   // 节点图、括弧图、ab思维导图
@@ -1095,7 +1105,15 @@ div.md-table-fig1{
 .ab-custom-font-bold {font-weight: bold !important;}
 // 首列重点表格
 table.ab-table-fc {
-  td[col_index="0"] {
+  th[col_index="0"], td[col_index="0"] {
+    white-space: pre;
+    font-weight: 500;
+    vertical-align: top;
+    width: 0px;
+  }
+}
+.ab-table-fc>table {
+  th:first-child, td:first-child {
     white-space: pre;
     font-weight: 500;
     vertical-align: top;

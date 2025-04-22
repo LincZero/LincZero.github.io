@@ -17,6 +17,7 @@ import {ABReg} from "../ABReg"
 const abc_quote = ABConvert.factory({
   id: "quote",
   name: "增加引用块",
+  match: /^(quote|addQuote)$/,
   detail: "在文本的每行前面加上 `> `",
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.text,
@@ -37,7 +38,7 @@ const abc_code = ABConvert.factory({
     let matchs = header.match(/^code(\((.*)\))?$/)
     if (!matchs) return content
     if (matchs[1]) content = matchs[2]+"\n"+content
-    return "```"+content+"\n```"
+    return "``````"+content+"\n``````"
   }
 })
 
@@ -142,8 +143,8 @@ const abc_X = ABConvert.factory({
 const abc_slice = ABConvert.factory({
   id: "slice",
   name: "切片",
-  match: /^slice\((\s*\d+\s*?)(,\s*-?\d+\s*)?\)$/,
-  detail: "和js的slice方法是一样的",
+  match: /^slice\((\s*\d+\s*)(,\s*-?\d+\s*)?\)$/,
+  detail: "和js的slice方法是一样的。例如 `[slice(1, -1)]`",
   process_param: ABConvert_IOEnum.text,
   process_return: ABConvert_IOEnum.text,
   process: (el, header, content: string): string=>{
@@ -152,15 +153,13 @@ const abc_slice = ABConvert.factory({
     if (!list_match) return content
     const arg1 = Number(list_match[1].trim())
     if (isNaN(arg1)) return content
+    // 单参数
+    if (!list_match[2]) return content.split("\n").slice(arg1).join("\n")
     const arg2 = Number(list_match[2].replace(",","").trim())
     // 单参数
-    if (isNaN(arg2)) {
-      return content.split("\n").slice(arg1).join("\n")
-    }
+    if (isNaN(arg2)) return content.split("\n").slice(arg1).join("\n")
     // 双参数
-    else {
-      return content.split("\n").slice(arg1, arg2).join("\n")
-    }
+    else return content.split("\n").slice(arg1, arg2).join("\n")
   }
 })
 
@@ -210,28 +209,5 @@ const abc_listroot = ABConvert.factory({
     content = content.split("\n").map(line=>{return "  "+line}).join("\n")
     content = "- "+arg1+"\n"+content
     return content
-  }
-})
-
-const abc_callout = ABConvert.factory({
-  id: "callout",
-  name: "callout语法糖",
-  match: /^\!/,
-  default: "!note",
-  detail: "在首行插入`[!note]`等，并在每行前面加入 `> `。需要obsidian 0.14版本以上来支持callout语法",
-  process_param: ABConvert_IOEnum.text,
-  process_return: ABConvert_IOEnum.text,
-  process: (el, header, content: string): string=>{
-    // 之前的写法需要ad插件，这里应该换用成更通用的callout语法
-    // return "```ad-"+header.slice(1)+"\n"+content+"\n```"
-    
-    header = header.slice(1)
-    let callout_type = "[!note]"
-    if (header.startsWith("note_")) {callout_type = "[!note]"; header.slice(5);}
-    else if (header.startsWith("warn_")) {callout_type = "[!warning]"; header.slice(5);}
-    else if (header.startsWith("warning_")) {callout_type = "[!warning]"; header.slice(8);}
-    else if (header.startsWith("error_")) {callout_type = "[!error]"; header.slice(6);}
-
-    return `> ${callout_type} ${header}\n` + content.split("\n").map(line=>{return "> "+line}).join("\n")
   }
 })

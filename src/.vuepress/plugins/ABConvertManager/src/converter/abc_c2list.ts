@@ -273,7 +273,22 @@ export class C2ListProcess{
     
     // 循环填充
     let current_content:string = ""
+    let codeBlockFlag = ''
     for (const line of list_text) {
+      // heading和mdit类型 需要跳过代码块内的结束标志
+      if (codeBlockFlag == '') {
+        const match = line.match(/^((\s|>\s|-\s|\*\s|\+\s)*)(````*|~~~~*)(.*)/)
+        if (match && match[3]) {
+          codeBlockFlag = match[1]+match[3]
+          current_content += line+"\n"; continue
+        }
+      }
+      else {
+        if (line.indexOf(codeBlockFlag) == 0) codeBlockFlag = ''
+        current_content += line+"\n"; continue
+      
+      }
+      // 
       const match_heading = line.match(ABReg.reg_heading_noprefix)
       if (match_heading && !match_heading[1] && (match_heading[3].length-1)<=root_title_level){ // 遇到同等标题
         add_current_content()
@@ -434,5 +449,32 @@ const abc_c2listdata2items = ABConvert.factory({
   process_return: ABConvert_IOEnum.el,
   process: (el, header, content: List_C2ListItem): HTMLElement=>{
     return C2ListProcess.c2data2items(content, el)
+  }
+})
+
+const abc_c2listdata2easytimeline = ABConvert.factory({
+  id: "c2listdata2easytimeline",
+  name: "适配到easy_timeline",
+  match: "c2listdata2easytimeline",
+  detail: "适配到easy_timeline格式，需要安装easy timeline插件",
+  process_param: ABConvert_IOEnum.c2list_stream,
+  process_return: ABConvert_IOEnum.text,
+  process: (el, header, content: List_C2ListItem): string=>{
+    let all_line = ""
+    let line = ""
+    for (const item of content) {
+      if (item.level == 0) {
+        if (line != "") all_line += line + '\n\n'
+        line = item.content + '. '
+      }
+      else {
+        if (line == "") line = " . "
+        line += item.content
+      }
+    }
+    // 尾调用
+    if (line != "") all_line += line
+
+    return "````timeline\n"+all_line+"\n````"
   }
 })
