@@ -11,7 +11,7 @@ export default defineConfig({
     minify: false, // 禁用代码压缩，包括混淆
     sourcemap: true,
     lib: {
-      entry: 'src/index.ts',
+      entry: 'src/index_mdit.ts',
 
       name: 'MdItAnyBlock',
       formats: ['es', 'cjs'], //  ['es', 'cjs']
