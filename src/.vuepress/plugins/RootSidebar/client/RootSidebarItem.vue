@@ -1,7 +1,7 @@
 <template>
   <ul class="sidebar-item-children">
     <li v-for="(item,index) in sidebarData" :key="index">
-      <!-- 文件 -->
+      <!-- 文件-1 -->
       <div v-if="typeof item === 'string'" class="sidebar-item file">
         <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
           <path d="M0 0h24v24H0z" fill="none"/>
@@ -15,6 +15,16 @@
           <!-- router-link代替a，spa路由切换，避免整个页面刷新 -->
           <!-- <a :href="item">{{ getText(item) }},deep: {{ deep }}, item: {{ item }}</a> -->
           <router-link :to="getUrl(item)" :title="getUrl(item)">{{ getText(item) }}</router-link>
+        </div>
+      </div>
+      <!--  文件-2 -->
+      <div v-else-if="!('children' in item)">
+        <div
+          :class="['sidebar-item-name', 'file', { active: getIsActive(item.text)}]"
+          :relDeep="props.deep_from_target+1"
+          :style="'padding-inline-start:'+(props.deep_from_target*20+24)+'px'"
+        >
+          <router-link :to="getUrl(item.link)" :title="getUrl(item.link)">{{ getText(item.text) }}</router-link>
         </div>
       </div>
       <!-- 文件夹 -->
@@ -108,6 +118,23 @@ const getText = (item: SidebarType) => {
     if (!s.length) return (s_arr.pop()??"/")          // Pkmer-Math-main
     else return s.replace(/\.html$/, "")              // Home
   }
+  else if (!('children' in item)) {
+    // b1. title/h1名 (如果没有，还是会用回文件名)
+    if (props.isH1) {
+      const title = resolveRoute(getUrl(item.link))?.meta?.title // 可能为空或未定义。meta.title -> h1 -> filename
+      if (title && title != '404') return title // 路由不存在时返回404
+    }
+    // b2. 文件夹/文件名
+    if (!item.text.length) return "README"
+    let s:string = decodeURIComponent(item.link)      // /MdNote_Other/Pkmer-Math-main/(Home.html or "")?deep=1
+    if(item.link.endsWith("/")) { s = s.slice(0, -1); }
+    let s_arr = s.split('/')                          // ["", "MdNote_Other", "Pkmer-Math-main", "(Home.html or "")?deep=1"]
+    s = s_arr.pop() ?? "Error: pathname without shape"// (Home.html or "")?deep=1
+    let s_arr2 = s.split('?')
+    if (s_arr2.length>1) s = s_arr2[0]                // (Home.html or "")
+    if (!s.length) return (s_arr.pop()??"/")          // Pkmer-Math-main
+    else return s.replace(/\.html$/, "")              // Home
+  }
   // 文件夹
   else {
     return item.prefix.slice(0, -1)
@@ -129,6 +156,8 @@ const getIsActive = (item: string): boolean => {
 
 const clickItem = (item: SidebarType) => {
   if (typeof item === 'string') return
+  else if (!('children' in item)) return
+  
   if (unfold_arr.value.includes(item.prefix)) { // 展开 -> 折叠
     unfold_arr.value = unfold_arr.value.filter((v) => v !== item.prefix)
   } else { // 折叠 -> 展开

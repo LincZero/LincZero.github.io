@@ -10,6 +10,9 @@
  * 虽然不算太优雅，但我这里在Client端就不再去转化归一化了，避免目录树较大时影响性能
  */
 export type SidebarType = string | {
+  text: string,
+  link: string,
+} | {
   children: Array<SidebarType>,
   collapsible: boolean,
   prefix: string,
