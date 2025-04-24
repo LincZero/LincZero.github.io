@@ -28,7 +28,7 @@
         </div>
       </div>
       <!-- 文件夹 -->
-      <div v-else class="sidebar-item folder" :unfold="unfold_arr.includes(item.prefix)">
+      <div v-else class="sidebar-item folder" :unfold="isUnFold(item)">
         <div
           :class="['sidebar-item-name', 'folder', { active: getIsActive(item.prefix)}]"
           :relDeep="props.deep_from_target+1"
@@ -38,7 +38,7 @@
           <a :title="getUrl(item.prefix)">{{ getText(item) }}</a>
         </div>
         <RootSidebarItem
-          v-if="item.hasOwnProperty('children') && (unfold_arr.includes(item.prefix))"
+          v-if="isUnFold(item)"
           :deep_from_target="props.deep_from_target+1"
           :prefix_from_root="props.prefix_from_root + item.prefix"
           :sidebarData="item.children"
@@ -64,7 +64,7 @@ const props = withDefaults(defineProps<{
   isH1: false
 })
 
-// 展开状态
+// #region 展开状态
 // 每个目录文件夹组件只管理自己这一层的折叠状态。多个侧边栏可以有不同的折叠状态
 // 内容均非url编码，以`/`结尾
 const unfold_arr = ref<string[]>([])
@@ -86,6 +86,32 @@ watch(() => props.prefix_from_root, () => {
 watch(() => props.currentPath, () => {
   onUpdateDeep()
 })
+// 初始化折叠状态
+// 在RootSidebarItem中，不收回用户折叠的权限。collapsed == false 的行为会被解释为默认展开而非不可折叠
+for (const item of props.sidebarData) {
+  if (typeof item === 'string') continue
+  if ('collapsed' in item && item.collapsed != undefined && item.collapsed == false) {
+    unfold_arr.value.push(item.prefix)
+  }
+}
+// 是否折叠 - 小功能函数
+function isUnFold(item) { // 是否展开/允许展开
+  if (!item.hasOwnProperty('children')) return false
+  if (unfold_arr.value.includes(item.prefix)) return true
+  return false
+}
+// 手动切换折叠状态
+const clickItem = (item: SidebarType) => {
+  if (typeof item === 'string') return
+  else if (!('children' in item)) return
+  
+  if (unfold_arr.value.includes(item.prefix)) { // 展开 -> 折叠
+    unfold_arr.value = unfold_arr.value.filter((v) => v !== item.prefix)
+  } else { // 折叠 -> 展开
+    unfold_arr.value.push(item.prefix)
+  }
+}
+// #endregion
 
 /**
  * 返回高可读的文本 (非url编码)
@@ -152,17 +178,6 @@ const getUrl = (item: string) => {
 }
 const getIsActive = (item: string): boolean => {
   return decodeURIComponent(props.currentPath) == getUrl(item)
-}
-
-const clickItem = (item: SidebarType) => {
-  if (typeof item === 'string') return
-  else if (!('children' in item)) return
-  
-  if (unfold_arr.value.includes(item.prefix)) { // 展开 -> 折叠
-    unfold_arr.value = unfold_arr.value.filter((v) => v !== item.prefix)
-  } else { // 折叠 -> 展开
-    unfold_arr.value.push(item.prefix)
-  }
 }
 </script>
 

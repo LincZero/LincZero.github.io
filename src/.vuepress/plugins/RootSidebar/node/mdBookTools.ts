@@ -1,36 +1,42 @@
 // 将md文本转为侧边栏结构
 // 
 // 转换后，link的值都是绝对路径
-// TODO 暂不支持标题、下划线、非链接目录。标题应该是通过 (dir:) collapsible: false 来实现的
+// TODO 暂不支持正文链接、下划线
 export function md2sidebar(mdStr: string): any[] {
   const lines = mdStr.split('\n')
   const result = []
-  let map = [{indent: -1, obj: result}] // 每级目录所对应的对象
+  let map = [{indent: -10, obj: result}] // 每级目录所对应的对象，注意: 标题层级减10 [-9, -3]
   for (let i=0; i<lines.length; i++) {
     // step1. 去除非匹配项
     const line = lines[i]
-    const match = line.match(/^(\s*)([-+*] )(.*)/)
-    if (!match) continue
+    const match_list = line.match(/^(\s*)([-+*] )(.*)/)
+    const match_heading = line.match(/^(#+)( )(.*)/)
+    if (!match_list && !match_heading) continue
     
-    // step2. var: indent, isFolder
-    const indent = match[1]
+    // step2. var: indent, content, isFolder
+    const line_indent = match_list ? match_list[1].length : (match_heading[1].length-10)
+    const line_content = match_list ? match_list[3] : match_heading[3]
     let isFolder = false
     for (let j=i+1; j<lines.length; j++) {
+      // 去除非匹配项
       const line2 = lines[j]
-      const match2 = line2.match(/^(\s*)([-+*] )(.*)/)
-      if (!match2) continue
-      const indent2 = match2[1]
-      if (indent2.length > indent.length) { isFolder = true; break } // 暂不支持tab/space混用
+      const match_list2 = line2.match(/^(\s*)([-+*] )(.*)/)
+      const match_heading2 = line2.match(/^(#+)( )(.*)/)
+      if (!match_list2 && !match_heading2) continue
+
+      // indent2
+      const line_indent2 = match_list2 ? match_list2[1].length : (match_heading2[1].length-10)
+      if (line_indent2 > line_indent) { isFolder = true; break } // 暂不支持tab/space混用
       else { isFolder = false; break }
     }
 
     // step3. var: text、link
-    const match2 = match[3].match(/\[(.*)\]\((.*)\)/)
+    const match_link = line_content.match(/\[(.*)\]\((.*)\)/)
     let text = ''; let link = '';
-    if (!match2) {
-      text = match[3]; link = match[3];
+    if (!match_link) {
+      text = line_content; link = line_content;
     } else {
-      text = match2[1]; link = match2[2];
+      text = match_link[1]; link = match_link[2];
     }
     // link的一些头、尾替换
     if (link.startsWith('./')) { link = link.replace(/^\.\//, '/') }
@@ -48,6 +54,7 @@ export function md2sidebar(mdStr: string): any[] {
       }
     } else {
       sidebarItem = {
+        collapsed: match_heading ? false : true,
         text: text,
         link: link,
         prefix: text+'/',
@@ -58,13 +65,13 @@ export function md2sidebar(mdStr: string): any[] {
     // step5. outside var: map、result
     while (true) {
       const map_end = map[map.length-1]
-      if (indent.length <= map_end.indent) {
+      if (line_indent <= map_end.indent) {
         map.pop()
         continue
       }
       else {
         map[map.length-1].obj.push(sidebarItem)
-        if (isFolder) { map.push({indent: indent.length, obj: sidebarItem.children}) }
+        if (isFolder) { map.push({indent: line_indent, obj: sidebarItem.children}) }
         break
       }
     }

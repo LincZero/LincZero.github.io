@@ -17,6 +17,7 @@ export type SidebarType = string | {
   collapsible: boolean,
   prefix: string, // 通常是url/文件夹名
   text: string,   // 通常是title/h1名
+  collapsed?: boolean // 默认true
 }
 
 /**
