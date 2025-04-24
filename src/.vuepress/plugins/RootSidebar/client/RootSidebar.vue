@@ -27,7 +27,7 @@
           title="切换新旧侧边栏">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-up"><path d="m3 16 4 4 4-4"/><path d="M7 20V4"/><path d="m21 8-4-4-4 4"/><path d="M17 4v16"/></svg>
         </button>
-        <button @click="switchSummarySidebar()"
+        <button v-if="hasSummary" @click="switchSummarySidebar()"
         :class="{'active': isSummary}"
           title="使用SUMMARY源">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-up"><path d="m3 16 4 4 4-4"/><path d="M7 20V4"/><path d="m21 8-4-4-4 4"/><path d="M17 4v16"/></svg>
@@ -105,6 +105,7 @@ import type { SidebarType } from "./index"
 // const sidebarData2 = useSidebarItems().value
 
 // 数据获取
+// 注意：如果存在第二数据 SUMMARY.md，则优先使用该数据 sidebarData2
 // current基于完整的url
 // target基于按截取截取后的url
 if (!sidebarData.hasOwnProperty("/")) { console.error(`Error: Must be add a {"/": "structure"} in sidebar config`) }
@@ -262,10 +263,9 @@ onMounted(() => {
 })
 
 // #region 切换SUMMARY数据源
-const isSummary = ref<boolean>(false)
+const hasSummary = ref<boolean>(sidebarData2 && sidebarData2.length!=0) // 是否存在summary数据
+const isSummary = ref<boolean>(false) // 是否切换到summary数据
 function switchSummarySidebar() {
-  if (!sidebarData.hasOwnProperty("/")) { console.error(`Error: Must be add a {"/": "structure"} in sidebar config`); return }
-
   if (isSummary.value) {
     isSummary.value = false
     rootData.value = sidebarData["/"]
@@ -277,6 +277,7 @@ function switchSummarySidebar() {
   targetData.value = rootData.value // 一般情况下rootData不会修改
   onNewUrl()
 }
+if (hasSummary) switchSummarySidebar()
 // #endregion
 
 /// 固定或取消当前打开项为固定标签
