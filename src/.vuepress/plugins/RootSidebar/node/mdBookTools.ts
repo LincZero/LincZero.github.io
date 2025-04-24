@@ -17,24 +17,27 @@ export function md2sidebar(mdStr: string): any[] {
     const line_indent = match_list ? match_list[1].length : (match_heading[1].length-10)
     const line_content = match_list ? match_list[3] : match_heading[3]
     let isFolder = false
-    for (let j=i+1; j<lines.length; j++) {
+    if (match_heading) isFolder = true // match_heading，必然为文件夹
+    else {
+      for (let j=i+1; j<lines.length; j++) {
       // 去除非匹配项
       const line2 = lines[j]
       const match_list2 = line2.match(/^(\s*)([-+*] )(.*)/)
-      const match_heading2 = line2.match(/^(#+)( )(.*)/)
-      if (!match_list2 && !match_heading2) continue
+        const match_heading2 = line2.match(/^(#+)( )(.*)/)
+        if (!match_list2 && !match_heading2) continue
 
-      // indent2
-      const line_indent2 = match_list2 ? match_list2[1].length : (match_heading2[1].length-10)
-      if (line_indent2 > line_indent) { isFolder = true; break } // 暂不支持tab/space混用
-      else { isFolder = false; break }
+        // indent2
+        const line_indent2 = match_list2 ? match_list2[1].length : (match_heading2[1].length-10)
+        if (line_indent2 > line_indent) { isFolder = true; break } // 暂不支持tab/space混用
+        else { isFolder = false; break }
+      }
     }
 
     // step3. var: text、link
     const match_link = line_content.match(/\[(.*)\]\((.*)\)/)
     let text = ''; let link = '';
     if (!match_link) {
-      text = line_content; link = line_content;
+      text = line_content; link = line_content; // TODO 应该用 [内容](空) 来表示无链接，而非纯文本？
     } else {
       text = match_link[1]; link = match_link[2];
     }
