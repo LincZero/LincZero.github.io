@@ -1,4 +1,6 @@
 // 将md文本转为侧边栏结构
+// 
+// 转换后，link的值都是绝对路径
 // TODO 暂不支持标题、下划线、非链接目录。标题应该是通过 (dir:) collapsible: false 来实现的
 export function md2sidebar(mdStr: string): any[] {
   const lines = mdStr.split('\n')
@@ -7,7 +9,7 @@ export function md2sidebar(mdStr: string): any[] {
   for (let i=0; i<lines.length; i++) {
     // step1. 去除非匹配项
     const line = lines[i]
-    const match = line.match(/(\s*)[-+*] (.*)/)
+    const match = line.match(/^(\s*)([-+*] )(.*)/)
     if (!match) continue
     
     // step2. var: indent, isFolder
@@ -15,7 +17,7 @@ export function md2sidebar(mdStr: string): any[] {
     let isFolder = false
     for (let j=i+1; j<lines.length; j++) {
       const line2 = lines[j]
-      const match2 = line2.match(/(\s*)[-+*] (.*)/)
+      const match2 = line2.match(/^(\s*)([-+*] )(.*)/)
       if (!match2) continue
       const indent2 = match2[1]
       if (indent2.length > indent.length) { isFolder = true; break } // 暂不支持tab/space混用
@@ -23,15 +25,18 @@ export function md2sidebar(mdStr: string): any[] {
     }
 
     // step3. var: text、link
-    const match2 = match[2].match(/\[(.*)\]\((.*)\)/)
+    const match2 = match[3].match(/\[(.*)\]\((.*)\)/)
     let text = ''; let link = '';
     if (!match2) {
-      text = match[2]; link = match[2];
+      text = match[3]; link = match[3];
     } else {
       text = match2[1]; link = match2[2];
     }
+    // link的一些头、尾替换
+    if (link.startsWith('./')) { link = link.replace(/^\.\//, '/') }
+    else if (link.startsWith('/')) {}
+    else { link = '/' + link }
     link = link.replace(/\.md$/, '.html')
-    link = link.replace(/^\.\//, '/')
     link = link.replace(/README\.html$/, '')
 
     // step4. var: sidebarItem
