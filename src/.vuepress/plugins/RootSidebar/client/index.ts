@@ -15,8 +15,8 @@ export type SidebarType = string | {
 } | {
   children: Array<SidebarType>,
   collapsible: boolean,
-  prefix: string,
-  text: string,
+  prefix: string, // 通常是url/文件夹名
+  text: string,   // 通常是title/h1名
 }
 
 /**

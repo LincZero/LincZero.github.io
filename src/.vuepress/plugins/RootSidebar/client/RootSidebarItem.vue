@@ -18,9 +18,9 @@
         </div>
       </div>
       <!--  文件-2 -->
-      <div v-else-if="!('children' in item)">
+      <div v-else-if="!('children' in item)" class="sidebar-item file">
         <div
-          :class="['sidebar-item-name', 'file', { active: getIsActive(item.text)}]"
+          :class="['sidebar-item-name', 'file', { active: getIsActive(item.link)}]"
           :relDeep="props.deep_from_target+1"
           :style="'padding-inline-start:'+(props.deep_from_target*20+24)+'px'"
         >

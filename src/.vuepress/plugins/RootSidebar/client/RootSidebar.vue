@@ -27,11 +27,11 @@
           title="切换新旧侧边栏">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-up"><path d="m3 16 4 4 4-4"/><path d="M7 20V4"/><path d="m21 8-4-4-4 4"/><path d="M17 4v16"/></svg>
         </button>
-        <!-- <button @click="switchSummarySidebar()"
+        <button @click="switchSummarySidebar()"
         :class="{'active': isSummary}"
           title="使用SUMMARY源">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-up"><path d="m3 16 4 4 4-4"/><path d="M7 20V4"/><path d="m21 8-4-4-4 4"/><path d="M17 4v16"/></svg>
-        </button> -->
+        </button>
         <button @click="() => { emitPinTab() }"
           title="固定或删除当前标签页">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="26" viewBox="0 -1 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pin"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>
@@ -82,6 +82,7 @@
 
 <script setup lang="ts">
 import { sidebarData } from "@temp/theme-hope/sidebar.js"; // 在client端获取侧边栏数据
+import { sidebarData2 } from "@temp/theme-hope/sidebar2.js";
 import { useSiteData } from 'vuepress/client' // https://vuepress.github.io/zh/reference/client-api.html
 import { useRouter, useRoute } from 'vue-router'
 // import { useRoute } from 'vuepress/client' // 为什么用 vue-router 版而不是 vupress/client 版的原因忘了，好像是有区别的
@@ -259,6 +260,24 @@ function switchOldSidebar(isUseNew?: boolean) {
 onMounted(() => {
   switchOldSidebar(true)
 })
+
+// #region 切换SUMMARY数据源
+const isSummary = ref<boolean>(false)
+function switchSummarySidebar() {
+  if (!sidebarData.hasOwnProperty("/")) { console.error(`Error: Must be add a {"/": "structure"} in sidebar config`); return }
+
+  if (isSummary.value) {
+    isSummary.value = false
+    rootData.value = sidebarData["/"]
+  } else {
+    isSummary.value = true
+    rootData.value = sidebarData2
+  }
+
+  targetData.value = rootData.value // 一般情况下rootData不会修改
+  onNewUrl()
+}
+// #endregion
 
 /// 固定或取消当前打开项为固定标签
 const pinData = ref<string[]>([])
