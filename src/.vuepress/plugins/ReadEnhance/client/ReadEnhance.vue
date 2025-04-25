@@ -75,6 +75,9 @@
         <button @click="fn_colors('mul')" :class="{'is-activate': colors == 'mul'}">
           多彩
         </button>
+        <button @click="fn_colors('h1')" :class="{'is-activate': colors == 'h1'}">
+          仅h1
+        </button>
         <button @click="fn_colors('simple')" :class="{'is-activate': colors == 'simple'}">
           朴素
         </button>
@@ -263,7 +266,8 @@ function fn_color(n: string) {
 // #endregion
 
 // #region 配色组相关
-const colors = ref('mul')
+const colors_default = 'mul'
+const colors = ref(colors_default)
 onMounted(()=>{ // 获取 浏览器缓存
   if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
     const colors = localStorage.getItem('ReadEnahnce_colors');
@@ -271,7 +275,7 @@ onMounted(()=>{ // 获取 浏览器缓存
   }
 })
 function fn_colors(n: string) {
-  if (colors.value == n) { colors.value = "" }
+  if (colors.value == n) { colors.value = colors_default }
   else { colors.value = n }
 
   document.documentElement.setAttribute('read-colors', colors.value)
@@ -331,6 +335,16 @@ function fn_colors(n: string) {
 </style>
 
 <style lang="scss">
+html[read-colors="h1"]  {
+  --theme-color-level2: none;
+  --theme-color-level3: none;
+  --theme-color-level4: none;
+  --theme-color-level5: none;
+  --theme-color-level6: none;
+  --theme-color-level7: none;
+  --theme-color-level8: none;
+  --theme-color-level9: none;
+}
 html[read-colors="simple"]  {
   --theme-color-level1: none;
   --theme-color-level2: none;
