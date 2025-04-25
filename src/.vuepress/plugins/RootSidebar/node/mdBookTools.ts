@@ -1,33 +1,36 @@
 // 将md文本转为侧边栏结构
 // 
 // 转换后，link的值都是绝对路径
-// TODO 暂不支持正文链接、下划线
+// TODO 暂不支持下划线
 export function md2sidebar(mdStr: string): any[] {
+  mdStr = mdStr.replace(/<!--.*-->/, '') // 去除注释，仅支持 `<!---->` 未支持ob的 `%%` 注释
   const lines = mdStr.split('\n')
   const result = []
-  let map = [{indent: -10, obj: result}] // 每级目录所对应的对象，注意: 标题层级减10 [-9, -3]
+  let map = [{indent: -10, obj: result}] // 每级目录所对应的对象，注意: 标题层级减10 [-9, -3]。正文减1
   for (let i=0; i<lines.length; i++) {
-    // step1. 去除非匹配项
+    // step1. 去除非匹配项, var: indent, content
     const line = lines[i]
     const match_list = line.match(/^(\s*)([-+*] )(.*)/)
     const match_heading = line.match(/^(#+)( )(.*)/)
-    if (!match_list && !match_heading) continue
-    
-    // step2. var: indent, content, isFolder
-    const line_indent = match_list ? match_list[1].length : (match_heading[1].length-10)
-    const line_content = match_list ? match_list[3] : match_heading[3]
+    const match_p = line.match(/^(\[(.*)\]\((.*)\))/)
+    const match_line = line.match(/^(---|===|\+\+\+)/)
+    if (!match_list && !match_heading && !match_p) continue
+    const line_indent = match_p ? -1: match_list ? match_list[1].length : (match_heading[1].length-10)
+    const line_content = match_p ? match_p[1] : match_list ? match_list[3] : match_heading[3]
+
+    // step2. isFolder
     let isFolder = false
     if (match_heading) isFolder = true // match_heading，必然为文件夹
     else {
       for (let j=i+1; j<lines.length; j++) {
-      // 去除非匹配项
-      const line2 = lines[j]
-      const match_list2 = line2.match(/^(\s*)([-+*] )(.*)/)
+        // 去除非匹配项, var: indent
+        const line2 = lines[j]
+        const match_list2 = line2.match(/^(\s*)([-+*] )(.*)/)
         const match_heading2 = line2.match(/^(#+)( )(.*)/)
-        if (!match_list2 && !match_heading2) continue
+        const match_p2 = line2.match(/^(\[(.*)\]\((.*)\))/)
+        if (!match_list2 && !match_heading2 && !match_p2) continue
+        const line_indent2 = match_p ? -1: match_list2 ? match_list2[1].length : (match_heading2[1].length-10)
 
-        // indent2
-        const line_indent2 = match_list2 ? match_list2[1].length : (match_heading2[1].length-10)
         if (line_indent2 > line_indent) { isFolder = true; break } // 暂不支持tab/space混用
         else { isFolder = false; break }
       }
@@ -61,7 +64,12 @@ export function md2sidebar(mdStr: string): any[] {
         text: text,
         link: link,
         prefix: text+'/',
-        children: []
+        children: [
+          { // 自动添加子项来表示文件夹页
+            text: 'README',
+            link: link
+          }
+        ]
       }
     }
 
