@@ -69,6 +69,17 @@
         </button>
       </div>
       <div>
+        配色组
+      </div>
+      <div>
+        <button @click="fn_colors('mul')" :class="{'is-activate': colors == 'mul'}">
+          多彩
+        </button>
+        <button @click="fn_colors('simple')" :class="{'is-activate': colors == 'simple'}">
+          朴素
+        </button>
+      </div>
+      <div>
         tips: 如遇兼容问题，切换明暗模式，<br>或可重复点击取选，并刷新页面
       </div>
     </div>
@@ -195,6 +206,7 @@ function fn_mode(n: string) {
 // #endregion
 
 // #region 是否显示侧边栏和toc
+// 原主题支持通过class控制
 function fn_switchShowSidebar(isShow?: boolean) {
   const el = document.querySelector('#app>div.theme-container')
   if (!el) { console.warn('没有找到主题主页，无法切换'); return }
@@ -226,7 +238,7 @@ const bgColor = ref('')
 onMounted(()=>{ // 获取 浏览器缓存
   if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
     const bgColor2 = localStorage.getItem('ReadEnahnce_color');
-    if (bgColor2) fn_mode(bgColor2)
+    if (bgColor2) fn_color(bgColor2)
   }
 })
 function fn_color(n: string) {
@@ -246,6 +258,27 @@ function fn_color(n: string) {
   // 存储 浏览器缓存
   if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
     localStorage.setItem('ReadEnahnce_color', bgColor.value);
+  }
+}
+// #endregion
+
+// #region 配色组相关
+const colors = ref('mul')
+onMounted(()=>{ // 获取 浏览器缓存
+  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+    const colors = localStorage.getItem('ReadEnahnce_colors');
+    if (colors) fn_colors(colors)
+  }
+})
+function fn_colors(n: string) {
+  if (colors.value == n) { colors.value = "" }
+  else { colors.value = n }
+
+  document.documentElement.setAttribute('read-colors', colors.value)
+
+  // 存储 浏览器缓存
+  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+    localStorage.setItem('ReadEnahnce_colors', colors.value);
   }
 }
 // #endregion
@@ -294,5 +327,19 @@ function fn_color(n: string) {
       }
     }
   }
+}
+</style>
+
+<style lang="scss">
+html[read-colors="simple"]  {
+  --theme-color-level1: none;
+  --theme-color-level2: none;
+  --theme-color-level3: none;
+  --theme-color-level4: none;
+  --theme-color-level5: none;
+  --theme-color-level6: none;
+  --theme-color-level7: none;
+  --theme-color-level8: none;
+  --theme-color-level9: none;
 }
 </style>
