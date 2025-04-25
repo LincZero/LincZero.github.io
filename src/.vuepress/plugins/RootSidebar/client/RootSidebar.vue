@@ -277,7 +277,7 @@ function switchSummarySidebar() {
   targetData.value = rootData.value // 一般情况下rootData不会修改
   onNewUrl()
 }
-if (hasSummary) switchSummarySidebar()
+if (hasSummary.value) switchSummarySidebar()
 // #endregion
 
 /// 固定或取消当前打开项为固定标签
