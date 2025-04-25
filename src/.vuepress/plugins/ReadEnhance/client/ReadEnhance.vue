@@ -43,38 +43,32 @@
       </div>
       <div>
         <button @click="fn_color('#ffffff')" :class="{'is-activate': bgColor == '#ffffff'}" title="明亮"
-          style="background-color: #ffffff;">
-        </button>
+          style="background-color: #ffffff; color: #000000;">明亮</button>
         <button @click="fn_color('#f8f8f2')" :class="{'is-activate': bgColor == '#f8f8f2'}" title="非饱和白"
-          style="background-color: #f8f8f2;">
-        </button>
+          style="background-color: #f8f8f2; color: #000000;">加深白</button>
         <button @click="fn_color('#faf8df')" :class="{'is-activate': bgColor == '#faf8df'}" title="杏仁黄"
-          style="background-color: #faf8df;">
-        </button>
+          style="background-color: #faf8df; color: #000000;">杏仁黄</button>
         <button @click="fn_color('#cce8cf')" :class="{'is-activate': bgColor == '#cce8cf'}" title="豆沙绿"
-          style="background-color: #cce8cf;">
-        </button>
+          style="background-color: #cce8cf; color: #000000;">豆沙绿</button>
         <br>
         <button @click="fn_color('#e3edcd')" :class="{'is-activate': bgColor == '#e3edcd'}" title="青草绿"
-          style="background-color: #e3edcd;">
-        </button>
+          style="background-color: #e3edcd; color: #000000;">青草绿</button>
         <button @click="fn_color('#e9ecff')" :class="{'is-activate': bgColor == '#e9ecff'}" title="葛巾紫"
-          style="background-color: #e9ecff;">
-        </button>
+          style="background-color: #e9ecff; color: #000000;">葛巾紫</button>
         <button @click="fn_color('#eaeaef')" :class="{'is-activate': bgColor == '#eaeaef'}" title="极光灰"
-          style="background-color: #eaeaef;">
-        </button>
-        <br>
+          style="background-color: #eaeaef; color: #000000;">极光灰</button>
         <button @click="fn_color('#1f1f1f')" :class="{'is-activate': bgColor == '#1f1f1f'}" title="非饱和黑"
-          style="background-color: #1f1f1f;">
-        </button>
-        <button @click="fn_color('#161923')" :class="{'is-activate': bgColor == '#161923'}" title="宝蓝"
-          style="background-color: #161923;">
-        </button>
+          style="background-color: #1f1f1f; color: #ffffff;">减淡黑</button>
         <br>
-        <input type="color" @change="fn_color(($event.target as HTMLInputElement).value)"
-          :class="{'is-activate': bgColor == bgColor_custom}" title="自定义"
-          v-model="bgColor_custom" />
+        <button @click="fn_color('#161923')" :class="{'is-activate': bgColor == '#161923'}" title="宝蓝"
+          style="background-color: #161923; color: #ffffff;">宝蓝</button>
+        <br>
+        <label>
+          <div style="position: absolute; margin: 0; padding: 0; z-index: 2;">自定义</div>
+          <input type="color" @change="fn_color(($event.target as HTMLInputElement).value)"
+            :class="{'is-activate': bgColor == bgColor_custom}" title="自定义"
+            v-model="bgColor_custom"/>
+        </label>
       </div>
       <div>
         配色组
@@ -246,7 +240,7 @@ function fn_switchShowToc(isShow?: boolean) {
 
 // #region 配色相关
 const bgColor = ref('')
-const bgColor_custom = ref('')
+const bgColor_custom = ref('#000000')
 onMounted(()=>{ // 获取 浏览器缓存
   if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
     const bgColor2 = localStorage.getItem('ReadEnahnce_color');
@@ -324,11 +318,8 @@ function fn_colors(n: string) {
       width: 100%;
       margin-bottom: 8px;
     }
-    input[type = color] {
-      padding: 2px !important;
-      // padding: 0 !important;
-    }
-    input[type = color], button {
+
+    input[type = color], button, label {
       width: calc(25% - 7px);
       height: 32px; // (20+8+4)
       margin: 0 4px 4px;
@@ -336,6 +327,7 @@ function fn_colors(n: string) {
       box-shadow: 0px 0px 1px currentColor;
       border-radius: 8px;
       box-sizing: border-box;
+      font-size: 12px;
 
       padding: 5px;
       // border: 2px solid transparent;
@@ -346,6 +338,22 @@ function fn_colors(n: string) {
         border: 2px solid var(--vp-c-accent);
         background-color: var(--vp-c-accent-soft);
       }
+    }
+    input[type = color] {
+      padding: 2px !important;
+      // padding: 0 !important;
+      width: 100% !important;
+      margin: 0;
+    }
+    // 一次性
+    label {
+      position: relative;
+      display: inline-block;
+      padding: 0 !important;
+      line-height: 32px;
+
+      text-align: center;
+      color: #ffffff;
     }
   }
 }
