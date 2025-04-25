@@ -3,7 +3,7 @@
 // 转换后，link的值都是绝对路径
 // TODO 暂不支持下划线
 export function md2sidebar(mdStr: string): any[] {
-  mdStr = mdStr.replace(/<!--.*-->/, '') // 去除注释，仅支持 `<!---->` 未支持ob的 `%%` 注释
+  mdStr = mdStr.replace(/<!--[\s\S]*?-->/g, '') // 去除注释，仅支持 `<!---->` 未支持ob的 `%%` 注释，支持换行
   const lines = mdStr.split('\n')
   const result = []
   let map = [{indent: -10, obj: result}] // 每级目录所对应的对象，注意: 标题层级减10 [-9, -3]。正文减1
