@@ -64,12 +64,12 @@ export function md2sidebar(mdStr: string): any[] {
         text: text,
         link: link,
         prefix: text+'/',
-        children: [
+        children: match_link ? [
           { // 自动添加子项来表示文件夹页
             text: 'README',
             link: link
           }
-        ]
+        ] : []
       }
     }
 
