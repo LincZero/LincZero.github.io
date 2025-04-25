@@ -39,8 +39,8 @@ export function md2sidebar(mdStr: string): any[] {
     // step3. var: text、link
     const match_link = line_content.match(/\[(.*)\]\((.*)\)/)
     let text = ''; let link = '';
-    if (!match_link) {
-      text = line_content; link = line_content; // TODO 应该用 [内容](空) 来表示无链接，而非纯文本？
+    if (!match_link) { // 这种情况是：文件夹不一定有文件夹页，文件也可能只是占位而不应可点击
+      text = line_content; link = line_content;
     } else {
       text = match_link[1]; link = match_link[2];
     }

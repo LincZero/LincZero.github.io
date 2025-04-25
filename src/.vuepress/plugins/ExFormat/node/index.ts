@@ -170,7 +170,7 @@ async function onInitialized2(app: App) {
         content: `# ${path.replace(/^.*\//, '')}
 
 <!--path:/docs/${path}-->
-<PDF url="/docs/${path}" height="1000px" zoom="auto" noFullscreen="false"/>`,
+<PDF url="/docs/${path}" height="1000px" zoom="auto" noFullscreen />`,
       })
       newPage.filePathRelative = `${path_target}${path}` // 核心2: 侧边栏显示的关键、是否文件夹
       app.pages.push(newPage)
