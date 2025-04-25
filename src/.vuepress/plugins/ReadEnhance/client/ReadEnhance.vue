@@ -64,9 +64,17 @@
         <button @click="fn_color('#eaeaef')" :class="{'is-activate': bgColor == '#eaeaef'}" title="极光灰"
           style="background-color: #eaeaef;">
         </button>
+        <br>
         <button @click="fn_color('#1f1f1f')" :class="{'is-activate': bgColor == '#1f1f1f'}" title="非饱和黑"
           style="background-color: #1f1f1f;">
         </button>
+        <button @click="fn_color('#161923')" :class="{'is-activate': bgColor == '#161923'}" title="宝蓝"
+          style="background-color: #161923;">
+        </button>
+        <br>
+        <input type="color" @change="fn_color(($event.target as HTMLInputElement).value)"
+          :class="{'is-activate': bgColor == bgColor_custom}" title="自定义"
+          v-model="bgColor_custom" />
       </div>
       <div>
         配色组
@@ -238,6 +246,7 @@ function fn_switchShowToc(isShow?: boolean) {
 
 // #region 配色相关
 const bgColor = ref('')
+const bgColor_custom = ref('')
 onMounted(()=>{ // 获取 浏览器缓存
   if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
     const bgColor2 = localStorage.getItem('ReadEnahnce_color');
@@ -315,17 +324,25 @@ function fn_colors(n: string) {
       width: 100%;
       margin-bottom: 8px;
     }
-    button {
+    input[type = color] {
+      padding: 2px !important;
+      // padding: 0 !important;
+    }
+    input[type = color], button {
       width: calc(25% - 7px);
       height: 32px; // (20+8+4)
-      padding: 4px;
       margin: 0 4px 4px;
-      box-shadow: none;
+      
+      box-shadow: 0px 0px 1px currentColor;
       border-radius: 8px;
-      border: none;
       box-sizing: border-box;
-      border: 2px solid transparent;
+
+      padding: 5px;
+      // border: 2px solid transparent;
+      border: 1px solid var(--vp-c-bg);
+      
       &.is-activate {
+        padding: 4px;
         border: 2px solid var(--vp-c-accent);
         background-color: var(--vp-c-accent-soft);
       }
