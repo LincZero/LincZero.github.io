@@ -86,13 +86,10 @@ export function limit_img_alias(md: any, options?: any): void {
   (rawHtmlRule) =>
   (tokens, idx, options, env, self) => {
     tokens[idx].content = tokens[idx].content.replace(
-      /(<img\b.*?src=)(['"])(.*?)\2/gs,
-      (_, prefix, quote, src) =>
-        `${prefix}${quote}${
-          /^(\/|\.|@|https?:|data:)/.test(src)
-            ? src
-            : `./${src}`
-        }${quote}`,
+      /(<img\b)(?=[^>]*?\bsrc=)([^>]*?\bsrc=)(['"])(?!\.\/|@|\/|https?:|data:)([^'"]*?)(\3)/gi,
+      (match, tagStart, attrs, quote, src, endQuote) => {
+        return `${tagStart}${attrs}${quote}./${src}${endQuote}`;
+      }
     );
     return rawHtmlRule(tokens, idx, options, env, self);
   }
