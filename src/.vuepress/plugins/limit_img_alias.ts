@@ -157,26 +157,42 @@ const DOCS_PATH = 'src/' // TODO 从 vuepress 配置中获取
 // 必须在 limit_img_alias 插件之前use，然后执行顺序会在 limit_img_alias 之后
 // 另外需要确保你的public文件夹下存在 404.png
 export function img_not_found(md: any, options?: any): void {
+  // <img src>
   const createHtmlRule =
   (rawHtmlRule) =>
   (tokens, idx, options, env, self) => {
-    tokens[idx].content = tokens[idx].content.replace(
-      /(<img\b)([^>]*?\bsrc=)(['"])(?!@|https?:|data:)([^'"]*?)(\3)/gi, // TODO not found 还要检查 `![]()` 的情况
+    const token = tokens[idx]
+    token.content = token.content.replace(
+      /(<img\b)([^>]*?\bsrc=)(['"])(?!@|https?:|data:)([^'"]*?)(\3)/gi,
       (match, tagStart, attrs, quote, src, endQuote) => {
         // if (src.startsWith('/') || src.startsWith('.')) {
         const absPath = path.resolve(DOCS_PATH + path.dirname(env.filePathRelative), src)
         if (!fs.existsSync(absPath)) { // TODO 性能优化
           console.error(`[error] Img not found, ${src} from ${env.filePathRelative}`)
-          tokens[idx].attrSet('src', '/404.png'); src = '/404.png';
+          token.attrSet('src', '/404.png'); src = '/404.png';
         }
         return `${tagStart}${attrs}${quote}${src}${endQuote}`  //  保持不动
       }
     );
     return rawHtmlRule(tokens, idx, options, env, self)
   }
-
   const rawHtmlBlockRule = md.renderer.rules.html_block || ((tokens, idx, options, env, self) => self.renderToken(tokens, idx, options))
   const rawHtmlInlineRule = md.renderer.rules.html_inline || ((tokens, idx, options, env, self) => self.renderToken(tokens, idx, options))
   md.renderer.rules.html_block = createHtmlRule(rawHtmlBlockRule)
   md.renderer.rules.html_inline = createHtmlRule(rawHtmlInlineRule)
+
+  // ![]()
+  const rawImageRule = md.renderer.rules.image!
+  md.renderer.rules.image = (tokens, idx, options, env: any, self) => {
+    const token = tokens[idx]
+    let src = token.attrGet('src')
+    if (src) {
+      const absPath = path.resolve(DOCS_PATH + path.dirname(env.filePathRelative), src)
+      if (!fs.existsSync(absPath)) { // TODO 性能优化
+        console.error(`[error] Img not found, ${src} from ${env.filePathRelative}`)
+        token.attrSet('src', '/404.png'); src = '/404.png';
+      }
+    }
+    return rawImageRule(tokens, idx, options, env, self)
+  }
 }
