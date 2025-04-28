@@ -1,6 +1,6 @@
 import callout_mdit from "markdown-it-obsidian-callouts" // https://github.com/ebullient/markdown-it-obsidian-callouts
 import { BiDirectionalLinks } from '@nolebase/markdown-it-bi-directional-links'
-import { limit_img_alias } from "./plugins/limit_img_alias.js"
+import { limit_img_alias, img_not_found } from "./plugins/limit_img_alias.js"
 
 import chatview_mdit from "./plugins/ChatView/src/MarkdownIt/index_mdit.js"
 
@@ -48,5 +48,6 @@ export default  (md: markdownit) => {
     // TODO 下面这个选项有一个bug: 其 `<a class="route-link" href=...>` 标签中的href没有转义，route-linke中文路径会导致404，要重新刷新一下才正常
     // isRelativePath: true,      // 强行使用相对路径 (双链引用图片在vuepress如果用绝对路径要加@source前缀)
   }))
+  // md.use(img_not_found) // 必须在 limit_img_alias 插件之前use，然后执行顺序会在 limit_img_alias 之后
   md.use(limit_img_alias)
 }

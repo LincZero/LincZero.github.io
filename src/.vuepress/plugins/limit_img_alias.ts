@@ -14,6 +14,8 @@
  * 举例: 将 `<img src="aaa/bbb">` 转化为 `<img src="./aaa/bbb">`，避免vuepress认定 `aaa` 为别名
  */
 
+import { fs, path } from "vuepress/utils";
+
 // 版本一弃用，应在解析阶段就完成替换，否则无用
 export function limit_img_alias1(md: any, options?: any): void {
   // 覆盖render方法以处理整个HTML输出
@@ -86,12 +88,12 @@ export function limit_img_alias(md: any, options?: any): void {
   (rawHtmlRule) =>
   (tokens, idx, options, env, self) => {
     tokens[idx].content = tokens[idx].content.replace(
-      /(<img\b)(?=[^>]*?\bsrc=)([^>]*?\bsrc=)(['"])(?!\.\/|@|\/|https?:|data:)([^'"]*?)(\3)/gi,
+      /(<img\b)([^>]*?\bsrc=)(['"])(?!\.|\/|@|https?:|data:)([^'"]*?)(\3)/gi,
       (match, tagStart, attrs, quote, src, endQuote) => {
-        return `${tagStart}${attrs}${quote}./${src}${endQuote}`;
+        return `${tagStart}${attrs}${quote}./${src}${endQuote}`
       }
-    );
-    return rawHtmlRule(tokens, idx, options, env, self);
+    )
+    return rawHtmlRule(tokens, idx, options, env, self)
   }
 
   const rawHtmlBlockRule = md.renderer.rules.html_block || ((tokens, idx, options, env, self) => self.renderToken(tokens, idx, options))
@@ -149,4 +151,32 @@ export function limit_img_alias3(md: any, options?: any): void {
     }
     return defaultRender(tokens, idx, options, env, self)
   }
+}
+
+const DOCS_PATH = 'src/' // TODO 从 vuepress 配置中获取
+// 必须在 limit_img_alias 插件之前use，然后执行顺序会在 limit_img_alias 之后
+// 另外需要确保你的public文件夹下存在 404.png
+export function img_not_found(md: any, options?: any): void {
+  const createHtmlRule =
+  (rawHtmlRule) =>
+  (tokens, idx, options, env, self) => {
+    tokens[idx].content = tokens[idx].content.replace(
+      /(<img\b)([^>]*?\bsrc=)(['"])(?!@|https?:|data:)([^'"]*?)(\3)/gi, // TODO not found 还要检查 `![]()` 的情况
+      (match, tagStart, attrs, quote, src, endQuote) => {
+        // if (src.startsWith('/') || src.startsWith('.')) {
+        const absPath = path.resolve(DOCS_PATH + path.dirname(env.filePathRelative), src)
+        if (!fs.existsSync(absPath)) { // TODO 性能优化
+          console.error(`[error] Img not found, ${src} from ${env.filePathRelative}`)
+          tokens[idx].attrSet('src', '/404.png'); src = '/404.png';
+        }
+        return `${tagStart}${attrs}${quote}${src}${endQuote}`  //  保持不动
+      }
+    );
+    return rawHtmlRule(tokens, idx, options, env, self)
+  }
+
+  const rawHtmlBlockRule = md.renderer.rules.html_block || ((tokens, idx, options, env, self) => self.renderToken(tokens, idx, options))
+  const rawHtmlInlineRule = md.renderer.rules.html_inline || ((tokens, idx, options, env, self) => self.renderToken(tokens, idx, options))
+  md.renderer.rules.html_block = createHtmlRule(rawHtmlBlockRule)
+  md.renderer.rules.html_inline = createHtmlRule(rawHtmlInlineRule)
 }
