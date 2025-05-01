@@ -172,12 +172,13 @@ const getText = (item: SidebarType) => {
  */
 const getUrl = (item: string) => {
   if (!item.length) return props.prefix_from_root                 // README
+  // if (/^(\/|https?:|data:)/.test(item)) return item            // 绝对路径、网络路径等，不处理
   if (item.startsWith("/")) return item                           // 绝对路径
   if (item.endsWith("/")) return (props.prefix_from_root + item)  // 文件夹 (可传入item.prefix判断)
   return (props.prefix_from_root + item + ".html")                // 文件
 }
 const getIsActive = (item: string): boolean => {
-  return decodeURIComponent(props.currentPath) == getUrl(item)
+  return decodeURIComponent(props.currentPath) == getUrl(item).replace(/index\.html$/, "")
 }
 </script>
 
