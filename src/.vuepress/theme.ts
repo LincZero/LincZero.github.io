@@ -63,9 +63,13 @@ export const themeOptions: ThemeOptions = {
     mark: true,           // ==高亮==
     sub: true,            // _子项_
     sup: true,            // ^上标^
-    imgLazyload: true,    // 懒加载图片
-    // imgSize: true,     // 图片大小, ![Alt](/example.bmp =x300)
     // include: true,     // 导入其他文件，`<!-- @include: filename -->`，@WARN 版本较低时，启用的话会和mdit插件那边的 `md.render()` 冲突
+    // vuepress/markdown-image 插件提供
+    imgLazyload: true,    // 懒加载图片
+    obsidianImgSize: true,// 图片大小(obsidian语法)，![Alt|0x300](/example.bmp)
+    // imgSize: true,     // 图片大小, ![Alt](/example.bmp =x300)
+    // figure: true,      // 图像描述，![VuePress 图标](/favicon.ico 'VuePress 图标') 图片旁边显示名字
+    // imgMark: true,     // GFM图片ID标记，![GitHub Light](/images/icon/github-light.svg#dark) 仅黑暗模式显示
 
     // mdit - 文生图类
     mermaid: true,        // 在启用之前安装 mermaid
@@ -74,7 +78,6 @@ export const themeOptions: ThemeOptions = {
     // echarts: true,     // 在启用之前安装 echarts
     // flowchart: true,   // 在启用之前安装 flowchart.ts
     // chartjs: true,     // 在启用之前安装 chart.js
-    // figure: true,      // Figure 图表工具
     math: true,           // 数学公式
     // markdownMath: {    // (这个疑似有bug)
     //   // 启用前安装 katex
