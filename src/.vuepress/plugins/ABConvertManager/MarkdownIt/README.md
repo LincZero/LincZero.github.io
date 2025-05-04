@@ -11,7 +11,24 @@ markdown-it 版本的入口
 从npm下载并使用：
 
 ```bash
-$pnpm install -D markdown-it-any-block@latest
+$ pnpm install -D markdown-it-any-block@latest
+```
+
+使用 (vuepress为例，其他使用markdown-it插件的类似)
+
+`config.ts`
+
+```ts
+import { ab_mdit, jsdom_init_ } from "markdown-it-any-block"
+jsdom_init_()
+
+...
+
+const userConfig: UserConfig = {
+  extendsMarkdown: (md: markdownit) => {
+    md.use(ab_mdit)
+  }
+}
 ```
 
 ### 使用流程 - 源码版
@@ -188,6 +205,7 @@ Password: ...
 $ npm publish  # 上传 (注意不要重名、npm账号可能需要邮箱验证)
                # 这一步会将当前文件夹内容都上传到npm中名为 `<package.json 里 name@version>` 的包里
                # 如果没有对应包，会自动创建
+               # 如果使用测试或beta版本 (包含 `-beta`)：需要 添加 `--tag <tagname>`，tagname为 beta/alpha等
 ```
 
 这里从源码版迁移到npm版踩了很多坑：
@@ -265,3 +283,67 @@ Error [ERR_MODULE_NOT_FOUND]: Cannot find module
    ```
 3. 设置环境变量 (windows设置麻烦点，见我个人网站的仓库的主repo那里写过一次，这里不写了)
    `NODE_OPTIONS='--experimental-specifier-resolution=node'`
+
+### 构建测试
+
+新测试、测试汇总
+
+```typescript
+// 新版
+// import { ab_mdit } from "./plugins/ABConvertManager/MarkdownIt/dist/index.js"  // 编译版tsup (ab环境编译成功，vp环境编译失败，使用未测试)
+// import { ab_mdit } from "./plugins/ABConvertManager/MarkdownIt/lib/index.js"   // 编译版rollup (编译成功，使用失败，打包缺失了很多东西，体积很小)
+import { ab_mdit } from "./plugins/ABConvertManager/MarkdownIt/dist/mdit-any-block.js" // 编译版vite (成功)
+// import { ab_mdit, jsdom_init_ } from "./plugins/ABConvertManager/MarkdownIt/index.js" // 源码版 (成功)
+// import { ab_mdit, jsdom_init_ } from "./plugins/ABConvertManager/MarkdownIt/index.js" // 源码版 (成功)
+// import { ab_mdit, jsdom_init_ } from "markdown-it-any-block"             // npm-rsup (使用报错：TypeError: Cannot read properties of undefined (reading 'prototype'))
+// import { ab_mdit, jsdom_init_ } from "markdown-it-any-block"             // npm-vite (成功，jsdom问题待测试)
+
+// 旧版
+// import ab_mdit from "./plugins/ABConvertManager/dist/index_mdit.js"     // 编译版tsc (成功)
+// import ab_mdit from "./plugins/ABConvertManager/dist/index_mdit"        // 编译版tsup (编译成功，使用失败 Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'markdown-it')
+// import ab_mdit from "./plugins/ABConvertManager/dist/mdit-any-block.js" // 编译版vite (没记录)
+// import ab_mdit from "./plugins/ABConvertManager/src/index_mdit.js"      // 源码版 (成功)
+// import ab_mdit from "any-block-converter-markdown-it"                   // npm版 (成功，但需要在主项目侧添加jsdom工具。并且也忘了是哪个构建器编译出来的)
+```
+
+多个构建系统的一些旧测试
+
+```typescript
+// import ab_mdit from "./plugins/ABConvertManager/dist/index_mdit.js"     // 编译版tsc (成功)
+// import ab_mdit from "./plugins/ABConvertManager/dist/index_mdit"        // 编译版tsup (使用失败 Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'markdown-it')
+// import ab_mdit from "./plugins/ABConvertManager/dist/mdit-any-block.js" // 编译版vite
+import ab_mdit from "./plugins/ABConvertManager/src/index_mdit.js"         // 源码版
+// import ab_mdit from "any-block-converter-markdown-it"                   // npm版
+
+
+// JsDom。仅用于提供document对象支持 (如果Ob等客户端渲染环境中则不需要，服务端渲染则需要)
+// const { default: jsdom } = await import('jsdom')
+import jsdom from "jsdom"
+const { JSDOM } = jsdom
+const dom = new JSDOM(`<!DOCTYPE html><html><body></body></html>`, {
+  url: 'http://localhost/', // @warn 若缺少该行，则在mdit+build环境下，编译报错
+});
+// @ts-ignore 不能将类型“DOMWindow”分配给类型“Window & typeof globalThis”
+global.Storage = function () { // @warn 若缺少改行，则在不知名环境下会出现"Storage is not defined"错误
+  this.temp_method = function () {
+  }
+}
+// @ts-ignore 不能将类型“DOMWindow”分配给类型“Window & typeof globalThis”
+global.window = dom.window
+global.history = dom.window.history // @warn 若缺少该行，则在mdit+build环境下，编译报错：ReferenceError: history is not defined
+global.document = dom.window.document
+global.NodeList = dom.window.NodeList
+global.HTMLElement = dom.window.HTMLElement
+global.HTMLDivElement = dom.window.HTMLDivElement
+global.HTMLPreElement = dom.window.HTMLPreElement
+global.HTMLQuoteElement = dom.window.HTMLQuoteElement
+global.HTMLTableElement = dom.window.HTMLTableElement
+global.HTMLUListElement = dom.window.HTMLUListElement
+global.HTMLScriptElement = dom.window.HTMLScriptElement
+dom.window.scrollTo = ()=>{} // @warn 若缺少该行，编译警告：Error: Not implemented: window.scrollTo
+
+
+export default  (md: markdownit) => {
+  md.use(ab_mdit)
+}
+```

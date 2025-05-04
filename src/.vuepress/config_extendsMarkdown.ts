@@ -4,17 +4,13 @@ import { limit_img_alias, img_not_found } from "./plugins/limit_img_alias.js"
 
 import chatview_mdit from "./plugins/ChatView/src/MarkdownIt/index_mdit.js"
 
-import { ab_mdit, jsdom_init_ } from "./plugins/ABConvertManager/MarkdownIt/index.js" // 源码版 - 新
-jsdom_init_()
+// import { ab_mdit } from "./plugins/ABConvertManager/MarkdownIt/index.js" // 源码版
 
-// import ab_mdit from "./plugins/ABConvertManager/dist/index_mdit.js"     // 编译版tsc (成功)
-// import ab_mdit from "./plugins/ABConvertManager/dist/index_mdit"        // 编译版tsup (使用失败 Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'markdown-it')
-// import ab_mdit from "./plugins/ABConvertManager/dist/mdit-any-block.js" // 编译版vite
-// import ab_mdit from "./plugins/ABConvertManager/src/index_mdit.js"      // 源码版
-// import ab_mdit from "any-block-converter-markdown-it"                   // npm版
+import { ab_mdit, jsdom_init_ } from "markdown-it-any-block" // npm
+jsdom_init_() // 如果模块根部有直接使用的，可能要改成 await jsdom_init_() 同步操作
 
 // @ts-ignore 找不到名称“markdownit”
-export default  (md: markdownit) => {
+export default (md: markdownit) => {
   md.use(ab_mdit)
   md.use(chatview_mdit) // 这里要虚拟dom，让前面的ab_mdit模块给解决一下
   md.use(callout_mdit)
