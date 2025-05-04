@@ -6,8 +6,8 @@ import chatview_mdit from "./plugins/ChatView/src/MarkdownIt/index_mdit.js"
 
 // import { ab_mdit } from "./plugins/ABConvertManager/MarkdownIt/index.js" // 源码版
 
-import { ab_mdit, jsdom_init_ } from "markdown-it-any-block" // npm
-jsdom_init_() // 如果模块根部有直接使用的，可能要改成 await jsdom_init_() 同步操作
+import { ab_mdit, jsdom_init } from "markdown-it-any-block" // npm
+jsdom_init() // 如果模块根部有直接使用的，可能要改成 await jsdom_init() 同步操作
 
 // @ts-ignore 找不到名称“markdownit”
 export default (md: markdownit) => {
