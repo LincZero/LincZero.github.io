@@ -3,7 +3,8 @@ import { defineClientConfig } from 'vuepress/client'
 import { nextTick, watch } from 'vue'
 import { usePageData } from 'vuepress/client'
 
-import { abConvertEvent } from '../ABConvertManager/ABConverter/ABConvertEvent.js'
+// import { abConvertEvent } from '../ABConvertManager/ABConverter/ABConvertEvent.js' // 源码版
+import { abConvertEvent } from 'markdown-it-any-block' // npm版
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
