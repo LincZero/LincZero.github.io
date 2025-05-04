@@ -1,7 +1,4 @@
 /**
- * - obsidian版的，那么index.ts是入口函数
- * - mdit版的，那么index_mdit.ts是入口函数
- * 
  * markdown-it 扩展相关 + markdown-it-anyBlock 的实现
  * 
  * @detail
@@ -14,8 +11,8 @@
  *       安装 + import MarkdownItConstructor from "markdown-it-container";
  * - 3. JsDom。这个是解决平台兼容问题
  *       跨平台兼容依赖问题：
- *       - 在Obsidian环境，能够使用document
- *       - 在vuepress和mdit环境，他是使用纯文本来解析渲染md而非面向对象，也不依赖document。
+ *       - 在Obsidian/App-mdit环境，都是在客户端渲染的，能够使用document
+ *       - 但在vuepress-mdit环境，他是在服务端渲染的，并且使用纯文本来解析渲染md而非使用document和Node等，不依赖document。
  *         所以为了兼顾这个，需要额外安装Node.js中能使用的[jsdom](https://github.com/jsdom/jsdom)
  *         JSDOM是一个模拟浏览器环境的库，主要用于服务器端渲染。
  *   
@@ -44,49 +41,31 @@
 /// 下面的依赖可以见上面文件注释
 
 // 1. markdown-it
-//import MarkdownIt from "markdown-it"
+import MarkdownIt from "markdown-it"
 
 // 2. markdown-it-container
 import MarkdownItConstructor from "markdown-it-container";
 
-// -- 3. JsDom。仅用于提供document对象支持 (如果Ob环境中则不需要，用ob自带document对象的)
-/*import jsdom from "jsdom"
-const { JSDOM } = jsdom
-const dom = new JSDOM(`<!DOCTYPE html><html><body></body></html>`, {
-  url: 'http://localhost/', // @warn 若缺少该行，则在mdit+build环境下，编译报错
-});
-// @ts-ignore 不能将类型“DOMWindow”分配给类型“Window & typeof globalThis”
-global.window = dom.window
-global.history = dom.window.history // @warn 若缺少该行，则在mdit+build环境下，编译报错：ReferenceError: history is not defined
-global.document = dom.window.document
-global.NodeList = dom.window.NodeList
-global.HTMLElement = dom.window.HTMLElement
-global.HTMLDivElement = dom.window.HTMLDivElement
-global.HTMLPreElement = dom.window.HTMLPreElement
-global.HTMLQuoteElement = dom.window.HTMLQuoteElement
-global.HTMLTableElement = dom.window.HTMLTableElement
-global.HTMLUListElement = dom.window.HTMLUListElement
-global.HTMLScriptElement = dom.window.HTMLScriptElement
-dom.window.scrollTo = ()=>{} // @warn 若缺少该行，编译警告：Error: Not implemented: window.scrollTo*/
+// 3. JsDom。仅用于提供document对象支持 (如果Ob环境中则不需要，用ob自带document对象的)
+import {} from './jsdom_init'
 
 // 4. markdown-it-anyblock 插件
 // import { ABConvertManager } from "./index"
-import { ABConvertManager } from "./ABConvertManager"
-import { ABReg } from "./ABReg"
+import { ABConvertManager } from "@/ABConverter/ABConvertManager"
+import { ABCSetting, ABReg } from "@/ABConverter/ABReg"
 // 加载所有转换器 (都是可选的)
 // (当然，如果A转换器依赖B转换器，那么你导入A必然导入B)
-import "./converter/abc_text"
-import "./converter/abc_list"
-import "./converter/abc_c2list"
-import "./converter/abc_table"
-import "./converter/abc_dir_tree"
-import "./converter/abc_deco"
-import "./converter/abc_ex"
-import "./converter/abc_mdit_container"
-import "./converter/abc_plantuml" // 可选建议：
-import "./converter/abc_mermaid"  // 可选建议：7.1MB
-// import "./converter/abc_markmap"  // -- 可选建议：1.3MB
-import MarkdownIt from "markdown-it";
+import "@/ABConverter/converter/abc_text"
+import "@/ABConverter/converter/abc_list"
+import "@/ABConverter/converter/abc_c2list"
+import "@/ABConverter/converter/abc_table"
+import "@/ABConverter/converter/abc_dir_tree"
+import "@/ABConverter/converter/abc_deco"
+import "@/ABConverter/converter/abc_ex"
+import "@/ABConverter/converter/abc_mdit_container"
+import "@/ABConverter/converter/abc_plantuml" // 可选建议：
+import "@/ABConverter/converter/abc_mermaid"  // 可选建议：非 min 环境下 7.1MB
+import "@/ABConverter/converter/abc_markmap"  // 可选建议：1.3MB
 
 interface Options {
   multiline: boolean;
@@ -105,17 +84,17 @@ interface Options {
  * 选择 [] 包裹的正文段
  */
 function abSelector_squareInline(md: MarkdownIt, options?: Partial<Options>): void {
-  md.block.ruler.before('paragraph', 'AnyBlockParagraph', function (state,startLine,endLine) {
+  md.block.ruler.before('paragraph', 'AnyBlockParagraph', function (state:any,startLine:number,endLine:number) {
     
     // (1) 匹配ab块头部
-    let text: string
+    let ab_header: string                   // ab块 - 头部 (包含)
     {
       state.line = startLine
       const pos = state.bMarks[state.line]  // 这行字符的初始位置
       const max = state.eMarks[state.line]  // 这行字符的结束位置
-      text = state.src.substring(pos, max)  // 这一行的内容
+      ab_header = state.src.substring(pos, max)  // 这一行的内容
       // 若不匹配则退出
-      const match = text.match(ABReg.reg_header)
+      const match = ab_header.match(ABReg.reg_header)
       if (!match || !match.length) return false
     }
 
@@ -127,7 +106,8 @@ function abSelector_squareInline(md: MarkdownIt, options?: Partial<Options>): vo
     state.line += 1
 
     let ab_blockType: string = ""           // ab块 - 块类型
-    let reg;
+    let codeBlockFlag: string = ""          // ab块 - 跳过代码块，对应标志
+    let reg: RegExp;
     let heading_number: number = 0;
     let code_str: string;
     findAbEnd()
@@ -136,7 +116,6 @@ function abSelector_squareInline(md: MarkdownIt, options?: Partial<Options>): vo
       state.line = ab_startLine
       return false
     }
-    const ab_header: string = text          // ab块 - 头部 (包含)
     const ab_endLine: number = state.line   // ab块 - 结束行 (不包含)
 
     // (3) 插入ab块token
@@ -144,7 +123,7 @@ function abSelector_squareInline(md: MarkdownIt, options?: Partial<Options>): vo
     token.info = "AnyBlock"
     token.content = `${ab_header}${ab_content}`
     token.map = [ab_startLine, ab_endLine]
-    token.markup = '~~~';
+    token.markup = '~~~~~';
     token.nesting = 0;
     return true
 
@@ -166,9 +145,7 @@ function abSelector_squareInline(md: MarkdownIt, options?: Partial<Options>): vo
       if (text.trim() == "") {
         if (ab_blankLine_counter < 1) {
           ab_blankLine_counter++;
-          ab_content += "\n"
-          state.line += 1
-          return findAbEnd()
+          ab_content += "\n"; state.line += 1; return findAbEnd()
         }
         else {
           return
@@ -204,37 +181,39 @@ function abSelector_squareInline(md: MarkdownIt, options?: Partial<Options>): vo
         } else {
           return
         }
-        ab_content += "\n" + text
-        state.line += 1
-        return findAbEnd()
+        ab_content += "\n" + text; state.line += 1; return findAbEnd()
       }
       // 3.2. 已经有匹配规则的按匹配规则的来
       if (ab_blockType == "list" || ab_blockType == "quote" || ab_blockType == "table") {
         if (reg.test(text)) {
-          ab_content += "\n" + text
-          state.line += 1
-          return findAbEnd()
+          ab_content += "\n" + text; state.line += 1; return findAbEnd()
         }
-      } else if (ab_blockType == "heading") {
+      } else if (ab_blockType == "heading") { // TODO 这里需要跳过标题内的代码块 (python代码块的 `#` 会误截断)
+        // heading和mdit类型 需要跳过代码块内的结束标志
+        if (codeBlockFlag == '') {
+          const match = text.match(/^((\s|>\s|-\s|\*\s|\+\s)*)(````*|~~~~*)(.*)/)
+          if (match && match[3]) {
+            codeBlockFlag = match[1]+match[3]
+            ab_content += "\n" + text; state.line += 1; return findAbEnd()
+          }
+        } else {
+          if (text.indexOf(codeBlockFlag) == 0) codeBlockFlag = ''
+          ab_content += "\n" + text; state.line += 1; return findAbEnd()
+        }
+        // 是标题行
         if (reg.test(text)) {
           const match = text.match(reg)
           if (match && match[3] && (match[3].length-1) < heading_number) return
         }
-        ab_content += "\n" + text
-        state.line += 1
-        return findAbEnd()
+        ab_content += "\n" + text; state.line += 1; return findAbEnd()
       } else if (ab_blockType == "code") {
         if (reg.test(text)) {
           const match = text.match(reg)
           if (match && match[3] && match[3] == code_str) {
-            ab_content += "\n" + text
-            state.line += 1
-            return
+            ab_content += "\n" + text; state.line += 1; return
           }
         }
-        ab_content += "\n" + text
-        state.line += 1
-        return findAbEnd()
+        ab_content += "\n" + text; state.line += 1; return findAbEnd()
       }
       return
     }
@@ -242,20 +221,20 @@ function abSelector_squareInline(md: MarkdownIt, options?: Partial<Options>): vo
 }
 
 /**
- * 选择 anyBlock 块 - :::规则
+ * 选择 anyBlock 块 - :::规则 (vuepress-mdit 版本)
  * 
  * @detail 选择 `:::anyBlock` 包裹的片段
  */
-function abSelector_container(md: MarkdownIt, options?: Partial<Options>): void {
+function abSelector_container_vuepress(md: MarkdownIt, options?: Partial<Options>): void {
   md.use(MarkdownItConstructor, 'AnyBlockContainer', {
 
-    validate: function(params) {
-      return params.trim().match(/^anyBlock(.*)$/);
+    validate: function(params: string) {
+      return params.trim().toLowerCase().match(/^anyblock(.*)$/);
     },
   
-    render: function (tokens, idx) {
+    render: function (tokens: any, idx: number) {
       // 通过 tokens[idx].info.trim() 取出 'click me' 字符串
-      var m = tokens[idx].info.trim().match(/^anyBlock(.*)$/);
+      var m = tokens[idx].info.trim().toLowerCase().match(/^anyblock(.*)$/);
   
       // 开始标签的 nesting 为 1，结束标签的 nesting 为 -1
       if (tokens[idx].nesting === 1) {
@@ -270,14 +249,101 @@ function abSelector_container(md: MarkdownIt, options?: Partial<Options>): void 
 }
 
 /**
+ * 选择 anyBlock 块 - :::规则 (app-mdit 版本)
+ * 
+ * @detail 
+ * 注意:
+ * - 如果有其他基于 markdown-it-container 的mdit插件，会产生冲突。这里的行为会覆盖/被覆盖其他插件
+ * - 所以这部分的代码仅能在没有其他 md-it-container 类别插件 (tab/demo/codetab等) 时使用
+ * 
+ * 该函数负责识别和处理Markdown中的:::容器语法，ABConvert支持的container容器都能被支持
+ * 例如 :::col、:::tab
+ * 
+ * 工作流程：
+ * 1. 识别以:::开头的行
+ * 2. 收集容器内的所有内容，直到遇到对应的结束标记:::
+ * 3. 支持嵌套容器的处理
+ * 4. 创建anyBlock类型的token，并设置相关元数据
+ * 
+ * @param md MarkdownIt实例
+ * @param options 可选配置参数
+ */
+function abSelector_container_app(md: MarkdownIt, options?: Partial<Options>): void {
+  md.block.ruler.before('fence', 'AnyBlockMditContainer', (
+    state:any, startLine:number, endLine:number, silent:any
+  ): boolean => {
+    // 获取当前行的内容
+    const start = state.bMarks[startLine] + state.tShift[startLine];
+    const max = state.eMarks[startLine];
+    const marker = state.src.slice(start, max).trim();
+
+    // 检查是否为指定块的开始标记
+    if (!(/^:::(.+)$/.test(marker))) return false;
+
+    // 提取header内容
+    const header = marker.slice(3).trim();
+
+    let nextLine = startLine + 1;
+    const content: string[] = [];
+    let nestLevel = 0;
+
+    // 逐行解析内容，直到遇到结束标记
+    while (nextLine < endLine) {
+        const lineStart = state.bMarks[nextLine] + state.tShift[nextLine];
+        const lineEnd = state.eMarks[nextLine];
+        const line = state.src.slice(lineStart, lineEnd);
+        const trimmedLine = line.trim();
+
+        // 检查是否为围栏块标记
+        if (trimmedLine.startsWith(':::')) {
+            if (trimmedLine === ':::') {
+                // 结束标记
+                if (nestLevel === 0) {
+                    break;
+                } else {
+                    // 嵌套块的结束
+                    nestLevel--;
+                    content.push(line);
+                }
+            } else {
+                // 开始标记
+                nestLevel++;
+                content.push(line);
+            }
+        } else {
+            // 收集内容
+            content.push(line);
+        }
+        nextLine++;
+    }
+
+    // 如果是验证模式，直接返回true
+    if (silent) return true;
+
+    // 更新解析器状态，移动到下一个待处理行
+    state.line = nextLine + 1;
+
+    // (3) 插入ab块token
+    let token = state.push('fence', 'code', 0)
+    token.info = "AnyBlock"
+    token.content = `[${header}]\n${content.join('\n')}` // TODO 应改为原文本整体
+    console.log('token.content', token.content)
+    token.map = [startLine, nextLine]
+    token.markup = ':::::';
+    token.nesting = 0;
+    return true
+  });
+}
+
+/**
  * 渲染 anyBlock 块 - codeBlock/fence 规则
  */
 function abRender_fence(md: MarkdownIt, options?: Partial<Options>): void {
-  const oldFence = md.renderer.rules.fence || function(tokens, idx, options, env, self) {
+  const oldFence = md.renderer.rules.fence || function(tokens:any, idx:number, options:any, env:any, self:any) {
     return self.renderToken(tokens, idx, options);
   };
 
-  md.renderer.rules.fence = (tokens, idx, options, env, self) => {
+  md.renderer.rules.fence = (tokens:any, idx:number, options:any, env:any, self:any) => {
     // 查看是否匹配
     let token = tokens[idx]
     let lines = token.content.split('\n')
@@ -298,10 +364,10 @@ function abRender_fence(md: MarkdownIt, options?: Partial<Options>): void {
     //`<!--afterbegin-->${rawCode}<!--beforeend--></div><!--afterend-->`
 
     // anyBlock专属渲染
-    let el: HTMLDivElement = document.createElement("div"); el.classList.add("ab-note", "drop-shadow");
+    const el: HTMLDivElement = document.createElement("div"); el.classList.add("ab-note", "drop-shadow");
         // 临时el，未appendClild到dom中，脱离作用域会自动销毁
         // 用临时el是因为 mdit render 是 md_str 转 html_str 的，而Ob和原插件那边是使用HTML类的，要兼容
-    ABConvertManager.autoABConvert(el, ab_header, ab_content)
+    ABConvertManager.autoABConvert(el, ab_header, ab_content, token.markup.startsWith(':::')?'mdit':'')
     
     // anyBlock特殊情况 - 需要再渲染 (ob不需要，主要是vuepress有些插件可以复用一下，并且处理mdit无客户端环境可能存在的问题)
     if (el.classList.contains("ab-raw")) {
@@ -328,9 +394,14 @@ function abRender_fence(md: MarkdownIt, options?: Partial<Options>): void {
         return `<img src="${absoluteUrl}"`;
       })
       // link
-      ret = ret.replace(/<routelink to="(\.[^"]+)">([^<]*)<\/routelink>/g, (match, relativePath, linkContent) => {
-        const absoluteUrl:string = "/" + rootPath + relativePath;
-        return `<a href="${absoluteUrl}">${linkContent}</a>`;
+      ret = ret.replace(/<routelink to="([^"]+)">([^<]*)<\/routelink>/g, (match, relativePath, linkContent) => {
+        let absoluteUrl:string = ""
+        // example: (`/` or `/org1/`) + (`/xxx/` or `xxx/`)
+        if (env.base) absoluteUrl += env.base
+        else absoluteUrl += "/"
+        if ((relativePath as string).startsWith("/")) absoluteUrl += (relativePath as string).slice(1)
+        else absoluteUrl += rootPath + relativePath;
+        return `<a class="route-link" href="${absoluteUrl}">${linkContent}</a>`;
       })
     }
 
@@ -347,7 +418,10 @@ export default function ab_mdit(md: MarkdownIt, options?: Partial<Options>): voi
     const el_child = document.createElement("div"); el.appendChild(el_child); el_child.innerHTML = result;
   })
 
+  // 定义环境条件
+  ABCSetting.env = "vuepress"
+
   md.use(abSelector_squareInline)
-  md.use(abSelector_container)
+  md.use(abSelector_container_vuepress) // [env] vuepress版本
   md.use(abRender_fence)
 }

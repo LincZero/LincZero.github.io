@@ -13,8 +13,10 @@
  * @param d 这里有两种可能：
  *   - 一是局部刷新，d就是局部的div，此时d必须是 `.ab-replace`，且满足预设结构
  *   - 二是全局刷新，当页面加载完成后会自动调一次，d就是document
+ * @param isCycle 是否循环定时启动。部分事件允许循环，消耗资源也较小，而部分时间不允许
+ *   false为初始化启动，或手动按刷新按钮的情况
  */
-export function abConvertEvent(d: Element|Document) {
+export function abConvertEvent(d: Element|Document, isCycle: boolean = false) {
   // 超宽div事件 (仅obsidian)，这个事件应该优先处理
   if (d.querySelector('.ab-super-width')) {
     // 局部 (仅obsidian)
@@ -171,6 +173,7 @@ export function abConvertEvent(d: Element|Document) {
   // 横向瀑布流: 纯css、高精度横向瀑布流: 未实现js
 
   // list2card，纵向瀑布流 (等宽瀑布流) 顺序重调事件
+  // (通过flag，自动避免重新调用，手动刷新也不会重新调用)
   if (d.querySelector('.ab-items.ab-lay-vfall:not(.js-waterfall):not(.ab-lay-hfall):not(.ab-lay-grid)')) {
     const root_el_list = d.querySelectorAll(".ab-items.ab-lay-vfall:not(.js-waterfall):not(.ab-lay-hfall):not(.ab-lay-grid)")
     for (const root_el of root_el_list) {
@@ -234,7 +237,7 @@ export function abConvertEvent(d: Element|Document) {
   }
 
   // xxx2markmap，高度重调事件
-  if (d.querySelector('.ab-markmap-div')) {
+  if (!isCycle && d.querySelector('.ab-markmap-div')) {
     const divEl = d as Element;
     let markmapId = '';
     if (divEl.tagName === 'DIV') {

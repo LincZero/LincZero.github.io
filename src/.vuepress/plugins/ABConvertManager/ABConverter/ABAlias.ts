@@ -171,6 +171,8 @@ const ABAlias_json_list: ABAlias_json_item[] = [
 // 代码块
 const ABAlias_json_code: ABAlias_json_item[] = [
   {regex: "|code 140lne|X|", replacement: "|Xcode|"},
+  {regex: "|code2list|", replacement: "|Xcode|region2indent|addList|"},
+  {regex: "|list2code|", replacement: "|xList|code(js)|"},
 ]
 
 // 引用块

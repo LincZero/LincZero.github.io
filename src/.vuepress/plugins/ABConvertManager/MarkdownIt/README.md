@@ -1,8 +1,20 @@
-# Any Block Converter
+# AnyBlock MarkdownIt
+
+markdown-it 版本的入口
 
 ## 使用
 
-### 使用流程
+### 使用流程 - npm
+
+新版流程
+
+从npm下载并使用：
+
+```bash
+$pnpm install -D markdown-it-any-block@latest
+```
+
+### 使用流程 - 源码版
 
 ```typescript
 // 转换器模块
@@ -14,7 +26,7 @@ import {} from "./ABConverter/converter/abc_list"
 import {} from "./ABConverter/converter/abc_table"
 import {} from "./ABConverter/converter/abc_deco"
 import {} from "./ABConverter/converter/abc_ex"
-import {} from "./ABConverter/converter/abc_mermaid" // 可选建议：7.1MB
+import {} from "./ABConverter/converter/abc_mermaid" // 可选建议：非 min 环境下 7.1MB
 import {} from "./ABConverter/converter/abc_markmap" // 可选建议：1.3MB
 
 // 先注册默认渲染行为
@@ -24,10 +36,12 @@ ABConvertManager.getInstance().redefine_renderMarkdown((markdown: string, el: HT
 ABConvertManager.autoABConvert(el:HTMLDivElement, header:string, content:string): HTMLElement
 ```
 
-### Obsidian 回调函数设置
+**其中，回调函数设置详细说下**
+
+Obsidian 回调设置如下：
 
 ```typescript
-ABConvertManager.getInstance().redefine_renderMarkdown((markdown: string, el: HTMLElement, ctx?: any): void => {
+ABConvertManager.getInstance().redefine_renderMarkdown((markdown: string, el: HTMLElement): void => {
     /**
      * Renders markdown string to an HTML element.
      * @deprecated - use {@link MarkdownRenderer.render}
@@ -45,9 +59,6 @@ ABConvertManager.getInstance().redefine_renderMarkdown((markdown: string, el: HT
      */
     //MarkdownRenderer.renderMarkdown(markdown, el, "", new MarkdownRenderChild(el))
 
-    const mdrc: MarkdownRenderChild = new MarkdownRenderChild(el);
-    if (ctx) ctx.addChild(mdrc);
-    else if (ABCSetting.global_ctx) ABCSetting.global_ctx.addChild(mdrc);
     /**
      * Renders markdown string to an HTML element.
      * @param app - A reference to the app object
@@ -58,11 +69,11 @@ ABConvertManager.getInstance().redefine_renderMarkdown((markdown: string, el: HT
      * @public
      */
     // @ts-ignore 新接口，但旧接口似乎不支持
-    MarkdownRenderer.render(app, markdown, el, app.workspace.activeLeaf?.view?.file?.path??"", mdrc)
+    MarkdownRenderer.render(app, markdown, el, "", new MarkdownRenderChild(el))
 })
 ```
 
-### MarkdownIt 回调函数设置
+MarkdownIt 回调函数设置如下：
 
 ```typescript
 ABConvertManager.getInstance().redefine_renderMarkdown((markdown: string, el: HTMLElement): void => {
@@ -70,6 +81,42 @@ ABConvertManager.getInstance().redefine_renderMarkdown((markdown: string, el: HT
     const el_child = document.createElement("div"); el.appendChild(el_child); el_child.innerHTML = result;
 })
 ```
+
+至于其他平台的可以参考上面两者进行设置
+
+### 使用流程 - npm改良版
+
+从npm下载并使用：
+
+```bash
+$pnpm install -D any-block-converter-markdown-it@3.1.3-beta11
+# 后面操作的使用和前面类似
+```
+
+但是npm版本需要注意：
+
+1. 由于某bug未解决，不支持markmap
+2. 需要在父项目提供jsdom环境：(还要 pnpm install -D jsdom)
+  ```ts
+  import jsdom from "jsdom"
+  const { JSDOM } = jsdom
+  const dom = new JSDOM(`<!DOCTYPE html><html><body></body></html>`, {
+    url: 'http://localhost/', // @warn 若缺少该行，则在mdit+build环境下，编译报错
+  });
+  // @ts-ignore 不能将类型“DOMWindow”分配给类型“Window & typeof globalThis”
+  global.window = dom.window
+  global.history = dom.window.history // @warn 若缺少该行，则在mdit+build环境下，编译报错：ReferenceError: history is not defined
+  global.document = dom.window.document
+  global.NodeList = dom.window.NodeList
+  global.HTMLElement = dom.window.HTMLElement
+  global.HTMLDivElement = dom.window.HTMLDivElement
+  global.HTMLPreElement = dom.window.HTMLPreElement
+  global.HTMLQuoteElement = dom.window.HTMLQuoteElement
+  global.HTMLTableElement = dom.window.HTMLTableElement
+  global.HTMLUListElement = dom.window.HTMLUListElement
+  global.HTMLScriptElement = dom.window.HTMLScriptElement
+  dom.window.scrollTo = ()=>{} // @warn 若缺少该行，编译警告：Error: Not implemented: window.scrollTo
+  ```
 
 ## 开发/设计/架构补充
 
@@ -81,7 +128,7 @@ ABConvertManager.getInstance().redefine_renderMarkdown((markdown: string, el: HT
 
 因为模块化内置了很多 Converter (text->text等)，所以整体叫 Any Block Converter
 
-### 该模块设计不应依赖于Ob插件
+### 架构 - 该模块设计不应依赖于Ob插件
 
 **这个模块以前是依赖Ob插件接口的**，后来才改成可复用的 AnyBlock 转化器。
 
@@ -90,14 +137,7 @@ ABConvertManager.getInstance().redefine_renderMarkdown((markdown: string, el: HT
 1. 要与选择器解耦
 2. 相较于V2版本，为了不依赖于Ob底层，使用一个回调函数去替代 `MarkdownRenderer` 相关函数
 
-### 程序缩写
-
-- `AnyBlock`：`AB`
-- `AnyBlockConvert`：`ABC`
-- `AnyBlockSelector`：`ABS`
-- `AnyBlockRender`：`ABR`
-
-### 格式转换所在位置
+### 架构 - 格式转换所在位置
 
 > ##### 思考
 
@@ -126,6 +166,56 @@ ABConvertManager.getInstance().redefine_renderMarkdown((markdown: string, el: HT
 
 1. 低通用级格式要实现对高通用级格式的互转
 2. 同通用级则实现其他同通用级格式对自己格式的转化
+
+### 规范 - 程序缩写
+
+- `AnyBlock`：`AB`
+- `AnyBlockConvert`：`ABC`
+- `AnyBlockSelector`：`ABS`
+- `AnyBlockRender`：`ABR`
+
+### 构建 - 迁移到npm方式的坑
+
+作者上传npm：
+
+```bash
+$ pnpm build   # 先编译
+
+$ npm adduser  # 先登录，在vscode里他会让我打开浏览器来登录
+Username: ...
+Password: ...
+
+$ npm publish  # 上传 (注意不要重名、npm账号可能需要邮箱验证)
+               # 这一步会将当前文件夹内容都上传到npm中名为 `<package.json 里 name@version>` 的包里
+               # 如果没有对应包，会自动创建
+```
+
+这里从源码版迁移到npm版踩了很多坑：
+
+- 源码使用
+  - 就是一开始的做法
+  - 相关文件: 无
+  - 使用结果: 成功
+- build_tsc
+  - 使用结果: 成功，但上传npm后失败
+  - NPM使用结果：[ERR_MODULE_NOT_FOUND]
+- build_tsup
+  - 使用结果: Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'markdown-it' imported from ...
+- build_vite
+  - 参考: https://github.com/ebullient/markdown-it-obsidian-callouts/
+  - 相关文件: package.json、tsconfig.json、vite.config.ts
+  - 构建结果: 成功
+  - 使用结果: Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'markdown-it' imported from ...
+    安装mdit后：TypeError: Cannot read properties of undefined (reading 'prototype')
+  - NPM使用结果：TypeError: Cannot read properties of undefined (reading 'prototype')
+- build_rollup
+
+解决：
+
+- 使用报错 `Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'markdown-it' imported from`
+  解决方法: 后来发现是 JSDOM 的原因，暂时把他移到主项目部分了
+- 使用报错 `ReferenceError: Node is not defined`
+  解决方法: 暂时把 import "./converter/abc_markmap" 处理器给禁用了
 
 ## todo
 
@@ -158,3 +248,20 @@ import DOMPurify from "isomorphic-dompurify"
 // 替换
 import DOMPurify from "dompurify"
 ```
+
+### npm使用可能遇到的报错
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module
+
+解决见：https://stackoverflow.com/questions/65384754/error-err-module-not-found-cannot-find-module
+
+1. 手动添加.js扩展名
+2. 设置别名，
+   tsconfig.json: 
+   ```json
+   "paths": {
+      "@theme-hope/*": ["./src/client/*.js"]
+    }
+   ```
+3. 设置环境变量 (windows设置麻烦点，见我个人网站的仓库的主repo那里写过一次，这里不写了)
+   `NODE_OPTIONS='--experimental-specifier-resolution=node'`

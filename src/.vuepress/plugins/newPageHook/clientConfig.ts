@@ -3,7 +3,7 @@ import { defineClientConfig } from 'vuepress/client'
 import { nextTick, watch } from 'vue'
 import { usePageData } from 'vuepress/client'
 
-import { abConvertEvent } from '../ABConvertManager/src/ABConvertEvent'
+import { abConvertEvent } from '../ABConvertManager/ABConverter/ABConvertEvent.js'
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
