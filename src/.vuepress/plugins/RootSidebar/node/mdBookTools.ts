@@ -46,7 +46,7 @@ export function md2sidebar(mdStr: string): any[] {
     }
     // link的一些头、尾替换
     if (link.startsWith('./')) { link = link.replace(/^\.\//, '/') }
-    else if (link.startsWith('/')) {}
+    else if (/^(\.|\/|https?:|data:)/.test(link)) {} // 跳过
     else { link = '/' + link }
     link = link.replace(/\.md$/, '.html')
     link = link.replace(/README\.html$/, '')

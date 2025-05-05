@@ -171,7 +171,7 @@ export function img_not_found(md: any, options?: any): void {
           console.error(`[error] Img not found, ${src} from ${env.filePathRelative}`)
           token.attrSet('src', '/404.png'); src = '/404.png';
         }
-        return `${tagStart}${attrs}${quote}${src}${endQuote}`  //  保持不动
+        return `${tagStart}${attrs}${quote}${src}${endQuote}`
       }
     );
     return rawHtmlRule(tokens, idx, options, env, self)
