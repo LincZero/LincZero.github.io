@@ -1,15 +1,23 @@
+/**
+ * 用于自动触发 abConvertEvent
+ * 
+ * 主要影响：nodes、card瀑布流 等处理器
+ */
+
 import { defineClientConfig } from 'vuepress/client'
 
 import { nextTick, watch } from 'vue'
 import { usePageData } from 'vuepress/client'
 
-// import { abConvertEvent } from '../ABConvertManager/ABConverter/ABConvertEvent.js' // 源码版
-import { abConvertEvent } from 'markdown-it-any-block' // npm版
+// import { abConvertEvent } from '../ABConvertManager/ABConverter/ABConvertEvent.js' // anyblock - 源码版
+// import '../ABConvertManager/ABConverter/style/styles.css';                         // anyblock - 源码版
+import { abConvertEvent } from 'markdown-it-any-block'                                // anyblock - npm版
+import '../../../../../node_modules/markdown-it-any-block/styles.css';                // anyblock - npm版
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 export default defineClientConfig({
-  setup() { // ({app})
+  setup() {
     newPageHook_init()
   },
 })

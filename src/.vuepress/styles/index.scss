@@ -1,7 +1,8 @@
 // place your custom styles here
 @import 'linc_rainbow.scss';
-// @import '../plugins/ABConvertManager/ABConverter/style/styles.scss'; // 源码版
-@import '../../../node_modules/markdown-it-any-block/styles.css'; // npm版
+// @import '../plugins/ABConvertManager/ABConverter/style/styles.scss'; // anyblock - 源码版
+// @import '../../../node_modules/markdown-it-any-block/styles.css';    // anyblock - npm版
+// 省略                                                                 // anyblock - vuepress插件版
 @import '../plugins/ChatView/styles.scss';
 @import '../plugins/NodeFlow/client/NodeFlow/style/vue_custom.scss';
 @import '../plugins/callout/index.scss';

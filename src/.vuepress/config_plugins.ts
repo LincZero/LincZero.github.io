@@ -1,4 +1,4 @@
-import newPageHook from "./plugins/newPageHook"
+import anyblock from "./plugins/AnyBlock/node"
 import nodeFlow from "./plugins/NodeFlow/node"
 import tikz from "./plugins/Tikz/node"
 import exFormat from "./plugins/ExFormat/node"
@@ -9,7 +9,7 @@ import myLayout from "./plugins/MyLayout/node" // 非通用的自定义布局，
 type PluginConfig = any;
 
 const plugins: PluginConfig = [
-  newPageHook,
+  anyblock,
   nodeFlow,
   tikz,
   exFormat,
