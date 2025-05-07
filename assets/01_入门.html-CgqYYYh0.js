@@ -1,0 +1,235 @@
+import{_ as s,e as n,g as e,f as t,k as i,o as a}from"./app-Bo4La9js.js";const r={};function o(d,l){return a(),n("div",null,l[0]||(l[0]=[e(`<h1 id="入门" tabindex="-1"><a class="header-anchor" href="#入门"><span>入门</span></a></h1><h2 id="知识" tabindex="-1"><a class="header-anchor" href="#知识"><span>知识</span></a></h2><h3 id="背景" tabindex="-1"><a class="header-anchor" href="#背景"><span>背景</span></a></h3><ul><li>go语言的于2007年在谷歌创建，2012年发布开源版本1.0</li><li>团队：罗伯特 格瑞史莫、罗勃 派克、肯 汤普逊</li><li>发明人之一 肯 汤普逊，他还发明了B和C编程语言</li></ul><p>吉祥物：金花鼠 Gordon</p><h3 id="特点" tabindex="-1"><a class="header-anchor" href="#特点"><span>特点</span></a></h3><ul><li>特点 <ul><li>简单高效：它的设计初衷呢就是简单高效，这也是为什么我们常常说go而不是golang的原因</li><li>编译型语言，静态类型语言：源代码被编译成机器代码后，意味着它通常优于解释型语言，尽管构成一种静态类型语言</li><li>极快的编译时间：但它以极快的编译时间而闻名，这也得益于依赖性的分析方法，更为类型推断提供了非常简洁和实用的语法</li><li>模块系统：此外它还具有一个我们所知道的 package包和某种模块系统，便于在项目之间的进行导入和导出代码</li><li>垃圾回收：支持</li></ul></li><li>语法特点 <ul><li>从语法上讲 go就像C或C++的简明版本。例如声明一个变量，其中的word关键字后，跟其名称和类型并用一个值进行初始化，或者你也可以用短赋值语法来替代word，并自动推断类型，你还可以在一行中定义多个变量构</li><li>具有编程语言中所期望的所有功能，如数组啊，map循环控制</li><li>它也允许你使用指针存储值的内存地址，但不允许使用智能算法，这会导致很多不可预测的行为</li><li>此外go还支持并发历程，go历程是利用CPU上的多个线程，与其他函数同时运行的函数</li></ul></li></ul><h3 id="实用性" tabindex="-1"><a class="header-anchor" href="#实用性"><span>实用性</span></a></h3><ul><li>应用领域 <ul><li>Go服务器端/游戏软件工程师</li><li>Go分布式/云计算软件工程师</li><li>区块链工程师</li></ul></li><li>落地 <ul><li>Docker就是用Golang编写的，它在容器化方面表现出色</li></ul></li><li>就业 <ul><li>Google、Facebook、腾讯、百度、京东、小米、360、美团、滴滴、阿里、七牛等</li></ul></li></ul><h3 id="快速入门" tabindex="-1"><a class="header-anchor" href="#快速入门"><span>快速入门</span></a></h3><ul><li>使用流程 <ul><li>安装：go的使用需要先进行安装</li><li>编写：然后在系统上打开一个空目录，创建一个点go结尾的文件，顶部添加package，main里创建一个独立的可执行文件，接着声明一个main函数，该函数就是程序开始执行的地方，都有一个标准的核心，包括用于处理常见的需求 像我们的数学呀 网络呀 格式化呀，通过导入format 我们可以将这一行内容打印为标准输出</li><li>编译：运行go build命令，它可以将源代码和依赖下 快速编译成可执行的二进制文件</li><li>依赖解决：说到依赖项 我们还可以连接到GITHUB上的远程包，例如运行go mode in it 这将创建一个go模块文件，已启用依赖性跟踪。</li></ul></li></ul><h2 id="软件环境" tabindex="-1"><a class="header-anchor" href="#软件环境"><span>软件环境</span></a></h2><h3 id="安装-ide" tabindex="-1"><a class="header-anchor" href="#安装-ide"><span>安装 - IDE</span></a></h3><ul><li>Visual Stuido Code</li><li>Sublime Tet</li><li>Vim</li><li>Emacs</li><li>Eclipse</li><li>LiteIDE</li><li>JetBrains</li></ul><p>这里选 VSC</p><p>取消目录折叠 设置：右下设置 &gt; User &gt; Features &gt; Explorer &gt; Compact Folders 取选</p><h3 id="安装-开发环境-sdk" tabindex="-1"><a class="header-anchor" href="#安装-开发环境-sdk"><span>安装 - 开发环境 SDK</span></a></h3><h4 id="安装" tabindex="-1"><a class="header-anchor" href="#安装"><span>安装</span></a></h4><p>和Java类型，这里也需要一个 SDK (Software Development Kit 软件开发工具包)</p><p>下载：去 golang.org 官网下载，国内可以选用中文社区：https://studygolang.com/dl，windows能下zip或msi</p><h4 id="环境结构" tabindex="-1"><a class="header-anchor" href="#环境结构"><span>环境结构</span></a></h4><p>安装后的文件夹如下：</p><ul><li>bin/， go的一些常用命令 <ul><li>go.exe， 运行和编译器，类似java.exe</li><li>gofmt.exe， 进行代码格式化的</li></ul></li><li>lib/</li><li>misc/</li><li>pkg/ <ul><li>include/</li><li>tool/</li></ul></li><li>src/， 里面是一些.s或.go文件</li><li>test/， 里面是一些.go文件</li><li>codereview.cfg</li><li>go.env</li><li>PATENTS</li><li>(docs)， 文本类 <ul><li>api/， api存放，里面全是.txt文档</li><li>doc/，html文档</li><li>CONTRIBUTING.md</li><li>LINCENSE</li><li>README.md</li><li>SECURITY.md</li><li>VSRSION</li></ul></li></ul><h4 id="检查" tabindex="-1"><a class="header-anchor" href="#检查"><span>检查</span></a></h4><div class="language-bash line-numbers-mode" data-highlighter="shiki" data-ext="bash" data-title="bash" style="--shiki-light:#383A42;--shiki-dark:#abb2bf;--shiki-light-bg:#FAFAFA;--shiki-dark-bg:#282c34;"><pre class="shiki shiki-themes one-light one-dark-pro vp-code"><code><span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">$</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> go</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> version</span><span style="--shiki-light:#A0A1A7;--shiki-light-font-style:italic;--shiki-dark:#7F848E;--shiki-dark-font-style:italic;"> # 在任意路径下</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">go</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> version</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> go1.22.1</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> windows/386</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#A0A1A7;--shiki-light-font-style:italic;--shiki-dark:#7F848E;--shiki-dark-font-style:italic;"># 如果没有，就cd到 安装路径/bin/go.exe 所在路径。如果那个路径有，则表示没配置好环境变量</span></span>
+<span class="line"><span style="--shiki-light:#A0A1A7;--shiki-light-font-style:italic;--shiki-dark:#7F848E;--shiki-dark-font-style:italic;"># 例如zip而非msi安装不会自动配置环境变量，就要自己去配置</span></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0;"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="前提知识-windows-dos命令" tabindex="-1"><a class="header-anchor" href="#前提知识-windows-dos命令"><span>前提知识 - windows dos命令</span></a></h3><p>win+R，cmd回车</p><div class="language-bash line-numbers-mode" data-highlighter="shiki" data-ext="bash" data-title="bash" style="--shiki-light:#383A42;--shiki-dark:#abb2bf;--shiki-light-bg:#FAFAFA;--shiki-dark-bg:#282c34;"><pre class="shiki shiki-themes one-light one-dark-pro vp-code"><code><span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">盘符:</span><span style="--shiki-light:#A0A1A7;--shiki-light-font-style:italic;--shiki-dark:#7F848E;--shiki-dark-font-style:italic;">		   # 切换盘符</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">dir</span><span style="--shiki-light:#A0A1A7;--shiki-light-font-style:italic;--shiki-dark:#7F848E;--shiki-dark-font-style:italic;">			# 查看路径下文件，Linux中的 ls</span></span>
+<span class="line"><span style="--shiki-light:#0184BC;--shiki-dark:#56B6C2;">cd</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> 路径</span><span style="--shiki-light:#A0A1A7;--shiki-light-font-style:italic;--shiki-dark:#7F848E;--shiki-dark-font-style:italic;">	   # 切换路径，.表示当前路径，..表示上一层路径</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">cls</span><span style="--shiki-light:#A0A1A7;--shiki-light-font-style:italic;--shiki-dark:#7F848E;--shiki-dark-font-style:italic;">			# 清屏</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">上下箭头</span><span style="--shiki-light:#A0A1A7;--shiki-light-font-style:italic;--shiki-dark:#7F848E;--shiki-dark-font-style:italic;">      # 切换历史命令</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">tab按键</span><span style="--shiki-light:#A0A1A7;--shiki-light-font-style:italic;--shiki-dark:#7F848E;--shiki-dark-font-style:italic;">	   # 命令补全</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">md</span><span style="--shiki-light:#A0A1A7;--shiki-light-font-style:italic;--shiki-dark:#7F848E;--shiki-dark-font-style:italic;">			# 创建目录，Linux中的 mkdir</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">rd</span><span style="--shiki-light:#A0A1A7;--shiki-light-font-style:italic;--shiki-dark:#7F848E;--shiki-dark-font-style:italic;">			# 删除目录，Linux中的 rm -r</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">copy</span><span style="--shiki-light:#A0A1A7;--shiki-light-font-style:italic;--shiki-dark:#7F848E;--shiki-dark-font-style:italic;">		# 复制文件，Linux中的 cp</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">del</span><span style="--shiki-light:#A0A1A7;--shiki-light-font-style:italic;--shiki-dark:#7F848E;--shiki-dark-font-style:italic;">			# 删除文件，Linux中的 rm</span></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0;"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="helloworld" tabindex="-1"><a class="header-anchor" href="#helloworld"><span>HelloWorld</span></a></h2><h3 id="项目新建、项目结构" tabindex="-1"><a class="header-anchor" href="#项目新建、项目结构"><span>项目新建、项目结构</span></a></h3><p>准备好Go的项目结构：</p>`,31),t("div",{class:"ab-note drop-shadow"},[t("div",{class:"ab-list-table-parent"},[t("table",{class:"ab-table ab-list-table ab-table-folder"},[t("tbody",null,[t("tr",{class:"ab-foldable-tr",tr_level:"0",is_fold:"false",able_fold:"true",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 0
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2<=tr_level) break
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[i("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow markdown-rendered"},[t("div",null,[t("p",null,"goProject")])])])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"true",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 1
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2<=tr_level) break
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[i("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow markdown-rendered"},[t("div",null,[t("p",null,"src")])])])]),t("tr",{class:"ab-foldable-tr",tr_level:"2",is_fold:"false",able_fold:"true",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 2
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2<=tr_level) break
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[i("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow markdown-rendered"},[t("div",null,[t("p",null,"goCode")])])])]),t("tr",{class:"ab-foldable-tr",tr_level:"3",is_fold:"false",able_fold:"true",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 3
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2<=tr_level) break
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[i("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow markdown-rendered"},[t("div",null,[t("p",null,"testProject01")])])])]),t("tr",{class:"ab-foldable-tr",tr_level:"4",is_fold:"false",able_fold:"true",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 4
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2<=tr_level) break
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[i("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow markdown-rendered"},[t("div",null,[t("p",null,"main")])])]),t("td",{rowspan:"1"},[t("div",{class:"ab-list-table-witharrow markdown-rendered"},[t("div",null,[t("p",null,"项目所在的包")])])])]),t("tr",{class:"ab-foldable-tr",tr_level:"5",is_fold:"false",able_fold:"false",type:"go"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 5
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2<=tr_level) break
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[i("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow markdown-rendered"},[t("div",null,[t("p",null,"test.go")])])])]),t("tr",{class:"ab-foldable-tr",tr_level:"4",is_fold:"false",able_fold:"true",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 6
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2<=tr_level) break
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[i("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow markdown-rendered"},[t("div",null,[t("p",null,"unit2")])])])]),t("tr",{class:"ab-foldable-tr",tr_level:"5",is_fold:"false",able_fold:"true",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 7
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2<=tr_level) break
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[i("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow markdown-rendered"},[t("div",null,[t("p",null,"demo01")])])])]),t("tr",{class:"ab-foldable-tr",tr_level:"6",is_fold:"false",able_fold:"false",type:"go"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 8
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2<=tr_level) break
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[i("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow markdown-rendered"},[t("div",null,[t("p",null,"main.go")])])])]),t("tr",{class:"ab-foldable-tr",tr_level:"3",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 9
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2<=tr_level) break
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[i("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow markdown-rendered"},[t("div",null,[t("p",null,"testProject02/")])])])])])]),t("button",{class:"ab-table-fold",is_fold:"false",onclick:`          const btn = this;
+          const svgStr_fold = \`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-fold-vertical-icon lucide-fold-vertical"><path d="M12 22v-6"/><path d="M12 8V2"/><path d="M4 12H2"/><path d="M10 12H8"/><path d="M16 12h-2"/><path d="M22 12h-2"/><path d="m15 19-3-3-3 3"/><path d="m15 5-3 3-3-3"/></svg>\`;
+          const svgStr_unfold = \`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-unfold-vertical-icon lucide-unfold-vertical"><path d="M12 22v-6"/><path d="M12 8V2"/><path d="M4 12H2"/><path d="M10 12H8"/><path d="M16 12h-2"/><path d="M22 12h-2"/><path d="m15 19-3 3-3-3"/><path d="m15 5-3-3-3 3"/></svg>\`;
+          const table = btn.parentNode?.querySelector("table");
+          if (!table) return;
+          
+          const l_tr = table.querySelectorAll("tr");
+          for (let i=0; i<l_tr.length; i++) {
+            const tr = l_tr[i]
+            ;(()=>{
+              const tr_level = Number(tr.getAttribute("tr_level"))
+              if (isNaN(tr_level)) return
+              const tr_isfold = btn.getAttribute("is_fold"); // [!code] tr->btn
+              if (!tr_isfold) return
+              let flag_do_fold = false  // 防止折叠最小层
+              for (let j=i+1; j<l_tr.length; j++){
+                const tr2 = l_tr[j]
+                const tr_level2 = Number(tr2.getAttribute("tr_level"))
+                if (isNaN(tr_level2)) break
+                if (tr_level2<=tr_level) break
+                (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+                flag_do_fold = true
+              }
+              if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+            })()
+          }
+          const is_all_fold = btn.getAttribute("is_fold")
+          if (is_all_fold=="true") {
+            btn.setAttribute("is_fold", "false"); btn.innerHTML = svgStr_fold;
+          }
+          else {
+            btn.setAttribute("is_fold", "true"); btn.innerHTML = svgStr_unfold;
+          }
+          `},[t("svg",{xmlns:"http://www.w3.org/2000/svg",width:"24",height:"24",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor","stroke-width":"2","stroke-linecap":"round","stroke-linejoin":"round",class:"lucide lucide-fold-vertical-icon lucide-fold-vertical"},[t("path",{d:"M12 22v-6"}),t("path",{d:"M12 8V2"}),t("path",{d:"M4 12H2"}),t("path",{d:"M10 12H8"}),t("path",{d:"M16 12h-2"}),t("path",{d:"M22 12h-2"}),t("path",{d:"m15 19-3-3-3 3"}),t("path",{d:"m15 5-3 3-3-3"})])])])],-1),e(`<h3 id="编写代码" tabindex="-1"><a class="header-anchor" href="#编写代码"><span>编写代码</span></a></h3><p>main.go</p><div class="language-go line-numbers-mode" data-highlighter="shiki" data-ext="go" data-title="go" style="--shiki-light:#383A42;--shiki-dark:#abb2bf;--shiki-light-bg:#FAFAFA;--shiki-dark-bg:#282c34;"><pre class="shiki shiki-themes one-light one-dark-pro vp-code"><code><span class="line"><span style="--shiki-light:#A626A4;--shiki-dark:#C678DD;">package</span><span style="--shiki-light:#C18401;--shiki-dark:#E5C07B;"> main</span><span style="--shiki-light:#A0A1A7;--shiki-light-font-style:italic;--shiki-dark:#7F848E;--shiki-dark-font-style:italic;">	// 声明文件所在的包，每个go文件必须有归属的包。包名最好和文件名一致，而且必须存在main包，否则报错：cannot run non-main package</span></span>
+<span class="line"><span style="--shiki-light:#A626A4;--shiki-dark:#C678DD;">import</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> &quot;fmt&quot;</span><span style="--shiki-light:#A0A1A7;--shiki-light-font-style:italic;--shiki-dark:#7F848E;--shiki-dark-font-style:italic;">	// 引入程序中需要用到的包，然后可以使用包里的函数，比如下面的 fmt.Println</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#A626A4;--shiki-dark:#C678DD;">func</span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;"> main</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">() {	</span><span style="--shiki-light:#A0A1A7;--shiki-light-font-style:italic;--shiki-dark:#7F848E;--shiki-dark-font-style:italic;">// 主函数，程序入口</span></span>
+<span class="line"><span style="--shiki-light:#E45649;--shiki-dark:#E06C75;">	fmt</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">.</span><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">Println</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">(</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;">&quot;Hello World&quot;</span><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">)	</span><span style="--shiki-light:#A0A1A7;--shiki-light-font-style:italic;--shiki-dark:#7F848E;--shiki-dark-font-style:italic;">// 控制台输出</span></span>
+<span class="line"><span style="--shiki-light:#383A42;--shiki-dark:#ABB2BF;">}</span></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0;"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>注意项：</p><blockquote><p>声明文件所在的包，每个go文件必须有归属的包。</p><p>这点有点类似Java的包管理，但似乎更严格。也有些类似于Java “所有函数都必须在类里” 的思想 (这点与C/C++不同)</p></blockquote><h3 id="编译与运行" tabindex="-1"><a class="header-anchor" href="#编译与运行"><span>编译与运行</span></a></h3><p>单文件编译：</p><div class="language-bash line-numbers-mode" data-highlighter="shiki" data-ext="bash" data-title="bash" style="--shiki-light:#383A42;--shiki-dark:#abb2bf;--shiki-light-bg:#FAFAFA;--shiki-dark-bg:#282c34;"><pre class="shiki shiki-themes one-light one-dark-pro vp-code"><code><span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">$</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> cd</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> goProject/src/goCode/testProject01/main/</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">$</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> go</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> build</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> test.go</span><span style="--shiki-light:#A0A1A7;--shiki-light-font-style:italic;--shiki-dark:#7F848E;--shiki-dark-font-style:italic;"> # 然后在windows环境直接就能生成小体积的test.exe，这点还是很不错的 (某些语言要生成exe还要做其他工作的，比较典型的如python要pyinstaller等)</span></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0;"><div class="line-number"></div><div class="line-number"></div></div></div><p>直接运行：</p><div class="language-bash line-numbers-mode" data-highlighter="shiki" data-ext="bash" data-title="bash" style="--shiki-light:#383A42;--shiki-dark:#abb2bf;--shiki-light-bg:#FAFAFA;--shiki-dark-bg:#282c34;"><pre class="shiki shiki-themes one-light one-dark-pro vp-code"><code><span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">$</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> cd</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> goProject/src/goCode/testProject01/main/</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">$</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> go</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> run</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> test.go</span><span style="--shiki-light:#A0A1A7;--shiki-light-font-style:italic;--shiki-dark:#7F848E;--shiki-dark-font-style:italic;"> # 底层还是先编译再运行</span></span>
+<span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">Hello</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> World</span></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0;"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="扩展-编译选项" tabindex="-1"><a class="header-anchor" href="#扩展-编译选项"><span>扩展 - 编译选项</span></a></h3><div class="language-bash line-numbers-mode" data-highlighter="shiki" data-ext="bash" data-title="bash" style="--shiki-light:#383A42;--shiki-dark:#abb2bf;--shiki-light-bg:#FAFAFA;--shiki-dark-bg:#282c34;"><pre class="shiki shiki-themes one-light one-dark-pro vp-code"><code><span class="line"><span style="--shiki-light:#4078F2;--shiki-dark:#61AFEF;">go</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> build</span><span style="--shiki-light:#986801;--shiki-dark:#D19A66;"> -o</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> hello.exe</span><span style="--shiki-light:#50A14F;--shiki-dark:#98C379;"> test.go</span><span style="--shiki-light:#A0A1A7;--shiki-light-font-style:italic;--shiki-dark:#7F848E;--shiki-dark-font-style:italic;"> # 指定生成路径和名字</span></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0;"><div class="line-number"></div></div></div><h2 id="语言对比-编译篇-摘自语言对比专题" tabindex="-1"><a class="header-anchor" href="#语言对比-编译篇-摘自语言对比专题"><span>语言对比 - 编译篇 (摘自语言对比专题)</span></a></h2><p><mark><strong>摘自笔记的 MdNote_Public/Develop/Language/Different/编程语言/编译详解 笔记</strong></mark></p><p><strong>与其他语言不同</strong>：</p><h3 id="项目工程层级" tabindex="-1"><a class="header-anchor" href="#项目工程层级"><span>项目工程层级</span></a></h3><p>忽略掉 .vscode、.husky、.gitignore、.clang-format、LICENSE、README.md 这一类任意语言及完全可选的文件。</p><ul><li>Java <ul><li>最普通的java单文件简单，java.exe生成字节码</li><li>SE 有复杂固定的项目结构，多种不同格式的文件。可以通过IDE直接创建对应结构的Project</li><li>EE 类似SE，但我不是很熟</li></ul></li><li>C++ <ul><li>C/C++：简单一些，小型项目结构几乎只有头文件和源码。gcc / g++ 加一些编译参数即可实现单文件/多文件编译</li><li>大型一点增加了.sln / CMakeList.txt / makefile 这种编译及链接辅助文件</li><li>Qt：也有多种不同格式的文件，但感觉没 Java 繁琐。可以通过IDE直接创建对应结构的Project</li></ul></li><li>JavaScript、Python <ul><li>也简单，只有一个 package.json 或 requirement.txt 的依赖库文件</li><li>Vue这种框架项目复杂一些。可以借助脚手架来创建项目</li></ul></li><li>Go <ul><li>单文件编译很简单，go build test.go。大项目也有一些需要遵循的结构规则 (如每个文件都要有所属的包)</li></ul></li></ul><h3 id="跨平台策略" tabindex="-1"><a class="header-anchor" href="#跨平台策略"><span>跨平台策略</span></a></h3><p>当然，比较影响这方面的是语言的编译跨平台策略</p><ul><li>一次编写，随处编译 (Write Once, Compile Everywhere, WOCE) <ul><li>C/C++、Rust</li></ul></li><li>一次编写，随处运行 (Write Once, Run Anywhere, WORA) <ul><li>Java (字节码形式)：需要目标机器安装Java虚拟机 (JVM)，JVM将字节码转化为机器代码</li><li>Python (脚本形式)：需要目标机器安装Python解释器</li></ul></li><li>其他跨平台策略 <ul><li>HTML/JavaScript/CSS</li><li>.NET Framework/.NET Core：需要目标机器安装.NET运行时环境</li><li>Kotlin/Scala (字节码/js形式)</li><li>GO：可以同时 WOCE 和 WORA 的</li></ul></li></ul><h3 id="生成windows可执行文件" tabindex="-1"><a class="header-anchor" href="#生成windows可执行文件"><span>生成windows可执行文件</span></a></h3><p>某些语言要生成exe还要做其他工作的。而且有些语言并不以总是在使用环境中被以可执行文件运行 (见跨平台策略)</p><p>WOCE型的语言，更容易实现exe的生成 (本来就是要使用可执行文件的)</p><ul><li><p>WOCE</p><ul><li>c/c++：配置工具链，mingw/msvc等，选择好编译环境，然后编译即可</li></ul></li><li><p>WORA</p><ul><li>python：python要额外使用pyinstaller等打包工具</li><li>java：忘了，好像要 Launch4j 和 JSmooth 等打包工具</li></ul></li><li><p>其他</p><ul><li><p>C# .NET：windows似乎要对面另外安 .NET 5、.NET 6 环境这样，就不会另外再打包环境了</p></li><li><p>Go：<code>go build test.go</code>，在windows环境直接就能生成小体积的test.exe，在linux环境估计也是直接生成可执行文件。可以说非常方便了</p><p>Go 似乎是可以同时 WOCE 和 WORA 的。因为Go 语言的运行时（runtime）相对轻量</p></li></ul></li></ul>`,25)]))}const c=s(r,[["render",o],["__file","01_入门.html.vue"]]),p=JSON.parse('{"path":"/MdNote_Public/01.%20DesignAndDevelop/Develop/01.%20Language/Go/01_%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/01_%E5%85%A5%E9%97%A8.html","title":"入门","lang":"zh-CN","frontmatter":{"create_time":"2024-04-02T00:00:00.000Z","description":"入门 知识 背景 go语言的于2007年在谷歌创建，2012年发布开源版本1.0 团队：罗伯特 格瑞史莫、罗勃 派克、肯 汤普逊 发明人之一 肯 汤普逊，他还发明了B和C编程语言 吉祥物：金花鼠 Gordon 特点 特点 简单高效：它的设计初衷呢就是简单高效，这也是为什么我们常常说go而不是golang的原因 编译型语言，静态类型语言：源代码被编译成机...","head":[["meta",{"property":"og:url","content":"https://LincZero.github.io/MdNote_Public/01.%20DesignAndDevelop/Develop/01.%20Language/Go/01_%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/01_%E5%85%A5%E9%97%A8.html"}],["meta",{"property":"og:site_name","content":"Linc 的小站"}],["meta",{"property":"og:title","content":"入门"}],["meta",{"property":"og:description","content":"入门 知识 背景 go语言的于2007年在谷歌创建，2012年发布开源版本1.0 团队：罗伯特 格瑞史莫、罗勃 派克、肯 汤普逊 发明人之一 肯 汤普逊，他还发明了B和C编程语言 吉祥物：金花鼠 Gordon 特点 特点 简单高效：它的设计初衷呢就是简单高效，这也是为什么我们常常说go而不是golang的原因 编译型语言，静态类型语言：源代码被编译成机..."}],["meta",{"property":"og:type","content":"article"}],["meta",{"property":"og:locale","content":"zh-CN"}],["script",{"type":"application/ld+json"},"{\\"@context\\":\\"https://schema.org\\",\\"@type\\":\\"Article\\",\\"headline\\":\\"入门\\",\\"image\\":[\\"\\"],\\"dateModified\\":null,\\"author\\":[{\\"@type\\":\\"Person\\",\\"name\\":\\"LincZero\\",\\"url\\":\\"https://github.com/LincZero/\\"}]}"]]},"git":{},"readingTime":{"minutes":7.17,"words":2151},"filePathRelative":"MdNote_Public/01. DesignAndDevelop/Develop/01. Language/Go/01_编程语言/01_入门.md","excerpt":"\\n<h2>知识</h2>\\n<h3>背景</h3>\\n<ul>\\n<li>go语言的于2007年在谷歌创建，2012年发布开源版本1.0</li>\\n<li>团队：罗伯特 格瑞史莫、罗勃 派克、肯 汤普逊</li>\\n<li>发明人之一 肯 汤普逊，他还发明了B和C编程语言</li>\\n</ul>\\n<p>吉祥物：金花鼠 Gordon</p>\\n<h3>特点</h3>\\n<ul>\\n<li>特点\\n<ul>\\n<li>简单高效：它的设计初衷呢就是简单高效，这也是为什么我们常常说go而不是golang的原因</li>\\n<li>编译型语言，静态类型语言：源代码被编译成机器代码后，意味着它通常优于解释型语言，尽管构成一种静态类型语言</li>\\n<li>极快的编译时间：但它以极快的编译时间而闻名，这也得益于依赖性的分析方法，更为类型推断提供了非常简洁和实用的语法</li>\\n<li>模块系统：此外它还具有一个我们所知道的 package包和某种模块系统，便于在项目之间的进行导入和导出代码</li>\\n<li>垃圾回收：支持</li>\\n</ul>\\n</li>\\n<li>语法特点\\n<ul>\\n<li>从语法上讲 go就像C或C++的简明版本。例如声明一个变量，其中的word关键字后，跟其名称和类型并用一个值进行初始化，或者你也可以用短赋值语法来替代word，并自动推断类型，你还可以在一行中定义多个变量构</li>\\n<li>具有编程语言中所期望的所有功能，如数组啊，map循环控制</li>\\n<li>它也允许你使用指针存储值的内存地址，但不允许使用智能算法，这会导致很多不可预测的行为</li>\\n<li>此外go还支持并发历程，go历程是利用CPU上的多个线程，与其他函数同时运行的函数</li>\\n</ul>\\n</li>\\n</ul>","autoDesc":true,"bioChainData":{"outlink":[],"backlink":[],"localMap":{"nodes":[{"id":"MdNote_Public/01. DesignAndDevelop/Develop/01. Language/Go/01_编程语言/01_入门.md","value":{"title":"01_入门","path":"MdNote_Public/01. DesignAndDevelop/Develop/01. Language/Go/01_编程语言/01_入门.md","outlink":[],"backlink":[]}}],"links":[]}}}');export{c as comp,p as data};
