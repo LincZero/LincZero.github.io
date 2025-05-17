@@ -134,7 +134,7 @@ jobs:
           > src/.vuepress/dist/.nojekyll
 
       - name: 文档 - 部署
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: JamesIves/github-pages-deploy-action@v4.7.3
         with:
           # 这是文档部署到的分支名称
           branch: gh-pages

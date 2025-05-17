@@ -24,6 +24,9 @@ const userConfig: UserConfig = {
     headers: {
       level: [1, 2, 3, 4, 5, 6] // 不然的话toc会受限
     },
+    anchor: {
+      permalink: () => {},
+    },
   },
   pagePatterns: [
     "**/*.md", "!**/*.snippet.md",
