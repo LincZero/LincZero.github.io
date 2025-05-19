@@ -10,10 +10,10 @@ import { sidebarConfig } from "./theme_sidebar";
 export const themeOptions2 = {
   // 信息类
   hostname: "LincZero.github.io",
-  author: {
-    name: "LincZero",
-    url: "https://github.com/LincZero/",
-  },
+  // author: { // 全局默认作者
+  //   name: "LincZero",
+  //   url: "https://github.com/LincZero/",
+  // },
   repo: "LincZero/LincZero.github.io",
   // iconAssets: "fontawesome-with-brands", // @deprecated
   logo: "/logo.svg",

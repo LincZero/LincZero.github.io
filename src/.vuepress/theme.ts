@@ -7,12 +7,9 @@ import { themeOptions3 } from "./theme_git.js"
 export const themeOptions: ThemeOptions = {
   // 信息类
   hostname: "LincZero.github.io",
-  author: {
-    name: "LincZero",
-    url: "https://github.com/LincZero/",
-  },
   repo: "LincZero/LincZero.github.io",
   logo: "/logo.svg",
+  pageInfo: ["Author", "Original", "Date", "PageView", "Category", "Tag"], // "ReadingTime", 
 
   // 导航类
   docsDir: "src",

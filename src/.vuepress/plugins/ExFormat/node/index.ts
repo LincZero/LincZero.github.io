@@ -92,6 +92,35 @@ async function onInitialized2(app: App) {
   }
 
   /**
+   * 适配元数据
+   * 
+   * https://theme-hope.vuejs.press/zh/guide/feature/page-info.html
+   * https://theme-hope.vuejs.press/zh/config/frontmatter/info.html
+   */
+  for (let i = 0; i<app.pages.length; i++) {
+    const page = app.pages[i]
+
+    if (page.frontmatter['Author']) {
+      page.frontmatter['author'] = page.frontmatter['Author']
+    }
+    if (page.frontmatter['create_time']) {
+      if (typeof page.frontmatter['create_time'] === 'string' ||  page.frontmatter['create_time'] instanceof Date) {
+        page.frontmatter['date'] = page.frontmatter['create_time']
+      }
+    }
+    if (page.frontmatter['tags']) {
+      page.frontmatter['tag'] = page.frontmatter['tags']
+    }
+
+    // console.log(
+    //   'meta适配',
+    //   app.pages[i].frontmatter,
+    //   app.pages[i].data.frontmatter,
+    //   app.pages[i].data.routeMeta
+    // )
+  }
+
+  /**
    * 处理 `.json` 扩展名
    * 
    * 对 .json` 扩展名进行处理 (需要先设置pagePatterns允许解析json，否则这里遍历不到json文件)

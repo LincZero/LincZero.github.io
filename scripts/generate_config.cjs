@@ -59,10 +59,10 @@ async function generate_config_by_git() {
     }
     theme_git_obj = {
       hostname: gitInfoObj["GITHUB_REPOSITORY_OWNER"] + ".github.io",
-      author: {
-        name: gitInfoObj["GITHUB_REPOSITORY_OWNER"],
-        url: gitInfoObj["CALC_URL"],
-      },
+      // author: { // 全局默认作者 (可选, 需要的话取消注释即可)
+      //   name: gitInfoObj["GITHUB_REPOSITORY_OWNER"],
+      //   url: gitInfoObj["CALC_URL"],
+      // },
       repo: gitInfoObj["GITHUB_REPOSITORY"],
     }
   }
