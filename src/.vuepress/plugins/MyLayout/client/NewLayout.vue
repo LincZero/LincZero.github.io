@@ -56,8 +56,8 @@ html {
   /* 激活色 */
   --vp-c-accent: var(--theme-color);
   /* 边框色 */
-  --vp-c-divider: var(--border-color);
-  --vp-c-brand: var(--border-color);
+  --vp-c-divider: var(--vp-c-border);
+  --vp-c-brand: var(--vp-c-border);
   /* 背景色 */
   --vp-c-bg: var(--bg-color);
   --vp-c-bg-mute: var(--bg-color);
