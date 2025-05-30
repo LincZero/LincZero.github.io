@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import {Layout} from "vuepress-theme-hope/client/export.js";
+import { Layout } from "vuepress-theme-hope/client";
 import Backlink from "./backlink.vue";
 import LocalRelationshipMap from "./localRelationshipMap.vue";
-import {computed} from "vue";
+import { computed } from "vue";
 import GlobalGraph from "./globalGraph.vue";
 
 declare const __RELATIONAL_GRAPH_ENABLE_LOCAL_GRAPH: boolean;

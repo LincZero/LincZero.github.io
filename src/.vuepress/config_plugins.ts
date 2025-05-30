@@ -29,7 +29,7 @@ const plugins: PluginConfig = [
   }),
   rootSidebar, // 含自定义组件 <RootSidebar>
   readEnhance, // 含自定义组件 <ReadMenu>
-  myLayout, // (非通用) 自定义布局，必须最后加载，且使用以上插件提供的自定义组件。便于使用和覆盖其他插件的自定义布局行为
+  myLayout,    // (非通用) 自定义布局，必须最后加载，且使用以上插件提供的自定义组件。便于使用和覆盖其他插件的自定义布局行为
 ]
 
 export default plugins

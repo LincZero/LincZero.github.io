@@ -5,12 +5,15 @@
  * https://theme-hope.vuejs.press/zh/demo/slot.html
  */
 
+// 旧，以前自定义插槽不支持sidebarTop这种
 // tsconfig.json "@theme-hope/*": ["../../packages/theme/src/client/*.js"]
 // 即这里要将 @theme-hope/* 替换为 vuepress-theme-hope/client/*
-import CommonWrapper from "vuepress-theme-hope/client/components/CommonWrapper.js";
-import NormalPage from "vuepress-theme-hope/client/components/NormalPage.js";
-import SkipLink from "vuepress-theme-hope/client/components/SkipLink.js";
-import { FadeSlideY } from "vuepress-theme-hope/client/components/transitions/FadeSlideY.js";
+// import CommonWrapper from "vuepress-theme-hope/client/components/CommonWrapper.js";
+// import NormalPage from "vuepress-theme-hope/client/components/NormalPage.js";
+// import SkipLink from "vuepress-theme-hope/client/components/SkipLink.js";
+// import { FadeSlideY } from "vuepress-theme-hope/client/components/transitions/FadeSlideY.js";
+
+import { Layout } from "vuepress-theme-hope/client";
 
 // import RootSidebar from "../../RootSidebar/client/RootSidebar.vue"
 
@@ -21,27 +24,23 @@ import GlobalGraph from "../../BiGraph/client/components/globalGraph.vue";
 
 <template>
   <global-graph></global-graph>
-  <SkipLink />
+  <Layout>
+    <template #contentAfter>
+      <backlink></backlink>
+    </template>
 
-  <CommonWrapper>
-    <FadeSlideY>
-      <NormalPage>
-        <template #contentAfter>
-          <backlink></backlink>
-        </template>
-        <template #tocBefore>
-          <local-relationship-map></local-relationship-map>
-        </template>
-      </NormalPage>
-    </FadeSlideY>
+    <template #tocBefore>
+      <local-relationship-map></local-relationship-map>
+    </template>
 
     <template #sidebarTop>
       <RootSidebar />
     </template>
+
     <!-- <template #sidebar>
       <SidebarLinks :config="sidebarItems.value" />
     </template> -->
-  </CommonWrapper>
+  </Layout>
 </template>
 
 <style lang="scss">

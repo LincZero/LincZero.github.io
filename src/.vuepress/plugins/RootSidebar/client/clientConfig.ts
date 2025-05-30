@@ -1,11 +1,11 @@
 import { defineClientConfig, usePageData } from 'vuepress/client'
-import { nextTick, watch } from 'vue'
+import { watch } from 'vue'
 
 import RootSidebar from "./RootSidebar.vue"
 
 import SlotDemo from "./SlotDemo.vue"
 import NewLayout from "./NewLayout.vue"
-import {Layout} from "vuepress-theme-hope/client/export.js";
+import { Layout } from "vuepress-theme-hope/client";
 
 export default defineClientConfig({
   setup() { // ({app})

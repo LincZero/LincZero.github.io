@@ -2,7 +2,7 @@ import { defineClientConfig, usePageData } from 'vuepress/client'
 import { nextTick, watch } from 'vue'
 
 import NewLayout from "./NewLayout.vue"
-import {Layout} from "vuepress-theme-hope/client/export.js";
+import { Layout } from "vuepress-theme-hope/client";
 
 export default defineClientConfig({
   setup() {},

@@ -1,7 +1,7 @@
 import { defineClientConfig, usePageData } from 'vuepress/client'
 import { nextTick, watch } from 'vue'
 
-import {Layout} from "vuepress-theme-hope/client/export.js";
+import { Layout } from "vuepress-theme-hope/client";
 
 import ReadEnhance from "./ReadEnhance.vue"
 
