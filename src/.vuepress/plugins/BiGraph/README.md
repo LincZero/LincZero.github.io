@@ -21,8 +21,8 @@
   /* 激活色 */
   --vp-c-accent: var(--theme-color);
   /* 边框色 */
-  --vp-c-divider: var(--border-color);
-  --vp-c-brand: var(--border-color);
+  --vp-c-divider: var(--border-c-color);
+  --vp-c-brand: var(--border-c-color);
   /* 背景色 */
   --vp-c-bg: var(--bg-color);
   --vp-c-bg-mute: var(--bg-color);

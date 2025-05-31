@@ -69,7 +69,7 @@ jobs:
           echo "  \"GITHUB_REPOSITORY_OWNER\": \"${GITHUB_REPOSITORY_OWNER}\"," >> git_config.json    # 仓库所属(格式: 可以是组织)
           echo "  \"GITHUB_ACTOR\": \"${GITHUB_ACTOR}\"," >> git_config.json                          # 仓库作者(格式: 不会是组织)
           echo "  \"GITHUB_REPOSITORY\": \"${GITHUB_REPOSITORY}\"," >> git_config.json                # 仓库标识(格式: 个人或组织/仓库名)
-          echo "  \"CALC_URL\": \"${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/\"," >> git_config.json    # 仓库url
+          echo "  \"CALC_URL\": \"${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/\"," >> git_config.json   # 仓库url
           REPO_NAME=$(echo "${GITHUB_REPOSITORY}" | cut -d"/" -f2)
           echo "  \"CALC_REPO_NAME\": \"${REPO_NAME}\"" >> git_config.json                            # 仓库无前缀名
           echo "}" >> git_config.json

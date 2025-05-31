@@ -32,7 +32,7 @@
     "vue": "^3.5.16",
     "vue-router": "^4.5.1",
     "vuepress": "2.0.0-rc.23",
-    "vuepress-theme-hope": "2.0.0-rc.88"
+    "vuepress-theme-hope": "2.0.0-rc.89"
   },
   "dependencies": {
     "@dagrejs/dagre": "^1.1.4",
