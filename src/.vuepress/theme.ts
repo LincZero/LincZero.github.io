@@ -46,8 +46,6 @@ export const themeOptions: ThemeOptions = {
 
   // 插件类 - md // 与旧api不同
   markdown: {
-    breaks: true,         // 将 `\n` 转换为 `<br>` (单换行不合并为同一行，对应 `markdown-it.(config).breaks`)
-  
     // mdit - 容器语法
     // alert: true,       // 被 obsidain callout 代替
     align: true,          // mdit容器 - 对齐
@@ -68,6 +66,12 @@ export const themeOptions: ThemeOptions = {
     // figure: true,      // 图像描述，![VuePress 图标](/favicon.ico 'VuePress 图标') 图片旁边显示名字
     // imgMark: true,     // GFM图片ID标记，![GitHub Light](/images/icon/github-light.svg#dark) 仅黑暗模式显示
 
+    // mdit - gfm
+    gfm: true,            // Github风格的md，是CommonMark的超集，GitHub Flavored Markdown，见 https://github.github.com/gfm/
+                          // 本质上，会开启一些功能：如 breaks, linkify 等
+    breaks: true,         // 将 `\n` 转换为 `<br>` (单换行不合并为同一行，对应 `markdown-it.(config).breaks`)
+    linkify: true,        // 链接文本转链接
+
     // mdit - 文生图类
     mermaid: true,        // 在启用之前安装 mermaid
     markmap: true,
@@ -86,7 +90,6 @@ export const themeOptions: ThemeOptions = {
     // 其他
     tasklist: true,       // 任务列表
     // component: true,   // insert component easily
-    // gfm: true,         // Github风格的md，是CommonMark的超集，GitHub Flavored Markdown，见 https://github.github.com/gfm/
     spoiler: true,
     // stylize: [         // 样式化工具
     //   {

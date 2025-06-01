@@ -45,9 +45,6 @@ importers:
       '@vuepress/utils':
         specifier: 2.0.0-rc.23
         version: 2.0.0-rc.23
-      jsdom:
-        specifier: ^26.1.0
-        version: 26.1.0
       markdown-it:
         specifier: ^14.1.0
         version: 14.1.0
