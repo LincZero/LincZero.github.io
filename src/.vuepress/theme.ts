@@ -67,10 +67,12 @@ export const themeOptions: ThemeOptions = {
     // imgMark: true,     // GFM图片ID标记，![GitHub Light](/images/icon/github-light.svg#dark) 仅黑暗模式显示
 
     // mdit - gfm
-    gfm: true,            // Github风格的md，是CommonMark的超集，GitHub Flavored Markdown，见 https://github.github.com/gfm/
-                          // 本质上，会开启一些功能：如 breaks, linkify 等
+    gfm: true,         // Github风格的md，是CommonMark的超集，GitHub Flavored Markdown，见 https://github.github.com/gfm/
+                          // 本质上，会开启一些功能：如 breaks, linkify 等，见 https://ecosystem.vuejs.press/zh/plugins/markdown/markdown-ext.html#gfm
     breaks: true,         // 将 `\n` 转换为 `<br>` (单换行不合并为同一行，对应 `markdown-it.(config).breaks`)
     linkify: true,        // 链接文本转链接
+    tasklist: true,       // 任务列表
+    footnote: false,      // 脚注 (注意: 先关闭。因为如果只有脚注定义没有脚注链接，会编译报错 `End tag name was expected`)
 
     // mdit - 文生图类
     mermaid: true,        // 在启用之前安装 mermaid
@@ -88,7 +90,6 @@ export const themeOptions: ThemeOptions = {
     // },
 
     // 其他
-    tasklist: true,       // 任务列表
     // component: true,   // insert component easily
     spoiler: true,
     // stylize: [         // 样式化工具
