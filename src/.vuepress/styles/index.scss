@@ -21,13 +21,14 @@
 }
 
 // 首页首banner加高
-#main-content > header.vp-hero-info-wrapper {
-  // height: 700px !important; // calc(100vh - 60px)
-  height: calc(100vh - 60px);
-}
-#main-content > div.vp-feature-wrapper {
-  height: calc(50vh - 30px);
-}
+// 弃用，用 heroFullScreen: true 或 heroStyle 代替
+// #main-content > header.vp-hero-info-wrapper {
+//   // height: 700px !important; // calc(100vh - 60px)
+//   height: calc(100vh - 60px);
+// }
+// #main-content > div.vp-feature-wrapper {
+//   height: calc(50vh - 30px);
+// }
 
 // navbar下框框的列表圆点
 .vp-dropdown-title {

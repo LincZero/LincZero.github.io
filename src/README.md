@@ -2,6 +2,7 @@
 # 声明这是主页
 layout: OldLayout
 home: true
+heroFullScreen: true
 # 主导航
 containerClass: home
 icon: home
