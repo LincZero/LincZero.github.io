@@ -121,8 +121,9 @@ export const themeOptions: ThemeOptions = {
     components: {         // 内置组件
       components: ["PDF"], // "Badge", "VPCard"
     },
-    icon: {               // icon组件
-      prefix: "fa6-solid:",
+    icon: {               // icon组件, default: "iconify"
+      prefix: "fa6-solid:", // https://fontawesome.com/search?ip=classic&s=solid&o=r
+      // assets: "fontawesome",
     },
     blog: {               // 博客系统
       article: "/Blog/",

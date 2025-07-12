@@ -121,14 +121,14 @@ html[data-theme="light"] {
 }
 
 // 正文标题 - 彩虹色
-#main-content {
-  h1 { color: var(--theme-color-level1) }
-  h2 { color: var(--theme-color-level2) }
-  h3 { color: var(--theme-color-level3) }
-  h4 { color: var(--theme-color-level4) }
-  h5 { color: var(--theme-color-level5) }
-  h6 { color: var(--theme-color-level6) }
-  h7 { color: var(--theme-color-level7) }
+#main-content #markdown-content {
+  >h1 { color: var(--theme-color-level1) }
+  >h2 { color: var(--theme-color-level2) }
+  >h3 { color: var(--theme-color-level3) }
+  >h4 { color: var(--theme-color-level4) }
+  >h5 { color: var(--theme-color-level5) }
+  >h6 { color: var(--theme-color-level6) }
+  >h7 { color: var(--theme-color-level7) }
 }
 
 // toc标题 - 彩虹色
