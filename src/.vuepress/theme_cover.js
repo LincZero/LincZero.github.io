@@ -48,7 +48,7 @@ export const themeOptions2 = {
   // 插件类 - 非md
   plugins: {
     components: {         // 内置组件
-      components: ["PDF"], // "Badge", "VPCard"
+      components: ["PDF", "VPCard"], // ..., https://theme-hope.vuejs.press/zh/guide/component/built-in.html
     },
     icon: {               // icon组件
       prefix: "fa6-solid:", // https://fontawesome.com/search?ip=classic&s=solid&o=r
@@ -75,5 +75,6 @@ export const themeOptions2 = {
       apiKey: "b8883b05027bfa9fc73f21286ed7395e", // 707332eeb6a1daf0e6ecfbb63e27afbc
       indexName: "linczeroio"
     },
+    // watermark: true, // 需要安装 @vuepress/plugin-watermark
   },
 }

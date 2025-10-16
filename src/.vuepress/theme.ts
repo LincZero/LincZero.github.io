@@ -90,7 +90,7 @@ export const themeOptions: ThemeOptions = {
     // },
 
     // 其他
-    // component: true,   // insert component easily
+    component: true,      // insert component easily, https://theme-hope.vuejs.press/zh/guide/component/grammar.html
     spoiler: true,
     // stylize: [         // 样式化工具
     //   {
@@ -119,7 +119,7 @@ export const themeOptions: ThemeOptions = {
   // 插件类 - 非md
   plugins: {
     components: {         // 内置组件
-      components: ["PDF"], // "Badge", "VPCard"
+      components: ["PDF", "VPCard"], // ..., https://theme-hope.vuejs.press/zh/guide/component/built-in.html
     },
     icon: {               // icon组件, default: "iconify"
       prefix: "fa6-solid:", // https://fontawesome.com/search?ip=classic&s=solid&o=r
