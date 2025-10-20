@@ -14,7 +14,8 @@ const tot_link = computed(() => {
 
 /** 转为合适于router所使用的to链接 */
 function to_router_link(link: string) {
-  link = link.replace(/(\/|\\)README.html$/, '$1')
+  if (link === "README.html") return "/"
+  link = link.replace(/\/README.html$/, '/')
   link = '/' + link
   return link
 }
