@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {usePageData, withBase} from "vuepress/client";
+import {usePageData} from "vuepress/client";
 import {computed} from "vue";
 import type {BioChainData} from "../../types";
 
@@ -12,7 +12,7 @@ const tot_link = computed(() => {
   return biodata?.backlink?.length;
 });
 
-// 转为合适于router所使用的to链接
+/** 转为合适于router所使用的to链接 */
 function to_router_link(link: string) {
   link = link.replace(/\/README.html$/, '/')
   link = '/' + link
