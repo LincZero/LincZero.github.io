@@ -7,7 +7,7 @@
 笔记内容，如非特殊标注，则为原创，转载需署名。
 
 该仓库仅为构建系统，为了复用性，构建系统仓库与笔记仓库是分离的。
-笔记仓库地址见：https://github.com/LincDocs/repositories
+笔记仓库地址见：https://github.com/orgs/LincDocs/repositories
 
 ## 网站访问
 
