@@ -11,6 +11,13 @@ const hasBacklink = computed(() => {
 const tot_link = computed(() => {
   return biodata?.backlink?.length;
 });
+
+// 转为合适于router所使用的to链接
+function to_router_link(link: string) {
+  link = link.replace(/\/README.html$/, '/')
+  link = '/' + link
+  return link
+}
 </script>
 
 <template>
@@ -23,7 +30,7 @@ const tot_link = computed(() => {
     <div v-else>
       <template v-for="item in biodata.backlink">
         <div class="backlink-item">
-          <router-link :to="withBase(item.link)">{{ item.title }}</router-link>
+          <router-link :to="to_router_link(item.link)">{{ item.title }}</router-link>
         </div>
       </template>
     </div>
