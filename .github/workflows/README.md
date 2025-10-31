@@ -79,9 +79,12 @@ jobs:
         working-directory: ./src/
         run: |
           rm README.md
-          
+
           # git clone --depth 1 https://github.com/${GITHUB_REPOSITORY}.git # 如果有多个clone项则替换成这个，避免冲突
-          git clone --depth 1 https://github.com/${GITHUB_REPOSITORY}.git temp_repo 
+          # --depth 1 选项会损失git历史，但能加速编译。可自行启用/关闭
+          # 注意若使用该选项，必须要删除 .git 文件夹，避免时间和贡献者错乱
+          git clone --depth 1 https://github.com/${GITHUB_REPOSITORY}.git temp_repo
+          rm -rf temp_repo/.git
 
       - name: 文档 - 文档克隆2, 允许使用代理仓库/指定文件夹
         working-directory: ./src/
