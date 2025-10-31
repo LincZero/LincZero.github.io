@@ -98,6 +98,7 @@ jobs:
             DIR=$(sed -n '2p' temp_repo/agency | tr -d '\r')
             rm -rf temp_repo
             git clone --depth 1 $GIT_LINK temp_repo
+            rm -rf temp_repo/.git
           else
             echo "without agency"
             DIR="docs/"
@@ -217,9 +218,11 @@ jobs:
         run: |
           rm README.md
           
-          # 文档的克隆、构建、部署。注意 `clone --depth 1` 只拉最近一次提交，减少时间
           # git clone --depth 1 https://github.com/${GITHUB_REPOSITORY}.git # 如果有多个clone项则替换成这个，避免冲突
-          git clone --depth 1 https://github.com/${GITHUB_REPOSITORY}.git temp_repo 
+          # --depth 1 选项会损失git历史，但能加速编译。可自行启用/关闭
+          # 注意若使用该选项，必须要删除 .git 文件夹，避免时间和贡献者错乱
+          git clone --depth 1 https://github.com/${GITHUB_REPOSITORY}.git temp_repo
+          rm -rf temp_repo/.git
 
           # 该仓库为代理仓库，使用链接仓库而非此仓库
           # TODO 支持agency多个仓库。如果想更通用，干脆支持直接运行agency里的命令组
@@ -227,6 +230,7 @@ jobs:
             GIT_LINK=$(head -n 1 temp_repo/agency)
             rm -rf temp_repo
             git clone --depth 1 $GIT_LINK temp_repo
+            rm -rf temp_repo/.git
             echo "with agency"
           else
             echo "without agency"
