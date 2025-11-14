@@ -43,10 +43,12 @@ async function generate_config_by_git() {
   let theme_git_obj = {}
   if (gitInfoObj && gitInfoObj["CALC_REPO_NAME"]) { // gitInfoObj["CALC_REPO_NAME"] 可能是未定义
     let calc_base = "/" // 在组织中部署非常重要，只要不满足 `xxx/xxx.github.io` 的形式，base都不为 `/`
-    if (gitInfoObj["CALC_REPO_NAME"] != `${gitInfoObj["GITHUB_REPOSITORY_OWNER"]}.github.io`) {
+    if (gitInfoObj["CALC_REPO_NAME"] == "/") {} // 强制指定为 "/"，否则会变成 "///"
+    else if (gitInfoObj["CALC_REPO_NAME"] == `${gitInfoObj["GITHUB_REPOSITORY_OWNER"]}.github.io`) {}
+    else {
       calc_base = `/${gitInfoObj["CALC_REPO_NAME"]}/`
     }
-    
+
     config_git_obj = {
       base: calc_base,
       locales: {
