@@ -80,7 +80,7 @@ importers:
         version: 2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22)
       vuepress-theme-hope:
         specifier: 2.0.0-rc.97
-        version: 2.0.0-rc.97(@mathjax/src@4.0.0)(@vuepress/plugin-docsearch@2.0.0-rc.118(@algolia/client-search@5.42.0)(react@19.2.0)(search-insights@2.17.3)(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22)))(@vuepress/plugin-slimsearch@2.0.0-rc.118(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22)))(katex@0.16.25)(markdown-it@14.1.0)(markmap-lib@0.18.12(markmap-common@0.18.9))(markmap-toolbar@0.18.12(markmap-common@0.18.9))(markmap-view@0.18.12(markmap-common@0.18.9))(mermaid@11.12.1)(sass-embedded@1.93.2)(sass@1.93.2)(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22))
+        version: 2.0.0-rc.97(@vuepress/plugin-docsearch@2.0.0-rc.118(@algolia/client-search@5.42.0)(react@19.2.0)(search-insights@2.17.3)(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22)))(@vuepress/plugin-slimsearch@2.0.0-rc.118(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22)))(katex@0.16.25)(markdown-it@14.1.0)(markmap-lib@0.18.12(markmap-common@0.18.9))(markmap-toolbar@0.18.12(markmap-common@0.18.9))(markmap-view@0.18.12(markmap-common@0.18.9))(mermaid@11.12.1)(sass-embedded@1.93.2)(sass@1.93.2)(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22))
 
 packages:
 
@@ -462,12 +462,6 @@ packages:
 
   '@lit/reactive-element@2.1.1':
     resolution: {integrity: sha512-N+dm5PAYdQ8e6UlywyyrgI2t++wFGXfHx+dSJ1oBrg6FAxUj40jId++EaRm80MKX5JnlH1sBsyZ5h0bcZKemCg==}
-
-  '@mathjax/mathjax-newcm-font@4.0.0':
-    resolution: {integrity: sha512-kpsJgIF4FpWiwIkFgOPmWwy5GXfL25spmJJNg27HQxPddmEL8Blx0jn2BuU/nlwjM/9SnYpEfDrWiAMgLPlB8Q==}
-
-  '@mathjax/src@4.0.0':
-    resolution: {integrity: sha512-i7oYVLkHTskfTqxBzrbvcJN8ptGChWb6bx2LZsCySk7QWf61JqaMYX5N7M0qr8tnYqRmN5DDedkRda7wDuTdBA==}
 
   '@mdit-vue/plugin-component@2.1.4':
     resolution: {integrity: sha512-fiLbwcaE6gZE4c8Mkdkc4X38ltXh/EdnuPE1hepFT2dLiW6I4X8ho2Wq7nhYuT8RmV4OKlCFENwCuXlKcpV/sw==}
@@ -1491,10 +1485,6 @@ packages:
     peerDependencies:
       vue: ^3.5.0
 
-  '@xmldom/xmldom@0.9.8':
-    resolution: {integrity: sha512-p96FSY54r+WJ50FIOsCOjyj/wavs8921hG5+kVMmZgKcvIKxMXHTrjNJvRgWa/zuX3B6t2lijLNFaOyuxUH+2A==}
-    engines: {node: '>=14.6'}
-
   acorn@8.15.0:
     resolution: {integrity: sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==}
     engines: {node: '>=0.4.0'}
@@ -1663,10 +1653,6 @@ packages:
 
   comma-separated-tokens@2.0.3:
     resolution: {integrity: sha512-Fu4hJdvzeylCfQPp9SGWidpzrMs7tTrlu6Vb8XGaRGck8QSNZJJp538Wrb60Lax4fPwR64ViY468OIUTbRlGZg==}
-
-  commander@14.0.0:
-    resolution: {integrity: sha512-2uM9rYjPvyq39NwLRqaiLtWHyDC1FvryJDa2ATTVims5YAS4PupsEQsDvP14FqhFr0P49CYDugi59xaxJlTXRA==}
-    engines: {node: '>=20'}
 
   commander@14.0.2:
     resolution: {integrity: sha512-TywoWNNRbhoD0BXs1P3ZEScW8W5iKrnbithIl0YH+uCmBd0QpPOA8yc82DS3BIE5Ma6FnBVUsJ7wVUDz4dvOWQ==}
@@ -2347,9 +2333,6 @@ packages:
   mermaid@11.12.1:
     resolution: {integrity: sha512-UlIZrRariB11TY1RtTgUWp65tphtBv4CSq7vyS2ZZ2TgoMjs2nloq+wFqxiwcxlhHUvs7DPGgMjs2aeQxz5h9g==}
 
-  mhchemparser@4.2.1:
-    resolution: {integrity: sha512-kYmyrCirqJf3zZ9t/0wGgRZ4/ZJw//VwaRVGA75C4nhE60vtnIzhl9J9ndkX/h6hxSN7pjg/cE0VxbnNM+bnDQ==}
-
   micromark-util-character@2.1.1:
     resolution: {integrity: sha512-wv8tdUTJ3thSFFFJKtpYKOYiGP2+v96Hvk4Tu8KpCAsTMs6yi+nVmGh1syvSCsaxz45J6Jbw+9DD6g97+NV67Q==}
 
@@ -2375,9 +2358,6 @@ packages:
 
   mitt@3.0.1:
     resolution: {integrity: sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==}
-
-  mj-context-menu@0.9.1:
-    resolution: {integrity: sha512-ECPcVXZFRfeYOxb1MWGzctAtnQcZ6nRucE3orfkKX7t/KE2mlXO2K/bq4BcCGOuhdz3Wg2BZDy2S8ECK73/iIw==}
 
   mlly@1.8.0:
     resolution: {integrity: sha512-l8D9ODSRWLe2KHJSifWGwBqpTZXIXTeo8mlKjY+E2HAakaTeNpqAyBZ8GSqLzHgw4XmHmC8whvpjJNMbFZN7/g==}
@@ -2801,10 +2781,6 @@ packages:
     resolution: {integrity: sha512-1POYv7uv2gXoyGFpBCmpDVSNV74IfsWlDW216UPjbWufNf+bSU6GdbDsxdcxtfwb4xlI3yxzOTKClUosxARYrQ==}
     engines: {node: '>=0.10.0'}
 
-  speech-rule-engine@5.0.0-beta.1:
-    resolution: {integrity: sha512-arqcJpXEYRG9mQMxRCNd2xFERGvIvwvuhcnoXDw/SyeYNyJ5I9SUU5ft+BPw0M1rPpwl3Q+6ZeeYAcwGXTa6oQ==}
-    hasBin: true
-
   sprintf-js@1.0.3:
     resolution: {integrity: sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==}
 
@@ -3225,9 +3201,6 @@ packages:
   which-module@2.0.1:
     resolution: {integrity: sha512-iBdZ57RDvnOR9AGBhML2vFZf7h8vmBjhoaZqODJBFWHVtKkDmKuHai3cx5PgVMrX5YDNp27AofYbAwctSS+vhQ==}
 
-  wicked-good-xpath@1.3.0:
-    resolution: {integrity: sha512-Gd9+TUn5nXdwj/hFsPVx5cuHHiF5Bwuc30jZ4+ronF1qHK5O7HD0sgmXWSEgwKquT3ClLoKPVbO6qGwVwLzvAw==}
-
   wrap-ansi@6.2.0:
     resolution: {integrity: sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA==}
     engines: {node: '>=8'}
@@ -3614,17 +3587,6 @@ snapshots:
     dependencies:
       '@lit-labs/ssr-dom-shim': 1.4.0
 
-  '@mathjax/mathjax-newcm-font@4.0.0':
-    optional: true
-
-  '@mathjax/src@4.0.0':
-    dependencies:
-      '@mathjax/mathjax-newcm-font': 4.0.0
-      mhchemparser: 4.2.1
-      mj-context-menu: 0.9.1
-      speech-rule-engine: 5.0.0-beta.1
-    optional: true
-
   '@mdit-vue/plugin-component@2.1.4':
     dependencies:
       '@types/markdown-it': 14.1.2
@@ -3771,12 +3733,11 @@ snapshots:
     optionalDependencies:
       markdown-it: 14.1.0
 
-  '@mdit/plugin-mathjax-slim@0.24.0(@mathjax/src@4.0.0)(markdown-it@14.1.0)':
+  '@mdit/plugin-mathjax-slim@0.24.0(markdown-it@14.1.0)':
     dependencies:
       '@mdit/plugin-tex': 0.22.2(markdown-it@14.1.0)
       '@types/markdown-it': 14.1.2
     optionalDependencies:
-      '@mathjax/src': 4.0.0
       markdown-it: 14.1.0
 
   '@mdit/plugin-plantuml@0.22.3(markdown-it@14.1.0)':
@@ -4634,16 +4595,15 @@ snapshots:
       - markdown-it
       - typescript
 
-  '@vuepress/plugin-markdown-math@2.0.0-rc.118(@mathjax/src@4.0.0)(katex@0.16.25)(markdown-it@14.1.0)(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22))':
+  '@vuepress/plugin-markdown-math@2.0.0-rc.118(katex@0.16.25)(markdown-it@14.1.0)(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22))':
     dependencies:
       '@mdit/plugin-katex-slim': 0.24.0(katex@0.16.25)(markdown-it@14.1.0)
-      '@mdit/plugin-mathjax-slim': 0.24.0(@mathjax/src@4.0.0)(markdown-it@14.1.0)
+      '@mdit/plugin-mathjax-slim': 0.24.0(markdown-it@14.1.0)
       '@types/markdown-it': 14.1.2
       '@vuepress/helper': 2.0.0-rc.118(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22))
       vue: 3.5.22
       vuepress: 2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22)
     optionalDependencies:
-      '@mathjax/src': 4.0.0
       katex: 0.16.25
     transitivePeerDependencies:
       - markdown-it
@@ -4878,9 +4838,6 @@ snapshots:
     dependencies:
       vue: 3.5.22
 
-  '@xmldom/xmldom@0.9.8':
-    optional: true
-
   acorn@8.15.0: {}
 
   agent-base@7.1.4: {}
@@ -5075,9 +5032,6 @@ snapshots:
   colorjs.io@0.5.2: {}
 
   comma-separated-tokens@2.0.3: {}
-
-  commander@14.0.0:
-    optional: true
 
   commander@14.0.2: {}
 
@@ -5871,9 +5825,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  mhchemparser@4.2.1:
-    optional: true
-
   micromark-util-character@2.1.1:
     dependencies:
       micromark-util-symbol: 2.0.1
@@ -5899,9 +5850,6 @@ snapshots:
   mimic-function@5.0.1: {}
 
   mitt@3.0.1: {}
-
-  mj-context-menu@0.9.1:
-    optional: true
 
   mlly@1.8.0:
     dependencies:
@@ -6311,13 +6259,6 @@ snapshots:
 
   speakingurl@14.0.1: {}
 
-  speech-rule-engine@5.0.0-beta.1:
-    dependencies:
-      '@xmldom/xmldom': 0.9.8
-      commander: 14.0.0
-      wicked-good-xpath: 1.3.0
-    optional: true
-
   sprintf-js@1.0.3: {}
 
   stdin-discarder@0.2.2: {}
@@ -6593,7 +6534,7 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  vuepress-theme-hope@2.0.0-rc.97(@mathjax/src@4.0.0)(@vuepress/plugin-docsearch@2.0.0-rc.118(@algolia/client-search@5.42.0)(react@19.2.0)(search-insights@2.17.3)(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22)))(@vuepress/plugin-slimsearch@2.0.0-rc.118(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22)))(katex@0.16.25)(markdown-it@14.1.0)(markmap-lib@0.18.12(markmap-common@0.18.9))(markmap-toolbar@0.18.12(markmap-common@0.18.9))(markmap-view@0.18.12(markmap-common@0.18.9))(mermaid@11.12.1)(sass-embedded@1.93.2)(sass@1.93.2)(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22)):
+  vuepress-theme-hope@2.0.0-rc.97(@vuepress/plugin-docsearch@2.0.0-rc.118(@algolia/client-search@5.42.0)(react@19.2.0)(search-insights@2.17.3)(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22)))(@vuepress/plugin-slimsearch@2.0.0-rc.118(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22)))(katex@0.16.25)(markdown-it@14.1.0)(markmap-lib@0.18.12(markmap-common@0.18.9))(markmap-toolbar@0.18.12(markmap-common@0.18.9))(markmap-view@0.18.12(markmap-common@0.18.9))(mermaid@11.12.1)(sass-embedded@1.93.2)(sass@1.93.2)(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22)):
     dependencies:
       '@vuepress/helper': 2.0.0-rc.118(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22))
       '@vuepress/plugin-active-header-links': 2.0.0-rc.118(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22))
@@ -6611,7 +6552,7 @@ snapshots:
       '@vuepress/plugin-markdown-hint': 2.0.0-rc.118(markdown-it@14.1.0)(vue@3.5.22)(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22))
       '@vuepress/plugin-markdown-image': 2.0.0-rc.118(markdown-it@14.1.0)(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22))
       '@vuepress/plugin-markdown-include': 2.0.0-rc.118(markdown-it@14.1.0)(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22))
-      '@vuepress/plugin-markdown-math': 2.0.0-rc.118(@mathjax/src@4.0.0)(katex@0.16.25)(markdown-it@14.1.0)(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22))
+      '@vuepress/plugin-markdown-math': 2.0.0-rc.118(katex@0.16.25)(markdown-it@14.1.0)(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22))
       '@vuepress/plugin-markdown-preview': 2.0.0-rc.118(markdown-it@14.1.0)(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22))
       '@vuepress/plugin-markdown-stylize': 2.0.0-rc.118(markdown-it@14.1.0)(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22))
       '@vuepress/plugin-markdown-tab': 2.0.0-rc.118(markdown-it@14.1.0)(vuepress@2.0.0-rc.24(@vuepress/bundler-vite@2.0.0-rc.24(@types/node@24.9.2)(sass-embedded@1.93.2)(sass@1.93.2)(yaml@2.8.1))(vue@3.5.22))
@@ -6699,9 +6640,6 @@ snapshots:
       webidl-conversions: 7.0.0
 
   which-module@2.0.1: {}
-
-  wicked-good-xpath@1.3.0:
-    optional: true
 
   wrap-ansi@6.2.0:
     dependencies:
