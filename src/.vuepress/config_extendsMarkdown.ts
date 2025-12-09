@@ -4,6 +4,7 @@ import { limit_img_alias, img_not_found } from "./plugins/limit_img_alias.js"
 
 import chatview_mdit from "./plugins/ChatView/src/MarkdownIt/index_mdit.js"
 
+// 不再使用mdit插件 (你也可以去用)，改用插件版
 // import { ab_mdit } from "./plugins/ABConvertManager/MarkdownIt/index.js" // anyblock - 源码版
 // import { ab_mdit, jsdom_init } from "markdown-it-any-block"              // anyblock - npm版
 // jsdom_init() // 如果模块根部有直接使用的，可能要改成 await jsdom_init() 同步操作
@@ -11,7 +12,7 @@ import chatview_mdit from "./plugins/ChatView/src/MarkdownIt/index_mdit.js"
 
 // @ts-ignore 找不到名称“markdownit”
 export default (md: markdownit) => {
-  // md.use(ab_mdit)
+  // md.use(ab_mdit) // 改用插件版
   md.use(chatview_mdit) // 这里要虚拟dom，让前面的ab_mdit模块给解决一下
   md.use(callout_mdit)
   md.use(BiDirectionalLinks({

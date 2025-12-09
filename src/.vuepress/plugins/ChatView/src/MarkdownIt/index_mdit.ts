@@ -63,7 +63,10 @@ function render_fence(md: MarkdownIt, options?: Partial<Options>): void {
 }
 
 export default function mdit_cv(md: MarkdownIt, options?: Partial<Options>): void {
-  if (typeof document === 'undefined') return
+  if (typeof document === 'undefined') {
+    console.warn('ChatView MarkdownIt 未支持客户端模式，需要提供虚拟dom环境')
+    return
+  }
 
   // 定义默认渲染行为
   render_setting.fn_renderMarkdown = (markdown: string, el: HTMLElement): void => {
