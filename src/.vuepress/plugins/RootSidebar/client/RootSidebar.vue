@@ -139,6 +139,8 @@ if (orgName != "/") { // 不是`/`
 /// 钩子, 与回调进行数据更新
 /// 每次url与deep变动时更新 (前者存在多个侧边栏也只调用一次，后者每个侧边栏调用一次)
 function onNewUrl(newDeep?: number) {
+  if (typeof document == 'undefined') return
+
   // 更新值 - currentPath, currentPathArr
   {
     if (orgName == "/") {

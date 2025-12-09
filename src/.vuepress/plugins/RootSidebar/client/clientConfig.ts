@@ -12,7 +12,9 @@ export default defineClientConfig({
     // newPageHook_init()
   },
   enhance: ({ app, router, siteData }) => {
-    app.component("RootSidebar", RootSidebar);
+    if (typeof document == 'undefined') return
+
+    app.component("RootSidebar", RootSidebar)
   },
   layouts: {
     OldLayout: Layout, // 允许手动使用回旧布局
