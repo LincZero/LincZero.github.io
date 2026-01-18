@@ -1,0 +1,1402 @@
+import{_ as n,c as s,a as t,d as o,b as i,f as e,r as a,o as f}from"./app-CJ5me3Pt.js";const d={};function _(c,l){const r=a("VueFlow");return f(),s("div",null,[l[0]||(l[0]=t("h1",{id:"节点",tabindex:"-1"},"节点",-1)),l[1]||(l[1]=t("p",null,"右键可以新键节点",-1)),l[2]||(l[2]=t("h2",{id:"按工作流",tabindex:"-1"},"按工作流",-1)),l[3]||(l[3]=t("h3",{id:"默认文生图工作流",tabindex:"-1"},"默认文生图工作流",-1)),o(r,{type:"nodeflow-list",data:`- nodes
+  - Load Checkpoint: Checkpoint加载器(简易)
+    - 模型, o
+    - CLIP, o
+    - VAE, o
+    - Checkpoint名称,, 加载大模型
+    - ,,[!note]
+      作用：加载扩散模型
+  - CLIP Text Encode1:CLIP文本编码器 (正面)
+    - CLIP, i
+    - 条件, o
+    - ,,
+      beautiful scenery nature glass bottle landscape, , purple galaxy bottle,
+    - ,,[!note]
+      作用：CLIP (ContrastiveLanguageImagePretraining) 理解输入文字的意思
+  - CLIP Text Encode2:CLIP文本编码器 (负面)
+    - CLIP, i
+    - 条件, o
+    - ,,
+      beautiful scenery nature glass bottle landscape, , purple galaxy bottle,
+  - 空Latent
+    - Latent, o
+    - 宽度,, 512
+    - 高度,, 512
+    - 批次大小, 1
+  - K采样器
+    - 模型,i
+    - 条件(正面),i
+    - 条件(负面),i
+    - Latent1,i
+    - Latent2,o
+    - 随机种,
+    - 运行后操作,
+    - 步数,
+    - CFG,
+    - 采样器,
+    - 调度器,
+    - 降噪,
+  - VAE解码
+    - Latent,i
+    - VAE,i
+    - 图像,o
+  - 保存图像
+    - 图像,i
+    - 文件名前缀,, COmfyUI
+- edges
+  - Load Checkpoint,模型,K采样器,模型
+  - Load Checkpoint,CLIP,CLIP Text Encode1,CLIP
+  - Load Checkpoint,CLIP,CLIP Text Encode2,CLIP
+  - Load Checkpoint,VAE,VAE解码,VAE
+  - CLIP Text Encode1,条件,K采样器,条件(正面)
+  - CLIP Text Encode2,条件,K采样器,条件(负面)
+  - 空Latent,Latent,K采样器,Latent1
+  - K采样器,Latent2,VAE解码,Latent
+  - VAE解码,图像,保存图像,图像
+`}),l[4]||(l[4]=t("p",null,[t("a",{href:"../ProjectNote/Study/01.%20%E9%BB%98%E8%AE%A4%E6%96%87%E7%94%9F%E5%9B%BE.json"},"../ProjectNote/Study/01.%20默认文生图.json")],-1)),l[5]||(l[5]=t("h3",{id:"默认文生图工作流-节点类别位置",tabindex:"-1"},"默认文生图工作流_节点类别位置",-1)),l[6]||(l[6]=t("p",null,"这里我们复习一下默认场景的节点分别在哪吧",-1)),l[7]||(l[7]=t("div",{class:"ab-note drop-shadow"},[t("table",{class:"ab-table ab-branch-table"},[t("tbody",null,[t("tr",null,[t("td",{rowspan:"1",col_index:"0",class:"markdown-rendered"},[t("div",null,[t("p",null,"Load Checkpoint")])]),t("td",{rowspan:"1",col_index:"1",class:"markdown-rendered"},[t("div",null,[t("p",null,"loaders/")])])]),t("tr",null,[t("td",{rowspan:"1",col_index:"0",class:"markdown-rendered"},[t("div",null,[t("p",null,"CLIP Text Encode (Prompt)")])]),t("td",{rowspan:"1",col_index:"1",class:"markdown-rendered"},[t("div",null,[t("p",null,"conditioning/")])])]),t("tr",null,[t("td",{rowspan:"1",col_index:"0",class:"markdown-rendered"},[t("div",null,[t("p",null,"Empty Latent Image")])]),t("td",{rowspan:"1",col_index:"1",class:"markdown-rendered"},[t("div",null,[t("p",null,"latent/")])])]),t("tr",null,[t("td",{rowspan:"1",col_index:"0",class:"markdown-rendered"},[t("div",null,[t("p",null,"KSampler")])]),t("td",{rowspan:"1",col_index:"1",class:"markdown-rendered"},[t("div",null,[t("p",null,"sampling/")])])]),t("tr",null,[t("td",{rowspan:"1",col_index:"0",class:"markdown-rendered"},[t("div",null,[t("p",null,"VAE Decode")])]),t("td",{rowspan:"1",col_index:"1",class:"markdown-rendered"},[t("div",null,[t("p",null,"latent/")])])]),t("tr",null,[t("td",{rowspan:"1",col_index:"0",class:"markdown-rendered"},[t("div",null,[t("p",null,"Save Image")])]),t("td",{rowspan:"1",col_index:"1",class:"markdown-rendered"},[t("div",null,[t("p",null,"image/")])])])])])],-1)),l[8]||(l[8]=t("h3",{id:"简易图生图工作流",tabindex:"-1"},"简易图生图工作流",-1)),l[9]||(l[9]=t("p",null,"现在再来看看其他的工作流节点。这里可以先跳到下一章 “工作流”，然后再回来看",-1)),l[10]||(l[10]=t("p",null,"例如图生图的工作流。",-1)),l[11]||(l[11]=t("p",null,"要点：图生图中KSampler的denoise值要调低 (SD中的重绘强度)",-1)),l[12]||(l[12]=t("p",null,"图生图的新增使用节点：",-1)),l[13]||(l[13]=t("p",null,[t("a",{href:"../ProjectNote/Study/02.%20%E7%AE%80%E6%98%93%E5%9B%BE%E7%94%9F%E5%9B%BE.json"},"../ProjectNote/Study/02.%20简易图生图.json")],-1)),l[14]||(l[14]=t("h3",{id:"简易图生图工作流-节点类别位置",tabindex:"-1"},"简易图生图工作流_节点类别位置",-1)),l[15]||(l[15]=t("div",{class:"ab-note drop-shadow"},[t("table",{class:"ab-table ab-branch-table"},[t("tbody",null,[t("tr",null,[t("td",{rowspan:"1",col_index:"0",class:"markdown-rendered"},[t("div",null,[t("p",null,"Load Checkpoint")])]),t("td",{rowspan:"1",col_index:"1",class:"markdown-rendered"},[t("div",null,[t("p",null,"loaders/")])])]),t("tr",null,[t("td",{rowspan:"1",col_index:"0",class:"markdown-rendered"},[t("div",null,[t("p",null,"CLIP Text Encode (Prompt)")])]),t("td",{rowspan:"1",col_index:"1",class:"markdown-rendered"},[t("div",null,[t("p",null,"conditioning/")])])]),t("tr",null,[t("td",{rowspan:"1",col_index:"0",class:"markdown-rendered"},[t("div",null,[t("p",null,"Empty Latent Image")])]),t("td",{rowspan:"1",col_index:"1",class:"markdown-rendered"},[t("div",null,[t("p",null,"latent/")])])]),t("tr",null,[t("td",{rowspan:"1",col_index:"0",class:"markdown-rendered"},[t("div",null,[t("p",null,"KSampler")])]),t("td",{rowspan:"1",col_index:"1",class:"markdown-rendered"},[t("div",null,[t("p",null,"sampling/")])])]),t("tr",null,[t("td",{rowspan:"1",col_index:"0",class:"markdown-rendered"},[t("div",null,[t("p",null,"VAE Decode")])]),t("td",{rowspan:"1",col_index:"1",class:"markdown-rendered"},[t("div",null,[t("p",null,"latent/")])])]),t("tr",null,[t("td",{rowspan:"1",col_index:"0",class:"markdown-rendered"},[t("div",null,[t("p",null,"Save Image")])]),t("td",{rowspan:"1",col_index:"1",class:"markdown-rendered"},[t("div",null,[t("p",null,"image/")])])]),t("tr",null,[t("td",{rowspan:"1",col_index:"0",class:"markdown-rendered"},[t("div",null,[t("p",null,[t("strong",null,"VAE Encode")])])]),t("td",{rowspan:"1",col_index:"1",class:"markdown-rendered"},[t("div",null,[t("p",null,"latent/")])])]),t("tr",null,[t("td",{rowspan:"1",col_index:"0",class:"markdown-rendered"},[t("div",null,[t("p",null,[t("strong",null,"Load VAE")])])]),t("td",{rowspan:"1",col_index:"1",class:"markdown-rendered"},[t("div",null,[t("p",null,"loaders/ (用自定义VAE代替默认的)")])])]),t("tr",null,[t("td",{rowspan:"1",col_index:"0",class:"markdown-rendered"},[t("div",null,[t("p",null,[t("strong",null,"Load Image")])])]),t("td",{rowspan:"1",col_index:"1",class:"markdown-rendered"},[t("div",null,[t("p",null,"image/")])])]),t("tr",null,[t("td",{rowspan:"1",col_index:"0",class:"markdown-rendered"},[t("div",null,[t("p",null,[t("strong",null,"Upscale Latent")])])]),t("td",{rowspan:"1",col_index:"1",class:"markdown-rendered"},[t("div",null,[t("p",null,"latent/ (用于重调图生图的尺寸)")])])])])])],-1)),l[16]||(l[16]=t("h2",{id:"按使用频率",tabindex:"-1"},"按使用频率",-1)),l[17]||(l[17]=t("p",null,"除了常用工作流的常用节点外，这里再介绍其他也比较常用的节点",-1)),l[18]||(l[18]=t("h3",{id:"default",tabindex:"-1"},"Default",-1)),l[19]||(l[19]=t("p",null,"Load LoRA",-1)),l[20]||(l[20]=t("p",null,"元节点 (可以用于单独抠出很多选项的节点中的某一个节点出来，简化小白用户体验)",-1)),l[21]||(l[21]=t("h2",{id:"按分类",tabindex:"-1"},"按分类",-1)),l[22]||(l[22]=t("p",null,"右键菜单可创建的节点",-1)),l[23]||(l[23]=t("p",null,"右键>Add Node",-1)),l[24]||(l[24]=t("div",{class:"ab-note drop-shadow"},[t("div",{class:"ab-list-table-parent"},[t("table",{class:"ab-table ab-list-table ab-table-folder"},[t("tbody",null,[t("tr",{class:"ab-foldable-tr",tr_level:"0",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 0
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"utils")])]),t("tr",{class:"ab-foldable-tr",tr_level:"0",is_fold:"false",able_fold:"true",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 1
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"sampling")]),t("td",{rowspan:"1"},[t("div",{class:"ab-list-table-witharrow markdown-rendered"},[t("div",null,[t("p",null,"采样器")])])])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 2
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"custom_sampling")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 3
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"video_models")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"**KSampler**            "},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 4
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"**KSampler**")]),t("td",{rowspan:"1"},[t("div",{class:"ab-list-table-witharrow markdown-rendered"},[t("div",null,[t("p",null,"K采样器，负责采样去噪 (生成过程最重要的一环)")])])])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"KSampler (Advanced)"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 5
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"KSampler (Advanced)")])]),t("tr",{class:"ab-foldable-tr",tr_level:"0",is_fold:"false",able_fold:"true",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 6
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"loaders")]),t("td",{rowspan:"1"},[t("div",{class:"ab-list-table-witharrow markdown-rendered"},[t("div",null,[t("p",null,"向ComfyUI加载各种功能模型")])])])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 7
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"video_models")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"**Load Checkpoint** "},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 8
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"**Load Checkpoint**")]),t("td",{rowspan:"1"},[t("div",{class:"ab-list-table-witharrow markdown-rendered"},[t("div",null,[t("p",null,"加载检查点模型")])])])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"Load VAE"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 9
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"Load VAE")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"Load LoRA"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 10
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"Load LoRA")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"Load ControlNet Model"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 11
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"Load ControlNet Model")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"Load ControlNet Model(diff)"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 12
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"Load ControlNet Model(diff)")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"Load Style Model"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 13
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"Load Style Model")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"Load CLIP Vision"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 14
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"Load CLIP Vision")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"unCLIPCheckpointLoader"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 15
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"unCLIPCheckpointLoader")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"GLIGENLoader"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 16
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"GLIGENLoader")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"LoraLoaderModelOnly"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 17
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"LoraLoaderModelOnly")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"HypernetworkLoader"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 18
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"HypernetworkLoader")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"Load Upscale Model"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 19
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"Load Upscale Model")])]),t("tr",{class:"ab-foldable-tr",tr_level:"0",is_fold:"false",able_fold:"true",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 20
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"conditioning")]),t("td",{rowspan:"1"},[t("div",{class:"ab-list-table-witharrow markdown-rendered"},[t("div",null,[t("p",null,"条件")])])])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 21
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"style_model")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 22
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"controlnet")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 23
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"gligen")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 24
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"inpaint")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 25
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"video_models")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 26
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"3d_models")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 27
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"upscale_diffusion")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 28
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"stable_cascade")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 29
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"instructpix2pix")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"**CLIP Text Encode (Prompt)** "},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 30
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"**CLIP Text Encode (Prompt)**")]),t("td",{rowspan:"1"},[t("div",{class:"ab-list-table-witharrow markdown-rendered"},[t("div",null,[t("p",null,"CLIP文本编码器 (提示词)")])])])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"CLIP Set Last Layer"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 31
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"CLIP Set Last Layer")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"ConditioningAverage"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 32
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"ConditioningAverage")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"Conditioning (COmbine)"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 33
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"Conditioning (COmbine)")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"Conditioning (Concat)"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 34
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"Conditioning (Concat)")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"Conditioning (Set Area)"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 35
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"Conditioning (Set Area)")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"Conditioning (Set Area with Percentage)"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 36
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"Conditioning (Set Area with Percentage)")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"ConditioningSetAreaStrength"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 37
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"ConditioningSetAreaStrength")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"Conditioning (Set Mask)"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 38
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"Conditioning (Set Mask)")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"CLIO Vision Encode"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 39
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"CLIO Vision Encode")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"unCLIOConditioning"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 40
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"unCLIOConditioning")])]),t("tr",{class:"ab-foldable-tr",tr_level:"0",is_fold:"false",able_fold:"true",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 41
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"latent")]),t("td",{rowspan:"1"},[t("div",{class:"ab-list-table-witharrow markdown-rendered"},[t("div",null,[t("p",null,"潜空间 (内部图片编码格式)")])])])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 42
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"inpaint")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 43
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"batch")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 44
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"transform")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 45
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"advanced")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 46
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"stable_cascade")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 47
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"audio")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 48
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"sd3")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"**VAE Decode**         "},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 49
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"**VAE Decode**")]),t("td",{rowspan:"1"},[t("div",{class:"ab-list-table-witharrow markdown-rendered"},[t("div",null,[t("p",null,"VAE解码器，Latent->Image")])])])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"**VAE Encode**         "},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 50
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"**VAE Encode**")]),t("td",{rowspan:"1"},[t("div",{class:"ab-list-table-witharrow markdown-rendered"},[t("div",null,[t("p",null,"VAE编码器，Image->Latent")])])])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"**Empty Latent Image** "},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 51
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"**Empty Latent Image**")]),t("td",{rowspan:"1"},[t("div",{class:"ab-list-table-witharrow markdown-rendered"},[t("div",null,[t("p",null,"空的")])])])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"Upscale Latent"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 52
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"Upscale Latent")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"Upscale Latent By"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 53
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"Upscale Latent By")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"Latent Composite"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 54
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"Latent Composite")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"LatentCompositeMasked"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 55
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"LatentCompositeMasked")])]),t("tr",{class:"ab-foldable-tr",tr_level:"0",is_fold:"false",able_fold:"true",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 56
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"image")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"**Save Image** "},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 57
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"**Save Image**")]),t("td",{rowspan:"1"},[t("div",{class:"ab-list-table-witharrow markdown-rendered"},[t("div",null,[t("p",null,"保存图片")])])])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"Preview Image"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 58
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"Preview Image")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"Load Image"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 59
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"Load Image")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"Invert Image"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 60
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"Invert Image")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"Batch Images"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 61
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"Batch Images")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:"Pad Image for Outpainting"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 62
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"Pad Image for Outpainting")])]),t("tr",{class:"ab-foldable-tr",tr_level:"1",is_fold:"false",able_fold:"false",type:""},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 63
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 384 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M320 464c8.8 0 16-7.2 16-16l0-288-80 0c-17.7 0-32-14.3-32-32l0-80L64 48c-8.8 0-16 7.2-16 16l0 384c0 8.8 7.2 16 16 16l256 0zM0 64C0 28.7 28.7 0 64 0L229.5 0c17 0 33.3 6.7 45.3 18.7l90.5 90.5c12 12 18.7 28.3 18.7 45.3L384 448c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"...")])]),t("tr",{class:"ab-foldable-tr",tr_level:"0",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 64
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"mask")])]),t("tr",{class:"ab-foldable-tr",tr_level:"0",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 65
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"\\_for\\_testing")])]),t("tr",{class:"ab-foldable-tr",tr_level:"0",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 66
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"advanced")])]),t("tr",{class:"ab-foldable-tr",tr_level:"0",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 67
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"model_patches")])]),t("tr",{class:"ab-foldable-tr",tr_level:"0",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 68
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"audio")])]),t("tr",{class:"ab-foldable-tr",tr_level:"0",is_fold:"false",able_fold:"false",type:"folder"},[t("td",{rowspan:"1",onclick:`            const tr = (this.tagName == "TD") ? this.parentNode : this
+            const l_tr = tr.parentNode.querySelectorAll("tr")
+            const i = 69
+            
+            const tr_level = Number(tr.getAttribute("tr_level"))
+            if (isNaN(tr_level)) return
+            const tr_isfold = tr.getAttribute("is_fold")
+            if (!tr_isfold) return
+            let flag_do_fold = false  // 防止折叠最小层
+            for (let j=i+1; j<l_tr.length; j++){
+              const tr2 = l_tr[j]
+              const tr_level2 = Number(tr2.getAttribute("tr_level"))
+              if (isNaN(tr_level2)) break
+              if (tr_level2 <= tr_level) break // 影响所有后代级
+              // if (tr_level2 != tr_level+1) break // 影响下一级的 (话说这里可能有列表规范性问题?)
+              (tr_isfold == "true") ? tr2.style.display = "" : tr2.style.display = "none"
+              flag_do_fold = true
+            }
+            if (flag_do_fold) tr.setAttribute("is_fold", tr_isfold=="true"?"false":"true")
+          `},[t("div",{class:"ab-list-table-svg"},[t("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 512 512"},[e("!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc."),t("path",{d:"M64 480H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H288c-10.1 0-19.6-4.7-25.6-12.8L243.2 57.6C231.1 41.5 212.1 32 192 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64z"})])]),t("div",{class:"ab-list-table-witharrow"},"api")])])])]),t("button",{class:"ab-table-fold",is_fold:"false",onclick:`          const btn = this;
+          const svgStr_fold = \`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-fold-vertical-icon lucide-fold-vertical"><path d="M12 22v-6"/><path d="M12 8V2"/><path d="M4 12H2"/><path d="M10 12H8"/><path d="M16 12h-2"/><path d="M22 12h-2"/><path d="m15 19-3-3-3 3"/><path d="m15 5-3 3-3-3"/></svg>\`;
+          const svgStr_unfold = \`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-unfold-vertical-icon lucide-unfold-vertical"><path d="M12 22v-6"/><path d="M12 8V2"/><path d="M4 12H2"/><path d="M10 12H8"/><path d="M16 12h-2"/><path d="M22 12h-2"/><path d="m15 19-3 3-3-3"/><path d="m15 5-3-3-3 3"/></svg>\`;
+          const table = btn.parentNode?.querySelector("table");
+          if (!table) return;
+          
+          const is_all_fold = btn.getAttribute("is_fold")
+          if (is_all_fold=="true") {
+            btn.setAttribute("is_fold", "false"); btn.innerHTML = svgStr_fold;
+            const btn_subs = table.querySelectorAll("tr[is_fold='true']>td:first-child");
+              btn_subs.forEach((btn_sub) => { btn_sub.click() }) // 注意setAttr版本无断言
+          }
+          else {
+            btn.setAttribute("is_fold", "true"); btn.innerHTML = svgStr_unfold;
+            const btn_subs = table.querySelectorAll("tr[is_fold='false']>td:first-child");
+              btn_subs.forEach((btn_sub) => { btn_sub.click() }) // 注意setAttr版本无断言
+          }`},[t("svg",{xmlns:"http://www.w3.org/2000/svg",width:"24",height:"24",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor","stroke-width":"2","stroke-linecap":"round","stroke-linejoin":"round",class:"lucide lucide-fold-vertical-icon lucide-fold-vertical"},[t("path",{d:"M12 22v-6"}),t("path",{d:"M12 8V2"}),t("path",{d:"M4 12H2"}),t("path",{d:"M10 12H8"}),t("path",{d:"M16 12h-2"}),t("path",{d:"M22 12h-2"}),t("path",{d:"m15 19-3-3-3 3"}),t("path",{d:"m15 5-3 3-3-3"})])])])],-1)),l[25]||(l[25]=i('<h2 id="按扩展" tabindex="-1">按扩展</h2><p>除了自带工作流外，还有很多可以额外安装或自定义的节点</p><h3 id="自定义节点介绍" tabindex="-1">自定义节点介绍</h3><h4 id="自定义节点丢失的错误问题" tabindex="-1">自定义节点丢失的错误问题</h4><p>当使用别人的工作流时，别人的工作流中可能也包含了很多自定义节点。如果你没有这些节点，可能会遇到很多节点 “变红” 的情况</p><p>解决：最简单的解决方法是在 <code>ComfyUI Manager Menu</code> (似乎是插件) 中点击 <code>Install Missing Custom Nodes</code> 按钮，就可以了</p><h4 id="自定义节点的本质、3种安装方式" tabindex="-1">自定义节点的本质、3种安装方式</h4><p>节点本质是一堆代码，存储在Github仓库中。下面介绍安装方式：</p><ul><li>clone安装<br> 将这些仓库代码放到 <code>ComfyUI/custom_nodes</code> 路径，即实现了自定义节点的安装和加载（仓库clone下载就行，不需要编译。是即用的py脚本）</li><li>在github中下载zip安装也行<br> 不建议</li><li>使用扩展 “Comfy UI Manager”<br> 该扩展可以很方便地去下载、管理其他自定义节点</li></ul><p>（话说不存在像UE那种用多个节点自定义成一个节点的方法吗，那种也挺好用的）</p><h4 id="一些链接" tabindex="-1">一些链接</h4><p><a href="https://www.bilibili.com/video/BV1pZ421b7t7/" target="_blank" rel="noopener noreferrer">视频</a> 中介绍的所有节点的仓库链接：</p><ul><li>ComfyUI Manager： <a href="http://github.com/ltdrdata/ComfyUI-Manager" target="_blank" rel="noopener noreferrer">github.com/ltdrdata/ComfyUI-Manager</a></li><li>ComfyUI汉化节点： <a href="http://github.com/AIGODLIKE/AIGODLIKE-COMFYUI-TRANSLATION" target="_blank" rel="noopener noreferrer">github.com/AIGODLIKE/AIGODLIKE-COMFYUI-TRANSLATION</a></li><li>ComfyUI提示词反推： <a href="http://github.com/pythongosssss/ComfyUI-WD14-Tagger" target="_blank" rel="noopener noreferrer">github.com/pythongosssss/ComfyUI-WD14-Tagger</a></li><li>Impact节点包： <a href="http://github.com/ltdrdata/ComfyUI-Impact-Pack" target="_blank" rel="noopener noreferrer">github.com/ltdrdata/ComfyUI-Impact-Pack</a> Efficiency Nodes</li><li>效率节点包： <a href="http://github.com/jags111/efficiency-nodes-comfyui" target="_blank" rel="noopener noreferrer">github.com/jags111/efficiency-nodes-comfyui</a></li><li>自定义脚本包（含提示词补全）： <a href="http://github.com/pythongosssss/ComfyUI-Custom-Scripts" target="_blank" rel="noopener noreferrer">github.com/pythongosssss/ComfyUI-Custom-Scripts</a></li></ul><p>更多没有介绍详细的节点：</p><ul><li>One Button Prompt（简易负面词）： <a href="http://github.com/AIrjen/OneButtonPrompt" target="_blank" rel="noopener noreferrer">github.com/AIrjen/OneButtonPrompt</a></li><li>CR节点包： <a href="http://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes" target="_blank" rel="noopener noreferrer">github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes</a></li><li>WAS节点套件： <a href="http://github.com/WASasquatch/was-node-suite-comfyui" target="_blank" rel="noopener noreferrer">github.com/WASasquatch/was-node-suite-comfyui</a></li><li>RG3节点包： <a href="http://github.com/rgthree/rgthree-comfy" target="_blank" rel="noopener noreferrer">github.com/rgthree/rgthree-comfy</a></li><li>AnimateDiff Evolved： <a href="http://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved" target="_blank" rel="noopener noreferrer">github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved</a></li><li>IPAdapter Plus： <a href="http://github.com/cubiq/ComfyUI_IPAdapter_plus" target="_blank" rel="noopener noreferrer">github.com/cubiq/ComfyUI_IPAdapter_plus</a></li><li>ReActor： <a href="http://github.com/Gourieff/comfyui-reactor-node" target="_blank" rel="noopener noreferrer">github.com/Gourieff/comfyui-reactor-node</a></li><li>Catcat： <a href="http://github.com/jw782cn/ComfyUI-Catcat" target="_blank" rel="noopener noreferrer">github.com/jw782cn/ComfyUI-Catcat</a></li><li>ComfyPets： <a href="http://github.com/nathannlu/ComfyUI-Pets" target="_blank" rel="noopener noreferrer">github.com/nathannlu/ComfyUI-Pets</a></li></ul><h3 id="常用的自定义节点" tabindex="-1">常用的自定义节点</h3><h4 id="comfy-ui-manager" tabindex="-1">Comfy UI Manager</h4><p>见 “扩展” 一章</p>',18))])}const v=n(d,[["render",_]]),u=JSON.parse('{"path":"/MdNote_Public/01.%20DesignAndDevelop/Develop/04.%20Project/Type/Artificial_Intelligence/Project/Draw/ComfyUI/%E6%95%99%E7%A8%8B/03.%20%E8%8A%82%E7%82%B9.html","title":"节点","lang":"zh-CN","frontmatter":{"description":"节点 右键可以新键节点 按工作流 默认文生图工作流","head":[["script",{"type":"application/ld+json"},"{\\"@context\\":\\"https://schema.org\\",\\"@type\\":\\"Article\\",\\"headline\\":\\"节点\\",\\"image\\":[\\"\\"],\\"dateModified\\":null,\\"author\\":[]}"],["meta",{"property":"og:url","content":"https://LincZero.github.io/MdNote_Public/01.%20DesignAndDevelop/Develop/04.%20Project/Type/Artificial_Intelligence/Project/Draw/ComfyUI/%E6%95%99%E7%A8%8B/03.%20%E8%8A%82%E7%82%B9.html"}],["meta",{"property":"og:site_name","content":"Linc 的小站"}],["meta",{"property":"og:title","content":"节点"}],["meta",{"property":"og:description","content":"节点 右键可以新键节点 按工作流 默认文生图工作流"}],["meta",{"property":"og:type","content":"article"}],["meta",{"property":"og:locale","content":"zh-CN"}]]},"git":{},"readingTime":{"minutes":4.17,"words":1252},"filePathRelative":"MdNote_Public/01. DesignAndDevelop/Develop/04. Project/Type/Artificial_Intelligence/Project/Draw/ComfyUI/教程/03. 节点.md","excerpt":"\\n<p>右键可以新键节点</p>\\n<h2>按工作流</h2>\\n<h3>默认文生图工作流</h3>\\n","autoDesc":true,"bioChainData":{"outlink":[],"backlink":[],"localMap":{"nodes":[{"id":"MdNote_Public/01. DesignAndDevelop/Develop/04. Project/Type/Artificial_Intelligence/Project/Draw/ComfyUI/教程/03. 节点.md","value":{"title":"03. 节点","path":"MdNote_Public/01. DesignAndDevelop/Develop/04. Project/Type/Artificial_Intelligence/Project/Draw/ComfyUI/教程/03. 节点.md","outlink":[],"backlink":[]}}],"links":[]}}}');export{v as comp,u as data};
