@@ -7,7 +7,7 @@ import chatview_mdit from "./plugins/ChatView/src/MarkdownIt/index_mdit.js"
 // 不再使用mdit插件 (你也可以去用)，改用插件版
 // import { ab_mdit } from "./plugins/ABConvertManager/MarkdownIt/index.js" // anyblock - 源码版
 // import { ab_mdit, jsdom_init } from "markdown-it-any-block"              // anyblock - npm版
-// jsdom_init() // 如果模块根部有直接使用的，可能要改成 await jsdom_init() 同步操作
+// jsdom_init(true, true) // 如果模块根部有直接使用的，可能要改成 await jsdom_init() 同步操作
 // 不填                                                                     // anyblock - vuepress插件版
 
 // @ts-ignore 找不到名称“markdownit”

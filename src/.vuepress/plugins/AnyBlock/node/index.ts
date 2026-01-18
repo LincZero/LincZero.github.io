@@ -2,7 +2,7 @@ import { getDirname, path } from "@vuepress/utils"
 
 import { ab_mdit, ab_mdit_client, jsdom_init } from "markdown-it-any-block" // npm
 const CLIENT_MODE = false
-if (!CLIENT_MODE) jsdom_init() // 如果模块根部有直接使用的，可能要改成 await jsdom_init() 同步操作
+if (!CLIENT_MODE) jsdom_init(true, true) // 如果模块根部有直接使用的，可能要改成 await jsdom_init() 同步操作
 
 export default (options, ctx) => {
   return {
