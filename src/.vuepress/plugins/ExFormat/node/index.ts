@@ -13,7 +13,7 @@ import * as fs from 'fs';                                     // 用于public静
 
 const __dirname = getDirname(import.meta.url)
 
-export default (options, ctx) => {
+export default (_options, _ctx) => {
   return {
     name: 'vuepress-plugin-exFormat',
     // clientConfigFile: path.resolve(__dirname, '../client/clientConfig.ts'),
@@ -112,6 +112,7 @@ async function onInitialized2(app: App) {
       page.frontmatter['tag'] = page.frontmatter['tags']
     }
 
+    // 注意不要混淆有几个与元数据类似的字段:
     // console.log(
     //   'meta适配',
     //   app.pages[i].frontmatter,
@@ -128,8 +129,8 @@ async function onInitialized2(app: App) {
    */
   for (let i = 0; i<app.pages.length; i++) {
     const page = app.pages[i]
-    // vuepress旧版本 `page.path` 是 `.json.md` 和 `.json` 分别 `.json.html` 和 `.json` 结尾
-    // 而新版本的 `.json.md` 和 `.json` 都是 `.json.html` 结尾，这可能导致bug
+    // vuepress 旧版本 `page.path` 机制: `.json.md` 和 `.json` 分别 `.json.html` 和 `.json` 结尾
+    // 而新版本的机制: `.json.md` 和 `.json` 都是 `.json.html` 结尾，这可能导致bug
     // 所以这里修正为用 `page.filePath` 补充判断 (无对应文件的虚拟页没有该字段)
     if ((page.path.endsWith(".json") || page.path.endsWith(".json.html"))
       && (page.filePath as string)?.endsWith('.json')
