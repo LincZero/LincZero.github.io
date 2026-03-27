@@ -2,6 +2,12 @@
 
 本地测试常用命令
 
+## 升级主题
+
+```bash
+pnpm dlx vp-update
+```
+
 ## python 临时服务器
 
 dist文件夹下
