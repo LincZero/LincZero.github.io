@@ -19,7 +19,7 @@
     "@vuepress/plugin-slimsearch": "2.0.0-rc.126",
     "@vuepress/utils": "2.0.0-rc.27",
     "markdown-it": "^14.1.1",
-    "markdown-it-any-block": "3.3.9-beta1",
+    "markdown-it-any-block": "3.4.4-beta3",
     "markdown-it-container": "^4.0.0",
     "markdown-it-obsidian-callouts": "^0.3.3",
     "markmap-lib": "^0.18.12",
