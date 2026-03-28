@@ -35,26 +35,26 @@ jobs:
         run: |
           git clone --depth 1 https://github.com/LincDocs/MdNote_Public.git
           rm -rf MdNote_Public/.git
-          # git clone --depth 1 https://${{ secrets.VUEPRESSORG }}@github.com/LincDocs/MdNote_Work.git
-          # rm -rf MdNote_Work/.git
+          git clone --depth 1 https://${{ secrets.VUEPRESSORG }}@github.com/LincDocs/MdNote_Work.git
+          rm -rf MdNote_Work/.git
         env:
           GH_TOKEN: ${{ secrets.VUEPRESSORG }}
 
-      # - name: Checkout - 文档库2
-      #   working-directory: ./src/
-      #   run: mkdir MdNote_Other
-      # - name: Checkout - 文档库2-2
-      #   working-directory: ./src/MdNote_Other/
-      #   run: |
-      #     git clone --depth 1 https://github.com/LincDocs/ComfyUI_examples.git
-      #     rm -rf ComfyUI_examples/.git
-      #     git clone --depth 1 https://github.com/LincDocs/ComfyUI-Workflows-ZHO.git
-      #     rm -rf ComfyUI-Workflows-ZHO/.git
-      #     git clone --depth 1 https://github.com/LincDocs/ComfyUI-Workflows-Linc.git
-      #     rm -rf ComfyUI-Workflows-Linc/.git
-      #     git clone --depth 1 https://github.com/LincZero/LincZero.git
-      #     rm -rf LincZero/.git
-      #   # git clone --depth 1 https://github.com/LincDocs/Pkmer-Math.git
+      - name: Checkout - 文档库2
+        working-directory: ./src/
+        run: mkdir MdNote_Other
+      - name: Checkout - 文档库2-2
+        working-directory: ./src/MdNote_Other/
+        run: |
+          git clone --depth 1 https://github.com/LincDocs/ComfyUI_examples.git
+          rm -rf ComfyUI_examples/.git
+          git clone --depth 1 https://github.com/LincDocs/ComfyUI-Workflows-ZHO.git
+          rm -rf ComfyUI-Workflows-ZHO/.git
+          git clone --depth 1 https://github.com/LincDocs/ComfyUI-Workflows-Linc.git
+          rm -rf ComfyUI-Workflows-Linc/.git
+          git clone --depth 1 https://github.com/LincZero/LincZero.git
+          rm -rf LincZero/.git
+        # git clone --depth 1 https://github.com/LincDocs/Pkmer-Math.git
 
       - name: 环境 - 安装 pnpm
         uses: pnpm/action-setup@v4
@@ -85,9 +85,9 @@ jobs:
           pnpm run docs:build 2>&1 | grep -v "Found unicode character"
           > src/.vuepress/dist/.nojekyll
 
-      # - name: 部署文档
-      #   uses: JamesIves/github-pages-deploy-action@v4.7.3
-      #   with:
-      #     # 这是文档部署到的分支名称
-      #     branch: gh-pages
-      #     folder: src/.vuepress/dist
+      - name: 部署文档
+        uses: JamesIves/github-pages-deploy-action@v4.7.3
+        with:
+          # 这是文档部署到的分支名称
+          branch: gh-pages
+          folder: src/.vuepress/dist
