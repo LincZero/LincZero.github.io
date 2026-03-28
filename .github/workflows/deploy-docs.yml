@@ -27,34 +27,34 @@ jobs:
       #   run: |
       #     git submodule foreach git pull origin main
 
-      # # 文档的克隆、构建、部署。注意 `clone --depth 1` 只拉取最近一次提交，减少时间
-      # # --depth 1 选项会损失git历史，但能加速编译。可自行启用/关闭
-      # # 注意若使用该选项，必须要删除 .git 文件夹，避免时间和贡献者错乱
-      # - name: Checkout - 文档库1
-      #   working-directory: ./src/
-      #   run: |
-      #     git clone --depth 1 https://github.com/LincDocs/MdNote_Public.git
-      #     rm -rf MdNote_Public/.git
-      #     git clone --depth 1 https://${{ secrets.VUEPRESSORG }}@github.com/LincDocs/MdNote_Work.git
-      #     rm -rf MdNote_Work/.git
-      #   env:
-      #     GH_TOKEN: ${{ secrets.VUEPRESSORG }}
-
-      - name: Checkout - 文档库2
+      # 文档的克隆、构建、部署。注意 `clone --depth 1` 只拉取最近一次提交，减少时间
+      # --depth 1 选项会损失git历史，但能加速编译。可自行启用/关闭
+      # 注意若使用该选项，必须要删除 .git 文件夹，避免时间和贡献者错乱
+      - name: Checkout - 文档库1
         working-directory: ./src/
-        run: mkdir MdNote_Other
-      - name: Checkout - 文档库2-2
-        working-directory: ./src/MdNote_Other/
         run: |
-          git clone --depth 1 https://github.com/LincDocs/ComfyUI_examples.git
-          rm -rf ComfyUI_examples/.git
-          git clone --depth 1 https://github.com/LincDocs/ComfyUI-Workflows-ZHO.git
-          rm -rf ComfyUI-Workflows-ZHO/.git
-          git clone --depth 1 https://github.com/LincDocs/ComfyUI-Workflows-Linc.git
-          rm -rf ComfyUI-Workflows-Linc/.git
-          git clone --depth 1 https://github.com/LincZero/LincZero.git
-          rm -rf LincZero/.git
-        # git clone --depth 1 https://github.com/LincDocs/Pkmer-Math.git
+          git clone --depth 1 https://github.com/LincDocs/MdNote_Public.git
+          rm -rf MdNote_Public/.git
+          # git clone --depth 1 https://${{ secrets.VUEPRESSORG }}@github.com/LincDocs/MdNote_Work.git
+          # rm -rf MdNote_Work/.git
+        env:
+          GH_TOKEN: ${{ secrets.VUEPRESSORG }}
+
+      # - name: Checkout - 文档库2
+      #   working-directory: ./src/
+      #   run: mkdir MdNote_Other
+      # - name: Checkout - 文档库2-2
+      #   working-directory: ./src/MdNote_Other/
+      #   run: |
+      #     git clone --depth 1 https://github.com/LincDocs/ComfyUI_examples.git
+      #     rm -rf ComfyUI_examples/.git
+      #     git clone --depth 1 https://github.com/LincDocs/ComfyUI-Workflows-ZHO.git
+      #     rm -rf ComfyUI-Workflows-ZHO/.git
+      #     git clone --depth 1 https://github.com/LincDocs/ComfyUI-Workflows-Linc.git
+      #     rm -rf ComfyUI-Workflows-Linc/.git
+      #     git clone --depth 1 https://github.com/LincZero/LincZero.git
+      #     rm -rf LincZero/.git
+      #   # git clone --depth 1 https://github.com/LincDocs/Pkmer-Math.git
 
       - name: 环境 - 安装 pnpm
         uses: pnpm/action-setup@v4
