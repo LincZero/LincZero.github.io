@@ -70,11 +70,16 @@ export const themeOptions2 = {
     //   //     fieldName === 'id' ? [text] : cut(text, true),
     //   // },
     // },
-    docsearch: {          // 文档搜索插件
+    // watermark: true, // 需要安装 @vuepress/plugin-watermark
+
+    // 一些外部服务 - 文档搜索插件
+    docsearch: { // Algolia 维护的云端检索
       appId: "247IUCFQ4Q",
       apiKey: "b8883b05027bfa9fc73f21286ed7395e", // 707332eeb6a1daf0e6ecfbb63e27afbc
       indexName: "linczeroio"
     },
-    // watermark: true, // 需要安装 @vuepress/plugin-watermark
+    // meilisearch: {} // 自托管 Meilisearch 服务器检索
+    slimsearch: false, // 轻量级、纯前端、零依赖的模糊搜索引擎
+    // search: {} // 前端匹配
   },
 }

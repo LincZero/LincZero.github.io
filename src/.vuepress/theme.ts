@@ -138,7 +138,6 @@ export const themeOptions: ThemeOptions = {
     //   category: "Announcements",
     //   categoryId: "DIC_kwDOG_Pt2M4COD69",
     // },
-    slimsearch: true,
     // 如果你需要 PWA。安装 @vuepress/plugin-pwa 并取消下方注释
     // pwa: {
     //   favicon: "/favicon.ico",
@@ -195,6 +194,9 @@ export const themeOptions: ThemeOptions = {
     //     ],
     //   },
     // },
+
+    // 一些外部服务 - 文档搜索插件
+    slimsearch: true,
   },
 };
 
