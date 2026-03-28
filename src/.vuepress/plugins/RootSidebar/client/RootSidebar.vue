@@ -84,8 +84,8 @@
 import { sidebarData } from "@temp/theme-hope/sidebar.js"; // 在client端获取侧边栏数据
 import { sidebarData2 } from "@temp/theme-hope/sidebar2.js";
 import { useSiteData } from 'vuepress/client' // https://vuepress.github.io/zh/reference/client-api.html
-import { useRouter, useRoute } from 'vue-router'
-// import { useRoute } from 'vuepress/client' // 为什么用 vue-router 版而不是 vupress/client 版的原因忘了，好像是有区别的
+import { useRouter, useRoute } from 'vue-router' // @deprecated 可废弃，更新 4.6.4 -> 5.0.4 后与 vuepress 不匹配。应使用 vuepress 的版本
+import { useRouter as vp_useRouter, useRoute as vp_useRoute } from 'vuepress/client' // 为什么用 vue-router 版而不是 vupress/client 版的原因忘了，好像是有区别的
 import { type ComputedRef, type Ref, computed, onMounted, ref, watch, nextTick } from 'vue';
 import RootSidebarItem from "./RootSidebarItem.vue"
 import type { SidebarType } from "./index"
@@ -203,6 +203,7 @@ function onNewUrl(newDeep?: number) {
         }
         if (j === tmp_arr.length-1) {                       // url和侧边栏数据不匹配
           console.error(`Error: Can't find the deep ${deep} in ${currentPath.value}, reset deep: ${(deep-1)>0 ? (deep-1) : 0}`)
+          console.error('可检查页面侧边栏是否为 "使用SUMMARY源" 状态，该状态不支持侧边栏聚焦功能')
           targetDeep.value = (deep-1)>0 ? (deep-1) : 0
           return
         }
@@ -214,16 +215,20 @@ function onNewUrl(newDeep?: number) {
   // 确保deep信息始终在url上。当deep为最大深度时(默认deep), 无需显示, 保证url的简洁
   // TODO: 有bug，暂时注释，可能让回退功能失效
   // if (targetDeep.value != currentPathArr.value.length-1) {
-  //   const newQuery = { ...route.query, deep: targetDeep.value };
-  //   router.push({ path: route.path, query: newQuery, hash: route.hash });
+  //   const newQuery = { ...vp_route.query, deep: targetDeep.value };
+  //   router.push({ path: vp_route.path, query: newQuery, hash: vp_route.hash });
   // }
 }
-const router = useRouter();
-const route = useRoute();
+const _route = useRoute();
+const _router = useRouter();
+const vp_route = vp_useRoute();
+const vp_router = vp_useRouter();
 const emitNewUrl = (newDeep: number) => { // 手动触发
+  if (isDebug) console.log('emitNewUrl', newDeep)
+
   if (newDeep<0) return // 无法指定负数，只允许url为-1
-  const newQuery = { ...route.query, deep: newDeep };
-  router.push({ path: route.path, query: newQuery, hash: route.hash });
+  const newQuery = { ...vp_route.query, deep: newDeep };
+  vp_router.push({ path: vp_route.path, query: newQuery, hash: vp_route.hash });
 
   onNewUrl(newDeep)
   emitScrollBreadcrumb()
@@ -231,7 +236,7 @@ const emitNewUrl = (newDeep: number) => { // 手动触发
 onMounted(() => {
   onNewUrl()
 })
-watch(() => route.fullPath, () => {
+watch(() => vp_route.fullPath, () => {
   onNewUrl()
 })
 
@@ -327,7 +332,7 @@ onMounted(() => {
 
 /// 调试输出
 import { usePageData, usePageFrontmatter } from 'vuepress/client' // https://vuepress.github.io/zh/reference/client-api.html
-const isDebug = false
+const isDebug = false && typeof document !== "undefined"
 const _usePageData = usePageData()
 const _usePageFrontmatter = usePageFrontmatter()
 const debug = () => {
@@ -337,9 +342,11 @@ const debug = () => {
   console.log("dataT", targetData)              // ^
   console.log("comp2", targetPath)
   console.log("comp4", currentPath)
-  console.log("route1", window.location)        // Location {hash, host, hostname, href, origin, pathname, port, protocol, search}
-  console.log("route2", route)                  // 
-  console.log("route3", router)                 // 
+  console.log("route1, location", window.location)       // Location {hash, host, hostname, href, origin, pathname, port, protocol, search}
+  console.log("route2, route", _route)                    // Proxy {fullPath, name, path, query, ...}, 在更新后的 build client 环境为 undefined, 不再可用
+  console.log("route3, router", _router)                  // Object {...}, 在更新后的 build client 环境为 undefined, 不再可用
+  console.log("route4, vp_route", vp_route)              // Proxy {fullPath, name, path, query, ...}
+  console.log("route5, vp_router", vp_router)
   console.log("usePageData1", _usePageData.value)        // Object，一个包含了当前页面数据的对象 {lang, path, forntmatter, ...}
   console.log("usePageData2", _usePageData.value.router) // undefined
   console.log("usePageData3", _usePageData.value.path)   // /MdNote_Public/Test.html
