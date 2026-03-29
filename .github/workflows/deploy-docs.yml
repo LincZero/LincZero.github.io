@@ -46,12 +46,12 @@ jobs:
       - name: Checkout - 文档库2-2
         working-directory: ./src/MdNote_Other/
         run: |
-          git clone --depth 1 https://github.com/LincDocs/ComfyUI_examples.git
-          rm -rf ComfyUI_examples/.git
-          git clone --depth 1 https://github.com/LincDocs/ComfyUI-Workflows-ZHO.git
-          rm -rf ComfyUI-Workflows-ZHO/.git
-          git clone --depth 1 https://github.com/LincDocs/ComfyUI-Workflows-Linc.git
-          rm -rf ComfyUI-Workflows-Linc/.git
+          # git clone --depth 1 https://github.com/LincDocs/ComfyUI_examples.git
+          # rm -rf ComfyUI_examples/.git
+          # git clone --depth 1 https://github.com/LincDocs/ComfyUI-Workflows-ZHO.git
+          # rm -rf ComfyUI-Workflows-ZHO/.git
+          # git clone --depth 1 https://github.com/LincDocs/ComfyUI-Workflows-Linc.git
+          # rm -rf ComfyUI-Workflows-Linc/.git
           git clone --depth 1 https://github.com/LincZero/LincZero.git
           rm -rf LincZero/.git
         # git clone --depth 1 https://github.com/LincDocs/Pkmer-Math.git
