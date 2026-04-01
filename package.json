@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "docs:build": "pnpm check-mem && vuepress-vite build src",
+    "docs:build-batch": "node ./scripts/batch_build.cjs",
     "docs:clean-dev": "vuepress-vite dev src --clean-cache",
     "docs:dev": "vuepress-vite dev src --port 24040",
     "docs:update-package": "pnpm dlx vp-update",
@@ -18,6 +19,7 @@
     "@vuepress/plugin-docsearch": "2.0.0-rc.127",
     "@vuepress/plugin-slimsearch": "2.0.0-rc.127",
     "@vuepress/utils": "2.0.0-rc.27",
+    "fs-extra": "^11.3.4",
     "markdown-it": "^14.1.1",
     "markdown-it-any-block": "3.4.4-beta3",
     "markdown-it-container": "^4.0.0",
