@@ -1,0 +1,1 @@
+var e=[{inheritEnvironments:[`msvc_x86`],name:`x86-Debug`,includePath:["${env.INCLUDE}","${workspaceRoot}\\**"],defines:[`WIN32`,`_DEBUG`,`UNICODE`,`_UNICODE`],intelliSenseMode:`windows-msvc-x86`}],t={configurations:e};export{e as configurations,t as default};

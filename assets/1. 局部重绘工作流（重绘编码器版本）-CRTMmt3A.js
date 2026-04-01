@@ -1,0 +1,39 @@
+var e=31,t=85,n=[{id:6,type:`CLIPTextEncode`,pos:{0:432,1:158},size:{0:422.84503173828125,1:164.31304931640625},flags:{},order:3,mode:0,inputs:[{name:`clip`,type:`CLIP`,link:81,label:`CLIP`}],outputs:[{name:`CONDITIONING`,type:`CONDITIONING`,links:[4],slot_index:0,label:`条件`}],properties:{"Node name for S&R":`CLIPTextEncode`},widgets_values:[`closeup photograph of maine coon (cat:1.2) in the yosemite national park mountains nature`]},{id:7,type:`CLIPTextEncode`,pos:{0:434,1:371},size:{0:425.27801513671875,1:180.6060791015625},flags:{},order:4,mode:0,inputs:[{name:`clip`,type:`CLIP`,link:82,label:`CLIP`}],outputs:[{name:`CONDITIONING`,type:`CONDITIONING`,links:[6],slot_index:0,label:`条件`}],properties:{"Node name for S&R":`CLIPTextEncode`},widgets_values:[`watermark, text
+`]},{id:26,type:`VAEEncodeForInpaint`,pos:{0:503,1:669},size:{0:210,1:98},flags:{},order:5,mode:0,inputs:[{name:`pixels`,type:`IMAGE`,link:73,label:`图像`},{name:`vae`,type:`VAE`,link:83,label:`VAE`},{name:`mask`,type:`MASK`,link:79,label:`遮罩`}],outputs:[{name:`LATENT`,type:`LATENT`,links:[72],slot_index:0,label:`Latent`}],properties:{"Node name for S&R":`VAEEncodeForInpaint`},widgets_values:[6]},{id:8,type:`VAEDecode`,pos:{0:1422,1:387},size:{0:210,1:46},flags:{},order:7,mode:0,inputs:[{name:`samples`,type:`LATENT`,link:42,label:`Latent`},{name:`vae`,type:`VAE`,link:84,label:`VAE`}],outputs:[{name:`IMAGE`,type:`IMAGE`,links:[22],slot_index:0,label:`图像`}],properties:{"Node name for S&R":`VAEDecode`},widgets_values:[]},{id:9,type:`SaveImage`,pos:{0:1709,1:356},size:{0:210,1:250},flags:{},order:8,mode:0,inputs:[{name:`images`,type:`IMAGE`,link:22,label:`图像`}],outputs:[],properties:{},widgets_values:[`ComfyUI`]},{id:3,type:`KSampler`,pos:{0:940,1:180},size:{0:315,1:262},flags:{},order:6,mode:0,inputs:[{name:`model`,type:`MODEL`,link:80,label:`模型`},{name:`positive`,type:`CONDITIONING`,link:4,label:`正面条件`},{name:`negative`,type:`CONDITIONING`,link:6,label:`负面条件`},{name:`latent_image`,type:`LATENT`,link:72,label:`Latent`}],outputs:[{name:`LATENT`,type:`LATENT`,links:[42],slot_index:0,label:`Latent`}],properties:{"Node name for S&R":`KSampler`},widgets_values:[0x3b1f9c91afe91,`randomize`,20,8,`uni_pc_bh2`,`normal`,1]},{id:29,type:`CheckpointLoaderSimple`,pos:{0:30,1:314},size:{0:315,1:98},flags:{},order:0,mode:0,inputs:[],outputs:[{name:`MODEL`,type:`MODEL`,links:[80],slot_index:0,label:`模型`},{name:`CLIP`,type:`CLIP`,links:[81,82],slot_index:1,label:`CLIP`},{name:`VAE`,type:`VAE`,links:[83,84],slot_index:2,label:`VAE`}],properties:{"Node name for S&R":`CheckpointLoaderSimple`},widgets_values:[`512-inpainting-ema.safetensors`]},{id:20,type:`LoadImage`,pos:{0:49,1:679},size:{0:385,1:365},flags:{},order:1,mode:0,inputs:[],outputs:[{name:`IMAGE`,type:`IMAGE`,links:[73],slot_index:0,label:`图像`},{name:`MASK`,type:`MASK`,links:[79],slot_index:1,label:`遮罩`}],properties:{"Node name for S&R":`LoadImage`},widgets_values:[`yosemite_inpaint_example.png`,`image`]},{id:30,type:`Note`,pos:{0:-490,1:151},size:[449.3901028510028,892.4814340642463],flags:{},order:2,mode:0,inputs:[],outputs:[],properties:{},widgets_values:[`# 局部重绘
+
+## WebUI中的操作
+
+在 WebUI 中，我们可以通过画布在上传的图片上涂抹/上传蒙版图来确定一块区域进行重绘
+
+一般来说，白色是1(需要被操作)黑色是0(不动)
+
+## ComfyUI中的操作
+
+在作者提供的工作流示例中，也有提供：Inpaint文件夹。或者其他更多的工作流方法
+
+### 重绘编码器版本
+
+核心
+
+- 蒙版的设置
+  蒙版的位置比较隐蔽，在加载图像节点上右键 > 在蒙版(遮罩)编辑器里打开 (Open in MaskEditor)，在里面可以编辑蒙版
+- VAE内补编码器
+  这个本质也是VAE编码节点，不过这个是专门用于重绘的。用这个代替之前的普通版本的VAE编码节点
+- 后面的流程同普通图生图
+
+要项
+
+- 重绘强度（去噪强度），建议0.8
+  太低了容易生成纯白色块（原理上，加了遮罩后，遮罩的部分是白色图像，以对应“空白”的潜空间）
+  太高了容易完全重绘，与原图没关系
+
+### 潜空间噪声蒙版版本
+
+上一个版本重绘强度不能太低，那如何使用更小的重绘强度？
+
+- 将VAE内补编码器替换成先连 \`VAE Encode\` 再连 \`SetLatentNoiseMask\` 节点
+
+### 含蒙版翻转、收缩、模糊选项
+
+### 上传蒙版版本
+ `],color:`#432`,bgcolor:`#653`}],r=[[4,6,0,3,1,`CONDITIONING`],[6,7,0,3,2,`CONDITIONING`],[22,8,0,9,0,`IMAGE`],[42,3,0,8,0,`LATENT`],[72,26,0,3,3,`LATENT`],[73,20,0,26,0,`IMAGE`],[79,20,1,26,2,`MASK`],[80,29,0,3,0,`MODEL`],[81,29,1,6,0,`CLIP`],[82,29,1,7,0,`CLIP`],[83,29,2,26,1,`VAE`],[84,29,2,8,1,`VAE`]],i=[{title:`Load image and alpha mask for inpainting`,bounding:[-20,607,786,442],color:`#3f789e`,font_size:24,flags:{}}],a={},o={ds:{scale:1.3109994191499963,offset:[1020.0153654080889,-95.80748718941798]},"0246.VERSION":[0,0,4]},s=.4,c={last_node_id:31,last_link_id:85,nodes:n,links:r,groups:i,config:a,extra:o,version:s};export{a as config,c as default,o as extra,i as groups,t as last_link_id,e as last_node_id,r as links,n as nodes,s as version};

@@ -1,0 +1,1 @@
+var e=`/assets/mountains-9cvoO7CQ.png`,t=`/assets/sunset-w5e0h-9W.png`;export{e as n,t};
