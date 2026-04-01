@@ -57,7 +57,6 @@ async function getBatches(providedBatches) {
         fileBatch.push(name);
       }
     }
-    console.log('分批 debug', fileBatch.length ? [...dirBatches, fileBatch] : dirBatches)
     return fileBatch.length ? [...dirBatches, fileBatch] : dirBatches;
   }
   // 手动分批
@@ -71,16 +70,18 @@ async function getBatches(providedBatches) {
 }
 
 /**
- * 将文件/目录从一个目录“批量移动”到另一个目录
+ * 批量移动指定的文件列表
+ * .vuepress 文件例外
  * @param {string[]} batch 文件名/目录名数组
  * @param {string} from    源目录
  * @param {string} to      目标目录
  */
 async function moveBatch(batch, from, to) {
   for (const name of batch) {
+    if (name === '.vuepress') continue
     const srcPath = path.join(from, name);
     const destPath = path.join(to, name);
-    await fs.move(srcPath, destPath, { overwrite: true });
+    await fs.move(srcPath, destPath, { overwrite: true }); // 可覆盖
   }
 }
 
@@ -98,30 +99,23 @@ async function main() {
   const batches = await getBatches(userBatches);
   console.log(`[INFO] 将按${batches.length}个批次构建：`, batches.map(b => b.join(',')).join(' | '));
 
-  // 1. 预备阶段
-  // 清空临时区 (排队区和结束编译区)
-  await fs.emptyDir(distDir_after);
-  await fs.emptyDir(srcDir_before);
-  // 编译区移动到排队区
-  const srcEntries = await fs.readdir(srcDir);
-  for (const entry of srcEntries) {
-    if (entry !== '.vuepress') {
-      const srcPath = path.join(srcDir, entry);
-      const destPath = path.join(srcDir_before, entry);
-      await fs.move(srcPath, destPath, { overwrite: true });
-    }
-  }
+  // 1.1. 预备 - src 和 src_tmp
+  // await fs.emptyDir(srcDir_before); // 取消，风险 (如果中途失败了，又重新运行，会丢失)
+  const src_entries = await fs.readdir(srcDir);
+  await moveBatch(src_entries, srcDir, srcDir_before);
+  console.log(`[INFO] [src 和 src_tmp] 向临时源码加入 ${src_entries.length} 个文件/文件夹`, src_entries)
 
   // 2. 循环分批
+  await fs.emptyDir(distDir_after);
   for (let i = 0; i < batches.length; ++i) {
     const batch = batches[i];
     console.log(`------ [分批 ${i + 1}: ${batch.join(', ')}] ------`);
 
-    // 2.1 本批从 src_tmp 还原到 src
+    // 2.1 从 src_tmp 取出本批
     await moveBatch(batch, srcDir_before, srcDir);
 
     // 2.2 运行构建命令
-    console.log(`[RUN] pnpm run docs:build`);
+    console.log(`[INFO] [RUN] pnpm run docs:build`);
     child_process.execSync('pnpm run docs:build', {
       stdio: 'inherit',
       cwd: rootDir
@@ -131,22 +125,18 @@ async function main() {
     await fs.copy(distDir, distDir_after, { overwrite: false, errorOnExist: false });
     console.log(`[INFO] 批次${i + 1} 产物已合并`);
 
-    // 2.4 编译文件移回 src_tmp
+    // 2.4 向 src_tmp 放回本批
     await moveBatch(batch, srcDir, srcDir_before);
   }
 
-  // 4. 还原 src 区
-  const left = await fs.readdir(srcTmpDir);
-  for (const entry of left) {
-    const srcPath = path.join(srcTmpDir, entry);
-    const destPath = path.join(srcDir, entry);
-    await fs.move(srcPath, destPath, { overwrite: true });
-  }
-  console.log('[INFO] src_tmp 临时内容已全部还原，src 内容恢复完成。');
+  // 1.2. 还原 - src 和 src_tmp
+  const src_tmp_entries = await fs.readdir(srcDir_before);
+  await moveBatch(src_tmp_entries, srcDir_before, srcDir);
+  console.log(`[INFO] [src 和 src_tmp] 从临时源码恢复 ${src_entries.length} 个文件/文件夹`, src_tmp_entries)
 
   // 4. 还原最终产物
   await fs.emptyDir(distDir);
-  await fs.copy(distDir_after, distDir);
+  await fs.move(distDir_after, distDir, { overwrite: true });
   console.log('\n[INFO] 分批构建已全部完成。最终 dist 内容：');
   console.log(await fs.readdir(distDir));
 }
