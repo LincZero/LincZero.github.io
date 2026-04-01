@@ -23,7 +23,7 @@
   --callout-title-weight: 600;
   --callout-content-padding: 0;
   --callout-content-background: transparent;
-  --callout-blend-mode: var(darken);
+  --callout-blend-mode: darken;
   --callout-info: 8, 109, 221;
   --callout-todo: 8, 109, 221;
   --callout-default: 8, 109, 221;
@@ -42,19 +42,19 @@
 }
 
 .theme-light {
-  --callout-blend-mode: var(darken);
+  --callout-blend-mode: darken;
 }
 
 .theme-dark {
-  --callout-blend-mode: var(lighten);
+  --callout-blend-mode: lighten;
 }
 
 html[data-theme=light] #app {
-  --callout-blend-mode: var(darken);
+  --callout-blend-mode: darken;
 }
 
 html[data-theme=dark] #app {
-  --callout-blend-mode: var(lighten);
+  --callout-blend-mode: lighten;
 }
 
 /**
