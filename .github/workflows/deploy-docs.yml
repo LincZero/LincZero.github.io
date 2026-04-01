@@ -77,7 +77,7 @@ jobs:
 
       - name: 构建文档
         env:
-          NODE_OPTIONS: --max_old_space_size=20480
+          NODE_OPTIONS: --max_old_space_size=40960
         run: |-
           node -e 'console.log(v8.getHeapStatistics())'
           # 这里排除一下 latex 的某个警告日志，太占日志空间了，我有一个库能被这占两万多行
