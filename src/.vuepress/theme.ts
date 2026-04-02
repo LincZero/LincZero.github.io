@@ -200,7 +200,7 @@ export const themeOptions: ThemeOptions = {
   },
 };
 
-import themeOptions4 from "./config/batch.auto.js"
+import themeOptions4_ from "./config/batch.auto.js"
 // let themeOptions4: any = {}
 // try {
 //   const batch: any = import('./config/batch.auto.js');
@@ -219,6 +219,17 @@ import themeOptions4 from "./config/batch.auto.js"
 // } catch {
 //   console.warn('without batch.auto.js')
 // }
+const themeOptions4 = {
+  locales: {
+    "/": {
+      navbar: navbar(themeOptions4_.navbar),
+      sidebar: sidebar(themeOptions4_.sidebar as any),
+      metaLocales: {
+        editLink: "在 GitHub 上编辑此页",
+      },
+    },
+  },
+}
 
 export default hopeTheme(
   {

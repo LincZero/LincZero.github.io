@@ -9,6 +9,7 @@
  * 不足：
  * 
  * - TODO 未支持  order 等侧边栏数据
+ * - 上层未支持是否跨域批次的判定，跨批次跳转不能走 SPA
  */
 
 const fs = require('fs-extra'); // fs 的优化版本
@@ -35,9 +36,9 @@ async function generate_sidebar_recursion(dir, baseRoute) {
     const absPath = path.join(dir, entry);
     const stat = await fs.stat(absPath);
 
+    // 文件夹
     if (stat.isDirectory()) {
-      // 递归子目录
-      const childChildren = await generate_sidebar_recursion(absPath, baseRoute + entry + '/');
+      const childChildren = await generate_sidebar_recursion(absPath, baseRoute + entry + '/'); // 递归子目录
       // 查找有没有 README.md
       let readmeLink = undefined;
       if (await fs.pathExists(path.join(absPath, 'README.md'))) {
@@ -45,16 +46,16 @@ async function generate_sidebar_recursion(dir, baseRoute) {
       }
       children.push({
         text: entry,
-        prefix: baseRoute + entry + '/',
+        prefix: entry + '/',
         link: readmeLink,
         collapsible: true,
         expanded: false,
         children: childChildren
       });
-    } else if (entry.endsWith('.md')) {
+    }
+    // 文件
+    else if (entry.endsWith('.md')) {
       children.push({
-        // text: entry === 'README.md' && baseRoute === '/' ? '首页'
-        //       : entry.replace(/\.md$/, ''),
         text: entry.replace(/\.md$/, ''),
         link: baseRoute + entry
       });

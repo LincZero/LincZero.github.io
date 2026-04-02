@@ -41,6 +41,7 @@
  *   - 博客页路径名的文件夹
  * - 其他 - 插件
  *   - 如 globalRelationalGraph.json
+ *   - 可见 .vuepress/.temp 的一些临时数据，如 theme-hop/sidebar、globalRelationalGraph.json
  * 
  * ## 设计要点 (For Developer)
  * 
@@ -144,7 +145,7 @@ async function main() {
   // await fs.emptyDir(srcDir_before); // 取消，风险 (如果中途失败了，又重新运行，会丢失)
   const src_entries = await fs.readdir(srcDir);
   await moveBatch(src_entries, srcDir, srcDir_before);
-  console.log(`[INFO] [src 和 src_tmp] 向临时源码加入 ${src_entries.length} 个文件/文件夹`, src_entries)
+  console.log(`[INFO] [src 和 src_tmp] 向临时源码加入 ${src_entries.length-1} 个文件/文件夹`, src_entries) // 不算 .vuepress
 
   // 2. 循环分批
   await fs.emptyDir(distDir_after);
@@ -177,7 +178,7 @@ async function main() {
   // 1.2. 还原 - src 和 src_tmp
   const src_tmp_entries = await fs.readdir(srcDir_before);
   await moveBatch(src_tmp_entries, srcDir_before, srcDir);
-  console.log(`[INFO] [src 和 src_tmp] 从临时源码恢复 ${src_entries.length} 个文件/文件夹`, src_tmp_entries)
+  console.log(`[INFO] [src 和 src_tmp] 从临时源码恢复 ${src_tmp_entries.length} 个文件/文件夹`, src_tmp_entries)
 
   // 4. 还原最终产物
   await fs.emptyDir(distDir);
