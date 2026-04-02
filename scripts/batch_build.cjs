@@ -2,16 +2,55 @@
  * 用于分批构建
  * 
  * ## 注意
- * 强烈不建议在本地运行，否则你最好需要确保你已经备份了
- * 因为在分批构建的过程该程序会暂时移动你的文档出入临时文件夹
  * 
- * ## 设计要点
+ * - 强烈不建议在本地运行，否则你最好需要确保你已经备份了
+ *   因为在分批构建的过程该程序会暂时移动你的文档出入临时文件夹
+ * - 分批构建中的第一批是最重要的 (README.md 首页的编译一般要在第一批)
+ *   原因见 [脚本缺点/不足](#脚本缺点/不足)
+ * 
+ * ## 脚本缺点/不足
+ * 
+ * 如果存在一些不可分批合并的资源，会以第一批优先进行保留。即分批合并过程并不完美。这会导致:
+ * 
+ * - 默认侧边栏无法同时显示多批次的资源
+ *   (TODO 通过配置来完成，分批构建之前先把目录给弄好并保存，再分批构建)
+ * - 两个批次编译出来的资源无法做到 SPA 跳转，必须以 url 链接形式跳转
+ *   (一般情况下使用 navbar + 绝对链接进行配置)
+ * 
+ * ## 分批合并冲突点说明
+ * 
+ * 如果分批构建中的非同名文件/文件夹，是能完美合并的。无法完美合并的主要是那些同名资源
+ * 
+ * - 可完美合并
+ *   - assets 的大部分资源
+ *   - 主文档页
+ *   - ...
+ * - 只保留，但不影响 (大家的文件一样)
+ *   - assets 的共用资源 (icon image 等)
+ *   - public 中的资源
+ *   - 404页和图标、logo和favicon图标、...
+ *   - ...
+ * - **只保留，且影响**
+ *   - 有希望完美合并
+ *     - category/index.html
+ *     - star/index.html
+ *     - tag/index.html
+ *     - timeline/index.html
+ *     - sitemap.xml
+ *     - sitemap.xsl
+ *   - 博客页路径名的文件夹
+ * - 其他 - 插件
+ *   - 如 globalRelationalGraph.json
+ * 
+ * ## 设计要点 (For Developer)
+ * 
  * - 构建前先把 src 里所有内容（除了 .vuepress）移到 src_tmp 进行总备份
  * - 每次批次，从 src_tmp 还原本批所需文件/文件夹到 src，进行构建，后立即移回 src_tmp
  * - 每一批循环都保证 src 除 .vuepress 外只有这批内容，且每次都清空 dist 临时副本再合并
  * - dist_tmp 下合并所有批的产物，最后同步到正式 dist
  * 
- * ## 旧版本
+ * ## 旧版本 (For Developer)
+ * 
  * 修改于 LincDocs Workflow 原 github workflows ci yml file
  * 相较于旧的工作流版本:
  * - 可在本地环境运行
@@ -29,6 +68,7 @@ const srcDir_before = path.join(rootDir, 'src_tmp'); // (1) 排队中待编译�
 const srcDir = path.join(rootDir, 'src'); // (2) 准备编译的内容
 const distDir = path.join(srcDir, '.vuepress', 'dist'); // (3) 当前编译好的内容
 const distDir_after = path.join(rootDir, 'dist_tmp'); // (4) 已编译好的内容
+const distDir_debug = path.join(rootDir, 'dist_debug'); // 仅开发调试查看中间产物时使用
 
 /**
  * 获取分批列表
@@ -57,7 +97,7 @@ async function getBatches(providedBatches) {
         fileBatch.push(name);
       }
     }
-    return fileBatch.length ? [...dirBatches, fileBatch] : dirBatches;
+    return fileBatch.length ? [fileBatch, ...dirBatches] : dirBatches; // 要零散文件优先
   }
   // 手动分批
   else {
@@ -107,6 +147,7 @@ async function main() {
 
   // 2. 循环分批
   await fs.emptyDir(distDir_after);
+  await fs.emptyDir(distDir_debug);
   for (let i = 0; i < batches.length; ++i) {
     const batch = batches[i];
     console.log(`------ [分批 ${i + 1}: ${batch.join(', ')}] ------`);
@@ -121,7 +162,10 @@ async function main() {
       cwd: rootDir
     });
 
-    // 2.3 合并产物（只拷目标，不覆盖旧文件）
+    // // 仅用于临时调试 - 观察合并动作
+    // await fs.copy(distDir, path.join(distDir_debug, i.toString()), { overwrite: false, errorOnExist: false });
+
+    // 2.3 合并产物（只拷目标，不覆盖旧文件。复制行为默认是不覆盖合并，移动行为默认覆盖）
     await fs.copy(distDir, distDir_after, { overwrite: false, errorOnExist: false });
     console.log(`[INFO] 批次${i + 1} 产物已合并`);
 
