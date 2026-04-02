@@ -12,7 +12,7 @@ tmp_docs/
 *.css.map
 
 # 分批构建专用
-/src/.vuepress/config/batch.auto.js
+# /src/.vuepress/config/batch.auto.js
 /src_before/
 /src_after/
 /dist_tmp/
