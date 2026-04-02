@@ -201,25 +201,7 @@ export const themeOptions: ThemeOptions = {
 };
 
 import themeOptions4_ from "./config/batch.auto.js"
-// let themeOptions4: any = {}
-// try {
-//   const batch: any = import('./config/batch.auto.js');
-//   console.log('=================batch', batch, batch.sidebar)
-//   themeOptions4 = {
-//     locales: {
-//       "/": {
-//         navbar: sidebar(batch.navbar),
-//         sidebar: navbar(batch.sidebar),
-//         metaLocales: {
-//           editLink: "在 GitHub 上编辑此页",
-//         },
-//       },
-//     },
-//   }
-// } catch {
-//   console.warn('without batch.auto.js')
-// }
-const themeOptions4 = {
+const themeOptions4 = themeOptions4_ ? {
   locales: {
     "/": {
       navbar: navbar(themeOptions4_.navbar),
@@ -229,7 +211,7 @@ const themeOptions4 = {
       },
     },
   },
-}
+} : {}
 
 export default hopeTheme(
   {
