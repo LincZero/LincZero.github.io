@@ -94,6 +94,10 @@ const distDir_debug = path.join(rootDir, 'dist_debug'); // 仅开发调试查看
  *   - 手动指定参数：每个参数为一批，其余未被指定的全并一批（如存在）
  *   - 都仅限 src 下直系（即不递归多级）
  * 
+ * 分批数组处理优先级
+ * - 应最先处理指定分批的，因为这可能是子文件夹。如果先处理父文件夹那不好弄
+ * - 应最后处理零散文件，特别是带 `/README.md`。并将合并策略改成覆盖 (以带 README 页的最优先)
+ * 
  * @param {string[]} providedBatches 指定批次（命令行参数）
  * @returns {Promise<string[][]>} 每个批次是一个字符串数组（文件/文件夹数组）
  */
@@ -115,14 +119,14 @@ async function getBatches(providedBatches) {
         fileBatch.push(name);
       }
     }
-    return fileBatch.length ? [fileBatch, ...dirBatches] : dirBatches; // 零散文件优先 (通常包含主页)
+    return fileBatch.length ? [...dirBatches, fileBatch] : dirBatches; // 零散文件最后 (通常包含主页)
   }
   // 手动分批
   else {
     const batchSet = new Set(providedBatches);
     const remain = candidates.filter(name => !batchSet.has(name)); // 剩余未指定的目录和文件
     const remainBatch = remain.length ? [remain] : [];
-    return [...remainBatch, ...providedBatches.map(name => [name])]; // 非分批文件优先 (通常包含主页)
+    return [...providedBatches.map(name => [name]), ...remainBatch]; // 分批文件优先，剩余文件最后 (通常包含主页)
   }
 }
 
@@ -182,8 +186,8 @@ async function main() {
     // 仅用于临时调试 - 观察合并动作
     await fs.copy(distDir, path.join(distDir_debug, i.toString()), { overwrite: false, errorOnExist: false });
 
-    // 2.3 合并产物（只拷目标，不覆盖旧文件。复制行为默认是不覆盖合并，移动行为默认覆盖）
-    await fs.copy(distDir, distDir_after, { overwrite: false, errorOnExist: false });
+    // 2.3 合并产物 (覆盖旧文件，最后的最优先)
+    await fs.copy(distDir, distDir_after, { overwrite: true, errorOnExist: false });
     console.log(`[INFO] 批次${i + 1} 产物已合并`);
 
     // 2.4 向 src_after 放回本批
