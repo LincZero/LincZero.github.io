@@ -17,10 +17,10 @@
   },
   "devDependencies": {
     "@nolebase/markdown-it-bi-directional-links": "^2.18.2",
-    "@vuepress/bundler-vite": "2.0.0-rc.27",
+    "@vuepress/bundler-vite": "2.0.0-rc.26",
     "@vuepress/plugin-docsearch": "2.0.0-rc.127",
     "@vuepress/plugin-slimsearch": "2.0.0-rc.127",
-    "@vuepress/utils": "2.0.0-rc.27",
+    "@vuepress/utils": "2.0.0-rc.26",
     "fs-extra": "^11.3.4",
     "glob": "^13.0.6",
     "markdown-it": "^14.1.1",
