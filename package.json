@@ -6,13 +6,14 @@
   "type": "module",
   "scripts": {
     "docs:build": "pnpm check-mem && vuepress-vite build src",
-    "docs:build-batch": "node ./scripts/batch_build.cjs",
+    "docs:build-batch": "pnpm gen-data && node ./scripts/batch_build.cjs",
     "docs:build-run": "python -m http.server 8080 --directory src/.vuepress/dist/ # 要先 build 再黏贴运行这个",
     "docs:clean-dev": "vuepress-vite dev src --clean-cache",
     "docs:dev": "vuepress-vite dev src --port 24040",
     "docs:update-package": "pnpm dlx vp-update",
     "check-mem": "node --max-old-space-size=20480 -e 'console.log(v8.getHeapStatistics())'",
-    "gen-config": "node ./scripts/generate_config.cjs"
+    "gen-config": "node ./scripts/generate_config.cjs",
+    "gen-data": "node ./scripts/generate_sidebar_and_navbar.cjs"
   },
   "devDependencies": {
     "@nolebase/markdown-it-bi-directional-links": "^2.18.2",
@@ -21,6 +22,7 @@
     "@vuepress/plugin-slimsearch": "2.0.0-rc.127",
     "@vuepress/utils": "2.0.0-rc.27",
     "fs-extra": "^11.3.4",
+    "glob": "^13.0.6",
     "markdown-it": "^14.1.1",
     "markdown-it-any-block": "3.4.4-beta3",
     "markdown-it-container": "^4.0.0",

@@ -132,10 +132,11 @@ async function moveBatch(batch, from, to) {
  * - 最后合并所有产物至 dist
  */
 async function main() {
-  // 批次配置：命令行参数 node patch_build.cjs dir1 dir2...
+  // 批次配置
+  // 命令行参数 node patch_build.cjs dir1 dir2...
   // 若无参数即全量自动分批
+  // 每个批次是文件夹名数组
   const userBatches = process.argv.slice(2);
-  // 得到批次，每个批次是文件夹名数组
   const batches = await getBatches(userBatches);
   console.log(`[INFO] 将按${batches.length}个批次构建：`, batches.map(b => b.join(',')).join(' | '));
 
@@ -162,8 +163,8 @@ async function main() {
       cwd: rootDir
     });
 
-    // // 仅用于临时调试 - 观察合并动作
-    // await fs.copy(distDir, path.join(distDir_debug, i.toString()), { overwrite: false, errorOnExist: false });
+    // 仅用于临时调试 - 观察合并动作
+    await fs.copy(distDir, path.join(distDir_debug, i.toString()), { overwrite: false, errorOnExist: false });
 
     // 2.3 合并产物（只拷目标，不覆盖旧文件。复制行为默认是不覆盖合并，移动行为默认覆盖）
     await fs.copy(distDir, distDir_after, { overwrite: false, errorOnExist: false });

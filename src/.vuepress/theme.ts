@@ -1,6 +1,6 @@
 /// hope主题相关的设置
 
-import { hopeTheme, type ThemeOptions } from "vuepress-theme-hope";
+import { hopeTheme, navbar, sidebar, type ThemeOptions } from "vuepress-theme-hope";
 import { themeOptions2 } from "./theme_cover.js"
 import { themeOptions3 } from "./theme_git.js"
 
@@ -200,7 +200,32 @@ export const themeOptions: ThemeOptions = {
   },
 };
 
+import themeOptions4 from "./config/batch.auto.js"
+// let themeOptions4: any = {}
+// try {
+//   const batch: any = import('./config/batch.auto.js');
+//   console.log('=================batch', batch, batch.sidebar)
+//   themeOptions4 = {
+//     locales: {
+//       "/": {
+//         navbar: sidebar(batch.navbar),
+//         sidebar: navbar(batch.sidebar),
+//         metaLocales: {
+//           editLink: "在 GitHub 上编辑此页",
+//         },
+//       },
+//     },
+//   }
+// } catch {
+//   console.warn('without batch.auto.js')
+// }
+
 export default hopeTheme(
-  { ...themeOptions, ...(themeOptions3 as any), ...(themeOptions2 as any) },
+  {
+    ...themeOptions,
+    ...(themeOptions3 as any),
+    ...(themeOptions2 as any),
+    ...themeOptions4
+  },
   { custom: true }
 );
