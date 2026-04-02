@@ -81,8 +81,9 @@
 </template>
 
 <script setup lang="ts">
-import { sidebarData } from "@temp/theme-hope/sidebar.js"; // 在client端获取侧边栏数据
-import { sidebarData2 } from "@temp/theme-hope/sidebar2.js";
+import { sidebarData } from "@temp/theme-hope/sidebar.js"; // 在client端获取侧边栏数据 (仅限 "structure" 生成)
+import { themeData } from "@temp/internal/themeData.js" // 在client端获取侧边栏数据 (仅限非 "structure" 生成)
+import { sidebarData2 } from "@temp/theme-hope/sidebar2.js"; // SUMMARY.md 数据 (不一定有)
 import { useSiteData } from 'vuepress/client' // https://vuepress.github.io/zh/reference/client-api.html
 import { useRouter, useRoute } from 'vue-router' // @deprecated 可废弃，更新 4.6.4 -> 5.0.4 后与 vuepress 不匹配。应使用 vuepress 的版本
 import { useRouter as vp_useRouter, useRoute as vp_useRoute } from 'vuepress/client' // 为什么用 vue-router 版而不是 vupress/client 版的原因忘了，好像是有区别的
@@ -108,9 +109,18 @@ import type { SidebarType } from "./index"
 // 注意：如果存在第二数据 SUMMARY.md，则优先使用该数据 sidebarData2
 // current基于完整的url
 // target基于按截取截取后的url
-if (!sidebarData.hasOwnProperty("/")) { console.error(`Error: Must be add a {"/": "structure"} in sidebar config`) }
 let targetDeep_isInit = false                           // 仅触发一次，用于锁定targetDeep
-const rootData = ref<SidebarType[]>(sidebarData["/"])   // 从根部开始的数据 (ATTENTION 要求一定要在sidebar配置中包含一个"/"struct)
+let rootData: Ref<SidebarType[]>
+if (sidebarData.hasOwnProperty("/")) { // 包含 {"/": "structure"}
+  rootData = ref<SidebarType[]>(sidebarData["/"])
+}
+else if (themeData?.locales?.hasOwnProperty("/") && themeData.locales["/"].sidebar?.hasOwnProperty("/")) {
+  rootData = ref<SidebarType[]>(themeData.locales["/"].sidebar["/"] ?? [])
+}
+else {
+  console.error(`Error: Must be add a {"/": "structure"} or {"/": ...} in sidebar config`)
+  rootData = ref<SidebarType[]>([])
+}
 const currentPath = ref("")                             // 当前url.path (特别注意的是，这里不纳入base(组织名)前面的path部分)
 const currentPathArr = ref<string[]>([])                // 当前url.path数组 (["", "path1", "path2"], 不包含文件名)
 const targetDeep = ref<number>(0)                       // 指定目录深度 (不会超过当前目录的最大深度)
