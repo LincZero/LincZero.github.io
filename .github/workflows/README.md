@@ -145,7 +145,19 @@ jobs:
           folder: src/.vuepress/dist
 ```
 
-## 分批构建
+## 分批构建 (脚本版)
+
+(待编辑)
+
+## 分批构建 (工作流版)
+
+> [!WARNING]
+> 
+> 旧版通过工作流实现
+> 
+> 新版本通过 batch-build 命令及对应的脚本实现
+> 
+> 此处的旧版本方法仅供参考
 
 参考我的一个仓库: https://github.com/LincDocs/obsidian-chinese/
 

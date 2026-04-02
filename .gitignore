@@ -13,6 +13,7 @@ tmp_docs/
 
 # 分批构建专用
 /src/.vuepress/config/batch.auto.js
-/src_tmp/
+/src_before/
+/src_after/
 /dist_tmp/
 /dist_debug/

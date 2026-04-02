@@ -1,6 +1,22 @@
 /**
  * 用于分批构建
  * 
+ * ## 用例
+ * 
+ * package.json
+ * 
+ * ```json
+ * "docs:build-batch": "pnpm gen-data && node ./scripts/batch_build.cjs",
+ * ```
+ * 
+ * shell
+ * 
+ * ```bash
+ * pnpm docs:build-batch
+ * # or
+ * pnpm docs:build-batch "MdNote_Public/subFolder/"
+ * ```
+ * 
  * ## 注意
  * 
  * - 强烈不建议在本地运行，否则你最好需要确保你已经备份了
@@ -45,8 +61,8 @@
  * 
  * ## 设计要点 (For Developer)
  * 
- * - 构建前先把 src 里所有内容（除了 .vuepress）移到 src_tmp 进行总备份
- * - 每次批次，从 src_tmp 还原本批所需文件/文件夹到 src，进行构建，后立即移回 src_tmp
+ * - 构建前先把 src 里所有内容（除了 .vuepress）移到 src_before 进行总备份
+ * - 每次批次，从 src_before 还原本批所需文件/文件夹到 src，进行构建，后立即移回 src_before
  * - 每一批循环都保证 src 除 .vuepress 外只有这批内容，且每次都清空 dist 临时副本再合并
  * - dist_tmp 下合并所有批的产物，最后同步到正式 dist
  * 
@@ -65,10 +81,11 @@ const child_process = require('child_process');
 
 // 四个主要路径，根据序号顺序进行变换
 const rootDir = process.cwd(); // 执行脚本路径，即该文件的 `../`
-const srcDir_before = path.join(rootDir, 'src_tmp'); // (1) 排队中待编译的内容
-const srcDir = path.join(rootDir, 'src'); // (2) 准备编译的内容
-const distDir = path.join(srcDir, '.vuepress', 'dist'); // (3) 当前编译好的内容
-const distDir_after = path.join(rootDir, 'dist_tmp'); // (4) 已编译好的内容
+const srcDir_before = path.join(rootDir, 'src_before'); // (1) 排队中待编译的源文
+const srcDir = path.join(rootDir, 'src'); // (2) 准备编译的源文
+const srcDir_after = path.join(rootDir, 'src_after'); // (3) 编译结束的源文。不与(1)复用，避免两个分批过程存在父亲关系文件夹
+const distDir = path.join(srcDir, '.vuepress', 'dist'); // (4) 当前编译好的产物
+const distDir_after = path.join(rootDir, 'dist_tmp'); // (5) 已编译好的产物
 const distDir_debug = path.join(rootDir, 'dist_debug'); // 仅开发调试查看中间产物时使用
 
 /**
@@ -98,15 +115,14 @@ async function getBatches(providedBatches) {
         fileBatch.push(name);
       }
     }
-    return fileBatch.length ? [fileBatch, ...dirBatches] : dirBatches; // 要零散文件优先
+    return fileBatch.length ? [fileBatch, ...dirBatches] : dirBatches; // 零散文件优先 (通常包含主页)
   }
   // 手动分批
   else {
     const batchSet = new Set(providedBatches);
-    const remain = candidates.filter(name => !batchSet.has(name));
-    // remain 可含普通文件和未被包括的目录
+    const remain = candidates.filter(name => !batchSet.has(name)); // 剩余未指定的目录和文件
     const remainBatch = remain.length ? [remain] : [];
-    return [...providedBatches.map(name => [name]), ...remainBatch];
+    return [...remainBatch, ...providedBatches.map(name => [name])]; // 非分批文件优先 (通常包含主页)
   }
 }
 
@@ -141,11 +157,10 @@ async function main() {
   const batches = await getBatches(userBatches);
   console.log(`[INFO] 将按${batches.length}个批次构建：`, batches.map(b => b.join(',')).join(' | '));
 
-  // 1.1. 预备 - src 和 src_tmp
-  // await fs.emptyDir(srcDir_before); // 取消，风险 (如果中途失败了，又重新运行，会丢失)
+  // 1.1. 预备 - src / src_before / src_after
   const src_entries = await fs.readdir(srcDir);
   await moveBatch(src_entries, srcDir, srcDir_before);
-  console.log(`[INFO] [src 和 src_tmp] 向临时源码加入 ${src_entries.length-1} 个文件/文件夹`, src_entries) // 不算 .vuepress
+  console.log(`[INFO] [src_] 排队 ${src_entries.length-1} 个文件/文件夹`, src_entries) // 不算 .vuepress
 
   // 2. 循环分批
   await fs.emptyDir(distDir_after);
@@ -154,7 +169,7 @@ async function main() {
     const batch = batches[i];
     console.log(`------ [分批 ${i + 1}: ${batch.join(', ')}] ------`);
 
-    // 2.1 从 src_tmp 取出本批
+    // 2.1 从 src_before 取出本批
     await moveBatch(batch, srcDir_before, srcDir);
 
     // 2.2 运行构建命令
@@ -171,14 +186,16 @@ async function main() {
     await fs.copy(distDir, distDir_after, { overwrite: false, errorOnExist: false });
     console.log(`[INFO] 批次${i + 1} 产物已合并`);
 
-    // 2.4 向 src_tmp 放回本批
-    await moveBatch(batch, srcDir, srcDir_before);
+    // 2.4 向 src_after 放回本批
+    await moveBatch(batch, srcDir, srcDir_after);
   }
 
-  // 1.2. 还原 - src 和 src_tmp
-  const src_tmp_entries = await fs.readdir(srcDir_before);
-  await moveBatch(src_tmp_entries, srcDir_before, srcDir);
-  console.log(`[INFO] [src 和 src_tmp] 从临时源码恢复 ${src_tmp_entries.length} 个文件/文件夹`, src_tmp_entries)
+  // 1.2. 还原 - src / src_before / src_after
+  const src_after_entries = await fs.readdir(srcDir_after);
+  await moveBatch(src_after_entries, srcDir_after, srcDir);
+  const src_before_entries = await fs.readdir(srcDir_before);
+  await moveBatch(src_before_entries, srcDir_before, srcDir);
+  console.log(`[INFO] [src_] 恢复 ${src_after_entries.length} 个文件/文件夹`, src_after_entries, src_before_entries)
 
   // 4. 还原最终产物
   await fs.emptyDir(distDir);
