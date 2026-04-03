@@ -24,6 +24,13 @@
  * - 分批构建中的第一批是最重要的 (README.md 首页的编译一般要在第一批)
  *   原因见 [脚本缺点/不足](#脚本缺点/不足)
  * 
+ * ## 设计要点 (For Developer)
+ * 
+ * - 构建前先把 src 里所有内容（除了 .vuepress）移到 src_before 进行总备份
+ * - 每次批次，从 src_before 还原本批所需文件/文件夹到 src，进行构建，后立即移回 src_after
+ * - 每一批循环都保证 src 除 .vuepress 外只有这批内容，且每次都清空 dist 临时副本再合并
+ * - dist_tmp 下合并所有批的产物，最后同步到正式 dist
+ * 
  * ## 脚本缺点/不足
  * 
  * 如果存在一些不可分批合并的资源，会以第一批优先进行保留。即分批合并过程并不完美。这会导致:
@@ -58,13 +65,6 @@
  * - 其他 - 插件
  *   - 如 globalRelationalGraph.json
  *   - 可见 .vuepress/.temp 的一些临时数据，如 theme-hop/sidebar、globalRelationalGraph.json
- * 
- * ## 设计要点 (For Developer)
- * 
- * - 构建前先把 src 里所有内容（除了 .vuepress）移到 src_before 进行总备份
- * - 每次批次，从 src_before 还原本批所需文件/文件夹到 src，进行构建，后立即移回 src_before
- * - 每一批循环都保证 src 除 .vuepress 外只有这批内容，且每次都清空 dist 临时副本再合并
- * - dist_tmp 下合并所有批的产物，最后同步到正式 dist
  * 
  * ## 旧版本 (For Developer)
  * 
