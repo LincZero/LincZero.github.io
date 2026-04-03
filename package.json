@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "docs:build": "pnpm check-mem && vuepress-vite build src",
-    "docs:build-batch": "pnpm gen-data && node ./scripts/batch_build.cjs",
+    "docs:build-batch": "node ./scripts/batch_build.cjs",
     "docs:build-run": "python -m http.server 8080 --directory src/.vuepress/dist/ # 要先 build 再黏贴运行这个",
     "docs:clean-dev": "vuepress-vite dev src --clean-cache",
     "docs:dev": "vuepress-vite dev src --port 24040",

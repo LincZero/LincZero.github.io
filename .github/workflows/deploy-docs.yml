@@ -83,6 +83,8 @@ jobs:
           # 这里排除一下 latex 的某个警告日志，太占日志空间了，我有一个库能被这占两万多行
           # 或 pnpm run docs:build 2>&1 | grep -v "Found unicode character .* inside tex"，或加上 package.json 上
           # pnpm run docs:build 2>&1 | grep -v "Found unicode character"
+          # 
+          # pnpm gen-data # (可选, 优化分批构建的侧边栏)
           pnpm run docs:build-batch "MdNote_Public" 2>&1 | grep -v "Found unicode character"
           > src/.vuepress/dist/.nojekyll
 
