@@ -13,6 +13,7 @@
 
 - https://linczero.github.io/
 - https://linczero-github-io.pages.dev/ (如果你所属中国大陆，环境网络条件受限，可访问该链接)
+  https://night07.com/ (中国备用链接)
 
 ## 网站框架
 

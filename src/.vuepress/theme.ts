@@ -204,8 +204,8 @@ import themeOptions4_ from "./config/batch.auto.js"
 const themeOptions4 = themeOptions4_ ? {
   locales: {
     "/": {
-      navbar: navbar(themeOptions4_.navbar),
-      sidebar: sidebar(themeOptions4_.sidebar as any),
+      navbar: navbar((themeOptions4_ as any).navbar),
+      sidebar: sidebar((themeOptions4_ as any).sidebar),
       metaLocales: {
         editLink: "在 GitHub 上编辑此页",
       },
@@ -213,6 +213,8 @@ const themeOptions4 = themeOptions4_ ? {
   },
 } : {}
 
+// TODO 后期应支持 sidebar_cover.js 和 navbar_cover.js
+//   这样会比较方便，不然想要修改这两就得重写整个 config / theme 配置，很麻烦
 export default hopeTheme(
   {
     ...themeOptions,

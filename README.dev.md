@@ -41,3 +41,13 @@ const pagesMap = {
 
 1. vuepress 这种行为会比 vitepress 占多特别多的内存。如果我想要为 vuepress 添加一种模式，类似 vitepress 的做法，不把所有 pages 信息都放内存里，是否好改。
 2. 修改成这种做法后，可能会有哪些影响，会影响哪些需要获取全部 pages 的功能或插件？
+
+### 分离 navbar 和 sidebar 独立配置
+
+这样设置他们就可以不通过 theme_cover 那么麻烦了
+
+TODO 然后就可以做到联动不同的 linc workflow 系统构建的多个网站了
+
+Q：如何解决中/英域名问题
+
+A：……

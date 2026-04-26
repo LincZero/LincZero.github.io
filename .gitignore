@@ -12,6 +12,7 @@ tmp_docs/
 *.css.map
 
 # 分批构建专用
+# 其中 batch.auto.js 为上传空模板后禁止后续修改上传
 # /src/.vuepress/config/batch.auto.js
 /src_before/
 /src_after/
