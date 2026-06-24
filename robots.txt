@@ -1,0 +1,4 @@
+User-agent:*
+Disallow:
+
+Sitemap: https://LincZero.github.io/sitemap.xml
