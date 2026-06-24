@@ -85,7 +85,7 @@ jobs:
           # pnpm run docs:build 2>&1 | grep -v "Found unicode character"
           # 
           # pnpm gen-data # (可选, 优化分批构建的侧边栏)
-          pnpm run docs:build-batch "MdNote_Public" 2>&1 | grep -v "Found unicode character"
+          pnpm run docs:build-batch "MdNote_Public/01. DesignAndDevelop" 2>&1 | grep -v "Found unicode character"
           > src/.vuepress/dist/.nojekyll
 
       - name: 部署文档
