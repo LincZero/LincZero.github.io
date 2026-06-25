@@ -17,7 +17,7 @@ function newPageHook_init(watchedPrefixes: string[] = []): void {
   const getMatchedPrefix = (path: string): string | null =>
     watchedPrefixes.find(prefix => path.startsWith(prefix)) ?? null
 
-  // 在每次路由跳转前拦截
+  // 在每次路由跳转前拦截 (to,from 为解码后的 url)
   router.beforeEach((to, from) => {
     const fromPrefix = getMatchedPrefix(from.path)
     const toPrefix   = getMatchedPrefix(to.path)

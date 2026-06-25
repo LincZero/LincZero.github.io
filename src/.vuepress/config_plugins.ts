@@ -14,8 +14,8 @@ const plugins: PluginConfig = [
   nodeFlow,
   tikz,
   exFormat,
-  batchBuild({ // TODO 易于配置, TODO 检查URL编码问题
-    batchs: ['/MdNote_Public/', '/01 2021新教程/'],
+  batchBuild({ // TODO 易于配置
+    batchs: ['/MdNote_Public/01. DesignAndDevelop/', '/01 2021新教程/'], // 填写URL解码的内容
   }),
   relational_graph({ // 含自定义组件
     localGraphDeep: 1, // 最大深度，默认20
